@@ -227,6 +227,7 @@ def short_title(title: str) -> str:
 def topbar(depth: str = "") -> str:
     return f"""
 <header class="topbar">
+  <button class="icon-button nav-toggle" data-nav-toggle title="打开课程目录" aria-label="打开课程目录" aria-expanded="false">☰</button>
   <a class="brand" href="{depth}index.html" aria-label="Python教程首页">
     <span class="brand-mark">Py</span>
     <span>Python教程</span>
@@ -250,7 +251,15 @@ def layout_page(title: str, body: str, depth: str = "") -> str:
   <link rel="stylesheet" href="{depth}assets/pygments.css" />
 </head>
 <body>
+<div class="read-progress" aria-hidden="true"><span data-read-progress></span></div>
+<div class="nav-backdrop" data-nav-backdrop></div>
 {body}
+<button class="back-to-top" data-back-top title="回到顶部" aria-label="回到顶部">↑</button>
+<div class="image-lightbox" data-lightbox hidden>
+  <button class="icon-button lightbox-close" data-lightbox-close title="关闭图片预览" aria-label="关闭图片预览">×</button>
+  <img alt="" data-lightbox-img />
+  <p data-lightbox-caption></p>
+</div>
 <script src="{depth}assets/site.js"></script>
 </body>
 </html>
@@ -281,7 +290,7 @@ def build_home(chapters: list[Chapter]) -> None:
     body = f"""
 {topbar()}
 <div class="site-shell">
-  <aside class="sidebar">
+  <aside class="sidebar" id="course-sidebar">
     <div class="sidebar-inner">
       <p class="sidebar-title">课程目录</p>
       {chapter_nav(chapters, None)}
@@ -417,7 +426,7 @@ def build_chapter_pages(chapters: list[Chapter]) -> None:
         body = f"""
 {topbar("../")}
 <div class="chapter-shell">
-  <aside class="sidebar">
+  <aside class="sidebar" id="course-sidebar">
     <div class="sidebar-inner">
       <p class="sidebar-title">课程目录</p>
       {chapter_nav(chapters, chapter.index, "../")}
