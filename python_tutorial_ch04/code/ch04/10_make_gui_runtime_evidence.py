@@ -18,15 +18,15 @@ EVIDENCE_PNG = OUTPUT / "ch04_gui_runtime_evidence.png"
 ASSET_COPY = WEB_DIR / "ch04_gui_runtime_evidence.png"
 
 CHECKS = [
-    ("hello window", "assets/ch04/web/tkinter_hello_window.png"),
-    ("card form", "assets/ch04/web/tkinter_card_form_window.png"),
-    ("stroop window", "assets/ch04/web/tkinter_stroop_window.png"),
-    ("usability report", "reports/ch04_gui_usability_check.md"),
-    ("feedback scorecard", "reports/ch04_gui_feedback_scorecard.md"),
-    ("interaction receipt", "reports/ch04_interaction_receipt.md"),
-    ("card delivery", "reports/ch04_card_factory_delivery.md"),
-    ("ch3 data panel", "reports/ch04_ch03_data_gui_panel.md"),
-    ("journey storyboard", "reports/ch04_gui_journey_storyboard.md"),
+    ("最小窗口截图", "assets/ch04/web/tkinter_hello_window.png"),
+    ("卡片表单截图", "assets/ch04/web/tkinter_card_form_window.png"),
+    ("Stroop 窗口截图", "assets/ch04/web/tkinter_stroop_window.png"),
+    ("可用性报告", "reports/ch04_gui_usability_check.md"),
+    ("反馈检查卡", "reports/ch04_gui_feedback_scorecard.md"),
+    ("交互回执", "reports/ch04_interaction_receipt.md"),
+    ("卡片交付报告", "reports/ch04_card_factory_delivery.md"),
+    ("ch3 数据面板", "reports/ch04_ch03_data_gui_panel.md"),
+    ("交互旅程图", "reports/ch04_gui_journey_storyboard.md"),
 ]
 
 
@@ -51,7 +51,7 @@ def collect_rows() -> list[dict[str, str]]:
             {
                 "stage": label,
                 "path": rel,
-                "status": "ready" if path.exists() else "missing",
+                "status": "就绪" if path.exists() else "缺失",
             }
         )
     return rows
@@ -59,7 +59,7 @@ def collect_rows() -> list[dict[str, str]]:
 
 def write_markdown(rows: list[dict[str, str]]) -> None:
     REPORTS.mkdir(exist_ok=True)
-    ready = sum(1 for row in rows if row["status"] == "ready")
+    ready = sum(1 for row in rows if row["status"] == "就绪")
     lines = [
         "# 第4章 GUI 运行证据清单",
         "",
@@ -92,7 +92,7 @@ def write_preview(rows: list[dict[str, str]]) -> None:
     row_font = font(20)
     code_font = font(18)
 
-    draw.text((150, 125), "Windows PowerShell - GUI runtime evidence", fill="#162033", font=title)
+    draw.text((150, 125), "Windows PowerShell - GUI 运行证据", fill="#162033", font=title)
     draw.text((150, 198), "Tkinter 窗口、检查报告、回执和跨章节面板都要留下可复查证据。", fill="#5F6673", font=body)
 
     terminal = (150, 270, 1550, 1010)
@@ -112,7 +112,7 @@ def write_preview(rows: list[dict[str, str]]) -> None:
     y += 52
 
     for row in rows:
-        color = "#34D399" if row["status"] == "ready" else "#F87171"
+        color = "#34D399" if row["status"] == "就绪" else "#F87171"
         draw.rounded_rectangle((190, y, 1510, y + 42), radius=12, fill="#102A56", outline="#1E3A8A", width=1)
         draw.ellipse((220, y + 13, 238, y + 31), fill=color)
         draw.text((265, y + 10), row["stage"], fill="#EAF2FF", font=row_font)

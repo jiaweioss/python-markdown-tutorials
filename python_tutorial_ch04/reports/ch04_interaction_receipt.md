@@ -7,11 +7,11 @@
 
 | 检查项 | 状态 | 证据 |
 | --- | --- | --- |
-| Goal | OK | Window purpose is visible. |
-| Input | OK | Title and note fields are labeled. |
-| Action | OK | Primary save button is easy to find. |
-| Feedback | OK | Saved state is shown after click. |
-| Recovery | FIX | Empty title needs a friendlier warning. |
+| 目标 | 通过 | 窗口用途清楚可见。 |
+| 输入 | 通过 | 主题和要点字段都有标签。 |
+| 动作 | 通过 | 主按钮容易找到。 |
+| 反馈 | 通过 | 点击后能看到保存结果。 |
+| 恢复 | 待改 | 空标题需要更友好的提醒。 |
 
 下一步建议：优先改进空标题、空内容和保存失败时的提示文案。
 这份回执可以附在本章作业后面，作为 GUI 小作品的可用性证据。

@@ -104,11 +104,11 @@ def draw_preview() -> None:
     d = ImageDraw.Draw(im)
 
     d.rounded_rectangle((90, 70, 1410, 850), radius=28, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "Card Factory Delivery", fill="#162033", font=font(50, True))
-    d.text((152, 195), "A real Markdown card generated for the Tkinter project.", fill="#5F6673", font=font(26))
+    d.text((150, 125), "卡片工厂交付回执", fill="#162033", font=font(50, True))
+    d.text((152, 195), "Tkinter 项目生成的一张真实 Markdown 学习卡片。", fill="#5F6673", font=font(26))
 
     d.rounded_rectangle((150, 275, 570, 735), radius=24, fill="#EEF6FF", outline="#9CC8FF", width=3)
-    d.text((190, 315), "Input", fill="#28517A", font=font(28, True))
+    d.text((190, 315), "输入", fill="#28517A", font=font(28, True))
     d.text((190, 365), "主题", fill="#162033", font=font(24, True))
     d.text((190, 405), CARD["topic"], fill="#162033", font=font(32, True))
     d.text((190, 480), "问题", fill="#162033", font=font(24, True))
@@ -119,7 +119,7 @@ def draw_preview() -> None:
     d.polygon([(790, 505), (760, 488), (760, 522)], fill="#98A5B8")
 
     d.rounded_rectangle((830, 275, 1350, 735), radius=24, fill="#ECFDF3", outline="#8EE3B0", width=3)
-    d.text((870, 315), "Output", fill="#166534", font=font(28, True))
+    d.text((870, 315), "输出", fill="#166534", font=font(28, True))
     d.text((870, 365), "cards/working_memory_load_card.md", fill="#162033", font=font(24, True))
 
     y = 430
@@ -130,7 +130,7 @@ def draw_preview() -> None:
         y += 70
 
     d.rounded_rectangle((255, 790, 1245, 845), radius=20, fill="#FFF7E8", outline="#F2B84B", width=2)
-    d.text((320, 805), "Report: reports/ch04_card_factory_delivery.md", fill="#8A5A00", font=font(22, True))
+    d.text((320, 805), "报告：reports/ch04_card_factory_delivery.md", fill="#8A5A00", font=font(22, True))
 
     im.save(PREVIEW, optimize=True, quality=95)
 

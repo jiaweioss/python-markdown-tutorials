@@ -6,14 +6,14 @@
 
 | 环节 | 状态 | 证据路径 |
 | --- | --- | --- |
-| hello window | ready | `assets/ch04/web/tkinter_hello_window.png` |
-| card form | ready | `assets/ch04/web/tkinter_card_form_window.png` |
-| stroop window | ready | `assets/ch04/web/tkinter_stroop_window.png` |
-| usability report | ready | `reports/ch04_gui_usability_check.md` |
-| feedback scorecard | ready | `reports/ch04_gui_feedback_scorecard.md` |
-| interaction receipt | ready | `reports/ch04_interaction_receipt.md` |
-| card delivery | ready | `reports/ch04_card_factory_delivery.md` |
-| ch3 data panel | ready | `reports/ch04_ch03_data_gui_panel.md` |
-| journey storyboard | ready | `reports/ch04_gui_journey_storyboard.md` |
+| 最小窗口截图 | 就绪 | `assets/ch04/web/tkinter_hello_window.png` |
+| 卡片表单截图 | 就绪 | `assets/ch04/web/tkinter_card_form_window.png` |
+| Stroop 窗口截图 | 就绪 | `assets/ch04/web/tkinter_stroop_window.png` |
+| 可用性报告 | 就绪 | `reports/ch04_gui_usability_check.md` |
+| 反馈检查卡 | 就绪 | `reports/ch04_gui_feedback_scorecard.md` |
+| 交互回执 | 就绪 | `reports/ch04_interaction_receipt.md` |
+| 卡片交付报告 | 就绪 | `reports/ch04_card_factory_delivery.md` |
+| ch3 数据面板 | 就绪 | `reports/ch04_ch03_data_gui_panel.md` |
+| 交互旅程图 | 就绪 | `reports/ch04_gui_journey_storyboard.md` |
 
 复盘提示：GUI 学习不是只看窗口弹出，而是要能证明窗口、输入、反馈和输出文件形成了闭环。

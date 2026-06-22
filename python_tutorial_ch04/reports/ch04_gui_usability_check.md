@@ -4,10 +4,10 @@
 
 | 环节 | 检查问题 |
 | --- | --- |
-| Start | Can the user tell what this window is for? |
-| Input | Are labels close to the fields they describe? |
-| Action | Is the main button easy to find and click? |
-| Feedback | Does the window confirm when the card is saved? |
-| Recovery | Can the user fix an empty title or missing note? |
+| 用途 | 用户一眼能看出这个窗口是做什么的吗？ |
+| 输入 | 标签是否靠近对应输入框？ |
+| 动作 | 主按钮是否清楚、容易点击？ |
+| 反馈 | 保存卡片后有没有明确确认？ |
+| 恢复 | 标题或内容为空时，用户能不能修正？ |
 
 复盘提示：GUI 的目标不是把按钮摆满，而是让用户少猜、少错、少迷路。

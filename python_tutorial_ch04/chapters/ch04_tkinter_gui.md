@@ -1,373 +1,348 @@
 # 第 4 章：Tkinter 图形界面编程
 
-<style>
-figure {
-  margin: 1.2em auto 1.8em;
-  text-align: center;
-}
-figure img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-}
-figcaption {
-  margin-top: 0.45em;
-  color: #5f6673;
-  font-size: 0.92em;
-  line-height: 1.55;
-}
-figcaption strong {
-  color: #2d3748;
-}
-</style>
-
+[TOC]
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_cover.png" alt="第4章封面" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-1 本章封面</strong>：命令行像后厨，GUI 像前台。用户不想进后厨看你切菜，他只想点按钮上菜。</figcaption>
+  <img src="../assets/ch04/ch04_cover.png" alt="第4章 Tkinter 图形界面编程封面" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-1 第4章封面</strong>：这一章把函数放到窗口里，让用户通过输入框、按钮和反馈完成一个真实任务。</figcaption>
 </figure>
 
-> 本章一句话：命令行像后厨，GUI 像前台。用户不想进后厨看你切菜，他只想点按钮上菜。
+> 本章一句话：  
+> **GUI 不是给程序贴一层漂亮皮肤，而是把输入、动作、反馈和文件结果摆到用户面前。窗口能弹出来只是开始，能让用户少猜、少错、能拿到结果，才算真正有用。**
 
-第4章继续推进“科研卡片工厂”的能力建设。前面几章让 Python 能运行、能管理数据、能处理文件；这一章开始把能力放进更具体的应用场景里。学习时不要把知识点当成散装零件，而要始终问：它能帮我的卡片工厂多做哪一件真实的事？
+第4章继续推进“科研卡片工厂”。前面几章已经打通了环境、数据类型和文件管理；现在我们要给这些能力做一个前台入口。用户不需要记住 `Path.write_text()`，也不需要知道脚本内部函数名，只要在窗口里填内容、点按钮、看到反馈，最后能在 `cards/` 或 `reports/` 里找到结果。
+
+本章的读法和第1章保持一致：**先跑真实脚本，再看截图证据，最后把概念拆成能复查的动作**。不要一上来背 Tkinter API。先让一个窗口真的停在屏幕上，再逐步问：窗口是谁创建的，控件从哪里来，按钮点下去之后到底调用了哪个函数，保存结果在哪里。
 
 ---
 
-## 4.0 本章学习目标
+## 本章导读：先让窗口亮起来，再证明它真的能做事
 
-学完本章，你应该能够：
+### 4.0 本章学习目标
 
-1. 用自己的话解释本章核心概念。
-2. 运行本章配套脚本，看到明确输出。
-3. 把概念和“科研卡片工厂”的连续项目联系起来。
-4. 识别本章最常见的新手错误。
-5. 完成本章小项目：**科研卡片工厂控制面板**。
+学完本章，你应该能够做到：
+
+1. 用自己的话解释 GUI、Tkinter、窗口、控件、布局、事件和回调函数的关系。
+2. 运行 `01_hello_window.py`，看到最小 Tkinter 窗口，并能指出代码和界面元素的对应关系。
+3. 运行 `02_card_form.py`，理解 `Entry`、`Text`、`Button` 和 `messagebox` 如何组成一个学习卡片表单。
+4. 解释 `command=save_card` 与 `command=save_card()` 的区别，避免回调函数提前执行。
+5. 运行 `03_stroop_gui_preview.py`，理解 GUI 如何承接心理学实验里的刺激、按键、正确性和反应时。
+6. 使用可用性检查清单判断一个小窗口是否让用户少猜、少错、少迷路。
+7. 完成本章小项目：**科研卡片工厂控制面板**，并留下卡片、报告、输出图和运行证据。
+
+### 本章分区导航
+
+| 分区 | 对应小节 | 你要抓住的主线 | 产出证据 |
+| --- | --- | --- | --- |
+| 第一部分：窗口通电与心智模型 | 4.1-4.3 | GUI 是把函数包装成用户能操作的动作 | 最小窗口截图、代码与界面对照图 |
+| 第二部分：控件、布局与表单 | 4.4-4.6 | 控件负责收集输入，布局负责让它们有秩序 | 学习卡片表单窗口、保存函数 |
+| 第三部分：事件、回调与反馈 | 4.7-4.10 | 点击、按键和消息框形成交互闭环 | Stroop GUI、可用性检查、反馈检查卡 |
+| 第四部分：项目交付与跨章连接 | 4.11-4.14 | GUI 项目最后要留下文件、报告和用户旅程证据 | 交互回执、卡片交付物、ch3 数据面板 |
+| 第五部分：排错、练习与验收 | 4.15-4.20 | 用固定路线排查 GUI 常见问题 | 常见坑地图、运行证据清单、复盘报告 |
+
+<figure align="center">
+  <img src="../assets/ch04/ch04_roadmap.png" alt="第4章学习路线图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-2 本章学习路线</strong>：先跑窗口，再拆控件，最后用截图、报告和输出文件证明 GUI 项目真的完成。</figcaption>
+</figure>
 
 ---
 
-## 4.1 开场故事：先有画面，再有术语
+## 第一部分：窗口通电与 Tkinter 心智模型
 
-命令行像后厨，GUI 像前台。用户不想进后厨看你切菜，他只想点按钮上菜。 这句话不是为了热闹，而是为了把本章的知识放进真实使用场景。初学者最怕一上来就被术语包围，像走进一个所有门牌都用缩写写成的楼层。我们先从画面进入，再慢慢把画面翻译成代码。
+### 4.1 GUI 是把函数放到前台
 
-<figure align="center">
-  <img src="../assets/ch04/ch04_story_scene.png" alt="故事场景图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-2 故事场景</strong>：GUI 像给程序穿衣服：窗口是外套，按钮是门铃，输入框是表单，回调函数是按下门铃后真正发生的动作。</figcaption>
-</figure>
-
-这个画面对应本章的核心比喻：GUI 像给程序穿衣服：窗口是外套，按钮是门铃，输入框是表单，回调函数是按下门铃后真正发生的动作。 如果你能先记住这个比喻，后面的概念就不再是干巴巴的定义。
+命令行像后厨，GUI 像前台。后厨里有函数、路径、参数和文件写入；前台上有标签、输入框、按钮和状态提示。两边做的是同一件事，只是入口不同。
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_history_xerox_alto.png" alt="Xerox Alto计算机照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-3 Xerox Alto计算机照片</strong>：图形界面的历史提醒我们，窗口、鼠标和按钮不是装饰品，而是为了让人更自然地操作计算机。</figcaption>
+  <img src="../assets/ch04/ch04_story_scene.png" alt="从命令行后厨到 GUI 前台" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-3 从命令行后厨到 GUI 前台</strong>：GUI 不只是“好看一点”，而是把命令、函数和文件操作改造成用户能看见、能点击、能确认的任务入口。</figcaption>
 </figure>
 
-GUI 的故事不是“让程序好看一点”这么简单。
+在命令行里，用户要知道脚本路径：
 
-早期计算机更像一台严肃的机器：你要输入命令，等待结果，再输入下一条命令。后来窗口、图标、鼠标和菜单开始出现，人和计算机之间多了一层“可看见、可点击、可试错”的界面。对初学者来说，这层界面尤其重要：它把“我会不会敲命令”改成了“我能不能完成任务”。
+```bash
+python code/ch04/02_card_form.py
+```
 
-本章使用 Tkinter，不是为了追求最炫的界面，而是为了让你第一次把 Python 写成一个别人可以点击的小工具。
+还要理解输出会写到哪里：
+
+```python
+Path("cards").mkdir(exist_ok=True)
+file.write_text(...)
+```
+
+而在 GUI 里，用户看到的是“主题”“要点”“保存卡片”。这些文字不是装饰，而是在帮用户理解任务。一个好窗口会替用户回答三件事：
+
+1. 我现在要输入什么？
+2. 我按这个按钮会发生什么？
+3. 刚才那一下到底成功了吗？
+
+这一章的重点就是把这三件事做清楚。我们先从最小窗口开始，不做大而全的软件。
+
+### 4.2 最小窗口：先跑通 `01_hello_window.py`
+
+进入第4章目录后，先运行最小窗口脚本：
+
+```bash
+python code/ch04/01_hello_window.py
+```
+
+你应该看到一个小窗口，里面有一句提示和一个“收到”按钮。这个脚本的意义不是炫技，而是证明本机的 Tkinter 可以创建窗口、显示控件、响应按钮。
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_engelbart_mouse_story.png" alt="Engelbart原型鼠标照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-4 Engelbart原型鼠标照片</strong>：鼠标把“输入命令”变成了“指向并点击”；Tkinter 的按钮和回调函数，也是在延续这种交互思想。</figcaption>
+  <img src="../assets/ch04/ch04_minimal_demo.png" alt="Tkinter 最小窗口代码与界面对照图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-4 最小窗口代码与界面对照</strong>：`root.title()` 控制标题栏，`Label` 显示文字，`Button` 接收点击，`mainloop()` 让窗口持续响应。</figcaption>
 </figure>
 
-一个按钮看起来很小，但它改变了程序的使用方式。用户不需要知道函数名，也不需要记住命令格式，只要点一下“保存卡片”，程序就执行对应的函数。
-
-这就是 GUI 的核心：把函数包装成可操作的界面动作。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_macintosh_gui_story.png" alt="Macintosh 128K 电脑照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-5 Macintosh 128K</strong>：当图形界面进入普通人的桌面，计算机不再只像工程机器，也开始像可以探索的工作台。</figcaption>
-</figure>
-
-Macintosh 128K 的历史意义，不只是“它是一台经典电脑”。它代表一种交互思想：用户可以通过窗口、菜单、图标和鼠标去探索系统，而不是先背一大串命令。对初学者来说，这种变化很重要，因为 GUI 把“我记不记得命令”变成了“我能不能看懂并完成动作”。
-
-Tkinter 的窗口很朴素，当然不能和成熟商业软件相比。但朴素有朴素的好处：你能清楚看到一个窗口怎样被创建，一个按钮怎样绑定函数，一个输入框怎样把用户内容交给程序。它像一间小木屋，结构看得见，适合学习怎么盖房子。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_hypercard_story.png" alt="HyperCard 软件照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-6 HyperCard</strong>：卡片式界面让很多非专业程序员第一次感到，自己也能组织信息、设计交互、做出作品。</figcaption>
-</figure>
-
-HyperCard 的名字今天听起来可能有点陌生，但它的思想很接近这一章要做的“科研卡片工厂控制面板”：把信息组织成一张张卡片，用按钮、链接和脚本把卡片串起来。你可以把它理解成早期的“低门槛交互创作工具”。很多人不是从大型工程开始接触编程，而是从“我想做一个能点的卡片”开始的。
-
-这也解释了为什么本章项目不是一上来做复杂系统，而是做一个学习卡片表单。表单很小，但它已经包含 GUI 的关键能力：输入、保存、反馈。卡片工厂如果有了图形界面，就不再只服务会敲命令的人，也能服务想专心整理材料的人。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_susan_kare_icon_story.png" alt="Susan Kare 照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-7 Susan Kare</strong>：好图标像一盏小路灯，把抽象命令变成用户能立刻识别的动作。</figcaption>
-</figure>
-
-Susan Kare 参与设计了早期 Macintosh 的许多经典图标。图标的价值不只是“可爱”，而是降低理解成本：垃圾桶让删除变得可见，磁盘让保存变得可见，笑脸让系统状态变得亲切。一个好图标能让用户少读一行说明，少猜一次操作。
-
-Tkinter 初学阶段未必马上设计复杂图标，但这个故事很有用：按钮文字、窗口标题、提示语，本质上都在做同一件事——把程序内部动作翻译成人能理解的信号。界面不是给程序穿花衣服，而是给用户铺路。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_don_norman_story.png" alt="Don Norman 照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-8 Don Norman</strong>：好界面不是把功能藏得很高级，而是让用户知道能做什么、做完后发生了什么。</figcaption>
-</figure>
-
-Don Norman 在设计和用户体验领域影响很大。他反复强调的一个核心思想是：好的设计应该让人少猜。门把手应该暗示推还是拉，按钮应该暗示能不能点，操作之后应该有反馈。换到 Tkinter 里，就是标签要说明输入框是什么，按钮文字要具体，保存成功要给提示。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_norman_door_affordance.png" alt="门的可发现性示意图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-9 门的可发现性</strong>：一个推板、一个拉手，不用解释太多，身体已经知道该怎么做。GUI 里的按钮、输入框和状态提示也应该有这种“看一眼就知道下一步”的线索。</figcaption>
-</figure>
-
-你一定见过那种门：一边装着大把手，却偏偏要推；另一边贴着说明，却越看越心虚。这类门后来常被拿来调侃为“Norman door”。它好笑，是因为每个人都在门前短暂怀疑过自己；它重要，是因为它说明一个朴素原则：**用户迟疑的地方，就是界面应该多给线索的地方**。
-
-写 GUI 时，`Button(text="确定")` 不一定够好。确定什么？保存到哪里？失败会不会覆盖旧文件？如果按钮旁边有明确文案、点击后有反馈、保存后显示路径，用户的大脑就少背一件事。好的界面不是让人显得聪明，而是让人不用把注意力浪费在猜谜上。
-
-所以本章写 GUI 时，不要只问“按钮能不能运行”，还要问“用户看见它会不会懂”。如果一个窗口能运行，但用户不知道下一步该点哪里，它就像一个沉默的服务员：菜做得出来，但菜单写得像谜语。
-
----
-
-## 4.2 知识路线
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_roadmap.png" alt="知识路线图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-10 知识路线</strong>：先建立直觉，再运行代码，最后完成一个可展示的小项目。</figcaption>
-</figure>
-
-本章路线如下：
-
-| 顺序 | 主题 | 你要完成的动作 |
-| --- | --- | --- |
-| 1 | 窗口与主循环 | 先让一个窗口真正停在屏幕上 |
-| 2 | Label/Button/Entry/Text | 再把文字、按钮和输入区摆进窗口 |
-| 3 | 布局管理 | 让控件有秩序，不挤成一团 |
-| 4 | 事件与回调 | 点击按钮后，让函数真的开始工作 |
-| 5 | 消息框 | 保存成功或出错时，给用户明确反馈 |
-| 6 | 小型 GUI 项目 | 做出科研卡片工厂的第一块控制面板 |
-
----
-
-## 4.3 核心概念：从人话到术语
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_core_metaphor.png" alt="核心比喻图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-11 核心比喻</strong>：用一个稳定画面记住本章最重要的概念关系。</figcaption>
-</figure>
-
-先用人话说：GUI 像给程序穿衣服：窗口是外套，按钮是门铃，输入框是表单，回调函数是按下门铃后真正发生的动作。
-
-再用术语说，本章要掌握这些内容：
-
-- **窗口与主循环**：窗口是舞台，`mainloop()` 让舞台不要刚亮灯就关掉。
-- **Label/Button/Entry/Text**：这些控件负责显示、点击和收集输入，是 GUI 里的基本家具。
-- **布局管理**：决定控件摆在哪里，避免按钮和输入框像临时堆在桌角。
-- **事件与回调**：用户点击或按键后，程序调用对应函数。
-- **消息框**：操作完成后给出反馈，让用户知道“刚才那一下到底有没有成功”。
-- **小型 GUI 项目**：把前面这些控件合成一个能保存卡片的小工具。
-
-术语不是用来吓人的，它只是为了让大家交流时不用每次都讲一长串故事。你先用故事建立直觉，再用术语压缩表达，这样学得稳。
-
-Tkinter 的最小心智模型可以压成四句话：
-
-1. `Tk()` 创建一个窗口。
-2. 控件负责显示或收集信息。
-3. 布局管理器决定控件摆在哪里。
-4. `mainloop()` 让窗口持续响应用户动作。
+对应代码如下：
 
 ```python
 import tkinter as tk
 
 root = tk.Tk()
 root.title("科研卡片工厂控制台")
+root.geometry("360x180")
 
 label = tk.Label(root, text="第一块 GUI 面板已经亮灯")
-label.pack()
+label.pack(pady=30)
+
+button = tk.Button(root, text="收到", command=root.destroy)
+button.pack()
 
 root.mainloop()
 ```
 
-这里最容易漏掉的是 `mainloop()`。没有它，窗口就像刚开灯又立刻关灯，你甚至来不及看清屋里有什么。
+这段代码只需要抓住四个点：
 
----
-
-## 4.4 最小可运行示例
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_minimal_demo.png" alt="最小示例图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-12 最小示例</strong>：先跑通最小代码，再逐步增加功能，学习会稳很多。</figcaption>
-</figure>
-
-本章第一件事不是背参数，而是运行一个最小例子。打开终端，进入本章目录后运行：
-
-```bash
-python code/ch04/01_hello_window.py
-```
-
-如果你能看到输出，说明这一章的入口已经打通。后面所有复杂功能，都是在这个入口上慢慢加能力。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_tkinter_hello_window_screenshot.png" alt="Tkinter最小窗口真实截图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-13 Tkinter最小窗口真实截图</strong>：这就是 `01_hello_window.py` 真实弹出的窗口，标题、文字和按钮都来自 Python 代码。</figcaption>
-</figure>
-
-看到这个窗口时，可以顺手做一个小拆解：
-
-- 标题栏来自 `root.title("科研卡片工厂控制台")`。
-- 中间那行文字来自 `tk.Label(...)`。
-- “收到”按钮来自 `tk.Button(...)`。
-- 点击按钮后窗口关闭，是因为按钮的 `command` 绑定了 `root.destroy`。
-
-GUI 的神秘感就从这里消失了：窗口里的每个东西，都能在代码里找到它的来源。
-
----
-
-## 4.5 与心理学和科研任务的连接
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_psychology_link.png" alt="心理学和科研任务连接图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-14 心理学连接</strong>：把本章能力放进实验、记录、分析和学习分享的真实任务里。</figcaption>
-</figure>
-
-这一章会把例子贴近心理学、科研记录和学习分享。因为这些任务天然需要清晰流程：刺激是什么，反应是什么，数据存到哪里，结果如何展示，别人能不能复现。
-
-在本章里，你可以这样理解项目价值：
-
-- 它不是孤立练习，而是科研卡片工厂的一台新设备。
-- 它处理的材料可以是课程笔记、实验记录、问卷结果、图片、网页资料或报告模板。
-- 它最终要留下可检查的结果，而不是只在屏幕上闪一下。
-
----
-
-## 4.6 关键概念拆解表
-
-| 概念 | 人话理解 | 本章落点 |
+| 代码 | 人话解释 | 如果漏掉会怎样 |
 | --- | --- | --- |
-| 窗口与主循环 | 窗口是舞台，`mainloop()` 是持续开场的剧场灯 | `01_hello_window.py` 创建根窗口并保持响应 |
-| Label | 只负责显示文字，像贴在界面上的说明牌 | 显示“主题”“要点”“点击开始后看刺激” |
-| Entry | 单行输入框，适合主题、姓名、编号这类短文本 | 输入学习卡片主题 |
-| Text | 多行输入区，适合笔记、要点、实验说明 | 输入学习卡片正文 |
-| Button | 用户点击以后触发一个函数 | “保存卡片”按钮调用 `save_card()` |
-| 布局管理 | 决定控件摆放位置，像安排桌面上的工具 | 本章先用 `pack()`，后续可以再学 `grid()` |
-| 事件与回调 | 用户动作发生后，程序执行对应函数 | 按钮点击、键盘 `f` / `j` 响应 |
-| 消息框 | 操作完成后给用户一个确认反馈 | 保存卡片后弹出“已保存”提示 |
-| 交互旅程 | 用户从打开窗口到拿到文件的完整路径 | `09_make_gui_journey_storyboard.py` 生成旅程图 |
+| `root = tk.Tk()` | 创建窗口 | 没有舞台，控件没地方放 |
+| `tk.Label(...)` | 放一行说明文字 | 用户不知道窗口想说什么 |
+| `tk.Button(..., command=...)` | 放一个可点击动作 | 用户无法触发函数 |
+| `root.mainloop()` | 让窗口持续响应 | 窗口可能一闪而过 |
 
-这张表的作用，是把“我好像懂了”变成“我知道它在哪用”。学习编程时，最危险的状态不是完全不会，而是听解释时点头，自己动手时发呆。每学一个概念，都要强迫自己问一句：它在本章项目里负责哪一段工作？
+<figure align="center">
+  <img src="../assets/ch04/ch04_tkinter_hello_window_screenshot.png" alt="Tkinter 最小窗口真实截图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-5 Tkinter 最小窗口真实截图</strong>：这是本章第一个脚本弹出的真实窗口。先让它跑起来，后面再谈表单、事件和文件保存。</figcaption>
+</figure>
+
+如果窗口没有出现，先不要改代码。按这个顺序查：
+
+1. 你是不是在 `python_tutorial_ch04` 目录里运行？
+2. 脚本路径是不是 `code/ch04/01_hello_window.py`？
+3. 终端有没有报错？
+4. 有没有远程环境或无图形界面环境导致窗口无法显示？
+
+这和第1章查环境是同一套思路：先找证据，再改问题。
+
+### 4.3 Tkinter 的五个角色
+
+Tkinter 的概念很多，但初学阶段先压成五个角色：
+
+<figure align="center">
+  <img src="../assets/ch04/ch04_core_metaphor.png" alt="Tkinter 最小心智模型" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-6 Tkinter 最小心智模型</strong>：窗口、控件、布局、回调和反馈组成一个小型 GUI 程序的基本骨架。</figcaption>
+</figure>
+
+| 角色 | 代码里常见写法 | 负责什么 |
+| --- | --- | --- |
+| 窗口 | `tk.Tk()` | 创建顶层窗口，像一张工作台 |
+| 控件 | `Label`、`Entry`、`Text`、`Button` | 显示文字、收集输入、触发动作 |
+| 布局 | `.pack()`、`.grid()`、`.place()` | 决定控件摆在哪里 |
+| 回调 | `command=save_card` | 用户点击后调用哪个函数 |
+| 反馈 | `messagebox.showinfo(...)` | 告诉用户操作结果 |
+
+这五个角色不是背诵表，而是读代码时的检查顺序。以后看到一个 GUI 程序，你可以先问：
+
+1. 窗口在哪里创建？
+2. 控件有哪些？
+3. 它们怎么摆放？
+4. 用户动作绑定到哪个函数？
+5. 函数执行后有没有反馈或文件结果？
 
 ---
 
-## 4.7 配套代码逐个导览
+## 第二部分：控件、布局与表单
 
-### 脚本 1：`01_hello_window.py`
+### 4.4 控件不是零件堆
 
-运行方式：
+Tkinter 控件看起来像零件表，但它们要服务同一个任务。第4章不要求你把所有控件背下来，先掌握最常用的四个：
 
-```bash
-python code/ch04/01_hello_window.py
-```
+| 控件 | 适合放什么 | 本章用法 |
+| --- | --- | --- |
+| `Label` | 固定说明文字 | 告诉用户这里要填“主题”还是“要点” |
+| `Entry` | 单行短输入 | 输入卡片主题、被试编号、文件名 |
+| `Text` | 多行长输入 | 输入笔记、实验说明、学习要点 |
+| `Button` | 用户主动触发的动作 | 保存卡片、开始试次、导出报告 |
 
-阅读时重点看三件事：输入从哪里来，处理步骤在哪里，结果输出到哪里。不要只盯着语法，要把它当成一条小流水线。
+控件本身不等于界面好用。`Entry` 如果旁边没有标签，用户不知道该填什么；`Button` 如果只写“确定”，用户不知道确定什么。GUI 设计的第一步不是追求华丽，而是把任务说清楚。
 
-### 脚本 2：`02_card_form.py`
+### 4.5 学习卡片表单：`02_card_form.py`
 
-运行方式：
+现在运行本章第二个脚本：
 
 ```bash
 python code/ch04/02_card_form.py
 ```
 
-阅读时重点看三件事：输入从哪里来，处理步骤在哪里，结果输出到哪里。不要只盯着语法，要把它当成一条小流水线。
+这个窗口比最小例子多了两类输入：一个单行主题输入框，一个多行要点输入区。点击“保存卡片”以后，程序会把内容写入 `cards/` 目录。
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_tkinter_card_form_screenshot.png" alt="Tkinter学习卡片表单真实截图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-15 Tkinter学习卡片表单真实截图</strong>：`Entry` 收集主题，`Text` 收集要点，按钮把内容写入本地 Markdown 卡片。</figcaption>
+  <img src="../assets/ch04/ch04_project_dashboard.png" alt="科研卡片工厂控制面板结构图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-7 科研卡片工厂控制面板</strong>：表单负责收集输入，`save_card()` 负责把输入变成 Markdown 文件和可复查报告。</figcaption>
 </figure>
 
-这个窗口就是“科研卡片工厂控制面板”的雏形：左看很朴素，右看很有用。你输入主题和要点，点击保存，程序就在 `cards/` 目录下生成一张 Markdown 卡片。
+<figure align="center">
+  <img src="../assets/ch04/ch04_tkinter_card_form_screenshot.png" alt="Tkinter 学习卡片表单真实截图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-8 Tkinter 学习卡片表单真实截图</strong>：`Entry` 收集主题，`Text` 收集要点，按钮把内容写入本地 Markdown 卡片。</figcaption>
+</figure>
 
-对应的关键代码是：
+关键函数是 `save_card()`：
 
 ```python
-topic = topic_entry.get().strip() or "未命名主题"
-idea = idea_text.get("1.0", "end").strip()
-file.write_text(f"# {topic}\n\n{idea}\n", encoding="utf-8")
+def save_card():
+    topic = topic_entry.get().strip() or "未命名主题"
+    idea = idea_text.get("1.0", "end").strip()
+    out = Path("cards")
+    out.mkdir(exist_ok=True)
+    file = out / f"{topic.replace(' ', '_')}_card.md"
+    file.write_text(f"# {topic}\n\n{idea}\n", encoding="utf-8")
+    messagebox.showinfo("已保存", f"卡片已写入：{file}")
 ```
 
-这里能同时复习 ch2 和 ch3：字符串负责文本，路径负责文件位置，写入操作负责留下成果。
+这段函数把前面章节的知识连起来了：
 
-### 脚本 3：`03_stroop_gui_preview.py`
+| 来自哪一章 | 在这里怎么用 |
+| --- | --- |
+| 第2章字符串 | `strip()` 清理输入，f-string 组合文本 |
+| 第3章文件管理 | `Path("cards")` 创建目录并写入文件 |
+| 第4章 GUI | `Entry.get()` 和 `Text.get()` 收集用户输入 |
+| 第4章反馈 | `messagebox.showinfo()` 告诉用户保存成功 |
 
-运行方式：
+这里有一个很重要的学习点：窗口里看起来是“点按钮”，代码里其实是“调用函数”。GUI 把函数包装成了用户可操作的动作。
+
+### 4.6 布局：先用 `pack()`，再认识 `grid()`
+
+本章脚本主要使用 `pack()`，因为它简单、适合纵向表单：
+
+```python
+tk.Label(root, text="主题").pack(anchor="w", padx=16, pady=(12, 4))
+topic_entry.pack(fill="x", padx=16)
+idea_text.pack(fill="both", expand=True, padx=16)
+tk.Button(root, text="保存卡片", command=save_card).pack(pady=14)
+```
+
+先把 `pack()` 理解成“按顺序把控件放进窗口”。几个常用参数很有用：
+
+| 参数 | 人话解释 | 常见用途 |
+| --- | --- | --- |
+| `padx` | 左右留白 | 输入框不要贴着窗口边缘 |
+| `pady` | 上下留白 | 标签和输入框之间有呼吸 |
+| `fill="x"` | 横向撑满 | 让 `Entry` 更好输入 |
+| `fill="both"` | 横向纵向都撑开 | 让 `Text` 有足够空间 |
+| `expand=True` | 窗口变大时一起扩展 | 多行输入区更自然 |
+
+`grid()` 更像表格，适合复杂表单。你可以先不急着用它。第4章的目标是理解 GUI 的基本闭环，不是在布局语法里迷路。
+
+---
+
+## 第三部分：事件、回调与反馈
+
+### 4.7 回调函数：按钮不是现在执行，而是等用户点击
+
+Tkinter 里最容易犯的错误之一是：
+
+```python
+tk.Button(root, text="保存卡片", command=save_card())
+```
+
+这行看着很像正确写法，但它会在创建按钮时立刻执行 `save_card()`。按钮还没被用户点，函数已经跑完了。正确写法是：
+
+```python
+tk.Button(root, text="保存卡片", command=save_card)
+```
+
+少了括号，意思变了：不是现在调用函数，而是把函数交给按钮，等用户点击时再调用。
+
+可以这样记：
+
+| 写法 | 什么时候执行 |
+| --- | --- |
+| `command=save_card` | 用户点击按钮时执行 |
+| `command=save_card()` | 创建按钮时立刻执行 |
+
+这不是语法小细节，而是 GUI 程序的核心。命令行脚本通常从上到下一次执行；GUI 程序则经常在等待用户动作。用户点按钮、按键、关闭窗口，程序才响应。
+
+### 4.8 Stroop GUI 预告：事件也可以来自键盘
+
+运行第三个脚本：
 
 ```bash
 python code/ch04/03_stroop_gui_preview.py
 ```
 
-阅读时重点看三件事：输入从哪里来，处理步骤在哪里，结果输出到哪里。不要只盯着语法，要把它当成一条小流水线。
+这个例子把心理学实验任务放进一个小窗口里：点击开始后出现刺激，用户按 `f` 或 `j` 反应，程序计算正确性和反应时。
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_tkinter_stroop_screenshot.png" alt="Tkinter Stroop窗口真实截图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-16 Tkinter Stroop窗口真实截图</strong>：心理学实验界面通常需要刺激、按键反应和反应时记录；这个小窗口先把交互骨架跑通。</figcaption>
+  <img src="../assets/ch04/ch04_psychology_link.png" alt="GUI 接入 Stroop 心理学实验流程" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-9 GUI 接入心理学实验流程</strong>：Stroop 小窗口把刺激呈现、按键反应、反应时计算和结果保存放进同一条交互链。</figcaption>
 </figure>
-
-Stroop 任务是心理学里很经典的冲突任务：你看到一个词，例如 `RED`，但它可能用蓝色墨水显示。此时真正要判断的是墨水颜色，而不是词义。这个例子非常适合 GUI 入门，因为它天然包含三个交互元素：
-
-1. 程序显示刺激。
-2. 用户按键反应。
-3. 程序记录反应是否正确和反应时。
-
-在代码里，`root.bind("f", ...)` 和 `root.bind("j", ...)` 就是在告诉窗口：当用户按下某个键时，调用哪个函数。
-
-建议第一次运行时不要急着改代码。先原样运行，确认能看到输出；第二次再改一个最小参数；第三次再尝试把输出写入 `output/` 或 `reports/`。这种节奏比“一上来就大改”更稳。
-
-
-GUI 章尤其需要一张“运行证据图”。因为窗口截图只能证明界面长什么样，运行证据才能证明窗口、检查报告、交互回执和跨章节面板都已经落成文件。
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_gui_runtime_evidence.png" alt="GUI 运行证据图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-17 PowerShell 风格的 GUI 运行证据</strong>：`10_make_gui_runtime_evidence.py` 会核对 Tkinter 窗口截图、可用性报告、交互回执、卡片交付物、ch3 数据面板和交互旅程图，让“窗口能弹出”升级为“项目有证据链”。</figcaption>
+  <img src="../assets/ch04/ch04_tkinter_stroop_screenshot.png" alt="Tkinter Stroop GUI 真实截图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-10 Tkinter Stroop GUI 真实截图</strong>：GUI 不只适合表单，也适合把实验任务里的刺激、按键和反馈组织起来。</figcaption>
 </figure>
 
-这张图的价值不是再添一张漂亮截图，而是帮你建立工程习惯：每做完一个 GUI 小工具，都能回答三个问题：用户看到了什么，点击后发生了什么，最后有哪些文件留下来。GUI 学习一旦有了证据链，就不再只是控件摆放练习，而是能被复查、能被交付的小系统。
+代码里的两行绑定很关键：
 
-### 脚本 4：`04_gui_usability_check.py`
+```python
+root.bind("f", lambda event: respond("f"))
+root.bind("j", lambda event: respond("j"))
+```
 
-运行方式：
+这说明 GUI 的事件不只有按钮点击。键盘、鼠标、窗口关闭、输入变化，都可以成为事件。事件发生后，程序调用对应函数，这就是“事件驱动”的基本味道。
+
+不过也要清醒：这个脚本只是预告，不是正式实验程序。正式心理学实验需要更严格的随机化、计时、屏幕控制和数据保存。第4章先让你看到 GUI 与实验任务的连接方式。
+
+### 4.9 反馈：用户需要知道刚才发生了什么
+
+很多新手窗口能运行，但用户点完按钮以后什么都不知道。文件到底保存了吗？保存到哪里了？标题为空会怎样？失败了能不能重新输入？
+
+本章提供了一个可用性检查脚本：
 
 ```bash
 python code/ch04/04_gui_usability_check.py
 ```
 
-这个脚本不会弹出新窗口，而是生成一份 GUI 可用性检查清单：
+运行后会生成：
 
 ```text
 reports/ch04_gui_usability_check.md
 output/ch04_gui_usability_check.png
 ```
 
-它的作用是把“界面好不好用”变成可以逐条检查的问题。比如：用户能不能看懂窗口用途？输入框标签是否清楚？主按钮是否容易找到？保存后有没有反馈？这比一句“界面要友好”更可执行。
+<figure align="center">
+  <img src="../assets/ch04/ch04_gui_usability_check.png" alt="GUI 可用性检查清单" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-11 GUI 可用性检查清单</strong>：一个小窗口交给别人之前，至少要检查用途、标签、主按钮、保存反馈和错误恢复。</figcaption>
+</figure>
 
-### 脚本 5：`05_make_gui_feedback_lab.py`
+这份清单并不是让 GUI 设计变复杂，而是把“友好一点”拆成能检查的问题：
 
-运行方式：
+1. 用户一眼能看出窗口是做什么的吗？
+2. 标签离对应输入框够近吗？
+3. 主按钮是否清楚、容易点？
+4. 保存以后有没有确认反馈？
+5. 用户填错或漏填时能不能恢复？
+
+### 4.10 按钮大小、间距、状态和文案
+
+运行反馈实验脚本：
 
 ```bash
 python code/ch04/05_make_gui_feedback_lab.py
 ```
 
-这个脚本继续追问一个更细的问题：**窗口能用了以后，用户用得舒服吗？** GUI 初学者很容易把注意力放在“控件有没有出现”，但真实使用中，另一些细节更要命：按钮是不是太小，按钮之间是不是挤成一团，用户点击后有没有看到反馈，出错时能不能恢复。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_target_feedback_lab.png" alt="GUI目标大小与反馈实验图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-18 GUI目标大小与反馈实验</strong>：同样是按钮，目标大小、间距和操作反馈会直接影响用户是否紧张、是否误点、是否敢继续操作。</figcaption>
-</figure>
-
-你可以把这张图看成一个小小的“界面心理学实验”。左侧的按钮太小、太挤，用户每点一次都像在夹娃娃机里夹最后一枚硬币；右侧按钮更大、间距更清楚，并且保存后有状态提示，用户就会更安心。
-
-这不是审美洁癖，而是认知负荷。用户已经在思考任务本身了，界面就不要再让他额外猜：“我该点哪里？”“刚才成功了吗？”“点错了能回来吗？” 一个好 GUI 的温柔，常常体现在它少让人猜几次。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_gui_feedback_scorecard.png" alt="GUI反馈检查卡" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-19 GUI反馈检查卡</strong>：把 Target、Spacing、State、Error、Copy 当成五个检查点，窗口交给别人前先自己过一遍。</figcaption>
-</figure>
-
-脚本运行后会生成：
+它会生成两张图：
 
 ```text
 output/ch04_target_feedback_lab.png
@@ -375,70 +350,67 @@ output/ch04_gui_feedback_scorecard.png
 reports/ch04_gui_feedback_scorecard.md
 ```
 
-这三个文件让本章项目多了一层“验收感”：不仅能做窗口，还能用一张检查卡判断窗口是否真的适合给别人使用。
+<figure align="center">
+  <img src="../assets/ch04/ch04_target_feedback_lab.png" alt="GUI 目标大小与反馈实验" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-12 GUI 目标大小与反馈实验</strong>：按钮太小、太挤、没有状态提示，用户就会紧张；按钮清楚、间距足够、保存后有反馈，用户才敢继续操作。</figcaption>
+</figure>
 
-### 脚本 6：`06_make_interaction_receipt.py`
+<figure align="center">
+  <img src="../assets/ch04/ch04_gui_feedback_scorecard.png" alt="GUI 反馈检查卡" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-13 GUI 反馈检查卡</strong>：用 Target、Spacing、State、Error、Copy 五个检查点，判断窗口是否真的适合交给别人使用。</figcaption>
+</figure>
 
-运行方式：
+界面设计里有一个朴素原则：用户迟疑的地方，就是界面应该多给线索的地方。
+
+<figure align="center">
+  <img src="../assets/ch04/ch04_norman_door_affordance.png" alt="推板和拉手的界面线索示意图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-14 界面线索</strong>：推板、拉手和按钮文案都在回答同一个问题：用户看一眼能不能知道下一步怎么做。</figcaption>
+</figure>
+
+换到 Tkinter 里，线索可以很具体：
+
+| 模糊写法 | 更清楚的写法 |
+| --- | --- |
+| 按钮写“确定” | 按钮写“保存卡片” |
+| 标签写“内容” | 标签写“学习要点” |
+| 保存后无提示 | 弹出“已保存到 cards/xxx.md” |
+| 空标题悄悄替换 | 提示“标题为空，已使用未命名主题” |
+
+---
+
+## 第四部分：项目交付与跨章连接
+
+### 4.11 交互回执：证明窗口不是只会弹出来
+
+运行交互回执脚本：
 
 ```bash
 python code/ch04/06_make_interaction_receipt.py
 ```
 
-这个脚本把本章 GUI 小项目最后整理成一张“交互回执”。窗口能弹出来只是开门，交互回执说明用户真正走进去以后有没有路标、按钮、反馈和出口。对初学者来说，这一步特别重要：它把“我做了一个界面”推进到“我能证明这个界面被检查过”。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_interaction_receipt.png" alt="GUI交互回执预览图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-20 Python 生成的 GUI 交互回执</strong>：`06_make_interaction_receipt.py` 会生成一张交互回执，把运行脚本、保存证据和下一步改进放在同一张图里。</figcaption>
-</figure>
-
-脚本运行后会生成：
+它会生成：
 
 ```text
 output/ch04_interaction_receipt.png
 reports/ch04_interaction_receipt.md
 ```
 
-这张回执故意保留一个 `FIX`：空标题提示还需要更友好。真实项目不是每次都满分，真正有价值的是知道下一步该改哪里。GUI 学习也一样，能发现问题，已经比“看起来差不多”更接近工程实践。
-
----
-
-## 4.8 常见坑
-
 <figure align="center">
-  <img src="../assets/ch04/ch04_pitfall_map.png" alt="常见坑地图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-21 常见坑地图</strong>：错误不是判决，而是提醒你该检查路径、输入、状态或依赖。</figcaption>
+  <img src="../assets/ch04/ch04_interaction_receipt.png" alt="GUI 交互回执" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-15 GUI 交互回执</strong>：交互回执把窗口用途、输入字段、主按钮、反馈和待改进项集中到一张可复查证据里。</figcaption>
 </figure>
 
-本章常见坑：
+这张回执保留一个 `FIX` 项：空标题还需要更友好的提醒。真实项目不必假装每一步都满分。能发现问题、记录问题、继续改进，本身就是工程能力。
 
-- 忘记 mainloop()
-- 回调函数写成了立即执行
-- 控件创建了但没有布局
-- 界面逻辑和业务逻辑混在一起
+### 4.12 卡片工厂交付物：最后要有文件留下来
 
-遇到问题时，先看报错信息，再看文件路径，最后看输入数据。不要一报错就重装环境。重装是最后手段，不是第一反应。
-
----
-
-## 4.9 本章小项目：科研卡片工厂控制面板
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_project_dashboard.png" alt="项目仪表盘" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-22 本章项目</strong>：完成“科研卡片工厂控制面板”，给科研卡片工厂增加一项新能力。</figcaption>
-</figure>
-
-项目目标：做一个能输入主题、生成学习卡片草稿并保存文件的 Tkinter 小窗口。
-
-但 GUI 的终点不是“窗口弹出来了”。窗口只是柜台，真正的交付物是柜台后面生成的卡片、报告和证据。为了让本章项目更像一个能交付的小作品，本章再补一个非交互脚本：它会生成一张“工作记忆负荷”学习卡片，并把卡片路径、摘要和下一步改进整理成项目回执。
-
-运行方式：
+运行卡片交付脚本：
 
 ```bash
 python code/ch04/07_make_card_factory_delivery.py
 ```
 
-运行后会生成：
+它会生成：
 
 ```text
 cards/working_memory_load_card.md
@@ -448,29 +420,37 @@ output/ch04_card_factory_delivery.png
 
 <figure align="center">
   <img src="../assets/ch04/ch04_card_factory_delivery.png" alt="卡片工厂交付回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-23 卡片工厂交付回执</strong>：GUI 项目最后要留下可打开的卡片和报告；界面负责收集输入，Python 负责把输入变成真实文件。</figcaption>
+  <figcaption><strong>图4-16 卡片工厂交付回执</strong>：GUI 项目的终点不是“窗口看起来不错”，而是输入被保存成可以继续编辑的 Markdown 学习卡片。</figcaption>
 </figure>
 
-这张回执把 ch0 的“科研卡片工厂”主线往前推进了一步：前几章已经会运行代码、处理数据和管理文件；到本章，程序终于有了一个面向用户的入口。用户不必知道文件写入函数叫什么，只要把主题和要点填进去，程序就能在 `cards/`、`reports/` 和 `output/` 里留下成果。
+这一步非常重要。很多 GUI 入门练习只停在窗口截图，但真实工具要留下结果。对“科研卡片工厂”来说，结果就是卡片、报告、输出图和后续可以接着处理的数据。
+
+### 4.13 用户旅程：打开窗口到拿到文件
+
+运行交互旅程图脚本：
+
+```bash
+python code/ch04/09_make_gui_journey_storyboard.py
+```
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_gui_journey_storyboard.png" alt="Python 生成的 GUI 交互旅程图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-24 Python 生成的 GUI 交互旅程图</strong>：`09_make_gui_journey_storyboard.py` 把打开窗口、输入内容、点击按钮、看到反馈和得到文件连成一条用户旅程。</figcaption>
+  <img src="../assets/ch04/ch04_gui_journey_storyboard.png" alt="GUI 交互旅程图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-17 GUI 交互旅程图</strong>：一个可用的小窗口应该照顾完整旅程：打开、输入、点击、看到反馈、得到文件。</figcaption>
 </figure>
 
-这张旅程图提醒你：GUI 的好坏不只看窗口截图漂不漂亮，而要看用户能不能完成一个闭环。打开窗口时知道要做什么，输入时知道填哪里，点击时知道哪个按钮是主动作，完成后看到反馈，最后还能找到生成的文件。一个小窗口如果能把这五步照顾好，就已经从“控件摆放练习”变成了“可交付工具”的雏形。
+把 GUI 当成一段旅程，就不容易只盯着控件。用户不是为了看按钮而打开窗口，用户是为了完成任务。一个按钮有没有价值，要看它是否帮用户走到结果。
 
-不过，真正的科研工具不能只会“新建一张卡片”。它还应该能接住前面章节已经生产出来的材料。第2章做过 Stroop 数据包，第3章把它整理进 `workspace_ch03/organized/json/`，现在第4章要给这份数据做一个界面雏形：左侧看试次，右侧放按钮，顶部显示被试、正确率和反应时。
+### 4.14 接住 ch02 和 ch03 的数据
 
-这一步像把图书馆后台的索引柜搬到前台：文件仍然在文件夹里，但用户看到的是能浏览、能点击、能导出的控制面板。脚本 `08_make_ch03_data_gui_panel.py` 不会弹出真正窗口，而是先生成一个静态 GUI 预览图和规格文件。先把界面想清楚，再让 Tkinter 真正动起来，学习会稳很多。
+第4章不是孤岛。第2章做过 Stroop 数据结构，第3章整理过文件和 JSON；第4章可以把这些材料变成一个 GUI 面板的雏形。
 
-运行方式：
+运行：
 
 ```bash
 python code/ch04/08_make_ch03_data_gui_panel.py
 ```
 
-运行后会生成：
+它会生成：
 
 ```text
 output/ch04_ch03_data_gui_panel.json
@@ -479,107 +459,110 @@ output/ch04_ch03_data_gui_panel.png
 ```
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_ch03_data_gui_panel.png" alt="ch3 数据 GUI 面板预览图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-25 ch3 数据 GUI 面板预览</strong>：ch2 的 Stroop 数据经过 ch3 文件整理后，在 ch4 被改造成一个 GUI 浏览面板雏形；界面负责让数据变得可看、可点、可继续导出。</figcaption>
+  <img src="../assets/ch04/ch04_ch03_data_gui_panel.png" alt="ch3 数据 GUI 面板预览" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-18 ch3 数据 GUI 面板预览</strong>：ch2 的 Stroop 数据经过 ch3 文件整理后，在 ch4 被改造成一个可浏览、可导出、可继续扩展的 GUI 面板设计。</figcaption>
 </figure>
 
-这张图的意义不是“现在已经做完了完整软件”，而是把项目下一步画出来。你可以把它看成界面设计草图：数据从哪里来、用户先看什么、按钮应该做什么、结果要写到哪里。GUI 学习到这里，终于从“按钮会响”走向“工具有工作流”。
+这张图不是完整软件，而是下一步界面规格。先把界面想清楚，再真正写 Tkinter 代码，学习会稳很多。
 
-建议项目结构：
+---
 
-```text
-python_card_factory/
-├── code/
-│   └── ch04/
-├── cards/
-├── input/
-├── output/
-├── reports/
-└── assets/
-```
+## 第五部分：排错、练习与验收
 
-本章配套脚本：
-
-- `code/ch04/01_hello_window.py`
-- `code/ch04/02_card_form.py`
-- `code/ch04/03_stroop_gui_preview.py`
-- `code/ch04/04_gui_usability_check.py`
-- `code/ch04/05_make_gui_feedback_lab.py`
-- `code/ch04/06_make_interaction_receipt.py`
-- `code/ch04/07_make_card_factory_delivery.py`
-- `code/ch04/08_make_ch03_data_gui_panel.py`
-- `code/ch04/09_make_gui_journey_storyboard.py`
-- `code/ch04/10_make_gui_runtime_evidence.py`
-
-完成标准：
-
-1. 至少运行一个脚本。
-2. 能解释脚本输入、处理、输出分别是什么。
-3. 把生成结果保存到 `output/` 或 `reports/`。
-4. 在 README 或学习记录中写下运行命令。
-5. 能用可用性检查清单说明：这个窗口是否让用户少猜、少错、少迷路。
-6. 能用反馈检查卡说明：按钮大小、控件间距、操作状态、错误恢复和按钮文案是否清楚。
-7. 能用交互回执说明：当前窗口已经通过哪些检查，下一步还要改进什么。
-8. 能打开 `cards/working_memory_load_card.md`，确认 GUI 项目确实留下了一张可继续编辑的学习卡片。
-9. 能打开 `reports/ch04_ch03_data_gui_panel.md`，说明 ch2/ch3 的数据如何进入 ch4 的界面设计。
-10. 能打开 `reports/ch04_gui_journey_storyboard.md`，说明一个 GUI 工具从输入到交付文件需要哪些反馈证据。
-11. 能打开 `reports/ch04_gui_runtime_evidence.md`，说明 GUI 项目已经留下窗口截图、报告、回执和跨章节面板证据。
+### 4.15 常见坑：先按线索排查
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_gui_usability_check.png" alt="GUI可用性检查清单预览图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-26 Python 生成的 GUI 可用性检查清单</strong>：`04_gui_usability_check.py` 会生成一份检查清单，提醒你从用户视角审视窗口。</figcaption>
+  <img src="../assets/ch04/ch04_pitfall_map.png" alt="第4章 GUI 常见坑排查图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-19 第4章常见坑排查</strong>：GUI 报错通常可以从窗口生命周期、回调函数、布局、路径和反馈五个方向排查。</figcaption>
 </figure>
 
-这张图来自 `04_gui_usability_check.py`。它不是为了把 GUI 设计变复杂，而是为了提醒你：界面学习不能只停在“能弹出窗口”。一个小工具真正可用，至少要让用户知道它是做什么的、该在哪里输入、按钮会触发什么、保存后有没有反馈、出错后能不能恢复。
+| 问题 | 典型现象 | 优先检查 |
+| --- | --- | --- |
+| 忘记 `mainloop()` | 窗口一闪而过或根本看不到 | 最后一行有没有 `root.mainloop()` |
+| `command=func()` | 还没点按钮，函数已经执行 | `command` 后面是否写了括号 |
+| 控件没有布局 | 创建了控件但窗口里没有显示 | 有没有调用 `.pack()`、`.grid()` 或 `.place()` |
+| 工作目录不对 | 保存文件找不到或写到奇怪位置 | 打印 `Path.cwd()` |
+| 没有反馈 | 用户不知道保存是否成功 | 用 `messagebox` 或状态栏提示 |
+| 逻辑混在一起 | 代码越来越难读 | 把保存、检查、绘图拆成函数 |
 
-这就像心理学实验界面：被试不应该花精力猜规则，界面应该清楚地呈现任务、收集反应、给出必要反馈。GUI 设计越清楚，用户越能把注意力放在任务本身。
+遇到 GUI 问题时，先不要大改。先把问题缩到最小脚本里：一个窗口、一个标签、一个按钮、一个回调。最小版本能跑，再把功能加回来。
 
-动手步骤：
+### 4.16 运行证据：GUI 也要能交付
 
-1. **准备目录**：确认 `python_card_factory/` 下有 `code/`、`input/`、`output/`、`reports/`。
-2. **运行最小脚本**：先运行本章第一个脚本，得到一个确定反馈。
-3. **记录环境**：把 Python 版本、运行命令和输出截图或输出文本写进 `reports/`。
-4. **连接真实材料**：把课程笔记、实验记录、图片、网页或 CSV 放进 `input/`。
-5. **生成作品**：让脚本在 `output/` 或 `reports/` 中留下文件。
-6. **检查界面体验**：运行 `04_gui_usability_check.py` 和 `05_make_gui_feedback_lab.py`，用清单检查窗口是否让用户少猜、少错、少迷路。
-7. **生成交互回执**：运行 `06_make_interaction_receipt.py`，把通过项和待改进项记录下来。
-8. **生成卡片交付物**：运行 `07_make_card_factory_delivery.py`，确认 `cards/` 中有一张真实 Markdown 卡片。
-9. **生成交互旅程图**：运行 `09_make_gui_journey_storyboard.py`，检查窗口、输入、按钮、反馈和文件是否形成闭环。
-10. **连接 ch3 数据**：运行 `08_make_ch03_data_gui_panel.py`，确认 Stroop 数据能变成界面面板预览。
-11. **生成运行证据**：运行 `10_make_gui_runtime_evidence.py`，确认窗口截图、报告、回执和面板证据都已经 ready。
-12. **写复盘**：说明这章让卡片工厂多了什么能力，哪些地方还容易出错。
+运行证据脚本：
 
----
+```bash
+python code/ch04/10_make_gui_runtime_evidence.py
+```
 
-## 4.10 练习任务
+<figure align="center">
+  <img src="../assets/ch04/ch04_gui_runtime_evidence.png" alt="第4章 GUI 运行证据图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-20 GUI 运行证据</strong>：窗口截图、可用性报告、交互回执、卡片交付物、ch3 数据面板和用户旅程图都存在，才说明本章 GUI 项目有完整证据链。</figcaption>
+</figure>
 
-1. 修改一个输入参数，观察输出变化。
-2. 把脚本生成的结果保存成文件。
-3. 故意制造一个小错误，记录报错信息和修复方式。
-4. 把本章项目和前面章节连接起来，例如读取 ch03 整理出的文件，或使用 ch02 的数据结构保存结果。
-5. 运行 `04_gui_usability_check.py`，把清单中的 5 个问题逐条用于检查 `02_card_form.py`。
-6. 运行 `05_make_gui_feedback_lab.py`，选一个按钮或输入框，写出它在 Target、Spacing、State、Error、Copy 中最需要改进的一项。
-7. 运行 `06_make_interaction_receipt.py`，把 `FIX` 项改写成你自己的下一步优化计划。
-8. 运行 `09_make_gui_journey_storyboard.py`，把其中一个阶段替换成你自己的 GUI 项目步骤，并说明它解决了哪个用户疑问。
-9. 运行 `08_make_ch03_data_gui_panel.py`，把面板里的一个按钮文案改得更像真实科研工具，例如把“生成报告”改成“导出被试报告”。
-10. 运行 `10_make_gui_runtime_evidence.py`，故意临时移走一个输出文件，观察证据图里的 `missing` 如何提醒你补交付物；检查后把文件恢复。
+第1章强调环境要有证据，第4章也一样。GUI 项目不能只说“我看见窗口了”，还要能说清楚：
 
----
+1. 真实窗口截图在哪里？
+2. 用户输入如何变成文件？
+3. 保存后有什么反馈？
+4. 检查报告在哪里？
+5. 跨章节数据如何接入下一步？
 
-## 4.11 自测问题
+### 4.17 上机路线与提交证据
 
-1. 本章最重要的三个概念是什么？请用人话解释，不要只背术语。
-2. 本章第一个脚本的输入、处理、输出分别是什么？
-3. 如果脚本运行失败，你第一步会检查路径、环境、依赖还是语法？为什么？
-4. 本章项目和“科研卡片工厂”有什么关系？
-5. 你能不能把本章项目改成一个心理学或教学场景的小任务？
-6. 为什么 GUI 里“有反馈”比“按钮很好看”更重要？
+第一次学习本章时，建议按这个顺序运行：
 
-参考回答不唯一。判断自己是否真的理解，可以看你能不能把答案讲给一个完全没学过本章的人听。
+```bash
+python code/ch04/01_hello_window.py
+python code/ch04/02_card_form.py
+python code/ch04/03_stroop_gui_preview.py
+python code/ch04/04_gui_usability_check.py
+python code/ch04/05_make_gui_feedback_lab.py
+python code/ch04/06_make_interaction_receipt.py
+python code/ch04/07_make_card_factory_delivery.py
+python code/ch04/08_make_ch03_data_gui_panel.py
+python code/ch04/09_make_gui_journey_storyboard.py
+python code/ch04/10_make_gui_runtime_evidence.py
+```
 
----
+其中前三个脚本会打开窗口，后面的脚本主要生成报告和图片。提交证据可以按下面这张表整理：
 
-## 4.12 学习复盘模板
+| 提交证据 | 要看到什么 |
+| --- | --- |
+| 最小窗口 | `01_hello_window.py` 能弹出窗口 |
+| 卡片表单 | `02_card_form.py` 能保存一张 Markdown 卡片 |
+| Stroop 预告 | `03_stroop_gui_preview.py` 能显示刺激并响应按键 |
+| 可用性检查 | `reports/ch04_gui_usability_check.md` 存在 |
+| 反馈检查卡 | `reports/ch04_gui_feedback_scorecard.md` 存在 |
+| 交互回执 | `reports/ch04_interaction_receipt.md` 存在 |
+| 卡片交付物 | `cards/working_memory_load_card.md` 存在 |
+| 运行证据 | `reports/ch04_gui_runtime_evidence.md` 存在 |
+
+### 4.18 练习任务
+
+1. 把 `01_hello_window.py` 的窗口标题改成你的项目名，运行并截图。
+2. 在 `02_card_form.py` 中增加一个“标签”输入框，例如“实验记录”“课程笔记”“论文摘录”。
+3. 修改 `save_card()`，让保存文件名包含日期。
+4. 故意把 `command=save_card` 写成 `command=save_card()`，观察发生了什么，再改回来。
+5. 在 `03_stroop_gui_preview.py` 中增加一个新的试次，例如词义为 `BLUE`、颜色为 `red`。
+6. 运行 `04_gui_usability_check.py`，用清单逐条检查你的卡片表单。
+7. 运行 `05_make_gui_feedback_lab.py`，挑一个按钮，从 Target、Spacing、State、Error、Copy 中选一个方向改进。
+8. 运行 `06_make_interaction_receipt.py`，把 `FIX` 项改写成你的下一步计划。
+9. 运行 `08_make_ch03_data_gui_panel.py`，把按钮文案改得更像真实科研工具，例如“导出被试报告”。
+10. 临时移走一个输出文件，再运行 `10_make_gui_runtime_evidence.py`，观察证据清单如何提示缺失；检查后把文件恢复。
+
+### 4.19 自测问题
+
+1. `tk.Tk()`、控件、布局、回调和 `mainloop()` 分别负责什么？
+2. 为什么 `command=save_card` 和 `command=save_card()` 结果不同？
+3. `Entry.get()` 和 `Text.get("1.0", "end")` 分别适合拿什么输入？
+4. 保存卡片以后，为什么要给用户反馈？
+5. 一个 GUI 小项目的提交证据应该包含哪些文件？
+6. 如果窗口没有出现，你会按什么顺序排查？
+
+判断自己是否真的学会，可以看你能不能把 `02_card_form.py` 讲给同学听：窗口里有什么，用户怎么操作，点击后哪个函数执行，最后文件保存到哪里。
+
+### 4.20 学习复盘模板
 
 可以在 `reports/ch04_review.md` 中写下：
 
@@ -589,47 +572,37 @@ python_card_factory/
 ## 我新增的能力
 - 
 
-## 我跑通的脚本
+## 我跑通的窗口
 - 
 
-## 我遇到的报错
-- 报错信息：
+## 我生成的文件证据
+- 
+
+## 我遇到的 GUI 问题
+- 报错或现象：
 - 原因：
 - 修复方式：
 
-## 我能迁移到哪里
-- 心理学实验：
-- 教学分享：
-- 科研资料整理：
+## 我准备继续改进
+- 输入提示：
+- 按钮文案：
+- 保存反馈：
+- 错误恢复：
 ```
 
-复盘不是写作文，而是给未来的自己留路标。你现在记录清楚，后面做综合项目时就不用重新从记忆里翻箱倒柜。
+复盘不是写作文，而是给下一次调试留路标。你现在把窗口、函数、路径和输出写清楚，后面做综合项目时就不用重新猜。
 
----
+### 4.21 本章总结
 
-## 4.13 与后续章节的连接
+Tkinter 入门的关键不是把所有参数背下来，而是理解 GUI 程序的基本闭环：
 
-本章不是孤岛。它和整套教程的关系可以这样理解：
+1. `Tk()` 创建窗口。
+2. 控件收集输入或显示信息。
+3. 布局让控件有秩序。
+4. 事件触发回调函数。
+5. 回调函数处理数据、写入文件或更新界面。
+6. 用户得到反馈，并能找到结果。
 
-- 前面章节提供基础：环境、数据结构、文件管理。
-- 本章提供一项新能力：科研卡片工厂控制面板，并能用交互旅程图检查用户是否真的走到交付物。
-- 后面章节会把这项能力继续接到数据分析、图像处理、爬虫或办公自动化里。
+这一章让“科研卡片工厂”多了一块前台面板。前几章的能力还在后厨：字符串、列表、路径、文件写入；第4章把它们搬到窗口里，让用户通过输入和按钮完成任务。
 
-所以不要只问“这一章考试考什么”。更好的问题是：它能帮我少做哪一类重复劳动？它能让我的学习材料、实验记录或报告更稳定吗？
-
----
-
-## 4.14 本章总结
-
-Tkinter 图形界面编程的关键不是“记住所有 API”，而是理解它解决的问题。你已经从概念、图像、代码和小项目四个角度接触了本章内容。下一次复习时，不要只问“我会不会背”，而要问：
-
-- 我能不能讲出这个概念的比喻？
-- 我能不能运行一个最小脚本？
-- 我能不能把结果放进项目目录？
-- 我能不能说清楚它在科研卡片工厂里增加了什么能力？
-
-如果答案是肯定的，这一章就不是看过了，而是真的进入你的工具箱了。
-
-更进一步，界面不是“能点”就结束了。一个真正适合教学和科研的小工具，还要让用户少猜、少错、少迷路。按钮大小、控件间距、保存后的状态提示、错误恢复方式、按钮文案，这些看似细小的东西，会决定别人愿不愿意继续用你的程序。
-
-下一章进入面向对象。到那时你会发现，GUI 程序越来越适合用类来组织：窗口是对象，按钮是对象，卡片表单也可以是对象。Tkinter 是通往 OOP 的一座很好的桥。
+下一章会进入面向对象。到那时你会发现，GUI 程序很适合用类来组织：窗口是对象，按钮是对象，卡片表单也可以成为一个对象。第4章先把“能点击、能保存、能反馈”的闭环跑通，第5章再学习怎样把这些部件组织得更稳。

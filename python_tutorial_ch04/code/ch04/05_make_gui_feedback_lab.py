@@ -39,16 +39,16 @@ def make_target_lab() -> None:
     im = Image.new("RGB", (1500, 930), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 850), radius=26, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "GUI Target & Feedback Lab", fill="#162033", font=font(48, True))
+    d.text((150, 125), "GUI 目标与反馈实验", fill="#162033", font=font(48, True))
     d.text((150, 195), "按钮太小，用户会紧张；反馈太少，用户会怀疑。", fill="#5F6673", font=font(27))
 
-    d.text((165, 285), "Hard Mode", fill="#9F1239", font=font(30, True))
+    d.text((165, 285), "紧张模式", fill="#9F1239", font=font(30, True))
     for i, label in enumerate(["保存", "取消", "导出", "重置"]):
         x = 170 + i * 105
         draw_button(d, (x, 350, x + 82, 398), label, "#FFF1F2", "#FDA4AF")
     d.text((165, 450), "小按钮 + 挤在一起", fill="#7F1D1D", font=font(24))
 
-    d.text((780, 285), "Calm Mode", fill="#166534", font=font(30, True))
+    d.text((780, 285), "安心模式", fill="#166534", font=font(30, True))
     draw_button(d, (785, 345, 1045, 415), "保存卡片", "#DCFCE7", "#86EFAC")
     draw_button(d, (1075, 345, 1335, 415), "导出报告", "#E0F2FE", "#7DD3FC")
     d.rounded_rectangle((785, 470, 1335, 545), radius=18, fill="#F1F5F9", outline="#E2E8F0", width=2)
@@ -63,16 +63,16 @@ def make_target_lab() -> None:
 
 def make_scorecard() -> None:
     checks = [
-        ("Target", "按钮够大，手不抖"),
-        ("Spacing", "控件之间有呼吸"),
-        ("State", "保存后有明确反馈"),
-        ("Error", "出错时能恢复"),
-        ("Copy", "按钮文案像人话"),
+        ("目标", "按钮够大，手不抖"),
+        ("间距", "控件之间有呼吸"),
+        ("状态", "保存后有明确反馈"),
+        ("错误", "出错时能恢复"),
+        ("文案", "按钮文字像人话"),
     ]
     im = Image.new("RGB", (1500, 930), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 850), radius=26, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "GUI Feedback Scorecard", fill="#162033", font=font(50, True))
+    d.text((150, 125), "GUI 反馈检查卡", fill="#162033", font=font(50, True))
     d.text((150, 198), "一个小窗口交给别人前，先过这五关。", fill="#5F6673", font=font(27))
     colors = ["#2F6BFF", "#24A06B", "#F28C28", "#7A5AF8", "#18A9B5"]
     y = 305
@@ -83,7 +83,7 @@ def make_scorecard() -> None:
         d.text((520, y + 17), tip, fill="#162033", font=font(25))
         y += 84
     d.rounded_rectangle((270, 790, 1230, 845), radius=20, fill="#FFF7E8", outline="#F2B84B", width=2)
-    d.text((350, 804), "Report: reports/ch04_gui_feedback_scorecard.md", fill="#8A5A00", font=font(22))
+    d.text((350, 804), "报告：reports/ch04_gui_feedback_scorecard.md", fill="#8A5A00", font=font(22))
     im.save(SCORECARD, optimize=True, quality=95)
 
     REPORTS.mkdir(exist_ok=True)
