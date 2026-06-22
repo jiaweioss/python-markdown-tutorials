@@ -4,6 +4,7 @@ import html
 import json
 import re
 import shutil
+import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -18,6 +19,12 @@ SITE_SRC = ROOT / "website"
 ASSET_OUT = OUT / "assets"
 CHAPTER_OUT = OUT / "chapters"
 FILES_OUT = OUT / "files"
+DOWNLOADS_OUT = OUT / "downloads"
+
+PUBLIC_CHAPTER_MAX = 3
+PUBLIC_RELEASE_NOTE = "当前开放到第 3 章；后续章节正在分批整理，暂时不在网页中展示。"
+MATERIAL_FOLDERS = ["chapters", "code", "reports", "output", "source_notes", "scripts"]
+MATERIAL_FILES = ["README.md", "manifest.json"]
 
 
 @dataclass
@@ -83,7 +90,7 @@ def discover_chapters() -> list[Chapter]:
         if not folder.is_dir():
             continue
         number = chapter_number(folder)
-        if number is None:
+        if number is None or number > PUBLIC_CHAPTER_MAX:
             continue
         markdown_files = sorted((folder / "chapters").glob("*.md"))
         if not markdown_files:
@@ -181,6 +188,32 @@ def copytree_clean(src: Path, dst: Path) -> None:
     shutil.copytree(src, dst, dirs_exist_ok=True, ignore=ignore)
 
 
+def should_skip_material(path: Path) -> bool:
+    if "__pycache__" in path.parts:
+        return True
+    if path.suffix == ".pyc":
+        return True
+    return "contact_sheet" in path.name
+
+
+def make_chapter_package(chapter: Chapter) -> Path:
+    DOWNLOADS_OUT.mkdir(parents=True, exist_ok=True)
+    package = DOWNLOADS_OUT / f"{chapter.folder.name}.zip"
+    with zipfile.ZipFile(package, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        for name in MATERIAL_FILES:
+            src = chapter.folder / name
+            if src.exists() and src.is_file():
+                archive.write(src, name)
+        for folder_name in MATERIAL_FOLDERS:
+            folder = chapter.folder / folder_name
+            if not folder.exists():
+                continue
+            for path in sorted(folder.rglob("*")):
+                if path.is_file() and not should_skip_material(path):
+                    archive.write(path, path.relative_to(chapter.folder).as_posix())
+    return package
+
+
 def copy_public_assets(chapters: Iterable[Chapter]) -> None:
     ASSET_OUT.mkdir(parents=True, exist_ok=True)
     shutil.copy2(SITE_SRC / "site.css", ASSET_OUT / "site.css")
@@ -196,21 +229,36 @@ def copy_public_assets(chapters: Iterable[Chapter]) -> None:
             if src.exists():
                 chapter_files.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(src, chapter_files / name)
+        make_chapter_package(chapter)
     archive = ROOT / "python_tutorial_ch02_optimized.zip"
     if archive.exists():
         (FILES_OUT / "archives").mkdir(parents=True, exist_ok=True)
         shutil.copy2(archive, FILES_OUT / "archives" / archive.name)
 
 
-def chapter_nav(chapters: list[Chapter], active: int | None, depth: str = "") -> str:
+def release_range_label() -> str:
+    return f"CH00-CH{PUBLIC_CHAPTER_MAX:02d}"
+
+
+def sidebar_header(depth: str = "") -> str:
+    return f"""
+<div class="sidebar-status">
+  <span>当前开放</span>
+  <strong>{release_range_label()}</strong>
+  <small>{html.escape(PUBLIC_RELEASE_NOTE)}</small>
+</div>
+<a class="sidebar-download" href="{depth}files/">材料下载</a>
+"""
+
+
+def chapter_nav(chapters: list[Chapter], active: int | None, depth: str = "", same_dir: bool = False) -> str:
     items = []
     for chapter in chapters:
-        href = f"{depth}chapters/{chapter.page_name}" if depth else f"chapters/{chapter.page_name}"
-        if depth == "../":
-            href = chapter.page_name
+        href = chapter.page_name if same_dir else f"{depth}chapters/{chapter.page_name}"
         cls = "active" if active == chapter.index else ""
+        current = ' aria-current="page"' if active == chapter.index else ""
         items.append(
-            f'<a class="{cls}" href="{html.escape(href)}">'
+            f'<a class="{cls}" href="{html.escape(href)}"{current}>'
             f'<span class="chapter-number">{chapter.key.upper()}</span>'
             f'<span class="chapter-name">{html.escape(short_title(chapter.title))}</span>'
             "</a>"
@@ -233,7 +281,7 @@ def topbar(depth: str = "") -> str:
     <span>Python教程</span>
   </a>
   <div class="top-actions">
-    <a class="button" href="{depth}files/">配套文件</a>
+    <a class="button" href="{depth}files/">材料下载</a>
     <button class="icon-button" data-theme-toggle title="切换明暗主题" aria-label="切换明暗主题">◐</button>
   </div>
 </header>
@@ -293,6 +341,7 @@ def build_home(chapters: list[Chapter]) -> None:
   <aside class="sidebar" id="course-sidebar">
     <div class="sidebar-inner">
       <p class="sidebar-title">课程目录</p>
+      {sidebar_header()}
       {chapter_nav(chapters, None)}
     </div>
   </aside>
@@ -300,17 +349,18 @@ def build_home(chapters: list[Chapter]) -> None:
     <section class="course-header">
       <div>
         <h1 class="course-title">Python教程</h1>
-        <p class="course-copy">从环境、数据类型、文件、GUI、面向对象，到数据分析、游戏、爬虫、图像处理和办公自动化。每章都包含正文、配图、代码和可复查输出。</p>
+        <p class="course-copy">当前开放环境搭建、基础语法、数据结构、函数、文件读写和异常处理。每章都包含正文、配图、代码和可复查输出。</p>
       </div>
       <div class="stat-board" aria-label="课程统计">
-        <div class="stat"><strong>{len(chapters)}</strong><span>正式章节</span></div>
+        <div class="stat"><strong>{len(chapters)}</strong><span>当前开放</span></div>
         <div class="stat"><strong>{total_images}</strong><span>正文图片</span></div>
         <div class="stat"><strong>{total_code}</strong><span>代码脚本</span></div>
-        <div class="stat"><strong>静态站点</strong><span>HTML / CSS / JS</span></div>
+        <div class="stat"><strong>{release_range_label()}</strong><span>发布范围</span></div>
       </div>
     </section>
+    <p class="release-note">{html.escape(PUBLIC_RELEASE_NOTE)}</p>
     <div class="tool-row">
-      <input class="search" data-search type="search" placeholder="搜索章节关键词，例如 文件、GUI、爬虫" />
+      <input class="search" data-search type="search" placeholder="搜索章节关键词，例如 环境、列表、文件" />
       <a class="button primary" href="chapters/{chapters[0].page_name}">开始阅读</a>
     </div>
     <section class="chapter-grid" aria-label="章节列表">
@@ -323,69 +373,182 @@ def build_home(chapters: list[Chapter]) -> None:
     write_text(OUT / "index.html", layout_page("首页", body))
 
 
+def human_size(path: Path) -> str:
+    if not path.exists():
+        return "生成中"
+    size = float(path.stat().st_size)
+    for unit in ["B", "KB", "MB", "GB"]:
+        if size < 1024 or unit == "GB":
+            return f"{size:.0f} {unit}" if unit == "B" else f"{size:.1f} {unit}"
+        size /= 1024
+    return "生成中"
+
+
+def material_items(chapter: Chapter, folder_name: str) -> list[str]:
+    folder = chapter.folder / folder_name
+    if not folder.exists():
+        return []
+    return [
+        path.relative_to(chapter.folder).as_posix()
+        for path in sorted(folder.rglob("*"))
+        if path.is_file() and not should_skip_material(path)
+    ]
+
+
+def material_group(title: str, description: str, items: list[str]) -> str:
+    if not items:
+        return ""
+    links = []
+    for rel in items:
+        links.append(
+            f'<a href="{html.escape(rel)}">'
+            f'<span>{html.escape(Path(rel).name)}</span>'
+            f'<small>{html.escape(rel)}</small>'
+            "</a>"
+        )
+    return f"""
+<section class="material-group">
+  <div class="material-group-head">
+    <div>
+      <h2>{html.escape(title)}</h2>
+      <p>{html.escape(description)}</p>
+    </div>
+    <span class="meta-pill">{len(items)} 个文件</span>
+  </div>
+  <div class="material-list">{''.join(links)}</div>
+</section>
+"""
+
+
+def build_chapter_file_index(chapter: Chapter, chapters: list[Chapter]) -> None:
+    package = DOWNLOADS_OUT / f"{chapter.folder.name}.zip"
+    root_items = [name for name in MATERIAL_FILES if (chapter.folder / name).exists()]
+    groups = [
+        material_group("章节原文", "Markdown 正文，适合离线阅读或二次编辑。", material_items(chapter, "chapters")),
+        material_group("代码脚本", "本章可运行示例与练习脚本。", material_items(chapter, "code")),
+        material_group("实验报告", "运行结果、检查记录和整理说明。", material_items(chapter, "reports")),
+        material_group("输出文件", "示例程序生成的图片、数据或文本输出。", material_items(chapter, "output")),
+        material_group("整理备注", "素材来源、修订记录和辅助说明。", material_items(chapter, "source_notes")),
+        material_group("构建脚本", "生成图片、报告或章节资源时使用的脚本。", material_items(chapter, "scripts")),
+        material_group("章节说明", "本章根目录中的 README 与 manifest。", root_items),
+    ]
+    body = f"""
+{topbar("../../")}
+<div class="site-shell">
+  <aside class="sidebar" id="course-sidebar">
+    <div class="sidebar-inner">
+      <p class="sidebar-title">课程目录</p>
+      {sidebar_header("../../")}
+      {chapter_nav(chapters, chapter.index, "../../")}
+    </div>
+  </aside>
+  <main class="home-main">
+    <section class="download-hero">
+      <div>
+        <p class="article-kicker">{chapter.key.upper()} 材料</p>
+        <h1 class="course-title">{html.escape(short_title(chapter.title))}</h1>
+        <p class="course-copy">所有配套文件已按用途分组；需要离线保存时，直接下载整章材料包。</p>
+      </div>
+      <div class="download-actions">
+        <a class="button primary" href="../../downloads/{chapter.folder.name}.zip">下载整章材料包</a>
+        <a class="button" href="../../chapters/{chapter.page_name}">阅读章节</a>
+        <span class="meta-pill">{human_size(package)}</span>
+      </div>
+    </section>
+    <section class="materials-grid" aria-label="材料文件分组">
+      {''.join(groups)}
+    </section>
+  </main>
+</div>
+"""
+    write_text(FILES_OUT / chapter.folder.name / "index.html", layout_page(f"{chapter.key.upper()} 材料", body, "../../"))
+
+
 def build_files_index(chapters: list[Chapter]) -> None:
     rows = []
     for chapter in chapters:
         base = f"{chapter.folder.name}"
+        package = DOWNLOADS_OUT / f"{chapter.folder.name}.zip"
         rows.append(
             f"""
-<a class="chapter-card" data-search-card href="{html.escape(base)}/chapters/{html.escape(chapter.markdown.name)}">
-  <span class="chapter-card-body">
+<article class="download-card" data-search-card>
+  <div class="chapter-card-body">
     <span class="meta-row">
       <span class="meta-pill">{chapter.key.upper()}</span>
       <span class="meta-pill">{chapter.code_count} 个脚本</span>
       <span class="meta-pill">{chapter.report_count} 份报告</span>
+      <span class="meta-pill">{human_size(package)}</span>
     </span>
     <h2>{html.escape(short_title(chapter.title))}</h2>
-    <p>{html.escape(chapter.folder.name)}</p>
-  </span>
-</a>
+    <p>{html.escape(chapter.summary)}</p>
+    <div class="download-actions">
+      <a class="button primary" href="../downloads/{html.escape(chapter.folder.name)}.zip">下载整包</a>
+      <a class="button" href="{html.escape(base)}/">查看文件</a>
+      <a class="button" href="../chapters/{html.escape(chapter.page_name)}">阅读章节</a>
+    </div>
+  </div>
+</article>
 """
         )
+        build_chapter_file_index(chapter, chapters)
     archive_link = ""
     if (FILES_OUT / "archives" / "python_tutorial_ch02_optimized.zip").exists():
-        archive_link = '<a class="button" href="archives/python_tutorial_ch02_optimized.zip">ch02 optimized zip</a>'
+        archive_link = '<a class="button" href="archives/python_tutorial_ch02_optimized.zip">ch02 优化包</a>'
     body = f"""
 {topbar("../")}
-<main class="home-main">
-  <section class="course-header">
-    <div>
-      <h1 class="course-title">配套文件</h1>
-      <p class="course-copy">每章的 Markdown 原文、代码、报告、输出文件和脚本都按章节保留在这里。</p>
+<div class="site-shell">
+  <aside class="sidebar" id="course-sidebar">
+    <div class="sidebar-inner">
+      <p class="sidebar-title">课程目录</p>
+      {sidebar_header("../")}
+      {chapter_nav(chapters, None, "../")}
     </div>
-    <div class="stat-board">
-      <div class="stat"><strong>{len(chapters)}</strong><span>章节文件夹</span></div>
-      <div class="stat"><strong>{sum(c.code_count for c in chapters)}</strong><span>代码脚本</span></div>
+  </aside>
+  <main class="home-main">
+    <section class="course-header">
+      <div>
+        <h1 class="course-title">材料下载</h1>
+        <p class="course-copy">当前只开放 {release_range_label()}。每章都提供整包下载，也可以进入章节材料页按“原文、代码、报告、输出、脚本”分组查看。</p>
+      </div>
+      <div class="stat-board">
+        <div class="stat"><strong>{len(chapters)}</strong><span>开放章节</span></div>
+        <div class="stat"><strong>{sum(c.code_count for c in chapters)}</strong><span>代码脚本</span></div>
+      </div>
+    </section>
+    <p class="release-note">{html.escape(PUBLIC_RELEASE_NOTE)}</p>
+    <div class="tool-row">
+      <input class="search" data-search type="search" placeholder="搜索章节或材料关键词" />
+      {archive_link}
     </div>
-  </section>
-  <div class="tool-row">
-    <input class="search" data-search type="search" placeholder="搜索文件章节" />
-    {archive_link}
-  </div>
-  <section class="chapter-grid" aria-label="配套文件列表">
-    {''.join(rows)}
-  </section>
-</main>
+    <section class="download-grid" aria-label="材料下载列表">
+      {''.join(rows)}
+    </section>
+  </main>
+</div>
 """
-    write_text(FILES_OUT / "index.html", layout_page("配套文件", body, "../"))
+    write_text(FILES_OUT / "index.html", layout_page("材料下载", body, "../"))
 
 
 def file_links(chapter: Chapter) -> str:
     base = f"../files/{chapter.folder.name}"
-    links: list[str] = []
+    links: list[str] = [
+        link(f"../downloads/{chapter.folder.name}.zip", "下载整章材料包"),
+        link(f"{base}/", "查看完整材料清单"),
+    ]
     chapter_raw = f"{base}/chapters/{chapter.markdown.name}"
     links.append(link(chapter_raw, "本章 Markdown"))
     code_dir = chapter.folder / "code"
     if code_dir.exists():
-        for path in sorted(code_dir.rglob("*.py"))[:10]:
+        for path in sorted(code_dir.rglob("*.py"))[:8]:
             rel = path.relative_to(chapter.folder).as_posix()
             links.append(link(f"{base}/{rel}", rel))
     reports = chapter.folder / "reports"
     if reports.exists():
-        for path in sorted(reports.glob("*.md"))[:6]:
+        for path in sorted(reports.glob("*.md"))[:4]:
             rel = path.relative_to(chapter.folder).as_posix()
             links.append(link(f"{base}/{rel}", rel))
-    return '<div class="file-links">' + "\n".join(links) + "</div>"
+    note = '<p class="file-panel-note">这里只放高频入口；完整代码、输出和整理脚本请进入材料清单页查看。</p>'
+    return note + '<div class="file-links">' + "\n".join(links) + "</div>"
 
 
 def link(href: str, label: str) -> str:
@@ -429,7 +592,8 @@ def build_chapter_pages(chapters: list[Chapter]) -> None:
   <aside class="sidebar" id="course-sidebar">
     <div class="sidebar-inner">
       <p class="sidebar-title">课程目录</p>
-      {chapter_nav(chapters, chapter.index, "../")}
+      {sidebar_header("../")}
+      {chapter_nav(chapters, chapter.index, "../", same_dir=True)}
     </div>
   </aside>
   <main class="article-main">
@@ -437,8 +601,9 @@ def build_chapter_pages(chapters: list[Chapter]) -> None:
       <p class="article-kicker">{chapter.key.upper()}</p>
       <h1>{html.escape(chapter.title)}</h1>
       <div class="article-actions">
-        <a class="button primary" href="../files/{chapter.folder.name}/chapters/{chapter.markdown.name}">Markdown 原文</a>
-        <a class="button" href="#chapter-files">配套文件</a>
+        <a class="button primary" href="../downloads/{chapter.folder.name}.zip">下载材料包</a>
+        <a class="button" href="../files/{chapter.folder.name}/">材料清单</a>
+        <a class="button" href="../files/{chapter.folder.name}/chapters/{chapter.markdown.name}">Markdown 原文</a>
         <a class="button" href="../index.html">返回目录</a>
       </div>
     </header>
@@ -466,6 +631,9 @@ def build_manifest(chapters: list[Chapter]) -> None:
     payload = {
         "title": "Python教程",
         "chapter_count": len(chapters),
+        "public_chapter_max": PUBLIC_CHAPTER_MAX,
+        "public_range": release_range_label(),
+        "release_note": PUBLIC_RELEASE_NOTE,
         "chapters": [
             {
                 "key": c.key,
