@@ -1,0 +1,4 @@
+pillow
+
+# Optional data-analysis dependencies introduced in the chapter text:
+# pandas

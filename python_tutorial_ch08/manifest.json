@@ -1,0 +1,167 @@
+{
+  "project": "Python Markdown Tutorial",
+  "delivery": "chapter_08_detailed",
+  "language": "zh-CN",
+  "filenames": "ASCII only",
+  "chapter": {
+    "id": "ch08",
+    "title": "网络爬虫开发实战",
+    "markdown": "chapters/ch08_web_scraping.md",
+    "source_ppt": "第八章_网络爬虫开发实战2025.pptx",
+    "character_count": 19068,
+    "image_refs": 24,
+    "asset_count": 40,
+    "code_count": 11,
+    "internet_sources": [
+      {
+        "title": "Tim Berners-Lee Office at CERN",
+        "url": "https://commons.wikimedia.org/wiki/File:Tim_Berners-Lee_Office_at_CERN.jpg",
+        "local_file": "assets/ch08/web/tim_berners_lee_office_cern.jpg",
+        "used_as": "assets/ch08/ch08_tim_berners_lee_office_story.png"
+      },
+      {
+        "title": "Tim Berners-Lee",
+        "url": "https://commons.wikimedia.org/wiki/File:Tim_Berners-Lee.jpg",
+        "author": "Uldis Bojārs",
+        "license": "CC BY-SA 2.5",
+        "local_file": "assets/ch08/web/tim_berners_lee_portrait.jpg",
+        "used_as": "assets/ch08/ch08_tim_berners_lee_portrait_story.png"
+      },
+      {
+        "title": "WorldWideWeb",
+        "url": "https://commons.wikimedia.org/wiki/File:WorldWideWeb.png",
+        "local_file": "assets/ch08/web/worldwideweb_browser.png",
+        "used_as": "assets/ch08/ch08_worldwideweb_browser_story.png"
+      },
+      {
+        "title": "NCSA Mosaic Browser Screenshot",
+        "url": "https://commons.wikimedia.org/wiki/File:NCSA_Mosaic_Browser_Screenshot.png",
+        "local_file": "assets/ch08/web/ncsa_mosaic_browser_screenshot.png",
+        "used_as": "assets/ch08/ch08_mosaic_browser_story.png"
+      },
+      {
+        "title": "CERN first server",
+        "url": "https://commons.wikimedia.org/wiki/File:CERN-first-server-p1030757.jpg",
+        "local_file": "assets/ch08/web/cern_first_web_server.jpg",
+        "used_as": "assets/ch08/ch08_first_web_server_story.png"
+      },
+      {
+        "title": "Internet Archive headquarters",
+        "url": "https://commons.wikimedia.org/wiki/File:Internet_Archive_-_5079018246.jpg",
+        "local_file": "assets/ch08/web/internet_archive_headquarters.jpg",
+        "used_as": "assets/ch08/ch08_internet_archive_story.png"
+      },
+      {
+        "title": "xkcd 979: Wisdom of the Ancients",
+        "url": "https://xkcd.com/979/",
+        "author": "Randall Munroe",
+        "license": "CC BY-NC 2.5",
+        "local_file": "assets/ch08/web/xkcd_wisdom_of_the_ancients.png",
+        "used_as": "assets/ch08/ch08_xkcd_wisdom_story.png"
+      },
+      {
+        "title": "Python.org robots.txt",
+        "url": "https://www.python.org/robots.txt",
+        "used_as": "code/ch08/02_fetch_python_homepage.py"
+      },
+      {
+        "title": "Vannevar Bush, 1938, Harris & Ewing (cropped)",
+        "url": "https://commons.wikimedia.org/wiki/File:Vannevar_Bush,_1938,_Harris_%26_Ewing_(cropped).jpg",
+        "author": "Harris & Ewing",
+        "license": "Public domain",
+        "local_file": "assets/ch08/web/vannevar_bush_1938.jpg",
+        "used_as": "assets/ch08/ch08_vannevar_bush_story.png"
+      }
+    ]
+  },
+  "assets": [
+    "assets/ch08/ch08_core_metaphor.png",
+    "assets/ch08/ch08_cover.png",
+    "assets/ch08/ch08_crawl_etiquette_card.png",
+    "assets/ch08/ch08_crawl_report_preview.png",
+    "assets/ch08/ch08_first_web_server_story.png",
+    "assets/ch08/ch08_internet_archive_story.png",
+    "assets/ch08/ch08_minimal_demo.png",
+    "assets/ch08/ch08_mosaic_browser_story.png",
+    "assets/ch08/ch08_pitfall_map.png",
+    "assets/ch08/ch08_powershell_scraper_run.png",
+    "assets/ch08/ch08_project_dashboard.png",
+    "assets/ch08/ch08_psychology_link.png",
+    "assets/ch08/ch08_public_source_bundle.png",
+    "assets/ch08/ch08_roadmap.png",
+    "assets/ch08/ch08_scraper_runtime_evidence.png",
+    "assets/ch08/ch08_source_cards_preview.png",
+    "assets/ch08/ch08_source_provenance_archive.png",
+    "assets/ch08/ch08_source_quality_scorecard.png",
+    "assets/ch08/ch08_story_scene.png",
+    "assets/ch08/ch08_tim_berners_lee_office_story.png",
+    "assets/ch08/ch08_tim_berners_lee_portrait_story.png",
+    "assets/ch08/ch08_vannevar_bush_story.png",
+    "assets/ch08/ch08_worldwideweb_browser_story.png",
+    "assets/ch08/ch08_xkcd_wisdom_story.png",
+    "assets/ch08/web/cern_first_web_server.jpg",
+    "assets/ch08/web/ch08_crawl_etiquette_card.png",
+    "assets/ch08/web/ch08_crawl_report_preview.png",
+    "assets/ch08/web/ch08_public_source_bundle.png",
+    "assets/ch08/web/ch08_scraper_runtime_evidence.png",
+    "assets/ch08/web/ch08_source_cards_preview.png",
+    "assets/ch08/web/ch08_source_provenance_archive.png",
+    "assets/ch08/web/ch08_source_quality_scorecard.png",
+    "assets/ch08/web/internet_archive_headquarters.jpg",
+    "assets/ch08/web/ncsa_mosaic_browser_screenshot.png",
+    "assets/ch08/web/powershell_ch08_scraper_run.png",
+    "assets/ch08/web/tim_berners_lee_office_cern.jpg",
+    "assets/ch08/web/tim_berners_lee_portrait.jpg",
+    "assets/ch08/web/vannevar_bush_1938.jpg",
+    "assets/ch08/web/worldwideweb_browser.png",
+    "assets/ch08/web/xkcd_wisdom_of_the_ancients.png"
+  ],
+  "code": [
+    "code/ch08/01_local_html_parser.py",
+    "code/ch08/02_fetch_python_homepage.py",
+    "code/ch08/03_save_links_csv.py",
+    "code/ch08/04_make_crawl_report.py",
+    "code/ch08/05_make_source_cards.py",
+    "code/ch08/06_make_crawl_etiquette_card.py",
+    "code/ch08/07_make_source_quality_scorecard.py",
+    "code/ch08/08_make_public_source_bundle.py",
+    "code/ch08/09_make_source_provenance_archive.py",
+    "code/ch08/10_make_scraper_runtime_evidence.py",
+    "code/ch08/requirements.txt"
+  ],
+  "scripts": [
+    "scripts/generate_ch08_visuals.py",
+    "scripts/check_links.py"
+  ],
+  "validation": {
+    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 24 local image refs after ch08 student-facing language polish",
+    "python_syntax": "ok; AST checked 12 python files including scripts",
+    "figures_centered": true,
+    "figcaption_count": 24,
+    "markdown_image_syntax_count": 0,
+    "formal_visuals_generated": "ok; scripts/generate_ch08_visuals.py generated 24 visuals",
+    "quality_audit": "source_notes/quality_audit_ch08.md",
+    "images_open_with_pil": "ok; 40 images verified",
+    "powershell_screenshot": "ok",
+    "robots_txt_fetch": "ok",
+    "crawl_report_generated": "ok",
+    "source_cards_generated": "ok",
+    "crawl_etiquette_card_generated": "ok",
+    "formal_visuals_regenerated": true,
+    "vannevar_bush_downloaded": "ok",
+    "source_quality_scorecard_generated": "ok",
+    "public_source_bundle_generated": "ok; 08_make_public_source_bundle.py generated JSON, report and chart",
+    "source_provenance_archive_generated": "ok; 09_make_source_provenance_archive.py generated report and preview",
+    "contact_sheet_checked": "ok; temporary contact sheet reviewed for alignment and overflow after student-facing route and concept polish",
+    "full_book_cross_check": "ok; 11 chapter dirs, 130 python files, 108 code python scripts, 280 markdown image refs, 0 missing local images, 0 caption mismatches, 0 manifest mismatches, 0 PIL errors, 0 temporary files",
+    "generated_scraper_runtime_evidence": "ok; 10_make_scraper_runtime_evidence.py generated report, output image and web copy",
+    "script_smoke_test": "ok; 01 through 10 scripts and visual generator ran successfully",
+    "temporary_contact_sheet_removed": true,
+    "student_facing_language_polish": "ok; route table, core concept bullets, psychology/research connection and script guide rewritten as student-executable scraping tasks"
+  },
+  "source_notes": [
+    "source_notes/source_manifest_ch08.md",
+    "source_notes/quality_audit_ch08.md"
+  ]
+}
+

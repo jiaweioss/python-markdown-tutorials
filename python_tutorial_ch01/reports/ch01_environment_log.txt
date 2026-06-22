@@ -1,0 +1,8 @@
+科研卡片工厂通电日志
+时间：2026-06-19 22:55:33
+状态：第一章环境测试成功
+当前 Python：C:\Users\jiaweiding\AppData\Local\Programs\Python\Python311\python.exe
+当前工作目录：C:\Users\jiaweiding\Desktop\Python教程\PythonMarkdown教程书\python_tutorial_ch01
+
+提醒：
+解释器、项目目录和输出位置要对齐，工厂才不会把材料送错仓库。

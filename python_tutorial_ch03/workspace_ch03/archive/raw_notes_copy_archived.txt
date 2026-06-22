@@ -1,0 +1,4 @@
+Python file demo
+line 1: read files safely
+line 2: write results clearly
+line 3: keep raw data untouched

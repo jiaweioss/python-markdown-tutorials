@@ -1,0 +1,14 @@
+*.md text eol=lf
+*.py text eol=lf
+*.txt text eol=lf
+*.csv text eol=lf
+*.json text eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.pdf binary
+*.pptx binary
+*.docx binary
+*.xlsx binary

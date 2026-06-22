@@ -1,0 +1,12 @@
+﻿chapter,title,characters,images,python_scripts,assets,status
+ch00,第0章：先别急着写代码——Python 课程地图、入门仪式与学习方法,28012,15,4,30,ready
+ch01,Python基础知识与工作环境,25917,26,6,56,ready
+ch02,Python编程基础：数据类型,27373,23,12,36,ready
+ch03,文件读写与文件夹管理,23200,22,12,33,ready
+ch04,Tkinter 图形界面编程,19430,26,10,43,ready
+ch05,面向对象程序设计,20120,26,10,43,ready
+ch06,数据分析与可视化,20136,27,11,45,ready
+ch07,PyGame 游戏开发,18653,25,10,41,ready
+ch08,网络爬虫开发实战,18886,24,10,40,ready
+ch09,Python 图像处理,18760,24,11,40,ready
+ch10,Python 办公自动化,19406,22,11,39,ready

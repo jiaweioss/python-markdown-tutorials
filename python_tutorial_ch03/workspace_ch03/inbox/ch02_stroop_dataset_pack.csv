@@ -1,0 +1,5 @@
+trial_id,participant,word,ink_color,response_key,correct_key,correct,congruent,reaction_time_ms,note
+1,S001,RED,blue,j,j,True,False,612.4,
+2,S001,GREEN,green,f,f,True,True,538.2,congruent
+3,S001,BLUE,red,f,f,True,False,701.8,incongruent
+4,S001,RED,red,f,f,True,True,487.6,fast

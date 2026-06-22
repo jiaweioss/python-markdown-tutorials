@@ -1,0 +1,40 @@
+{
+  "project": "teaching-feedback card game",
+  "source": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch06\\output\\ch06_memory_review_plan.json",
+  "round_count": 3,
+  "core_loop": [
+    "show card",
+    "press key",
+    "instant feedback",
+    "write result"
+  ],
+  "cards": [
+    {
+      "round": 1,
+      "topic": "变量",
+      "key": "1",
+      "difficulty": "flow",
+      "feedback": "Correct. Add one tiny challenge.",
+      "review_after_days": 4,
+      "rt_ms": 520
+    },
+    {
+      "round": 2,
+      "topic": "列表",
+      "key": "2",
+      "difficulty": "flow",
+      "feedback": "Correct. Add one tiny challenge.",
+      "review_after_days": 4,
+      "rt_ms": 480
+    },
+    {
+      "round": 3,
+      "topic": "字典",
+      "key": "3",
+      "difficulty": "support",
+      "feedback": "Slow down. Show the clue first.",
+      "review_after_days": 1,
+      "rt_ms": 610
+    }
+  ]
+}

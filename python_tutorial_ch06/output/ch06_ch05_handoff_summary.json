@@ -1,0 +1,15 @@
+{
+  "source": "ch05",
+  "card_count": 2,
+  "tag_counts": {
+    "OOP": 1,
+    "class": 1,
+    "object": 1,
+    "composition": 1,
+    "responsibility": 1
+  },
+  "avg_question_length": 31,
+  "trial_reaction_time_ms": 438.5,
+  "trial_is_fast": true,
+  "next_chapter": "ch06 data analysis"
+}

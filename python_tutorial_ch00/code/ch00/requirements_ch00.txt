@@ -1,0 +1,2 @@
+# 第0章不需要第三方库。
+# 后续章节会逐步安装 numpy、pandas、matplotlib、pygame、requests、beautifulsoup4、pillow 等。
