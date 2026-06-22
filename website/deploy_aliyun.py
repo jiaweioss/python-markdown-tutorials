@@ -102,7 +102,19 @@ server {{
         try_files $uri $uri/ /index.html;
     }}
 
-    location ~* \\.(?:png|jpg|jpeg|gif|css|js|html|json|py|md|csv|txt|zip|xlsx|docx|pptx)$ {{
+    location ~* \\.(?:html|json)$ {{
+        try_files $uri =404;
+        expires -1;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, max-age=0" always;
+    }}
+
+    location ~* \\.(?:css|js)$ {{
+        try_files $uri =404;
+        expires -1;
+        add_header Cache-Control "no-cache, must-revalidate" always;
+    }}
+
+    location ~* \\.(?:png|jpg|jpeg|gif|py|md|csv|txt|zip|xlsx|docx|pptx)$ {{
         try_files $uri =404;
         expires 7d;
         add_header Cache-Control "public";

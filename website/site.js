@@ -1,10 +1,33 @@
 (function () {
   const root = document.documentElement;
+  const publicChapterMax = 3;
   const key = "python-tutorial-theme";
   const saved = localStorage.getItem(key);
   if (saved === "dark") root.dataset.theme = "dark";
 
   const body = document.body;
+
+  const chapterIndexOf = (element) => {
+    const explicit = element.getAttribute("data-chapter-index");
+    if (explicit && /^\d+$/.test(explicit)) return Number(explicit);
+    const text = element.textContent || "";
+    const match = text.match(/\bCH\s*0*(\d{1,2})\b/i);
+    return match ? Number(match[1]) : null;
+  };
+
+  const hideUnreleasedChapters = () => {
+    document.querySelectorAll(".chapter-nav a, .chapter-card, .download-card").forEach((element) => {
+      const index = chapterIndexOf(element);
+      if (index !== null && index > publicChapterMax) {
+        element.hidden = true;
+        element.dataset.releaseHidden = "true";
+        element.setAttribute("aria-hidden", "true");
+        if ("tabIndex" in element) element.tabIndex = -1;
+      }
+    });
+  };
+  hideUnreleasedChapters();
+
   const navToggle = document.querySelector("[data-nav-toggle]");
   const navBackdrop = document.querySelector("[data-nav-backdrop]");
   const closeNav = () => {
@@ -50,6 +73,10 @@
     search.addEventListener("input", () => {
       const query = search.value.trim().toLowerCase();
       for (const card of cards) {
+        if (card.dataset.releaseHidden === "true") {
+          card.hidden = true;
+          continue;
+        }
         const text = card.textContent.toLowerCase();
         card.hidden = query && !text.includes(query);
       }

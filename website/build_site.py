@@ -23,6 +23,7 @@ DOWNLOADS_OUT = OUT / "downloads"
 
 PUBLIC_CHAPTER_MAX = 3
 PUBLIC_RELEASE_NOTE = "当前开放到第 3 章；后续章节正在分批整理，暂时不在网页中展示。"
+ASSET_VERSION = "20260622-sidebar-fix"
 MATERIAL_FOLDERS = ["chapters", "code", "reports", "output", "source_notes", "scripts"]
 MATERIAL_FILES = ["README.md", "manifest.json"]
 
@@ -258,7 +259,7 @@ def chapter_nav(chapters: list[Chapter], active: int | None, depth: str = "", sa
         cls = "active" if active == chapter.index else ""
         current = ' aria-current="page"' if active == chapter.index else ""
         items.append(
-            f'<a class="{cls}" href="{html.escape(href)}"{current}>'
+            f'<a class="{cls}" href="{html.escape(href)}" data-chapter-index="{chapter.index}"{current}>'
             f'<span class="chapter-number">{chapter.key.upper()}</span>'
             f'<span class="chapter-name">{html.escape(short_title(chapter.title))}</span>'
             "</a>"
@@ -295,7 +296,7 @@ def layout_page(title: str, body: str, depth: str = "") -> str:
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{html.escape(title)} - Python教程</title>
-  <link rel="stylesheet" href="{depth}assets/site.css" />
+  <link rel="stylesheet" href="{depth}assets/site.css?v={ASSET_VERSION}" />
   <link rel="stylesheet" href="{depth}assets/pygments.css" />
 </head>
 <body>
@@ -308,7 +309,7 @@ def layout_page(title: str, body: str, depth: str = "") -> str:
   <img alt="" data-lightbox-img />
   <p data-lightbox-caption></p>
 </div>
-<script src="{depth}assets/site.js"></script>
+<script src="{depth}assets/site.js?v={ASSET_VERSION}"></script>
 </body>
 </html>
 """
