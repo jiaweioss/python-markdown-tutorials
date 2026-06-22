@@ -21,6 +21,11 @@ figcaption strong {
 }
 </style>
 
+<figure align="center">
+  <img src="../assets/ch03/ch03_cover.png" alt="第3章封面" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-1 第3章封面</strong>：本章让 Python 走进真实文件夹，开始处理电脑里的资料。</figcaption>
+</figure>
+
 前两章里，我们已经能让 Python 运行起来，也认识了字符串、列表、字典这些数据材料。
 
 但真实世界的数据通常不会乖乖站在代码里。它们藏在文件夹里，可能叫 `scores.csv`，可能叫 `raw_notes.txt`，也可能叫一个你下载后再也没改过的 `新建文本文档(3).txt`。
@@ -33,14 +38,14 @@ figcaption strong {
 
 文件操作是初学者从“写小例子”走向“处理真实资料”的关键一步。因为只要你会读写文件，Python 就不再只是屏幕上打印几行字的玩具，而开始变成整理资料、生成报告、批量归档的工具。
 
-<figure align="center">
-  <img src="../assets/ch03/ch03_cover.png" alt="第3章封面" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-1 第3章封面</strong>：本章让 Python 走进真实文件夹，开始处理电脑里的资料。</figcaption>
-</figure>
-
 ---
 
 ## 3.1 本章路线
+
+<figure align="center">
+  <img src="../assets/ch03/ch03_roadmap.png" alt="第3章知识路线图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-2 第3章知识路线图</strong>：先认路径，再读写文件，最后用 pathlib、os 和 shutil 管理文件夹。</figcaption>
+</figure>
 
 这一章先处理两件最真实的事：
 
@@ -61,9 +66,11 @@ figcaption strong {
 
 > 文件操作会改变真实文件，所以每一步都要知道自己站在哪里、要操作谁、结果会写到哪里。
 
+---
+
 <figure align="center">
-  <img src="../assets/ch03/ch03_roadmap.png" alt="第3章知识路线图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-2 第3章知识路线图</strong>：先认路径，再读写文件，最后用 pathlib、os 和 shutil 管理文件夹。</figcaption>
+  <img src="../assets/ch03/ch03_archive_box_project_story.png" alt="档案盒照片" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-3 档案盒照片</strong>：文件夹管理的目标不是“把文件藏起来”，而是像整理档案一样，让资料能被找到、能被复现、能被交付。</figcaption>
 </figure>
 
 可以把本章想象成一次资料归档任务。
@@ -72,36 +79,31 @@ figcaption strong {
 
 这就像档案盒的意义：不是让盒子显得很专业，而是让未来的你不用在截止日期前一小时翻遍整个电脑。
 
-<figure align="center">
-  <img src="../assets/ch03/ch03_archive_box_project_story.png" alt="档案盒照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-3 档案盒照片</strong>：文件夹管理的目标不是“把文件藏起来”，而是像整理档案一样，让资料能被找到、能被复现、能被交付。</figcaption>
-</figure>
-
-1945 年，工程师 Vannevar Bush 写下《As We May Think》，想象一种叫 Memex 的机器：人可以把书籍、照片、笔记和索引连接起来，像沿着一串脚印一样重新找到想法。后来超文本、信息检索和知识管理的发展，都能看到这条思想线索的影子。
-
-这和本章的文件读写有什么关系？关系非常直接。一个杂乱文件夹里当然也有资料，但它缺少“线索”。当你用 Python 把原始数据、整理结果、报告、图片和清单放到明确位置时，你其实是在给资料修路：哪份是原始文件，哪份是处理结果，哪份可以交付，哪份只是中间产物，都变得可追踪。
+---
 
 <figure align="center">
   <img src="../assets/ch03/ch03_information_trail_vannevar_bush.png" alt="Vannevar Bush肖像" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图3-4 Vannevar Bush肖像</strong>：文件管理不只是“放整齐”，更重要的是让资料之间能形成线索，未来可以沿着线索找回来。</figcaption>
 </figure>
 
+1945 年，工程师 Vannevar Bush 写下《As We May Think》，想象一种叫 Memex 的机器：人可以把书籍、照片、笔记和索引连接起来，像沿着一串脚印一样重新找到想法。后来超文本、信息检索和知识管理的发展，都能看到这条思想线索的影子。
+
+这和本章的文件读写有什么关系？关系非常直接。一个杂乱文件夹里当然也有资料，但它缺少“线索”。当你用 Python 把原始数据、整理结果、报告、图片和清单放到明确位置时，你其实是在给资料修路：哪份是原始文件，哪份是处理结果，哪份可以交付，哪份只是中间产物，都变得可追踪。
+
 ---
 
 ## 3.2 文件读写流水线
+
+<figure align="center">
+  <img src="../assets/ch03/ch03_file_io_pipeline.png" alt="文件读写流水线" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-5 文件读写流水线</strong>：文件从磁盘进入程序，处理以后再写回结果，每一步都要知道数据在哪里。</figcaption>
+</figure>
 
 文件读写可以理解成一条流水线：
 
 ```text
 磁盘文件 → 打开文件 → 读入变量 → 处理内容 → 写出结果
 ```
-
-下面先把这条线画出来，后面的代码就是沿着这条线一步一步走。
-
-<figure align="center">
-  <img src="../assets/ch03/ch03_file_io_pipeline.png" alt="文件读写流水线" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-5 文件读写流水线</strong>：文件从磁盘进入程序，处理以后再写回结果，每一步都要知道数据在哪里。</figcaption>
-</figure>
 
 比如你有一个 `data/raw_notes.txt`：
 
@@ -135,6 +137,11 @@ output.write_text("整理完成\n", encoding="utf-8")
 ---
 
 ## 3.3 路径：文件不是“在电脑里”，而是在某个地址里
+
+<figure align="center">
+  <img src="../assets/ch03/ch03_path_map.png" alt="路径地图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-6 路径地图</strong>：路径就是文件的地址，当前工作目录决定相对路径从哪里出发。</figcaption>
+</figure>
 
 很多新手第一次遇到 `FileNotFoundError`，会以为文件丢了。
 
@@ -176,36 +183,25 @@ C:\Users\name\Desktop\my_project\data\raw.txt
 
 建议：初学阶段不要到处写绝对路径。更好的做法是把项目目录整理好，用相对路径描述项目内部文件。
 
-把这几件事合在一起看，路径其实就是“从当前房间出发去找文件”的地图。
-
-<figure align="center">
-  <img src="../assets/ch03/ch03_path_map.png" alt="路径地图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-6 路径地图</strong>：路径就是文件的地址，当前工作目录决定相对路径从哪里出发。</figcaption>
-</figure>
-
-老式文件柜最怕“凭感觉塞进去”。你今天觉得“这个文件应该在桌面”，三周后就只剩下一个模糊印象。路径也是这样：`workspace_ch03/data/raw_notes.txt` 比“我记得好像在某个文件夹里”可靠得多。
-
-文件柜抽屉上的标签，就是路径感最好的实体比喻。
-
 <figure align="center">
   <img src="../assets/ch03/ch03_card_filing_cabinet_path_index.png" alt="文件柜抽屉照片" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图3-7 文件柜抽屉照片</strong>：路径像抽屉标签；标签越清楚，找到资料越快，出错概率也越低。</figcaption>
 </figure>
 
+老式文件柜最怕“凭感觉塞进去”。你今天觉得“这个文件应该在桌面”，三周后就只剩下一个模糊印象。路径也是这样：`workspace_ch03/data/raw_notes.txt` 比“我记得好像在某个文件夹里”可靠得多。
+
 写代码时，路径越具体，程序越镇定。
 
 ---
-
-把文件夹想象成一排档案货架会更容易理解：`data/` 是原始资料区，`output/` 是加工结果区，`organized/` 是分类归档区，`reports/` 是交付说明区。货架本身不会变聪明，聪明的是你制定了清楚的规则，并让 Python 按规则执行。
-
-所以后面看到 `Path.mkdir()`、`os.walk()`、`shutil.copyfile()` 时，不要把它们看成零散函数。它们是档案库里的几种动作：建新格子、巡检货架、复制材料、移动材料、生成清单。
-
-下面这张图把“文件夹层级”还原成真实档案库的样子：秩序不是靠记忆维持的，而是靠位置、编号和清单维持的。
 
 <figure align="center">
   <img src="../assets/ch03/ch03_archive_storage_shelves.png" alt="档案库货架照片" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图3-8 档案库货架照片</strong>：真实档案库依靠货架、编号和清单保持秩序；程序里的文件夹也需要同样清楚的层级。</figcaption>
 </figure>
+
+把文件夹想象成一排档案货架会更容易理解：`data/` 是原始资料区，`output/` 是加工结果区，`organized/` 是分类归档区，`reports/` 是交付说明区。货架本身不会变聪明，聪明的是你制定了清楚的规则，并让 Python 按规则执行。
+
+所以后面看到 `Path.mkdir()`、`os.walk()`、`shutil.copyfile()` 时，不要把它们看成零散函数。它们是档案库里的几种动作：建新格子、巡检货架、复制材料、移动材料、生成清单。
 
 ---
 
@@ -233,12 +229,12 @@ workspace_ch03/
 
 ---
 
-下面这张图展示的是本章小项目的真实运行环境。终端里先运行 `01_create_sample_files.py`，再运行 `07_project_archiver.py`，最后用 `Get-ChildItem workspace_ch03 -Recurse -File` 查看实际生成的文件。
-
 <figure align="center">
   <img src="../assets/ch03/ch03_powershell_file_operations_run.png" alt="PowerShell真实运行文件操作脚本" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图3-9 PowerShell真实运行文件操作脚本</strong>：先创建安全练习目录，再运行资料归档器，最后列出真实生成的文件路径。</figcaption>
 </figure>
+
+上图展示的是本章小项目的真实运行环境。终端里先运行 `01_create_sample_files.py`，再运行 `07_project_archiver.py`，最后用 `Get-ChildItem workspace_ch03 -Recurse -File` 查看实际生成的文件。
 
 这一步很关键：文件操作的学习不能只看代码。你要亲眼确认文件真的出现了、真的被复制了、报告真的写出来了。只有这样，`read()`、`write()`、`copyfile()` 才会从 API 名字变成可验证的动作。
 
@@ -287,6 +283,11 @@ with open("data/raw_notes.txt", "r", encoding="utf-8") as file:
 
 ## 3.6 open() 模式速查
 
+<figure align="center">
+  <img src="../assets/ch03/ch03_open_mode_matrix.png" alt="open模式速查表" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-10 open 模式速查表</strong>：读、写、追加和二进制模式各有用途，尤其要小心覆盖写入。</figcaption>
+</figure>
+
 `mode` 是打开文件时的模式。它像不同钥匙，开不同门。
 
 | 模式 | 含义 | 风险 |
@@ -314,12 +315,12 @@ with open("data/raw_notes.txt", "w", encoding="utf-8") as file:
 3. 不确定时先打印路径。
 4. 不要用 `"w"` 直接写原始数据文件。
 
-<figure align="center">
-  <img src="../assets/ch03/ch03_open_mode_matrix.png" alt="open模式速查表" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-10 open 模式速查表</strong>：读、写、追加和二进制模式各有用途，尤其要小心覆盖写入。</figcaption>
-</figure>
-
 ---
+
+<figure align="center">
+  <img src="../assets/ch03/ch03_rosetta_encoding_story.png" alt="Rosetta Stone照片" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-11 Rosetta Stone照片</strong>：编码就像文字系统的翻译规则；读写文本时明确 `encoding="utf-8"`，就是告诉 Python 用哪套规则解读字符。</figcaption>
+</figure>
 
 文件读写里还有一个经常把新手绊倒的词：编码。
 
@@ -333,23 +334,16 @@ encoding="utf-8"
 
 这不是仪式感，而是给 Python 一张清楚的翻译说明。
 
-<figure align="center">
-  <img src="../assets/ch03/ch03_rosetta_encoding_story.png" alt="Rosetta Stone照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-11 Rosetta Stone照片</strong>：编码就像文字系统的翻译规则；读写文本时明确 `encoding="utf-8"`，就是告诉 Python 用哪套规则解读字符。</figcaption>
-</figure>
-
 ---
 
 ## 3.7 读取文件：read、readline、readlines、逐行循环
-
-读取文件有几种常见方法。
-
-先把四种方法放在一张图里，再逐个跑最小代码。
 
 <figure align="center">
   <img src="../assets/ch03/ch03_read_methods_comparison.png" alt="读取方法对比" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图3-12 读取方法对比</strong>：不同读取方法适合不同规模和不同结构的文本资料。</figcaption>
 </figure>
+
+读取文件有几种常见方法。
 
 ### 3.7.1 read()
 
@@ -412,6 +406,11 @@ python code/ch03/02_read_text_file.py
 
 ## 3.8 with open()：自动关门的阅览室
 
+<figure align="center">
+  <img src="../assets/ch03/ch03_with_context_door.png" alt="with自动关闭" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-13 with 自动关闭</strong>：`with open()` 像一扇会自动关上的门，减少忘记关闭文件的风险。</figcaption>
+</figure>
+
 这里要认真记住一件事：`open()` 之后一定要 `close()`。
 
 传统写法：
@@ -434,11 +433,6 @@ with open("data/raw_notes.txt", "r", encoding="utf-8") as file:
 离开 `with` 的缩进块后，文件会自动关闭。
 
 可以把 `with open()` 想成一间会自动关门的阅览室。你进去读资料，读完离开，门自动关上；中间就算你被椅子绊了一下，门也会被处理好。
-
-<figure align="center">
-  <img src="../assets/ch03/ch03_with_context_door.png" alt="with自动关闭" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-13 with 自动关闭</strong>：`with open()` 像一扇会自动关上的门，减少忘记关闭文件的风险。</figcaption>
-</figure>
 
 后面的文件读写，优先使用 `with` 或 `pathlib` 的读写方法。
 
@@ -563,6 +557,11 @@ python code/ch03/04_copy_move_files.py
 
 ## 3.12 文件夹管理：创建、遍历、删除、复制、移动
 
+<figure align="center">
+  <img src="../assets/ch03/ch03_folder_tree_operations.png" alt="文件夹管理" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-14 文件夹管理</strong>：创建、遍历、复制、移动和删除文件夹，都要先确认目标路径。</figcaption>
+</figure>
+
 常见文件夹操作：
 
 | 操作 | os / shutil | pathlib |
@@ -573,13 +572,6 @@ python code/ch03/04_copy_move_files.py
 | 删除非空目录 | `shutil.rmtree(path)` | 常配合 `shutil` |
 | 复制目录 | `shutil.copytree(old, new)` | 常配合 `shutil` |
 | 移动目录 | `shutil.move(old, new)` | 常配合 `shutil` |
-
-把这些动作放到一张图里看，会更像是在管理一棵目录树：先确认根在哪里，再决定创建、遍历、复制、移动还是删除。
-
-<figure align="center">
-  <img src="../assets/ch03/ch03_folder_tree_operations.png" alt="文件夹管理" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-14 文件夹管理</strong>：创建、遍历、复制、移动和删除文件夹，都要先确认目标路径。</figcaption>
-</figure>
 
 创建目录：
 
@@ -598,6 +590,11 @@ Path("workspace_ch03/output").mkdir(parents=True, exist_ok=True)
 ---
 
 ## 3.13 遍历文件夹并生成清单
+
+<figure align="center">
+  <img src="../assets/ch03/ch03_file_size_chart.png" alt="文件大小统计图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-15 文件大小统计图</strong>：统计文件大小能帮助你快速理解资料夹里哪些文件最占空间。</figcaption>
+</figure>
 
 遍历目录，就是让 Python 走进一个文件夹，把里面的文件逐个看一遍。
 
@@ -631,16 +628,14 @@ workspace_ch03/output/file_inventory.md
 
 这就是“图表”和“文件管理”结合起来的入口：你先遍历文件夹，收集信息，再把信息写成报告或画成图。
 
-下面这张图把文件大小做成了可视化结果。它不是为了炫技，而是让你一眼看出哪个文件更占空间。
-
-<figure align="center">
-  <img src="../assets/ch03/ch03_file_size_chart.png" alt="文件大小统计图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-15 文件大小统计图</strong>：统计文件大小能帮助你快速理解资料夹里哪些文件最占空间。</figcaption>
-</figure>
-
 ---
 
 ## 3.14 删除文件与文件夹：最需要谨慎的操作
+
+<figure align="center">
+  <img src="../assets/ch03/ch03_safe_delete_warning.png" alt="删除安全卡" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-16 删除安全卡</strong>：删除操作是真实生效的，动手前先确认路径、范围和备份。</figcaption>
+</figure>
 
 删除文件：
 
@@ -672,13 +667,6 @@ shutil.rmtree("workspace_ch03/some_folder")
 2. 确认路径在项目目录内。
 3. 先移动到 `trash` 或 `backup`。
 4. 最后再清理。
-
-删除操作最好先在脑子里亮一盏红灯：这不是“撤销一下就好”的练习，而是真的会改变文件系统。
-
-<figure align="center">
-  <img src="../assets/ch03/ch03_safe_delete_warning.png" alt="删除安全卡" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-16 删除安全卡</strong>：删除操作是真实生效的，动手前先确认路径、范围和备份。</figcaption>
-</figure>
 
 配套脚本：
 
@@ -758,6 +746,11 @@ workspace_ch03/output/ch03_ch02_stroop_file_handoff.png
 
 ## 3.16 本章小项目：资料归档器
 
+<figure align="center">
+  <img src="../assets/ch03/ch03_mini_project_archiver.png" alt="本章小项目" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-19 本章小项目</strong>：资料归档器把文件读取、分类、复制和报告生成串成一条完整任务线。</figcaption>
+</figure>
+
 本章的小项目是：把一堆杂乱文件按后缀整理到不同文件夹，并生成一份归档报告。
 
 运行：
@@ -798,13 +791,6 @@ output/archive_report.md
 2. 它把路径、遍历、复制、写报告串起来。
 3. 它可以重复运行，适合后续扩展成真实资料整理工具。
 
-把这条任务线画出来，就是一个小型资料归档器：输入是杂乱文件，输出是分类目录和归档报告。
-
-<figure align="center">
-  <img src="../assets/ch03/ch03_mini_project_archiver.png" alt="本章小项目" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-19 本章小项目</strong>：资料归档器把文件读取、分类、复制和报告生成串成一条完整任务线。</figcaption>
-</figure>
-
 如果你希望它更像一个“科研资料归档器”，还可以继续运行：
 
 ```bash
@@ -838,8 +824,6 @@ python code/ch03/09_make_archive_receipt.py
 workspace_ch03/output/ch03_archive_receipt.md
 workspace_ch03/output/ch03_archive_receipt_preview.png
 ```
-
-运行结果可以用下面这张回执预览来核对。
 
 <figure align="center">
   <img src="../assets/ch03/ch03_archive_receipt_preview.png" alt="归档回执预览" style="zoom:50%; display:block; margin:0 auto;" />
@@ -885,8 +869,6 @@ workspace_ch03/output/ch03_material_intake_register.png
 reports/ch03_material_intake_register.md
 ```
 
-生成后，可以用下面这张登记册图检查“资料入口、整理结果、输出报告”是否全部对上。
-
 <figure align="center">
   <img src="../assets/ch03/ch03_material_intake_register.png" alt="资料入库登记册" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图3-23 资料入库登记册</strong>：`13_make_material_intake_register.py` 扫描 `inbox/`、`organized/`、`output/` 和 `reports/`，把资料入口、整理结果、输出报告和关键证据文件放在同一张图里，让“我整理过文件”升级为“我能说明资料从哪里来、现在在哪里、凭什么可信”。</figcaption>
@@ -911,8 +893,6 @@ reports/ch03_material_intake_register.md
 | `pathlib` | 路径对象工具 | 路径地图 |
 | `shutil` | 高级文件操作 | 搬家公司 |
 | 哈希摘要 | 文件内容的简短指纹 | 档案编号 |
-
-下面这张图把本章最关键的检查点收在一起，适合学完以后对照自测。
 
 <figure align="center">
   <img src="../assets/ch03/ch03_review_checkpoint.png" alt="文件读写复盘检查点" style="zoom:50%; display:block; margin:0 auto;" />
@@ -1062,14 +1042,12 @@ reports/ch03_material_intake_register.md
 
 ## 3.20 本章配套文件
 
-到这里，文件已经不只是硬盘上的零散对象，而是后续界面、分析和自动化报告的材料入口。下一章写 GUI 时，按钮背后要读取什么、保存到哪里、出错时怎么提示，都离不开这一章建立的路径和文件习惯。
-
-这也是第3章和第4章之间的交接：先把资料放稳，再把操作做成界面。
-
 <figure align="center">
   <img src="../assets/ch03/ch03_gui_handoff_bridge.png" alt="文件资料到 GUI 的交接桥" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图3-26 文件资料到 GUI 的交接桥</strong>：第3章把资料整理成稳定的文件和报告；第4章会把这些材料接到窗口、按钮和输入框上，让程序从“能在终端运行”变成“能被人点击使用”。</figcaption>
 </figure>
+
+到这里，文件已经不只是硬盘上的零散对象，而是后续界面、分析和自动化报告的材料入口。下一章写 GUI 时，按钮背后要读取什么、保存到哪里、出错时怎么提示，都离不开这一章建立的路径和文件习惯。
 
 ```text
 python_tutorial_ch03/

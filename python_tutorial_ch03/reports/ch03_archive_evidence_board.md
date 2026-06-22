@@ -6,7 +6,7 @@
 
         - inbox 文件数：6
         - organized 文件数：6
-        - output 文件数：15
+        - output 文件数：13
 
         ## 关键证据
 

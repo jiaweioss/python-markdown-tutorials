@@ -27,8 +27,6 @@
 
 本轮继续重生成封面、路线图、路径地图、读写流水线、`open()` 模式、读取方法、`with open()`、文件夹管理、文件夹体检、删除安全卡和资料归档器等核心概念图。新版概念图只保留必要标签与视觉关系，避免把长解释直接写进图片；知识点说明改由 Markdown 正文和图注承担。
 
-2026-06-19 复验中，正文图片顺序已统一为“先叙述，再图片和图注”。每张图前都保留对应的故事、概念解释、任务命令或结果说明，图片只承担视觉锚点和运行结果展示，不再让学生先看到图再回头寻找解释。
-
 本轮尾部新增 `ch03_review_checkpoint.png`、`ch03_practice_evidence_workbench.png` 和 `ch03_gui_handoff_bridge.png`。三张图均由 `scripts/generate_ch03_visuals.py` 生成，图片内部不写解释文字，只用文件夹、文件、终端、勾选、窗口等符号打断章末长段文字，并把故事、练习提示和下一章过渡说明放在 Markdown 正文与图注中。
 
 | 用途 | 原图 | 本地原图 | 正式图片 | 来源、作者与授权 |
@@ -75,16 +73,9 @@
 - `reports/ch03_material_intake_register.md`：资料入库登记册 Markdown 报告。
 - `workspace_ch03/organized/json/ch02_stroop_dataset_pack.json`：从第2章复制并归档的 JSON 数据包。
 - `workspace_ch03/organized/csv/ch02_stroop_dataset_pack.csv`：从第2章复制并归档的 CSV 数据包。
-- `workspace_ch03/inbox/figure.png`：`07_project_archiver.py`、`08_make_archive_manifest.py`、`09_make_archive_receipt.py` 生成的 4x4 示例 PNG，用于让归档器处理真实图片文件。
-- `workspace_ch03/organized/png/figure.png`：由归档器复制出的示例 PNG 副本，已通过 PIL 打开验证。
 - `assets/ch03/ch03_review_checkpoint.png`：脚本生成的文件读写复盘检查点，用无文字图形串起路径、文件、检查、终端、输出和复核。
 - `assets/ch03/ch03_practice_evidence_workbench.png`：脚本生成的练习证据工作台，用无文字图形呈现输入目录、输出目录、检查清单和终端运行结果。
 - `assets/ch03/ch03_gui_handoff_bridge.png`：脚本生成的文件到 GUI 交接桥，用无文字图形衔接第3章文件资料和第4章窗口界面。
-
-## 实操检测记录
-
-- `source_notes/beginner_practice_report_ch03.md`：从初学者视角记录本章 13 个脚本的运行路线、关键产物、常见踩坑、图片顺序检查和 PIL 图片有效性检查。
-- 2026-06-19 复验确认：`python scripts/generate_ch03_visuals.py`、`python scripts/check_links.py`、15 个 Python 文件 `py_compile`、46 张 PNG/JPG/GIF 的 PIL 打开检查均通过。
 
 ## 正式教材图片
 

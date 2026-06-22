@@ -1,8 +1,15 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
+from typing import Iterable
 
-from PIL import Image, ImageDraw, ImageOps
+try:
+    from PIL import Image, ImageDraw, ImageFont, ImageOps
+except ModuleNotFoundError as exc:
+    raise SystemExit(
+        "This visual generator needs Pillow. Install it with: python -m pip install pillow"
+    ) from exc
 
 
 ROOT = Path.cwd()
@@ -13,16 +20,21 @@ ASSET_DIR = ROOT / "assets" / "ch00"
 WEB_DIR = ASSET_DIR / "web"
 
 W, H = 1800, 1120
-BG = "#F7F8FB"
-INK = "#162033"
+BG = "#F6F8FB"
+PANEL = "#FFFFFF"
+PANEL_2 = "#F0F4FA"
+INK = "#172033"
 MUTED = "#667085"
-LINE = "#D8E0EC"
-BLUE = "#2F6BFF"
-GREEN = "#24A06B"
-ORANGE = "#F28C28"
-PURPLE = "#7A5AF8"
-RED = "#E84C61"
-CYAN = "#18A9B5"
+LINE = "#D7DFEA"
+GRID = "#E7EDF5"
+BLUE = "#2563EB"
+GREEN = "#059669"
+ORANGE = "#EA7A18"
+PURPLE = "#7C3AED"
+RED = "#DC3545"
+CYAN = "#0891B2"
+YELLOW = "#D99A00"
+COLORS = [BLUE, GREEN, ORANGE, PURPLE, CYAN, RED, YELLOW]
 
 
 def canvas(width: int = W, height: int = H):
@@ -34,21 +46,218 @@ def save(im: Image.Image, name: str):
     im.save(ASSET_DIR / name, optimize=True, quality=95)
 
 
-def rounded(d: ImageDraw.ImageDraw, xy, fill="#FFFFFF", outline=LINE, radius=26, width=2):
+def _font_paths(bold: bool = False) -> list[Path]:
+    if bold:
+        names = [
+            "msyhbd.ttc",
+            "simhei.ttf",
+            "NotoSansCJKsc-Bold.otf",
+            "Arialbd.ttf",
+        ]
+    else:
+        names = [
+            "msyh.ttc",
+            "simhei.ttf",
+            "NotoSansCJKsc-Regular.otf",
+            "arial.ttf",
+        ]
+    windows = Path("C:/Windows/Fonts")
+    return [windows / name for name in names]
+
+
+def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
+    for path in _font_paths(bold):
+        if path.exists():
+            return ImageFont.truetype(str(path), size)
+    return ImageFont.load_default()
+
+
+def text_size(d: ImageDraw.ImageDraw, text: str, fnt) -> tuple[int, int]:
+    if not text:
+        return 0, 0
+    box = d.textbbox((0, 0), text, font=fnt)
+    return box[2] - box[0], box[3] - box[1]
+
+
+def _tokens(line: str) -> list[str]:
+    return re.findall(r"[A-Za-z0-9_./:+#-]+|[\u4e00-\u9fff]|[^\sA-Za-z0-9_./:+#\-\u4e00-\u9fff]|\s+", line)
+
+
+def wrap_line(d: ImageDraw.ImageDraw, line: str, fnt, max_width: int) -> list[str]:
+    tokens = _tokens(line)
+    lines: list[str] = []
+    current = ""
+    for token in tokens:
+        if token.isspace():
+            token = " "
+        candidate = (current + token).strip() if not current else current + token
+        if not candidate.strip():
+            continue
+        if text_size(d, candidate, fnt)[0] <= max_width:
+            current = candidate
+            continue
+        if current.strip():
+            lines.append(current.strip())
+            current = token.strip()
+        else:
+            current = ""
+            piece = ""
+            for ch in token:
+                candidate_piece = piece + ch
+                if text_size(d, candidate_piece, fnt)[0] <= max_width:
+                    piece = candidate_piece
+                else:
+                    if piece:
+                        lines.append(piece)
+                    piece = ch
+            current = piece
+    if current.strip():
+        lines.append(current.strip())
+    punctuation = set("，。；：、,.!?！？)]）")
+    cleaned: list[str] = []
+    for line in lines:
+        if cleaned and line and all(ch in punctuation for ch in line):
+            cleaned[-1] += line
+        elif cleaned and line and line[0] in punctuation:
+            cleaned[-1] += line[0]
+            if line[1:].strip():
+                cleaned.append(line[1:].strip())
+        else:
+            cleaned.append(line)
+    return cleaned or [""]
+
+
+def fit_lines(
+    d: ImageDraw.ImageDraw,
+    text: str,
+    max_width: int,
+    max_height: int,
+    size: int,
+    min_size: int = 18,
+    bold: bool = False,
+    spacing_ratio: float = 0.38,
+):
+    best = None
+    for font_size in range(size, min_size - 1, -1):
+        fnt = font(font_size, bold=bold)
+        lines: list[str] = []
+        for para in text.splitlines() or [""]:
+            lines.extend(wrap_line(d, para, fnt, max_width))
+        base_h = max(text_size(d, "汉字Ag", fnt)[1], int(font_size * 0.9))
+        spacing = max(3, int(font_size * spacing_ratio))
+        height = len(lines) * base_h + max(0, len(lines) - 1) * spacing
+        if height <= max_height:
+            return fnt, lines, base_h, spacing
+        best = (fnt, lines, base_h, spacing)
+    return best
+
+
+def draw_text(
+    d: ImageDraw.ImageDraw,
+    xy: tuple[int, int, int, int],
+    text: str,
+    size: int = 34,
+    min_size: int = 18,
+    fill: str = INK,
+    bold: bool = False,
+    align: str = "left",
+    valign: str = "top",
+):
+    x1, y1, x2, y2 = xy
+    max_width = max(10, x2 - x1)
+    max_height = max(10, y2 - y1)
+    fnt, lines, line_h, spacing = fit_lines(d, text, max_width, max_height, size, min_size, bold)
+    total_h = len(lines) * line_h + max(0, len(lines) - 1) * spacing
+    if valign == "center":
+        y = y1 + (max_height - total_h) // 2
+    elif valign == "bottom":
+        y = y2 - total_h
+    else:
+        y = y1
+    for line in lines:
+        width, _ = text_size(d, line, fnt)
+        if align == "center":
+            x = x1 + (max_width - width) // 2
+        elif align == "right":
+            x = x2 - width
+        else:
+            x = x1
+        d.text((x, y), line, font=fnt, fill=fill)
+        y += line_h + spacing
+
+
+def rounded(
+    d: ImageDraw.ImageDraw,
+    xy: tuple[int, int, int, int],
+    fill: str = PANEL,
+    outline: str = LINE,
+    radius: int = 24,
+    width: int = 2,
+):
     d.rounded_rectangle(xy, radius=radius, fill=fill, outline=outline, width=width)
 
 
-def shadow(d: ImageDraw.ImageDraw, xy, radius=26):
+def shadow(d: ImageDraw.ImageDraw, xy: tuple[int, int, int, int], radius: int = 24):
     x1, y1, x2, y2 = xy
-    d.rounded_rectangle((x1 + 8, y1 + 10, x2 + 8, y2 + 10), radius=radius, fill="#DCE2EC")
+    d.rounded_rectangle((x1 + 8, y1 + 10, x2 + 8, y2 + 10), radius=radius, fill="#DDE4EF")
 
 
-def arrow(d: ImageDraw.ImageDraw, start, end, color="#98A5B8", width=5):
+def arrow(
+    d: ImageDraw.ImageDraw,
+    start: tuple[int, int],
+    end: tuple[int, int],
+    color: str = "#A8B4C7",
+    width: int = 5,
+):
     x1, y1 = start
     x2, y2 = end
     d.line((x1, y1, x2, y2), fill=color, width=width)
-    sign = 1 if x2 >= x1 else -1
-    d.polygon([(x2, y2), (x2 - sign * 20, y2 - 11), (x2 - sign * 20, y2 + 11)], fill=color)
+    dx, dy = x2 - x1, y2 - y1
+    length = max(1, (dx * dx + dy * dy) ** 0.5)
+    ux, uy = dx / length, dy / length
+    px, py = -uy, ux
+    size = width * 3.6
+    head = [
+        (x2, y2),
+        (x2 - ux * size + px * size * 0.45, y2 - uy * size + py * size * 0.45),
+        (x2 - ux * size - px * size * 0.45, y2 - uy * size - py * size * 0.45),
+    ]
+    d.polygon(head, fill=color)
+
+
+def badge(d: ImageDraw.ImageDraw, xy: tuple[int, int, int, int], text: str, color: str):
+    rounded(d, xy, fill="#FFFFFF", outline=color, radius=20, width=3)
+    draw_text(d, (xy[0] + 16, xy[1] + 6, xy[2] - 16, xy[3] - 6), text, size=24, min_size=16, fill=color, bold=True, align="center", valign="center")
+
+
+def title(d: ImageDraw.ImageDraw, text: str, subtitle: str = ""):
+    draw_text(d, (110, 70, 1690, 145), text, size=54, min_size=36, fill=INK, bold=True, align="center", valign="center")
+    if subtitle:
+        draw_text(d, (180, 148, 1620, 205), subtitle, size=28, min_size=22, fill=MUTED, align="center", valign="center")
+
+
+def step_card(
+    d: ImageDraw.ImageDraw,
+    xy: tuple[int, int, int, int],
+    label: str,
+    heading: str,
+    body: str,
+    color: str,
+    number: str | None = None,
+):
+    shadow(d, xy, radius=22)
+    rounded(d, xy, fill=PANEL, outline=LINE, radius=22, width=2)
+    x1, y1, x2, y2 = xy
+    d.rounded_rectangle((x1, y1, x1 + 14, y2), radius=7, fill=color)
+    if number:
+        d.ellipse((x1 + 28, y1 + 22, x1 + 84, y1 + 78), fill=color)
+        draw_text(d, (x1 + 28, y1 + 22, x1 + 84, y1 + 78), number, size=28, min_size=20, fill="#FFFFFF", bold=True, align="center", valign="center")
+        text_x = x1 + 104
+    else:
+        text_x = x1 + 34
+    draw_text(d, (text_x, y1 + 18, x2 - 28, y1 + 48), label, size=20, min_size=16, fill=color, bold=True, valign="center")
+    draw_text(d, (text_x, y1 + 54, x2 - 28, y1 + 100), heading, size=31, min_size=22, fill=INK, bold=True, valign="center")
+    draw_text(d, (x1 + 34, y1 + 104, x2 - 28, y2 - 18), body, size=24, min_size=18, fill=MUTED)
 
 
 def photo_plate(output_name: str, image_name: str):
@@ -62,8 +271,7 @@ def photo_plate(output_name: str, image_name: str):
     if src.exists():
         raw = Image.open(src)
         raw = ImageOps.exif_transpose(raw).convert("RGB")
-        resampling = getattr(Image, "Resampling", Image).LANCZOS
-        shown = ImageOps.contain(raw, (frame[2] - frame[0] - 30, frame[3] - frame[1] - 30), method=resampling)
+        shown = ImageOps.contain(raw, (frame[2] - frame[0] - 30, frame[3] - frame[1] - 30), method=Image.Resampling.LANCZOS)
         x = frame[0] + (frame[2] - frame[0] - shown.width) // 2
         y = frame[1] + (frame[3] - frame[1] - shown.height) // 2
         im.paste(shown, (x, y))
@@ -74,370 +282,368 @@ def photo_plate(output_name: str, image_name: str):
     save(im, output_name)
 
 
-def draw_map_icon(d: ImageDraw.ImageDraw, x: int, y: int, color=BLUE):
-    d.line((x - 35, y + 30, x - 10, y - 35, x + 18, y + 25, x + 40, y - 28), fill=color, width=8)
-    d.ellipse((x - 48, y - 48, x + 48, y + 48), outline=color, width=5)
-
-
-def draw_tool_icon(d: ImageDraw.ImageDraw, x: int, y: int, color=GREEN):
-    d.line((x - 35, y + 32, x + 32, y - 35), fill=color, width=12)
-    d.ellipse((x + 12, y - 48, x + 52, y - 8), outline=color, width=8)
-    d.ellipse((x - 52, y + 10, x - 12, y + 50), outline=color, width=8)
-
-
-def draw_base_icon(d: ImageDraw.ImageDraw, x: int, y: int, color=ORANGE):
-    d.polygon([(x - 52, y + 12), (x, y - 45), (x + 52, y + 12)], outline=color, fill=None)
-    d.line((x - 38, y + 12, x - 38, y + 50, x + 38, y + 50, x + 38, y + 12), fill=color, width=8)
-    d.line((x - 52, y + 12, x, y - 45, x + 52, y + 12), fill=color, width=8)
-
-
-def draw_loop_icon(d: ImageDraw.ImageDraw, x: int, y: int, color=PURPLE):
-    d.arc((x - 50, y - 50, x + 50, y + 50), 35, 310, fill=color, width=8)
-    d.polygon([(x + 48, y - 8), (x + 68, y - 4), (x + 54, y + 12)], fill=color)
-
-
-def draw_star_icon(d: ImageDraw.ImageDraw, x: int, y: int, color=RED):
-    pts = [(x, y - 55), (x + 14, y - 15), (x + 56, y - 15), (x + 22, y + 8), (x + 35, y + 50), (x, y + 24), (x - 35, y + 50), (x - 22, y + 8), (x - 56, y - 15), (x - 14, y - 15)]
-    d.polygon(pts, outline=color, fill=None)
-    d.line(pts + [pts[0]], fill=color, width=6)
-
-
-def draw_terminal_icon(d: ImageDraw.ImageDraw, x: int, y: int, color=GREEN):
-    d.rounded_rectangle((x - 55, y - 40, x + 55, y + 40), radius=12, outline=color, width=7)
-    d.line((x - 28, y - 10, x - 8, y, x - 28, y + 10), fill=color, width=6)
-    d.line((x + 2, y + 18, x + 32, y + 18), fill=color, width=6)
-
-
-def draw_file_icon(d: ImageDraw.ImageDraw, x: int, y: int, color=PURPLE):
-    d.line((x - 38, y - 52, x + 18, y - 52, x + 44, y - 24, x + 44, y + 52, x - 38, y + 52, x - 38, y - 52), fill=color, width=7)
-    d.line((x + 18, y - 52, x + 18, y - 24, x + 44, y - 24), fill=color, width=7)
-
-
-def draw_script_icon(d: ImageDraw.ImageDraw, x: int, y: int, color=CYAN):
-    d.rounded_rectangle((x - 50, y - 54, x + 50, y + 54), radius=14, outline=color, width=7)
-    for yy in (y - 24, y, y + 24):
-        d.line((x - 26, yy, x + 28, yy), fill=color, width=5)
-
-
-def draw_safe_symbol(d: ImageDraw.ImageDraw, x: int, y: int, color, shape: str):
-    if shape == "dot":
-        d.ellipse((x - 26, y - 26, x + 26, y + 26), fill=color)
-    elif shape == "ring":
-        d.ellipse((x - 34, y - 34, x + 34, y + 34), outline=color, width=10)
-    elif shape == "bar":
-        d.rounded_rectangle((x - 46, y - 16, x + 46, y + 16), radius=16, fill=color)
-    elif shape == "square":
-        d.rounded_rectangle((x - 30, y - 30, x + 30, y + 30), radius=10, fill=color)
-    elif shape == "triangle":
-        d.polygon([(x, y - 36), (x + 38, y + 30), (x - 38, y + 30)], fill=color)
-    else:
-        pts = [(x, y - 42), (x + 12, y - 12), (x + 44, y - 12), (x + 18, y + 8), (x + 28, y + 40), (x, y + 20), (x - 28, y + 40), (x - 18, y + 8), (x - 44, y - 12), (x - 12, y - 12)]
-        d.polygon(pts, fill=color)
-
-
 def cover():
     im, d = canvas()
-    points = [
-        (340, 600, draw_map_icon, BLUE),
-        (635, 460, draw_tool_icon, GREEN),
-        (930, 600, draw_base_icon, ORANGE),
-        (1225, 460, draw_loop_icon, PURPLE),
-        (1520, 600, draw_star_icon, RED),
+    title(d, "第0章：Python 入门地图", "先建立方向感，再开始写第一行代码")
+    rounded(d, (135, 245, 1665, 910), fill="#FFFFFF", outline=LINE, radius=30, width=2)
+    steps = [
+        ("地图", "课程路线", "知道每章学什么，以及为什么按这个顺序走。", BLUE),
+        ("环境", "运行现场", "认清解释器、终端、IDE、脚本文件之间的关系。", GREEN),
+        ("工厂", "项目目录", "把 input、cards、output、reports 放在清楚位置。", ORANGE),
+        ("闭环", "运行反馈", "先跑通，再改一点，出错后顺着线索修复。", PURPLE),
+        ("作品", "可交付结果", "每章留下一个能复用的小工具或小报告。", RED),
     ]
-    for i in range(len(points) - 1):
-        arrow(d, (points[i][0] + 80, points[i][1]), (points[i + 1][0] - 80, points[i + 1][1]))
-    for x, y, icon, color in points:
-        d.ellipse((x - 88, y - 88, x + 88, y + 88), fill="white", outline=color, width=6)
-        icon(d, x, y, color)
+    xs = [245, 555, 865, 1175, 1485]
+    y = 575
+    for i, (label, heading, body, color) in enumerate(steps):
+        if i < len(steps) - 1:
+            arrow(d, (xs[i] + 118, y), (xs[i + 1] - 118, y), width=5)
+        step_card(d, (xs[i] - 118, 405, xs[i] + 118, 745), label, heading, body, color, str(i))
+    draw_text(d, (270, 795, 1530, 860), "本章目标：把“我想学 Python”变成“我知道从哪里开始、怎么验证、如何继续”。", size=31, min_size=24, fill=INK, bold=True, align="center", valign="center")
     save(im, "ch00_cover.png")
 
 
 def automation_card():
-    photo_plate(
-        "ch00_xkcd_automation_card.png",
-        "xkcd_1205_is_it_worth_the_time.png",
-    )
+    photo_plate("ch00_xkcd_automation_card.png", "xkcd_1205_is_it_worth_the_time.png")
 
 
 def history_ada_card():
-    photo_plate(
-        "ch00_history_ada_lovelace_card.png",
-        "ada_lovelace_portrait.jpg",
-    )
+    photo_plate("ch00_history_ada_lovelace_card.png", "ada_lovelace_portrait.jpg")
 
 
 def history_babbage_card():
-    photo_plate(
-        "ch00_history_babbage_difference_engine.png",
-        "babbage_difference_engine.jpg",
-    )
+    photo_plate("ch00_history_babbage_difference_engine.png", "babbage_difference_engine.jpg")
 
 
 def history_guido_card():
-    photo_plate(
-        "ch00_history_guido_van_rossum.png",
-        "guido_van_rossum.jpg",
-    )
+    photo_plate("ch00_history_guido_van_rossum.png", "guido_van_rossum.jpg")
 
 
 def history_jacquard_card():
-    photo_plate(
-        "ch00_history_jacquard_card.png",
-        "jacquard_loom_cards.jpg",
-    )
+    photo_plate("ch00_history_jacquard_card.png", "jacquard_loom_cards.jpg")
 
 
 def history_bug_card():
-    photo_plate(
-        "ch00_history_first_bug_card.png",
-        "first_computer_bug_1947.jpg",
-    )
+    photo_plate("ch00_history_first_bug_card.png", "first_computer_bug_1947.jpg")
 
 
 def history_apollo_card():
-    photo_plate(
-        "ch00_history_apollo_software_card.png",
-        "margaret_hamilton_apollo_code.jpg",
-    )
+    photo_plate("ch00_history_apollo_software_card.png", "margaret_hamilton_apollo_code.jpg")
 
 
 def history_eniac_card():
-    photo_plate(
-        "ch00_history_eniac_programmers.png",
-        "eniac_programmers.gif",
-    )
+    photo_plate("ch00_history_eniac_programmers.png", "eniac_programmers.gif")
 
 
 def factory_card_catalog():
-    photo_plate(
-        "ch00_factory_card_catalog.png",
-        "card_catalog_drawer.jpg",
-    )
+    photo_plate("ch00_factory_card_catalog.png", "card_catalog_drawer.jpg")
 
 
 def factory_lab_notebook():
-    photo_plate(
-        "ch00_factory_lab_notebook.png",
-        "lab_notebook.jpg",
-    )
+    photo_plate("ch00_factory_lab_notebook.png", "lab_notebook.jpg")
 
 
 def factory_conveyor():
-    photo_plate(
-        "ch00_factory_conveyor.png",
-        "belt_conveyor_handling.jpg",
-    )
+    photo_plate("ch00_factory_conveyor.png", "belt_conveyor_handling.jpg")
+
+
+def draw_relation(d: ImageDraw.ImageDraw, center: tuple[int, int], items: Iterable[tuple[int, int, str, str, str]]):
+    cx, cy = center
+    for x, y, _, _, color in items:
+        arrow(d, (cx + int((x - cx) * 0.18), cy + int((y - cy) * 0.18)), (x - int((x - cx) * 0.22), y - int((y - cy) * 0.22)), color="#C0CAD8", width=4)
+        d.ellipse((x - 9, y - 9, x + 9, y + 9), fill=color)
 
 
 def city():
     im, d = canvas()
-    center = (900, 560)
-    d.ellipse((665, 325, 1135, 795), fill="white", outline=BLUE, width=7)
-    draw_base_icon(d, 900, 560, BLUE)
-    nodes = [
-        (230, 300, draw_map_icon, BLUE),
-        (1560, 300, draw_tool_icon, GREEN),
-        (230, 830, draw_base_icon, ORANGE),
-        (1560, 830, draw_loop_icon, PURPLE),
-        (900, 930, draw_star_icon, RED),
+    title(d, "Python 之城入门地图", "新手先找地图、交通和营地，再探索复杂街区")
+    rounded(d, (160, 230, 1640, 935), fill="#FFFFFF", outline=LINE, radius=32, width=2)
+    center = (900, 575)
+    d.ellipse((center[0] - 145, center[1] - 145, center[0] + 145, center[1] + 145), fill="#EEF5FF", outline=BLUE, width=5)
+    draw_text(d, (center[0] - 105, center[1] - 75, center[0] + 105, center[1] + 75), "Python\n入口广场", size=38, min_size=26, fill=BLUE, bold=True, align="center", valign="center")
+    items = [
+        (390, 350, "地图站", "课程路线、章节目标", BLUE),
+        (1410, 350, "交通站", "解释器、终端、IDE", GREEN),
+        (390, 780, "营地", "项目目录与文件收纳", ORANGE),
+        (1410, 780, "练习场", "运行、修改、复盘", PURPLE),
+        (900, 875, "急救站", "读懂报错，定位问题", RED),
     ]
-    for x, y, icon, color in nodes:
-        d.line((center[0], center[1], x, y), fill="#B8C2D4", width=4)
-        d.ellipse((x - 86, y - 86, x + 86, y + 86), fill="white", outline=color, width=6)
-        icon(d, x, y, color)
+    draw_relation(d, center, items)
+    for x, y, heading, body, color in items:
+        step_card(d, (x - 170, y - 95, x + 170, y + 95), "", heading, body, color)
     save(im, "python_city_metaphor.png")
 
 
 def roadmap():
     im, d = canvas()
-    y = 560
-    xs = [180 + i * 144 for i in range(11)]
-    for i in range(10):
-        arrow(d, (xs[i] + 55, y), (xs[i + 1] - 55, y), width=4)
-    colors = [BLUE, GREEN, ORANGE, PURPLE, CYAN, GREEN, BLUE, RED, ORANGE, PURPLE, RED]
-    for i, x in enumerate(xs):
-        d.ellipse((x - 58, y - 58, x + 58, y + 58), fill="white", outline=colors[i], width=6)
-        d.ellipse((x - 16, y - 16, x + 16, y + 16), fill=colors[i])
+    title(d, "整套课程路线图", "基础、组织、应用、项目交付逐步接力")
+    chapters = [
+        ("0", "地图", "学习方法"),
+        ("1", "环境", "运行代码"),
+        ("2", "数据", "变量类型"),
+        ("3", "文件", "读写整理"),
+        ("4", "界面", "窗口按钮"),
+        ("5", "对象", "组织代码"),
+        ("6", "分析", "表格图表"),
+        ("7", "游戏", "动画交互"),
+        ("8", "爬虫", "网页资料"),
+        ("9", "图像", "像素处理"),
+        ("10", "办公", "文档交付"),
+    ]
+    x0, y0 = 85, 310
+    card_w, card_h = 245, 170
+    gap_x, gap_y = 35, 70
+    positions = []
+    for idx, item in enumerate(chapters):
+        row = 0 if idx < 6 else 1
+        col = idx if idx < 6 else idx - 6
+        x = x0 + col * (card_w + gap_x)
+        y = y0 + row * (card_h + gap_y)
+        if row == 1:
+            x += 135
+        positions.append((x, y, item))
+    for idx, (x, y, item) in enumerate(positions):
+        color = COLORS[idx % len(COLORS)]
+        if idx < len(positions) - 1:
+            nx, ny, _ = positions[idx + 1]
+            start = (x + card_w, y + card_h // 2)
+            end = (nx, ny + card_h // 2)
+            if idx == 5:
+                start = (x + card_w // 2, y + card_h)
+                end = (positions[idx + 1][0] + card_w // 2, positions[idx + 1][1])
+            arrow(d, start, end, color="#B8C4D4", width=4)
+        number, heading, body = item
+        step_card(d, (x, y, x + card_w, y + card_h), f"第{number}章", heading, body, color)
     save(im, "course_roadmap.png")
 
 
 def project_ladder():
     im, d = canvas()
-    colors = [BLUE, GREEN, ORANGE, PURPLE]
-    base_x, base_y = 350, 820
-    step_w, step_h = 280, 120
-    for idx, color in enumerate(colors):
-        x1 = base_x + idx * step_w
-        y1 = base_y - idx * step_h
-        x2 = x1 + step_w
-        y2 = base_y + 80 - idx * step_h
-        d.rectangle((x1, y1, x2, y2), fill="#FFFFFF", outline=color, width=6)
-        d.ellipse((x1 + step_w / 2 - 20, y1 + 40, x1 + step_w / 2 + 20, y1 + 80), fill=color)
+    title(d, "项目阶梯：从空目录到可交付", "小台阶比大口号更可靠")
+    steps = [
+        ("01", "建目录", "先分清 input、cards、output、reports。", BLUE),
+        ("02", "放原料", "课程笔记、数据、图片各归其位。", GREEN),
+        ("03", "写脚本", "让重复动作有稳定入口。", ORANGE),
+        ("04", "生成结果", "输出报告、卡片或运行记录。", PURPLE),
+        ("05", "复盘改进", "记录问题，下一章继续接上。", RED),
+    ]
+    base_y = 875
+    step_w = 285
+    step_h = 175
+    x0 = 160
+    for idx, (num, heading, body, color) in enumerate(steps):
+        x = x0 + idx * 305
+        y = base_y - idx * 105
+        step_card(d, (x, y - step_h, x + step_w, y), "", heading, body, color, num)
+        if idx < len(steps) - 1:
+            arrow(d, (x + step_w + 8, y - step_h // 2), (x + 305 - 18, y - 105 - step_h // 2), color="#AEBBCD", width=4)
+    draw_text(d, (170, 935, 1630, 1000), "判断一个项目是否开始成形：看它有没有清楚的目录、可运行的脚本和可检查的输出。", size=30, min_size=24, fill=INK, bold=True, align="center", valign="center")
     save(im, "project_ladder.png")
 
 
 def env_pipeline():
     im, d = canvas()
-    xs = [250, 575, 900, 1225, 1550]
-    colors = [BLUE, GREEN, ORANGE, PURPLE, CYAN]
-    icons = [draw_tool_icon, draw_terminal_icon, draw_map_icon, draw_file_icon, draw_script_icon]
-    for i in range(4):
-        arrow(d, (xs[i] + 100, 560), (xs[i + 1] - 100, 560), width=5)
-    for x, color, icon in zip(xs, colors, icons):
-        d.ellipse((x - 90, 470, x + 90, 650), fill="white", outline=color, width=6)
-        icon(d, x, 560, color)
+    title(d, "Python 环境流水线", "代码不是飘在屏幕上的字，它有清楚的运行现场")
+    steps = [
+        ("解释器", "真正执行 Python 指令", "python", BLUE),
+        ("终端", "发出运行命令并显示结果", "cmd", GREEN),
+        ("IDE", "写代码、管理项目、点运行", "IDE", ORANGE),
+        ("文件与路径", "告诉程序脚本和素材在哪里", ".py", PURPLE),
+        ("脚本输出", "把结果保存为文本、图片或报告", "out", CYAN),
+    ]
+    x0, y, w, h, gap = 120, 420, 290, 290, 55
+    for idx, (heading, body, code, color) in enumerate(steps):
+        x = x0 + idx * (w + gap)
+        if idx < len(steps) - 1:
+            arrow(d, (x + w + 8, y + h // 2), (x + w + gap - 12, y + h // 2), width=5)
+        step_card(d, (x, y, x + w, y + h), code, heading, body, color, str(idx + 1))
+    rounded(d, (240, 800, 1560, 910), fill="#EEF5FF", outline="#C9DAFF", radius=24, width=2)
+    draw_text(d, (280, 820, 1520, 890), "最小运行句式：在正确目录打开终端，执行 python code/ch00/check_python_env.py", size=29, min_size=22, fill=BLUE, bold=True, align="center", valign="center")
     save(im, "env_pipeline.png")
 
 
 def error_map():
     im, d = canvas()
-    colors = [BLUE, ORANGE, PURPLE, GREEN, RED, CYAN]
-    shapes = ["dot", "ring", "bar", "square", "triangle", "star"]
-    positions = [(380, 370), (900, 370), (1420, 370), (380, 760), (900, 760), (1420, 760)]
-    for color, shape, (x, y) in zip(colors, shapes, positions):
-        shadow(d, (x - 170, y - 80, x + 170, y + 80), radius=24)
-        rounded(d, (x - 170, y - 80, x + 170, y + 80), fill="white", radius=24)
-        draw_safe_symbol(d, x, y, color, shape)
+    title(d, "常见报错线索图", "先看错误类型，再看文件名和行号")
+    items = [
+        ("SyntaxError", "语法写法不完整", "检查括号、冒号、引号", BLUE),
+        ("NameError", "名字还没有定义", "检查变量名是否拼错", GREEN),
+        ("TypeError", "类型用法不匹配", "确认字符串和数字别混用", ORANGE),
+        ("FileNotFound", "文件路径找不到", "打印当前目录再核对路径", PURPLE),
+        ("ModuleNotFound", "库没有安装或环境不对", "确认 pip 装在同一个解释器", CYAN),
+        ("IndentationError", "缩进层级混乱", "统一空格，别混 Tab", RED),
+    ]
+    x0, y0 = 120, 270
+    w, h = 500, 210
+    gap_x, gap_y = 80, 65
+    for idx, (name, cause, fix, color) in enumerate(items):
+        row, col = divmod(idx, 3)
+        x = x0 + col * (w + gap_x)
+        y = y0 + row * (h + gap_y)
+        step_card(d, (x, y, x + w, y + h), cause, name, fix, color)
     save(im, "error_map.png")
 
 
 def learning_loop():
     im, d = canvas()
-    center = (900, 590)
-    r = 310
-    colors = [BLUE, GREEN, ORANGE, RED, PURPLE]
-    shapes = ["dot", "ring", "bar", "star", "square"]
-    coords = [
-        (900, 250),
-        (1230, 480),
-        (1110, 845),
-        (690, 845),
-        (570, 480),
+    title(d, "学习闭环：让程序动起来", "理解不是一次读完，而是一圈圈获得反馈")
+    center = (900, 585)
+    r = 335
+    steps = [
+        (900, 255, "读", "读懂目标", BLUE),
+        (1225, 480, "跑", "先跑通", GREEN),
+        (1100, 855, "改", "只改一点", ORANGE),
+        (700, 855, "错", "记录报错", RED),
+        (575, 480, "修", "定位修复", PURPLE),
     ]
-    for i in range(len(coords)):
-        arrow(d, coords[i], coords[(i + 1) % len(coords)], width=4)
-    for color, shape, (x, y) in zip(colors, shapes, coords):
-        d.ellipse((x - 70, y - 70, x + 70, y + 70), fill="white", outline=color, width=6)
-        draw_safe_symbol(d, x, y, color, shape)
-    d.ellipse((center[0] - r, center[1] - r, center[0] + r, center[1] + r), outline="#E2E8F0", width=3)
+    for idx, (x, y, _, _, _) in enumerate(steps):
+        nx, ny = steps[(idx + 1) % len(steps)][0], steps[(idx + 1) % len(steps)][1]
+        arrow(d, (x, y), (nx, ny), color="#B7C3D4", width=4)
+    d.ellipse((center[0] - r, center[1] - r, center[0] + r, center[1] + r), outline="#DDE6F2", width=3)
+    for x, y, short, body, color in steps:
+        d.ellipse((x - 92, y - 92, x + 92, y + 92), fill="#FFFFFF", outline=color, width=5)
+        draw_text(d, (x - 45, y - 55, x + 45, y - 5), short, size=40, min_size=30, fill=color, bold=True, align="center", valign="center")
+        draw_text(d, (x - 70, y + 5, x + 70, y + 58), body, size=23, min_size=18, fill=INK, bold=True, align="center", valign="center")
+    draw_text(d, (710, 520, 1090, 650), "运行\n修改\n反馈", size=44, min_size=32, fill=INK, bold=True, align="center", valign="center")
     save(im, "learning_loop.png")
 
 
 def learning_momentum_chart():
     im, d = canvas()
-    chart = (220, 260, 1500, 880)
+    title(d, "学习反馈曲线", "信心通常来自一次次可验证的小成功")
+    chart = (210, 255, 1510, 845)
     x1, y1, x2, y2 = chart
-    rounded(d, chart, fill="white", radius=24)
-    for k in range(5):
-        y = y1 + 90 + k * 105
-        d.line((x1 + 80, y, x2 - 80, y), fill="#E7EDF5", width=2)
-    d.line((x1 + 90, y2 - 95, x2 - 70, y2 - 95), fill="#9AA7BD", width=3)
-    d.line((x1 + 90, y1 + 70, x1 + 90, y2 - 95), fill="#9AA7BD", width=3)
-    points = [(0, 18), (1, 25), (2, 21), (3, 36), (4, 43), (5, 40), (6, 58), (7, 66), (8, 72), (9, 84)]
+    rounded(d, chart, fill="#FFFFFF", outline=LINE, radius=24, width=2)
+    for k in range(6):
+        y = y1 + 85 + k * 80
+        d.line((x1 + 95, y, x2 - 90, y), fill=GRID, width=2)
+    d.line((x1 + 100, y2 - 95, x2 - 85, y2 - 95), fill="#94A3B8", width=4)
+    d.line((x1 + 100, y1 + 70, x1 + 100, y2 - 95), fill="#94A3B8", width=4)
+    points = [
+        ("运行", 18),
+        ("小改", 25),
+        ("报错", 20),
+        ("定位", 36),
+        ("修复", 44),
+        ("再改", 41),
+        ("作品", 58),
+        ("复盘", 66),
+        ("复用", 74),
+        ("交付", 86),
+    ]
     curve = []
-    for i, v in points:
-        curve.append((x1 + 130 + i * 120, y2 - 110 - v * 4.7))
+    for i, (_, v) in enumerate(points):
+        curve.append((x1 + 140 + i * 118, y2 - 108 - int(v * 4.25)))
     area = [(curve[0][0], y2 - 95)] + curve + [(curve[-1][0], y2 - 95)]
     d.polygon(area, fill="#DCEBFF")
-    d.line(curve, fill=BLUE, width=8)
-    for x, y in curve:
-        d.ellipse((x - 9, y - 9, x + 9, y + 9), fill="white", outline=BLUE, width=4)
+    d.line(curve, fill=BLUE, width=7)
+    for (label, _), (x, y) in zip(points, curve):
+        d.ellipse((x - 10, y - 10, x + 10, y + 10), fill="#FFFFFF", outline=BLUE, width=4)
+        draw_text(d, (x - 45, y2 - 82, x + 45, y2 - 45), label, size=20, min_size=16, fill=MUTED, align="center", valign="center")
+    draw_text(d, (95, 430, 190, 575), "掌控感", size=24, min_size=18, fill=MUTED, align="center", valign="center")
+    draw_text(d, (1515, 455, 1670, 585), "每一小步都要有可检查结果", size=25, min_size=20, fill=BLUE, bold=True, align="center", valign="center")
     save(im, "learning_momentum_chart.png")
 
 
 def tech_stack_workbench():
     im, d = canvas()
-    bench = (250, 700, 1550, 825)
-    d.rounded_rectangle(bench, radius=28, fill="#E8EEF7", outline=LINE, width=3)
-    positions = [
-        (360, 560, draw_terminal_icon, GREEN),
-        (560, 500, draw_file_icon, PURPLE),
-        (760, 560, draw_script_icon, CYAN),
-        (980, 500, draw_map_icon, BLUE),
-        (1180, 560, draw_tool_icon, ORANGE),
-        (1400, 500, draw_base_icon, RED),
+    title(d, "技术栈工作台", "工具按任务摆放，需要时再拿起来")
+    groups = [
+        ("先跑起来", "Python 标准库\npathlib / os / shutil", BLUE),
+        ("整理资料", "numpy\npandas\nopenpyxl", GREEN),
+        ("画成图表", "matplotlib\nPillow / OpenCV", ORANGE),
+        ("做出交互", "tkinter\npygame\nrequests", PURPLE),
+        ("交付作品", "python-docx\npython-pptx\n报告与演示", CYAN),
     ]
-    for i, (x, y, icon, color) in enumerate(positions):
-        shadow(d, (x - 86, y - 86, x + 86, y + 86), radius=22)
-        d.ellipse((x - 84, y - 84, x + 84, y + 84), fill="white", outline=color, width=6)
-        icon(d, x, y, color)
-        if i < len(positions) - 1:
-            nx, ny = positions[i + 1][0], positions[i + 1][1]
-            arrow(d, (x + 90, y), (nx - 90, ny), color="#B8C2D4", width=4)
+    x0, y0, w, h, gap = 90, 320, 290, 350, 38
+    labels = ["基础", "数据", "图表", "交互", "交付"]
+    for idx, (heading, body, color) in enumerate(groups):
+        x = x0 + idx * (w + gap)
+        step_card(d, (x, y0, x + w, y0 + h), labels[idx], heading, body, color)
+    bench = (170, 780, 1630, 905)
+    rounded(d, bench, fill="#EAF0F8", outline=LINE, radius=28, width=2)
+    draw_text(d, (220, 807, 1580, 875), "第0章先把工具放到脑海里的正确位置；真正用到时，再逐个拿起来。", size=31, min_size=24, fill=INK, bold=True, align="center", valign="center")
     save(im, "tech_stack_workbench.png")
-
-
-def chapter_blueprint_bridge():
-    im, d = canvas()
-    left_x, right_x = 250, 1550
-    y_top, y_bottom = 330, 790
-    colors = [BLUE, GREEN, ORANGE, PURPLE, CYAN, RED]
-    anchors = []
-    for idx, color in enumerate(colors):
-        y = y_top + idx * ((y_bottom - y_top) // (len(colors) - 1))
-        anchors.append((left_x, y, color))
-        anchors.append((right_x, y, color))
-    for idx, (x, y, color) in enumerate(anchors):
-        d.ellipse((x - 42, y - 42, x + 42, y + 42), fill="white", outline=color, width=6)
-        draw_safe_symbol(d, x, y, color, ["dot", "ring", "bar", "square", "triangle", "star"][idx % 6])
-    for idx in range(0, len(anchors), 2):
-        lx, ly, color = anchors[idx]
-        rx, ry, _ = anchors[idx + 1]
-        d.line((lx + 50, ly, rx - 50, ry), fill="#C5D0E0", width=4)
-    for step, x in enumerate([520, 760, 1000, 1240]):
-        y = 560 + (30 if step % 2 else -30)
-        shadow(d, (x - 92, y - 62, x + 92, y + 62), radius=20)
-        rounded(d, (x - 92, y - 62, x + 92, y + 62), fill="white", radius=20)
-        draw_script_icon(d, x, y, colors[step % len(colors)])
-        if step < 3:
-            arrow(d, (x + 105, y), ([760, 1000, 1240][step] - 105, 560 + (-30 if step % 2 else 30)), width=4)
-    save(im, "chapter_blueprint_bridge.png")
 
 
 def chapter_relay_station():
     im, d = canvas()
-    d.rounded_rectangle((120, 145, 1680, 975), radius=42, fill="#FFFFFF", outline=LINE, width=3)
-    d.rounded_rectangle((210, 245, 1590, 875), radius=34, fill="#F1F5FA", outline="#E2E8F0", width=3)
-
-    # Two arcs of chapter stations, linked through a central handoff table.
-    left_nodes = [
-        (360, 395, draw_terminal_icon, GREEN),
-        (560, 315, draw_file_icon, PURPLE),
-        (760, 395, draw_script_icon, CYAN),
-        (560, 610, draw_map_icon, BLUE),
+    title(d, "章节接力中继站", "前四章先把环境、数据、文件和界面接起来")
+    top = [
+        ("0", "课程地图", "学习方法", BLUE),
+        ("1", "工作环境", "跑通脚本", GREEN),
+        ("2", "数据类型", "组织信息", ORANGE),
+        ("3", "文件管理", "整理材料", PURPLE),
+        ("4", "图形界面", "做出窗口", CYAN),
     ]
-    right_nodes = [
-        (1040, 395, draw_tool_icon, ORANGE),
-        (1240, 315, draw_base_icon, RED),
-        (1440, 395, draw_loop_icon, PURPLE),
-        (1240, 610, draw_star_icon, BLUE),
+    bottom = [
+        ("5", "对象", "封装代码", RED),
+        ("6", "分析", "表格图表", BLUE),
+        ("7", "游戏", "动画交互", GREEN),
+        ("8", "爬虫", "公开资料", ORANGE),
+        ("9-10", "图像/办公", "最终交付", PURPLE),
     ]
-    colors = [GREEN, PURPLE, CYAN, BLUE, ORANGE, RED, PURPLE, BLUE]
-    nodes = left_nodes + right_nodes
-    for i, (x, y, icon, color) in enumerate(nodes):
-        shadow(d, (x - 74, y - 74, x + 74, y + 74), radius=22)
-        d.ellipse((x - 72, y - 72, x + 72, y + 72), fill="white", outline=color, width=6)
-        icon(d, x, y, color)
-        if i < len(nodes) - 1 and i != 3:
-            nx, ny = nodes[i + 1][0], nodes[i + 1][1]
-            arrow(d, (x + 78, y), (nx - 78, ny), color="#AEBBCD", width=4)
-
-    # Handoff table: no words, just incoming materials turning into outputs.
-    table = (710, 690, 1090, 810)
-    d.rounded_rectangle((table[0] + 8, table[1] + 10, table[2] + 8, table[3] + 10), radius=28, fill="#DCE2EC")
-    rounded(d, table, fill="#FFFFFF", outline=LINE, radius=28, width=3)
-    for i, color in enumerate([BLUE, GREEN, ORANGE, PURPLE]):
-        x = 760 + i * 80
-        d.rounded_rectangle((x, 720, x + 48, 774), radius=12, outline=color, width=5)
-        if i < 3:
-            arrow(d, (x + 55, 747), (x + 72, 747), color="#B8C2D4", width=4)
-
-    arrow(d, (655, 610), (760, 690), color="#AEBBCD", width=5)
-    arrow(d, (1045, 690), (1165, 610), color="#AEBBCD", width=5)
-    arrow(d, (760, 395), (860, 690), color="#AEBBCD", width=4)
-    arrow(d, (1040, 395), (955, 690), color="#AEBBCD", width=4)
-
+    x0, w, gap = 90, 290, 40
+    for idx, item in enumerate(top):
+        x = x0 + idx * (w + gap)
+        num, heading, body, color = item
+        step_card(d, (x, 280, x + w, 465), f"第{num}章", heading, body, color)
+        if idx < len(top) - 1:
+            arrow(d, (x + w + 6, 372), (x + w + gap - 12, 372), width=4)
+    rounded(d, (615, 525, 1185, 625), fill="#FFF8E8", outline="#F5D08A", radius=24, width=2)
+    draw_text(d, (655, 545, 1145, 605), "共同产线：科研卡片工厂", size=32, min_size=24, fill=YELLOW, bold=True, align="center", valign="center")
+    arrow(d, (900, 465), (900, 525), color="#C0CAD8", width=5)
+    arrow(d, (900, 625), (900, 680), color="#C0CAD8", width=5)
+    for idx, item in enumerate(bottom):
+        x = x0 + idx * (w + gap)
+        num, heading, body, color = item
+        step_card(d, (x, 680, x + w, 865), f"第{num}章", heading, body, color)
+        if idx < len(bottom) - 1:
+            arrow(d, (x + w + 6, 772), (x + w + gap - 12, 772), width=4)
     save(im, "chapter_relay_station.png")
+
+
+def chapter_blueprint_bridge():
+    im, d = canvas()
+    title(d, "章节蓝图接力", "每章留下材料，下一章继续加工")
+    chapters = [
+        ("0", "地图", "方向感", BLUE),
+        ("1", "环境", "运行入口", GREEN),
+        ("2", "数据", "卡片字段", ORANGE),
+        ("3", "文件", "原料整理", PURPLE),
+        ("4", "界面", "录入窗口", CYAN),
+        ("5", "对象", "卡片类", RED),
+        ("6", "分析", "数据报告", BLUE),
+        ("7", "游戏", "互动复习", GREEN),
+        ("8", "爬虫", "资料采集", ORANGE),
+        ("9", "图像", "批量配图", PURPLE),
+        ("10", "办公", "Word/PPT", CYAN),
+    ]
+    positions: list[tuple[int, int, tuple[str, str, str, str]]] = []
+    card_w, card_h = 230, 155
+    x0, gap = 90, 45
+    for idx, ch in enumerate(chapters):
+        if idx < 6:
+            x = x0 + idx * (card_w + gap)
+            y = 300
+        else:
+            x = x0 + (10 - idx) * (card_w + gap)
+            y = 680
+        positions.append((x, y, ch))
+    for idx, (x, y, ch) in enumerate(positions):
+        if idx < len(positions) - 1:
+            nx, ny, _ = positions[idx + 1]
+            if idx == 5:
+                arrow(d, (x + card_w // 2, y + card_h + 8), (nx + card_w // 2, ny - 8), width=4)
+            else:
+                start = (x + card_w + 6, y + card_h // 2) if y == ny else (x - 6, y + card_h // 2)
+                end = (nx - 12, ny + card_h // 2) if y == ny and nx > x else (nx + card_w + 12, ny + card_h // 2)
+                arrow(d, start, end, width=4)
+        num, heading, body, color = ch
+        step_card(d, (x, y, x + card_w, y + card_h), f"第{num}章", heading, body, color)
+    rounded(d, (520, 510, 1280, 600), fill="#EEF5FF", outline="#C9DAFF", radius=24, width=2)
+    draw_text(d, (560, 530, 1240, 580), "主线目标：把学习材料加工成可复用作品", size=31, min_size=23, fill=BLUE, bold=True, align="center", valign="center")
+    save(im, "chapter_blueprint_bridge.png")
 
 
 def main():
@@ -465,7 +671,7 @@ def main():
     tech_stack_workbench()
     chapter_relay_station()
     chapter_blueprint_bridge()
-    print("Generated ch00 lightweight visuals.")
+    print("Generated ch00 structured visuals.")
 
 
 if __name__ == "__main__":

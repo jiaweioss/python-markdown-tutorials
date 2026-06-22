@@ -1,6 +1,5 @@
 """Chapter 03 mini project: organize files by suffix and create a report."""
 
-from base64 import b64decode
 from pathlib import Path
 import shutil
 
@@ -9,9 +8,6 @@ ROOT = Path("workspace_ch03")
 INBOX = ROOT / "inbox"
 ARCHIVE = ROOT / "organized"
 REPORT = ROOT / "output" / "archive_report.md"
-DEMO_PNG = b64decode(
-    "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAAE0lEQVR4nGPUz/7PAANMcBZeDgBQFgGhOmjLnwAAAABJRU5ErkJggg=="
-)
 
 
 def seed_inbox() -> None:
@@ -20,14 +16,10 @@ def seed_inbox() -> None:
         "experiment_notes.txt": "participant notes\n",
         "scores.csv": "name,score\n小美,92\n",
         "summary.md": "# Summary\n",
-        "figure.png": DEMO_PNG,
+        "figure.png": "fake image bytes for demo\n",
     }
     for name, content in samples.items():
-        path = INBOX / name
-        if isinstance(content, bytes):
-            path.write_bytes(content)
-        else:
-            path.write_text(content, encoding="utf-8")
+        (INBOX / name).write_text(content, encoding="utf-8")
 
 
 def suffix_folder(path: Path) -> str:

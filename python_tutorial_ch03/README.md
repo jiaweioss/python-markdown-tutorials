@@ -9,7 +9,6 @@
 - `code/ch03/`：第 3 章可运行 Python 示例代码
 - `source_notes/source_manifest_ch03.md`：素材来源、授权和生成线索记录
 - `source_notes/quality_audit_ch03.md`：第 3 章质量验收记录
-- `source_notes/beginner_practice_report_ch03.md`：第 3 章初学者实操检测报告
 - `scripts/check_links.py`：Markdown 图片链接检查脚本
 - `scripts/generate_ch03_visuals.py`：第 3 章正式版图片生成脚本
 - `manifest.json`：交付清单
@@ -26,11 +25,8 @@
 - 新增 `ch03_review_checkpoint.png`、`ch03_practice_evidence_workbench.png` 和 `ch03_gui_handoff_bridge.png`，在核心概念复盘、练习收束和下一章 GUI 过渡处补入无文字解释图，把章末最大无图间隔从 248 行降到 151 行。
 - 保留档案盒、文件柜、Rosetta Stone、Vannevar Bush、档案库货架等真实照片，把路径、编码、文件索引、资料归档讲成有记忆点的故事。
 - 保留真实 PowerShell 运行截图，展示脚本如何在本机环境中创建、整理和检查 `workspace_ch03`。
-- 统一正文图片顺序为“先文字讲解，再图片和图注”，避免运行截图、概念图或故事图抢在说明前出现。
 - 重新生成封面、路线图、路径地图、读写流水线、`open()` 模式、读取方法、`with open()`、文件夹管理、文件夹体检、删除安全卡和资料归档器等核心概念图，减少图内长解释文字，把说明留在 Markdown 正文和图注中。
 - 本章脚本全部限制在 `workspace_ch03` 练习目录内，避免学生在文件操作章节误删真实资料。
-- 修复 `workspace_ch03/inbox/figure.png` 与 `workspace_ch03/organized/png/figure.png`，示例图片现在是真实 PNG 文件，可被 PIL 打开验证。
-- 新增初学者实操检测报告，记录 13 个示例脚本、图片链接、语法检查、PIL 图片打开检查和图文顺序检查结果。
 
 ## 推荐阅读方式
 

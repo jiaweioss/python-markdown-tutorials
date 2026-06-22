@@ -1,6 +1,6 @@
 # 第1章质量验收记录
 
-验收日期：2026-06-19
+验收日期：2026-06-17
 
 ## 验收范围
 
@@ -14,7 +14,6 @@
 - `README.md`
 - `manifest.json`
 - `source_notes/source_manifest_ch01.md`
-- `source_notes/beginner_practice_report_ch01.md`
 
 ## 目标对照
 
@@ -27,13 +26,10 @@
 | 图片居中与图注 | 正文 34 张图片均使用 `<figure align="center">` 和 `<figcaption>` | 已完成 |
 | 图片内不新增解释文字 | PowerShell 生成图已去掉额外英文说明，只保留命令和输出；讲解放在 Markdown 正文和图注中 | 已完成 |
 | 运行截图顺序统一 | 1.1 和 1.2 已调整为先讲文字、命令和核对点，再展示对应 PowerShell / PyCharm 运行截图与图注 | 已完成 |
-| 全章图文顺序统一 | 34 张图前均有文字讲解、命令说明或过渡句，统一为“先叙述，再图片和图注” | 已完成 |
 | 图1-8 中文乱码修复 | `generate_ch01_visuals.py` 对子进程统一设置 UTF-8 输出环境，重新生成后图1-8 中文正常显示 | 已完成 |
 | 学生视角 | 正文面向学习者操作，不写“老师应该如何教学” | 已完成 |
 | 图文叙事 | Guido、CWI、Grace Hopper、BBC Broadcasting House、Wundt、Stroop、xkcd 和真实 IDE/终端截图穿插在正文中，中段补入第一段脚本反馈回路图，后半章补入运行证据图与路径检查图以减少长段无图 | 已完成 |
 | 图片平均穿插 | 新增 `ch01_first_script_feedback_loop.png`，把 `print()`、注释、脚本命名、项目目录和运行证据之间的长段无图切开；最大图片间隔从 209 行降到 171 行 | 已完成 |
-| 初学者实操报告 | `source_notes/beginner_practice_report_ch01.md` 记录 6 个脚本的运行路线、交互输入、关键产物、常见踩坑和复验结果 | 已完成 |
-| PNG 文件健康 | 修复 `generate_ch01_visuals.py` 的 PNG 保存方式，63 张 PNG/JPG/GIF 均通过 PIL 打开验证 | 已完成 |
 
 ## 当前素材清单
 
@@ -164,20 +160,20 @@ print("ch01 quality audit OK")
 
 当前结果：
 
-- 正文字符数：30184
+- 正文字符数：29709
 - 正文图片引用数：34
 - 正文 figcaption 数：34
 - Markdown 图片语法数：0
 - manifest 素材数：63
 - `scripts/check_links.py`：通过，检查 1 个 Markdown 文件，0 个缺失本地图片链接
 - Python 语法检查：通过，`py_compile` 覆盖 8 个 `.py` 文件
-- 图片 PIL 打开检查：通过，63 张图片均可打开；`ch01_cover.png` 已在 PNG 保存方式修复后重新生成并通过校验
+- 图片 PIL 打开检查：通过，63 张图片均可打开
 - 图1-8 编码复查：通过，中文输出已正常显示，无乱码方块
-- 图文顺序复查：通过，34 张图前均有正文讲解、命令说明或过渡句
+- 图文顺序复查：通过，1.1 和 1.2 已统一为先文字讲解/命令，再放运行截图
 - `01_hello_python.py`、`02_environment_check.py`、`03_import_this.py`、`04_show_me_the_python.py`、`05_experiment_preview.py`、`06_common_error_examples.py` 烟测：通过
 - `05_experiment_preview.py` Stroop 预告烟测：通过，使用示例输入 `S001` 与 `j`
 - 临时总览图人工检查：通过；34 张 ch1 正文图均居中展示，PowerShell / PyCharm 真实界面图无错位、无越界，生成图未新增解释性长文字
-- ch01 当前一致性扫描：34 个 figure、34 个 img、34 个 figcaption、34 个本地图片引用，0 个缺失本地图片，0 个 PIL 错误，0 个图文顺序问题。
+- 全书轻量一致性扫描：11 个章节目录、130 个 Python 文件、108 个 `code/` 脚本、281 个正文图片引用，0 个缺失本地图片、0 个图注数量不一致、0 个 manifest 不一致、0 个旧 `_audit*` 残留；另发现 ch03 练习工作区中 2 个非正文引用的 `figure.png` 示例文件不是有效图片，后续优化 ch03 时处理。
 
 ## 剩余边界
 

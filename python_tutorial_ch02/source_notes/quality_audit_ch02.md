@@ -25,7 +25,6 @@
 | 图片少放解释文字 | 变量标签、路线图、数据类型地图、布尔逻辑、字符串切片、列表、字典和小项目等核心概念图已重新生成，删减图内长解释文字，说明放回正文和图注 | 已完成 |
 | 图片全部居中 | 正文 27 张图片全部使用 `<figure align="center">` 与 `display:block; margin:0 auto` 居中显示 | 已完成 |
 | 图片图注清晰 | 正文 27 张图片全部配有 `<figcaption>`，图注显示图片标题和学习提示 | 已完成 |
-| 先叙述再图片 | 封面、路线图、变量、运行证据、数据类型地图、Shannon、Boole、取整、字符串、切片、列表、字典、小项目、报错地图和练习图均调整为先说明任务/故事/操作，再展示图片 | 已完成 |
 | 学生阅读口吻 | 已将“给老师的提醒”“课堂练习”等教师视角文字改成学生自学口吻 | 已完成 |
 | 图表审美在线 | `ch02_number_rounding_chart.png` 由 Python 脚本生成，并经肉眼检查修正图例挤压 | 已完成 |
 | 字符串段落补图 | 新增 `ch02_string_material_workbench.png`，图片内部不放解释文字，正文用被试编号、刺激词、文件路径和日志备注解释为什么“文字也是数据” | 已完成 |
@@ -37,7 +36,6 @@
 | 心理学数据包 | 新增 `10_make_stroop_dataset_pack.py`，生成 JSON、CSV、Markdown 报告和 PNG 预览，把 ch1 的 Stroop trial 延伸成 `list[dict]` 数据包 | 已完成 |
 | 数据类型标本柜 | 新增 `11_make_data_type_specimen_cabinet.py`，生成 JSON、Markdown 报告和 PNG 预览，把同一组 Stroop 记录拆成类型角色展示 | 已完成 |
 | 运行证据总览 | 新增 `12_make_data_type_runtime_evidence.py`，检查本章 14 个关键产物并生成 Markdown 报告、输出图和正文正式图 | 已完成 |
-| 小白实操检测报告 | 新增 `source_notes/beginner_practice_report_ch02.md`，按初学者跟做路线记录进入目录、逐个运行 12 个脚本、检查 14 个产物和处理 `MISSING` 的方法 | 已完成 |
 | 图片平均穿插 | 在数字到字符串之间新增 `ch02_string_material_workbench.png`，并保留尾部 `ch02_error_clue_cards.png`、`ch02_practice_workbench.png` 与 `ch02_type_to_file_bridge.png`；最大图片间隔从 197 行降到 161 行 | 已完成 |
 | 图片引用不缺失 | `python scripts/check_links.py` 同时检查 Markdown 图片和 HTML `<img>` 图片，检查通过 | 已完成 |
 | 代码与脚本可检查 | AST 语法解析检查通过，且不生成 `__pycache__` 缓存 | 已完成 |
@@ -95,19 +93,17 @@ print('AST syntax OK:', len(files))
 当前结果：
 
 - Markdown 与 HTML 本地图片链接：通过，检查 1 个 Markdown 文件，0 个缺失本地图片链接
-- Python 语法检查：通过，`py_compile` 覆盖 14 个 `.py` 文件
+- Python 语法检查：通过，AST 覆盖 14 个 `.py` 文件
 - 12 个示例脚本运行检查：通过，其中 `12_make_data_type_runtime_evidence.py` 显示 `14/14 ready`
-- 正文字符数：29612
+- 正文字符数：29065
 - 正文图片引用数：27
 - 正文 figure 数：27
 - 正文 figcaption 数：27
 - manifest 素材数：40（27 张正式图 + 13 张本地原图/截图/脚本成果图）
 - Python 语法覆盖：通过，包括 12 个代码脚本和 2 个检查/生成脚本
 - PIL 图片打开检查：通过，40 张图片均可打开
-- 小白实操检测报告：已生成 `source_notes/beginner_practice_report_ch02.md`，覆盖进入目录、脚本顺序、产物清单和常见卡点
-- 图文顺序复查：通过；27 张图前均有正文语境，关键图片不再直接贴在小节标题或代码块之后
 - 临时总览图人工检查：通过；27 张 ch2 正文图均居中展示，新增字符串材料工作台无说明文字堆叠、无越界，后续图号和图注连续。
-- 本章一致性扫描：通过；ch02 正文 27 个图片引用、27 个图注，manifest 计数一致，40 个清单图片均可由 PIL 打开，0 个缺失本地图片链接，0 个 `__pycache__` 残留。
+- 全书一致性扫描：通过；11 个章节目录、130 个 Python 文件、108 个 `code/` 脚本、280 个正文图片引用，0 个缺失本地图片、0 个图注数量不一致、0 个 manifest 不一致、0 个 PIL 打开错误、0 个旧 `_audit*` 残留。
 
 ## 剩余边界
 

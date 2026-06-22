@@ -142,15 +142,6 @@
 
 当前正文重点使用 Guido、CWI、Grace Hopper 与 UNIVAC、BBC Broadcasting House、Wundt 实验室、Stroop 心理学任务、PowerShell 项目目录定位、PowerShell 本机环境检查实拍、PowerShell 环境检查复盘、PowerShell Python 与 PyCharm 定位探针、PowerShell 创建 `.venv`、PowerShell 执行策略备用运行、PowerShell `pathlib` 路径检查、PowerShell 连续运行脚本、PowerShell 本章完整运行证据总览、PowerShell 第1章提交证据、第一段脚本反馈回路图、PyCharm 解释器与运行结果核对图、PowerShell 与 PyCharm 同屏核对图、PyCharm 主窗口总览、解释器选择、新建项目、解释器配置、新建或选择已有 virtualenv、Run Configuration、Run 窗口输出、pip 管道、报错地图、`import antigravity` 梗图和 Python 环境混乱梗图。本轮继续精简 ch0 重复内容，把开头改成真实运行任务，把 PowerShell 配置压缩为 4 步验电表，把 PyCharm 配置压缩为 5 步核对表，并把 1.8 改成环境证据总表；同时在中段补入脚本反馈回路图，在后半章补入历史照片、PowerShell 复盘图、`pathlib` 路径图和提交证据图，让图片更平均穿插。生成图不再额外放置解释性长文字，解释内容统一放在 Markdown 正文与图注中。互联网原图仅用于学习类比，详细来源与授权说明集中记录在本文件中。
 
-2026-06-19 复验中，正文 34 张图片已统一为“先叙述，再图片和图注”。每张图前都保留对应的故事、命令、操作说明或学习提示，图片用于承接真实环境、历史故事、心理学素材和运行证据，不再让读者先看到图再回头寻找解释。
-
-同次复验修复了 `scripts/generate_ch01_visuals.py` 的 PNG 保存方式：PNG 输出现在显式按 PNG 格式保存，不再附带 JPEG 的 `quality` 参数。重新生成后，`assets/` 与 `reports/` 下 63 张 PNG/JPG/GIF 均通过 PIL 打开验证，其中 `ch01_cover.png` 已确认校验正常。
-
-## 实操检测记录
-
-- `source_notes/beginner_practice_report_ch01.md`：从初学者视角记录本章 6 个脚本的运行路线、`05_experiment_preview.py` 的示例输入、关键产物、常见踩坑、图片顺序检查和 PIL 图片有效性检查。
-- 2026-06-19 复验确认：`python scripts/generate_ch01_visuals.py`、`python scripts/check_links.py`、8 个 Python 文件 `py_compile`、63 张 PNG/JPG/GIF 的 PIL 打开检查均通过。
-
 ## 图文呈现规则
 
 - 正文图片统一使用居中的 `<figure>` 结构。

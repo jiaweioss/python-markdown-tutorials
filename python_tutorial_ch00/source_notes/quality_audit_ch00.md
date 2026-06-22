@@ -1,6 +1,6 @@
 # 第0章质量验收记录
 
-验收日期：2026-06-20
+验收日期：2026-06-11
 
 ## 验收范围
 
@@ -14,7 +14,6 @@
 - `README.md`
 - `manifest.json`
 - `source_notes/source_manifest_ch00.md`
-- `source_notes/beginner_practice_report_ch00.md`
 
 ## 目标对照
 
@@ -26,16 +25,12 @@
 | 图片正式、漂亮、可学习 | 正文 19 张图片均由脚本统一整理，历史照片、真实场景照片和漫画只展示图像本体，解释文字放回 Markdown 正文 | 已完成 |
 | 图片图注清晰 | 正文 19 张图片均使用 `figure/figcaption` 添加“图0-x + 标题 + 一句说明”，图注位于图片下方 | 已完成 |
 | 图片居中显示 | 正文 19 张图片均使用 `figure align="center"`，并在图片样式中加入 `display:block; margin:0 auto;` | 已完成 |
-| 图文顺序统一 | 19 张图前均有正文讲解、任务说明或过渡句，统一为“先叙述，再图片和图注” | 已完成 |
 | 章节蓝图更有节奏 | 新增 `chapter_relay_station.png`，放在第4章和第5章蓝图之间，把后半段最长无图间隔从 208 行降到 188 行 | 已完成 |
 | 图片内不写解释文字 | 生成脚本已移除文字绘制逻辑，示意图改为符号、路径、曲线和色块表达，说明文字全部放在正文图片下方 | 已完成 |
 | 修复图片越界 | 重绘 `error_map.png` 与 `learning_loop.png` 的内部符号，移除会超出彩色容器的小图标，改为稳定几何符号 | 已完成 |
 | 修复远程/不稳定图片 | 删除正文中的远程知乎图片引用，改为本地正式图 | 已完成 |
 | 图片引用不缺失 | `python scripts/check_links.py` 检查通过 | 已完成 |
-| 代码与脚本可检查 | `py_compile` 检查通过，覆盖 4 个示例脚本和 2 个工具脚本 | 已完成 |
-| 初学者实操报告 | `source_notes/beginner_practice_report_ch00.md` 记录运行路线、交互输入、关键产物、常见踩坑和复验结果 | 已完成 |
-| 图片可打开 | PIL 已打开验证 `assets/`、`output/`、`python_card_factory/` 下 33 张 PNG/JPG/GIF 图片 | 已完成 |
-| 脚本实跑 | 4 个示例脚本均在 `python_tutorial_ch00` 根目录运行通过，`learning_passport.py` 使用示例输入生成启动卡 | 已完成 |
+| 代码与脚本可检查 | AST 语法解析检查通过，且不生成 `__pycache__` 缓存 | 已完成 |
 | 来源和授权可追溯 | 正文、source manifest 与 manifest 均记录 xkcd、Wikimedia Commons 与 NASA Science 来源 | 已完成 |
 
 ## 当前素材清单
@@ -120,19 +115,16 @@ print('AST syntax OK:', len(files))
 
 当前结果：
 
-- Markdown 与 HTML 本地图片链接：通过，`scripts/check_links.py` 检查 9 个 Markdown 文件
-- Python `py_compile` 语法检查：通过，覆盖 6 个 `.py` 文件
-- `check_python_env.py`、`print_course_map.py`、`create_learning_base.py`、`learning_passport.py` 运行测试：通过
-- `learning_passport.py` 交互输入：通过，示例输入为“小白学生 / 整理课堂笔记 / 课堂笔记和文献摘录 / 4”
+- Markdown 与 HTML 本地图片链接：通过
+- Python AST 语法检查：通过
+- `create_learning_base.py` 与 `learning_passport.py` 临时目录运行测试：通过
 - 正文图片引用数：19
 - 正文 `figure` 数：19
 - 正文 `figcaption` 数：19
 - manifest 素材数：33
 - 互联网来源数：13
-- PIL 图片打开检查：通过，33 张 PNG/JPG/GIF 均可打开
-- 图文顺序扫描：通过，19 张图前均有正文讲解、任务说明或过渡句
-- 临时总览图人工检查：通过，19 张正式图无空白、明显错位或越界；检查图已删除
-- ch00 当前一致性扫描：19 个 figure、19 个 img、19 个 figcaption、19 个本地图片引用，0 个缺失本地图片链接，0 个 PIL 错误，0 个图文顺序问题。
+- 临时总览图人工检查：待本轮最终总览图复查更新
+- 全书一致性扫描：待本轮最终扫描更新。
 
 ## 剩余边界
 

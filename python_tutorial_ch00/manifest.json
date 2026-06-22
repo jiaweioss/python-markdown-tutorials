@@ -9,7 +9,7 @@
     "markdown": "chapters/ch00_course_start.md",
     "assets_dir": "assets/ch00",
     "code_dir": "code/ch00",
-    "character_count": 29737,
+    "character_count": 29506,
     "image_refs": 19,
     "internet_sources": [
       "https://xkcd.com/1205/",
@@ -81,25 +81,19 @@
   ],
   "source_notes": [
     "source_notes/source_manifest_ch00.md",
-    "source_notes/quality_audit_ch00.md",
-    "source_notes/beginner_practice_report_ch00.md"
+    "source_notes/quality_audit_ch00.md"
   ],
   "validation": {
-    "markdown_image_links": "ok; scripts/check_links.py checked local image refs across 9 markdown files after adding beginner practice report",
+    "markdown_image_links": "ok; scripts/check_links.py checked 19 local image refs after chapter relay station update",
     "formal_visuals_regenerated": true,
     "figcaption_count": "ok; 19 <img> tags and 19 <figcaption> tags",
-    "images_open_with_pil": "ok; 33 PNG/JPG/GIF files under assets/output/python_card_factory verified with PIL",
-    "python_syntax": "ok; py_compile checked 6 Python files including 4 code scripts and 2 tool scripts",
-    "script_smoke_test": "ok; check_python_env.py, print_course_map.py, create_learning_base.py and learning_passport.py ran successfully on 2026-06-20; learning_passport used sample inputs",
-    "text_before_result_image_order": "ok; all 19 figures now follow explanatory text, task setup or a transition sentence",
-    "beginner_practice_report": "source_notes/beginner_practice_report_ch00.md",
-    "contact_sheet_checked": "ok; temporary overview of 19 formal images reviewed on 2026-06-20, no blank images, obvious overflow or misalignment found",
-    "temporary_contact_sheet_removed": true,
-    "chapter_consistency_scan": "ok; ch00 currently has 19 figures, 19 img tags, 19 figcaptions, 19 local image refs, 0 missing local images, 0 PIL errors and 0 text-before-image ordering issues",
+    "images_open_with_pil": "ok; verified 22 PNG files after structured visual regeneration",
+    "full_book_consistency_scan": "ok for ch00 local markdown image links; scripts/check_links.py checked 5 markdown files",
     "chapter_relay_station": "added; no-explanation-text visual inserted into the chapter blueprint section to reduce the longest image gap from 208 lines to 188 lines",
     "xkcd_downloaded_with_attribution": true,
     "history_images_downloaded_with_attribution": true,
     "factory_images_downloaded_with_attribution": true,
-    "quality_audit": "source_notes/quality_audit_ch00.md"
+    "quality_audit": "source_notes/quality_audit_ch00.md; visual generator rebuilt with bounded text layout",
+    "minor_copy_polish": "ok; tech stack workbench labels softened from mechanical station labels to natural task-oriented wording"
   }
 }

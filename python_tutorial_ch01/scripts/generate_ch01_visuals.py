@@ -1,11 +1,17 @@
 from __future__ import annotations
 
-import os
-import sys
-import subprocess
 from pathlib import Path
+import os
+import re
+import subprocess
+import sys
 
-from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
+try:
+    from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
+except ModuleNotFoundError as exc:
+    raise SystemExit(
+        "This visual generator needs Pillow. Install it with: python -m pip install pillow"
+    ) from exc
 
 
 ROOT = Path.cwd()
@@ -35,11 +41,7 @@ def canvas(width: int = W, height: int = H):
 
 
 def save(im: Image.Image, name: str):
-    path = ASSET_DIR / name
-    if path.suffix.lower() == ".png":
-        im.save(path, format="PNG")
-    else:
-        im.save(path, quality=95)
+    im.save(ASSET_DIR / name, optimize=True, quality=95)
 
 
 def trim_near_white(im: Image.Image, tolerance: int = 18, pad: int = 12) -> Image.Image:
@@ -73,6 +75,145 @@ def load_font(size: int, mono: bool = False):
         if path.exists():
             return ImageFont.truetype(str(path), size)
     return ImageFont.load_default()
+
+
+def text_size(d: ImageDraw.ImageDraw, text: str, fnt) -> tuple[int, int]:
+    if not text:
+        return 0, 0
+    box = d.textbbox((0, 0), text, font=fnt)
+    return box[2] - box[0], box[3] - box[1]
+
+
+def _tokens(line: str) -> list[str]:
+    return re.findall(r"[A-Za-z0-9_./:\\#-]+|[\u4e00-\u9fff]|[^\sA-Za-z0-9_./:\\#\-\u4e00-\u9fff]|\s+", line)
+
+
+def wrap_line(d: ImageDraw.ImageDraw, line: str, fnt, max_width: int) -> list[str]:
+    tokens = _tokens(line)
+    lines: list[str] = []
+    current = ""
+    for token in tokens:
+        if token.isspace():
+            token = " "
+        candidate = (current + token).strip() if not current else current + token
+        if not candidate.strip():
+            continue
+        if text_size(d, candidate, fnt)[0] <= max_width:
+            current = candidate
+            continue
+        if current.strip():
+            lines.append(current.strip())
+            current = token.strip()
+        else:
+            piece = ""
+            for ch in token:
+                candidate_piece = piece + ch
+                if text_size(d, candidate_piece, fnt)[0] <= max_width:
+                    piece = candidate_piece
+                else:
+                    if piece:
+                        lines.append(piece)
+                    piece = ch
+            current = piece
+    if current.strip():
+        lines.append(current.strip())
+    punctuation = set("，。；：、,.!?！？)]）")
+    cleaned: list[str] = []
+    for line in lines:
+        if cleaned and line and all(ch in punctuation for ch in line):
+            cleaned[-1] += line
+        elif cleaned and line and line[0] in punctuation:
+            cleaned[-1] += line[0]
+            if line[1:].strip():
+                cleaned.append(line[1:].strip())
+        else:
+            cleaned.append(line)
+    return cleaned or [""]
+
+
+def fit_lines(
+    d: ImageDraw.ImageDraw,
+    text: str,
+    max_width: int,
+    max_height: int,
+    size: int,
+    min_size: int = 18,
+    bold: bool = False,
+):
+    best = None
+    for font_size in range(size, min_size - 1, -1):
+        fnt = load_font(font_size)
+        if bold:
+            for candidate in [Path("C:/Windows/Fonts/msyhbd.ttc"), Path("C:/Windows/Fonts/simhei.ttf")]:
+                if candidate.exists():
+                    fnt = ImageFont.truetype(str(candidate), font_size)
+                    break
+        lines: list[str] = []
+        for para in text.splitlines() or [""]:
+            lines.extend(wrap_line(d, para, fnt, max_width))
+        base_h = max(text_size(d, "汉字Ag", fnt)[1], int(font_size * 0.9))
+        spacing = max(4, int(font_size * 0.34))
+        height = len(lines) * base_h + max(0, len(lines) - 1) * spacing
+        if height <= max_height:
+            return fnt, lines, base_h, spacing
+        best = (fnt, lines, base_h, spacing)
+    return best
+
+
+def draw_text(
+    d: ImageDraw.ImageDraw,
+    xy: tuple[int, int, int, int],
+    text: str,
+    size: int = 32,
+    min_size: int = 18,
+    fill: str = INK,
+    bold: bool = False,
+    align: str = "left",
+    valign: str = "top",
+):
+    x1, y1, x2, y2 = xy
+    fnt, lines, line_h, spacing = fit_lines(d, text, x2 - x1, y2 - y1, size, min_size, bold)
+    total_h = len(lines) * line_h + max(0, len(lines) - 1) * spacing
+    if valign == "center":
+        y = y1 + (y2 - y1 - total_h) // 2
+    elif valign == "bottom":
+        y = y2 - total_h
+    else:
+        y = y1
+    for line in lines:
+        width, _ = text_size(d, line, fnt)
+        if align == "center":
+            x = x1 + (x2 - x1 - width) // 2
+        elif align == "right":
+            x = x2 - width
+        else:
+            x = x1
+        d.text((x, y), line, fill=fill, font=fnt)
+        y += line_h + spacing
+
+
+def title_block(d: ImageDraw.ImageDraw, heading: str, subtitle: str = ""):
+    draw_text(d, (120, 68, 1680, 145), heading, size=54, min_size=36, fill=INK, bold=True, align="center", valign="center")
+    if subtitle:
+        draw_text(d, (190, 148, 1610, 205), subtitle, size=28, min_size=22, fill="#667085", align="center", valign="center")
+
+
+def labeled_card(
+    d: ImageDraw.ImageDraw,
+    xy: tuple[int, int, int, int],
+    tag: str,
+    heading: str,
+    body: str,
+    color: str,
+):
+    shadow(d, xy, radius=24)
+    rounded(d, xy, fill="#FFFFFF", outline=LINE, radius=24, width=2)
+    x1, y1, x2, y2 = xy
+    d.rounded_rectangle((x1, y1, x1 + 14, y2), radius=7, fill=color)
+    d.ellipse((x1 + 30, y1 + 26, x1 + 84, y1 + 80), fill=color)
+    draw_text(d, (x1 + 30, y1 + 26, x1 + 84, y1 + 80), tag, size=24, min_size=18, fill="#FFFFFF", bold=True, align="center", valign="center")
+    draw_text(d, (x1 + 104, y1 + 25, x2 - 30, y1 + 80), heading, size=31, min_size=22, fill=INK, bold=True, valign="center")
+    draw_text(d, (x1 + 34, y1 + 92, x2 - 30, y2 - 24), body, size=24, min_size=18, fill="#667085")
 
 
 def rounded(d: ImageDraw.ImageDraw, xy, fill="#FFFFFF", outline=LINE, radius=26, width=2):
@@ -151,11 +292,7 @@ def terminal_raw(
         d.text((24, y), text, fill=color, font=mono_font)
         y += max(30, font_size + 12)
     WEB_DIR.mkdir(parents=True, exist_ok=True)
-    path = WEB_DIR / output_name
-    if path.suffix.lower() == ".png":
-        im.save(path, format="PNG")
-    else:
-        im.save(path, quality=95)
+    im.save(WEB_DIR / output_name, optimize=True, quality=95)
 
 
 def command_output(args: list[str], fallback: str = "not available") -> list[str]:
@@ -176,6 +313,18 @@ def powershell_python_locator_raw():
     where_python = command_output(["where.exe", "python"], "where.exe python did not return a path")
     py_launcher = command_output(["py", "-0p"], "py launcher is not available on this computer")
     where_pycharm = command_output(["where.exe", "pycharm64.exe"], "pycharm64.exe is not on PATH")
+    py_launcher = [
+        "-V:3.8        旧版本路径较长，已略去"
+        if "decoder1553b" in line or "�" in line
+        else line
+        for line in py_launcher
+    ]
+    where_pycharm = [
+        "未在 PATH 中找到 pycharm64.exe；这不影响从开始菜单打开 PyCharm"
+        if line.startswith("INFO: Could not find")
+        else line
+        for line in where_pycharm
+    ]
     lines: list[tuple[str, str]] = [
         ("prompt", r"PS> py -0p"),
         *[("out", line) for line in py_launcher],
@@ -192,19 +341,20 @@ def powershell_python_locator_raw():
     ]
     terminal_raw(
         "powershell_python_locator.png",
-        "Windows PowerShell - locate Python and PyCharm",
+        "Windows PowerShell - 核对 Python 路径",
         lines[:20],
         width=1500,
         height=960,
         font_size=22,
         max_chars=88,
+        cjk=True,
     )
 
 
 def powershell_create_venv_raw():
     terminal_raw(
         "powershell_create_venv.png",
-        "Windows PowerShell - create .venv",
+        "Windows PowerShell - 创建项目环境 .venv",
         [
             ("prompt", r"PS> cd C:\PythonTutorial\PythonMarkdownBook\python_tutorial_ch01"),
             ("prompt", r"PS> python -m venv .venv"),
@@ -225,7 +375,7 @@ def powershell_policy_fallback_raw():
     pyver = f"Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
     terminal_raw(
         "powershell_policy_fallback.png",
-        "Windows PowerShell - .venv fallback check",
+        "Windows PowerShell - 不激活也能指定 .venv",
         [
             ("prompt", r"PS> Get-ExecutionPolicy -List"),
             ("out", "        Scope ExecutionPolicy"),
@@ -291,7 +441,7 @@ def powershell_full_runtime_check_raw():
     )
     terminal_raw(
         "powershell_full_runtime_check.png",
-        "Windows PowerShell - ch01 full runtime check",
+        "Windows PowerShell - 第1章通电检查",
         lines[:28],
         width=1500,
         height=1080,
@@ -371,27 +521,43 @@ def ide_workbench():
 
 def pip_pipeline():
     im, d = canvas()
-    xs = [260, 620, 980, 1340]
-    colors = [BLUE, GREEN, ORANGE, PURPLE]
-    icons = [folder_icon, package_icon, gear_icon, terminal_icon]
-    for a, b in zip(xs, xs[1:]):
-        arrow(d, (a + 110, 560), (b - 110, 560), width=5)
-    for x, color, icon in zip(xs, colors, icons):
-        shadow(d, (x - 120, 430, x + 120, 690), radius=28)
-        rounded(d, (x - 120, 430, x + 120, 690), fill="#FFFFFF", radius=28)
-        icon(d, x, 560, color)
+    title_block(d, "pip 安装要送到同一个 Python", "包安装成功，不等于装进了正在运行的解释器")
+    steps = [
+        ("1", "选定解释器", "先用 sys.executable 看清这次运行的是哪个 python.exe。", BLUE),
+        ("2", "用它调用 pip", "写成 python -m pip install requests，别让 pip 自己找门。", GREEN),
+        ("3", "装到对应环境", "第三方包应进入这个解释器的 site-packages。", ORANGE),
+        ("4", "再运行验证", "回到脚本里 import requests，能导入才算真正到位。", PURPLE),
+    ]
+    x0, y, w, h, gap = 95, 370, 360, 310, 70
+    for idx, (tag, heading, body, color) in enumerate(steps):
+        x = x0 + idx * (w + gap)
+        if idx < len(steps) - 1:
+            arrow(d, (x + w + 14, y + h // 2), (x + w + gap - 18, y + h // 2), width=5)
+        labeled_card(d, (x, y, x + w, y + h), tag, heading, body, color)
+    rounded(d, (260, 780, 1540, 890), fill="#EEF6FF", outline="#B8D6FF", radius=24, width=2)
+    draw_text(d, (300, 805, 1500, 865), "第一章记住这一句：装包时用 python -m pip，排查时看 sys.executable。", size=30, min_size=23, fill=BLUE, bold=True, align="center", valign="center")
     save(im, "ch01_pip_pipeline.png")
 
 
 def error_map():
     im, d = canvas()
-    colors = [RED, ORANGE, PURPLE, BLUE, GREEN, YELLOW]
-    icons = [warning_icon, file_icon, package_icon, terminal_icon, folder_icon, gear_icon]
-    positions = [(350, 360), (900, 360), (1450, 360), (350, 760), (900, 760), (1450, 760)]
-    for (x, y), icon, color in zip(positions, icons, colors):
-        shadow(d, (x - 150, y - 95, x + 150, y + 95), radius=24)
-        rounded(d, (x - 150, y - 95, x + 150, y + 95), fill="#FFFFFF", radius=24)
-        icon(d, x, y, color)
+    title_block(d, "新手常见报错怎么读", "报错不是评价你，它是在告诉你先查哪条线索")
+    items = [
+        ("语法", "SyntaxError", "先看冒号、括号、引号有没有少。", RED),
+        ("名字", "NameError", "变量名拼错、还没赋值，最常见。", ORANGE),
+        ("模块", "ModuleNotFound", "包可能没装到当前 Python。", PURPLE),
+        ("缩进", "Indentation", "同一层代码缩进要对齐。", BLUE),
+        ("文件", "FileNotFound", "先打印当前目录，再核对路径。", GREEN),
+        ("类型", "TypeError", "字符串、数字、列表别混着用。", YELLOW),
+    ]
+    x0, y0, w, h = 110, 285, 510, 205
+    for idx, (tag, heading, body, color) in enumerate(items):
+        row, col = divmod(idx, 3)
+        x = x0 + col * 590
+        y = y0 + row * 270
+        labeled_card(d, (x, y, x + w, y + h), tag, heading, body, color)
+    rounded(d, (270, 865, 1530, 955), fill="#FFF8E8", outline="#F1D08A", radius=22, width=2)
+    draw_text(d, (310, 885, 1490, 938), "固定顺序：最后一行看类型，File/line 找位置，回到代码附近改一小处。", size=28, min_size=22, fill="#A46A00", bold=True, align="center", valign="center")
     save(im, "ch01_error_map.png")
 
 
@@ -589,7 +755,7 @@ def powershell_submission_evidence_raw():
     )
     terminal_raw(
         "powershell_submission_evidence.png",
-        "Windows PowerShell - ch01 submission evidence",
+        "Windows PowerShell - 第1章提交证据",
         lines[:24],
         width=1500,
         height=1080,
@@ -636,7 +802,7 @@ def powershell_pathlib_demo_raw():
     ]
     terminal_raw(
         "powershell_pathlib_demo.png",
-        "Windows PowerShell - pathlib path check",
+        "Windows PowerShell - 用 pathlib 看清路径",
         lines,
         width=1500,
         height=720,
@@ -671,31 +837,32 @@ def xkcd_environment_card():
 
 def first_script_feedback_loop():
     im, d = canvas(1800, 1040)
-    nodes = [
-        (300, 380, file_icon, BLUE),
-        (650, 380, terminal_icon, GREEN),
-        (1000, 380, card_icon, ORANGE),
-        (1350, 380, file_icon, PURPLE),
-        (1350, 690, folder_icon, CYAN),
-        (1000, 690, card_icon, YELLOW),
-        (650, 690, terminal_icon, RED),
-        (300, 690, folder_icon, INK),
+    title_block(d, "第一段脚本的反馈闭环", "脚本不是写完就结束，它要留下看得见的证据")
+    steps = [
+        ("1", "写脚本", "把代码保存成 01_hello_python.py。", BLUE),
+        ("2", "运行它", "在 PowerShell 或 PyCharm 里启动。", GREEN),
+        ("3", "看输出", "先确认屏幕上真的有反馈。", ORANGE),
+        ("4", "查路径", "确认脚本由哪个 Python 执行。", PURPLE),
+        ("5", "留日志", "把环境证据写进 reports。", CYAN),
+        ("6", "再改一点", "只改一处，再运行一次。", RED),
     ]
-    for i in range(len(nodes)):
-        x1, y1 = nodes[i][0], nodes[i][1]
-        x2, y2 = nodes[(i + 1) % len(nodes)][0], nodes[(i + 1) % len(nodes)][1]
-        if i == len(nodes) - 1:
-            arrow(d, (x1, y1 - 95), (x2, y2 - 95), "#B8C4D6", width=5)
+    coords = [(170, 330), (670, 330), (1170, 330), (1170, 650), (670, 650), (170, 650)]
+    w, h = 360, 210
+    for idx, (x, y) in enumerate(coords):
+        nx, ny = coords[(idx + 1) % len(coords)]
+        if idx < 2:
+            arrow(d, (x + w + 18, y + h // 2), (nx - 18, ny + h // 2), width=5)
+        elif idx == 2:
+            arrow(d, (x + w // 2, y + h + 18), (nx + w // 2, ny - 18), width=5)
+        elif idx < 5:
+            arrow(d, (x - 18, y + h // 2), (nx + w + 18, ny + h // 2), width=5)
         else:
-            arrow(d, (x1 + 125 if x2 > x1 else x1 - 125, y1), (x2 - 125 if x2 > x1 else x2 + 125, y2), "#B8C4D6", width=5)
-    for x, y, icon, color in nodes:
-        shadow(d, (x - 120, y - 105, x + 120, y + 105), radius=28)
-        rounded(d, (x - 120, y - 105, x + 120, y + 105), fill="#FFFFFF", radius=28)
-        icon(d, x, y, color)
-    d.rounded_rectangle((350, 885, 1450, 965), radius=38, fill="#EEF6FF", outline="#9CC8FF", width=4)
-    for x in range(460, 1360, 150):
-        d.ellipse((x - 17, 925 - 17, x + 17, 925 + 17), fill="#FFFFFF", outline=GREEN, width=4)
-        d.line((x - 9, 925, x - 1, 934, x + 14, 909), fill=GREEN, width=5)
+            arrow(d, (x + w // 2, y - 18), (nx + w // 2, ny + h + 18), width=5)
+    for (x, y), item in zip(coords, steps):
+        tag, heading, body, color = item
+        labeled_card(d, (x, y, x + w, y + h), tag, heading, body, color)
+    rounded(d, (360, 895, 1440, 975), fill="#EEF6FF", outline="#B8D6FF", radius=24, width=2)
+    draw_text(d, (400, 912, 1400, 960), "第一章的目标不是写很多代码，而是每次运行都知道结果从哪里来。", size=29, min_size=22, fill=BLUE, bold=True, align="center", valign="center")
     save(im, "ch01_first_script_feedback_loop.png")
 
 

@@ -9,7 +9,6 @@
 - `code/ch02/`：第2章可运行 Python 示例代码
 - `source_notes/source_manifest_ch02.md`：来源线索记录
 - `source_notes/quality_audit_ch02.md`：第2章质量验收记录
-- `source_notes/beginner_practice_report_ch02.md`：按小白跟做路线编写的实操检测报告
 - `scripts/check_links.py`：Markdown 图片链接检查脚本
 - `scripts/generate_ch02_visuals.py`：第2章正式版图片生成脚本
 - `manifest.json`：交付清单
@@ -30,8 +29,6 @@
 - 新增 `11_make_data_type_specimen_cabinet.py`，生成 JSON、Markdown 和 PNG，把同一组 Stroop 记录拆成“数据类型标本柜”，作为本章压轴成果图。
 - 新增 `12_make_data_type_runtime_evidence.py`，检查本章 14 个关键产物是否生成，并输出 `reports/ch02_data_type_runtime_evidence.md` 与 `output/ch02_data_type_runtime_evidence.png`，让数据类型学习有一张可复盘的运行证据板。
 - 新增 `ch02_error_clue_cards.png`、`ch02_practice_workbench.png` 和 `ch02_type_to_file_bridge.png`，把尾部的报错复盘、练习收束和下一章预告接成更自然的图文过渡。
-- 按 ch01 的阅读标准重排正文关键图片：先叙述任务、故事、命令或判断理由，再展示对应图片和图注，避免图片抢在解释前面出现。
-- 新增 `source_notes/beginner_practice_report_ch02.md`，从小白实操角度记录进入目录、逐个运行脚本、检查产物和处理 `MISSING` 的完整路线。
 - 保留 MATLAB 教材作为章节组织方式参考，但正文技术内容全部改写为 Python。
 
 ## 推荐阅读方式

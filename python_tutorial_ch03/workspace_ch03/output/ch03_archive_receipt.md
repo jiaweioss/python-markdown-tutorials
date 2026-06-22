@@ -7,16 +7,16 @@ This receipt is a compact delivery note for the demo archive in `workspace_ch03`
 - Source files: 6
 - Organized copies: 6
 - File types: 5
-- Total recorded size: 330190 bytes
+- Total recorded size: 262543 bytes
 
 ## File Types
 
 | Suffix | Count |
 | --- | ---: |
 | `.csv` | 5 |
-| `.json` | 4 |
+| `.json` | 3 |
 | `.md` | 6 |
-| `.png` | 6 |
+| `.png` | 5 |
 | `.txt` | 5 |
 
 ## Hash Spot Check

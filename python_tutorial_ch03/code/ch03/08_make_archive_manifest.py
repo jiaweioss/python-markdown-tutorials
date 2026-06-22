@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from base64 import b64decode
 from pathlib import Path
 import hashlib
 import shutil
@@ -15,16 +14,13 @@ OUTPUT = ROOT / "output"
 REPORT = OUTPUT / "ch03_archive_manifest.md"
 PREVIEW = OUTPUT / "ch03_archive_manifest_preview.png"
 PREVIEW_ASSET = Path("assets/ch03/web/ch03_archive_manifest_preview.png")
-DEMO_PNG = b64decode(
-    "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAAE0lEQVR4nGPUz/7PAANMcBZeDgBQFgGhOmjLnwAAAABJRU5ErkJggg=="
-)
 
 
 SAMPLES = {
     "experiment_notes.txt": "participant notes\ncondition A\ncondition B\n",
     "scores.csv": "name,score\n小美,92\n小明,86\n小东,78\n",
     "summary.md": "# Summary\n\nThe archive is ready for review.\n",
-    "figure.png": DEMO_PNG,
+    "figure.png": "fake image bytes for file-operation demo\n",
 }
 
 
@@ -40,10 +36,7 @@ def ensure_demo_archive() -> None:
 
     for name, content in SAMPLES.items():
         source = INBOX / name
-        if isinstance(content, bytes):
-            source.write_bytes(content)
-        else:
-            source.write_text(content, encoding="utf-8")
+        source.write_text(content, encoding="utf-8")
         target_dir = ORGANIZED / suffix_folder(source)
         target_dir.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target_dir / source.name)

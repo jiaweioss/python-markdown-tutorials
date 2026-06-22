@@ -1,14 +1,10 @@
-*.md text eol=lf
-*.py text eol=lf
-*.txt text eol=lf
-*.csv text eol=lf
-*.json text eol=lf
+* text=auto eol=lf
+
 *.png binary
 *.jpg binary
 *.jpeg binary
 *.gif binary
-*.webp binary
-*.pdf binary
-*.pptx binary
+*.zip binary
 *.docx binary
+*.pptx binary
 *.xlsx binary

@@ -88,10 +88,3 @@
 这些图片用于辅助理解课程地图、科研卡片工厂、环境流水线、项目阶梯、学习闭环、学习反馈曲线、技术栈工作台、章节接力中继站、章节蓝图接力、报错地图、自动化投入产出，以及 Ada Lovelace、Babbage 差分机、Guido van Rossum、Jacquard 打孔卡、ENIAC、第一张著名 bug 照片、Apollo 软件工程等历史故事。历史照片、真实场景照片和漫画尽量只展示图像本体，解释文字放在 Markdown 正文中；正文也保留来源与授权说明。
 
 正文中的 19 张图片均使用 `figure` 与 `figcaption` 组织图注，图注包含“图0-x”编号、短标题和一句说明。这样既能在 Markdown 中清晰显示图片标题，也避免把解释文字重新塞回图片内部。
-
-2026-06-20 复验中，正文 19 张图片已统一为“先叙述，再图片和图注”。每张图前都保留课程场景、历史故事、任务说明或过渡句，图片只承担视觉锚点、历史照片、真实场景或成果示意的作用。
-
-## 实操检测记录
-
-- `source_notes/beginner_practice_report_ch00.md`：从初学者视角记录本章 4 个脚本的运行路线、`learning_passport.py` 的示例输入、关键产物、常见踩坑、图片顺序检查和 PIL 图片有效性检查。
-- 2026-06-20 复验确认：`python scripts/generate_ch00_visuals.py`、`python scripts/check_links.py`、6 个 Python 文件 `py_compile`、33 张 PNG/JPG/GIF 的 PIL 打开检查均通过。

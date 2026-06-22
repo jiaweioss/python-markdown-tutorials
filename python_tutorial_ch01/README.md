@@ -10,7 +10,6 @@
 - `code/ch01/`：第1章可运行 Python 示例代码
 - `source_notes/source_manifest_ch01.md`：来源线索记录
 - `source_notes/quality_audit_ch01.md`：第1章质量验收记录
-- `source_notes/beginner_practice_report_ch01.md`：第1章初学者实操检测报告
 - `scripts/check_links.py`：Markdown 与 HTML 图片链接检查脚本
 - `scripts/generate_ch01_visuals.py`：第1章正式版图片生成脚本
 - `manifest.json`：交付清单
@@ -43,9 +42,6 @@
 - 新增 `ch01_powershell_project_navigation.png`，并保留 PowerShell 环境检查和连续运行截图，讲清从项目目录定位到 `hello` 脚本、环境检查脚本的完整复现路径。
 - 将 PyCharm 官方真实截图提前到工作环境章节，讲清新建项目、解释器入口、解释器列表、新建 virtualenv 和 Run 窗口输出。
 - 正文 34 张图片全部使用居中的 `<figure>` 结构，并在图片下方使用 `<figcaption>` 显示清晰图注。
-- 本轮复查后，34 张图片前均已有文字讲解、命令说明或过渡句，统一为“先叙述，再图片和图注”。
-- 修复 `scripts/generate_ch01_visuals.py` 的 PNG 保存方式，重新生成后 63 张 PNG/JPG/GIF 均通过 PIL 打开验证。
-- 新增初学者实操检测报告，记录 6 个示例脚本、交互脚本输入、图片链接、语法检查、PIL 图片检查和图文顺序检查结果。
 - 本章项目改为“科研卡片工厂通电日志”，代码会生成 `reports/ch01_environment_log.txt`。
 - 正文只保留简短来源说明，详细来源与授权集中放入 `source_notes/source_manifest_ch01.md`，避免打断学生阅读。
 

@@ -1,11 +1,3 @@
-# Archives and generated bundles
-*.zip
-*.rar
-*.7z
-*.tar
-*.tar.gz
-*.tgz
-
 # Python caches and local environments
 __pycache__/
 *.py[cod]
@@ -14,7 +6,13 @@ __pycache__/
 .ruff_cache/
 .venv/
 venv/
-env/
+
+# Local generated website output
+public/
+web_build/
+
+# Temporary visual QA artifacts
+output_*contact_sheet*.png
 
 # OS and editor noise
 .DS_Store
@@ -23,7 +21,6 @@ desktop.ini
 .idea/
 .vscode/
 
-# Temporary/export scratch files
-*.tmp
-*.bak
-~$*
+# Deployment scratch files
+deploy_tmp/
+*.log
