@@ -1,0 +1,38 @@
+name: Tutorial checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  image-links:
+    name: Check image links (${{ matrix.chapter }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        chapter:
+          - python_tutorial_ch00
+          - python_tutorial_ch01
+          - python_tutorial_ch02
+          - python_tutorial_ch03
+          - python_tutorial_ch04
+          - python_tutorial_ch05
+          - python_tutorial_ch06
+          - python_tutorial_ch07
+          - python_tutorial_ch08
+          - python_tutorial_ch09
+          - python_tutorial_ch10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check local Markdown image links
+        run: python "${{ matrix.chapter }}/scripts/check_links.py"
