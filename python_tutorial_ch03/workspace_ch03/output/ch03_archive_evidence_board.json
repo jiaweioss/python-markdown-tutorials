@@ -1,0 +1,18 @@
+{
+  "workspace": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03",
+  "inbox_files": 6,
+  "organized_files": 6,
+  "output_files": 13,
+  "required": {
+    "manifest": true,
+    "receipt": true,
+    "safety": true,
+    "handoff": true
+  },
+  "required_paths": {
+    "manifest": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_archive_manifest.md",
+    "receipt": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_archive_receipt.md",
+    "safety": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_path_safety_receipt.md",
+    "handoff": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_ch02_stroop_file_handoff.md"
+  }
+}

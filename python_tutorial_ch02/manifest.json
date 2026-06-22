@@ -1,0 +1,159 @@
+{
+  "project": "Python Markdown Tutorial",
+  "delivery": "chapter_02_detailed",
+  "language": "zh-CN",
+  "filenames": "ASCII only",
+  "chapter": {
+    "id": "ch02",
+    "title": "Python编程基础：数据类型",
+    "markdown": "chapters/ch02_python_data_types.md",
+    "source_ppt": "第二章_Python编程基础_数据类型2025.pptx",
+    "source_ppt_slide_count": 58,
+    "character_count": 30359,
+    "image_refs": 27,
+    "asset_count": 40,
+    "code_count": 13,
+    "internet_sources": [
+      {
+        "title": "George Boole color portrait",
+        "url": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Boole_color.jpg",
+        "local_file": "assets/ch02/web/george_boole_color.jpg",
+        "used_as": "assets/ch02/ch02_history_george_boole.png"
+      },
+      {
+        "title": "Hermann Ebbinghaus portrait",
+        "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Ebbinghaus2.jpg",
+        "local_file": "assets/ch02/web/hermann_ebbinghaus2.jpg",
+        "used_as": "assets/ch02/ch02_psychology_ebbinghaus_memory.png"
+      },
+      {
+        "title": "Copyright Card Catalog Drawer",
+        "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Copyright_Card_Catalog_Drawer.jpg",
+        "local_file": "assets/ch02/web/copyright_card_catalog_drawer.jpg",
+        "used_as": "assets/ch02/ch02_dictionary_card_catalog_photo.png"
+      },
+      {
+        "title": "IBM 080 Card Sorter",
+        "url": "https://commons.wikimedia.org/wiki/File:IBM_080_Card_Sorter.jpg",
+        "local_file": "assets/ch02/web/ibm_080_card_sorter.jpg",
+        "used_as": "assets/ch02/ch02_punch_card_sorter_photo.png"
+      },
+      {
+        "title": "Claude Shannon portrait",
+        "url": "https://commons.wikimedia.org/wiki/File:ClaudeShannon_MFO3807.jpg",
+        "local_file": "assets/ch02/web/claude_shannon_mfo3807.jpg",
+        "used_as": "assets/ch02/ch02_information_history_claude_shannon.png"
+      },
+      {
+        "title": "Matryoshka dolls",
+        "url": "https://commons.wikimedia.org/wiki/File:Matryoshka_dolls.jpg",
+        "local_file": "assets/ch02/web/matryoshka_dolls.jpg",
+        "used_as": "assets/ch02/ch02_nested_data_matryoshka.png"
+      }
+    ]
+  },
+  "assets": [
+    "assets/ch02/ch02_bool_logic_switchboard.png",
+    "assets/ch02/ch02_cover.png",
+    "assets/ch02/ch02_data_type_atlas.png",
+    "assets/ch02/ch02_data_type_lab_receipt.png",
+    "assets/ch02/ch02_data_type_runtime_evidence.png",
+    "assets/ch02/ch02_data_type_specimen_cabinet.png",
+    "assets/ch02/ch02_dict_mapping_card.png",
+    "assets/ch02/ch02_dictionary_card_catalog_photo.png",
+    "assets/ch02/ch02_error_clue_cards.png",
+    "assets/ch02/ch02_history_george_boole.png",
+    "assets/ch02/ch02_information_history_claude_shannon.png",
+    "assets/ch02/ch02_list_workbench.png",
+    "assets/ch02/ch02_mini_project_dashboard.png",
+    "assets/ch02/ch02_nested_data_matryoshka.png",
+    "assets/ch02/ch02_number_rounding_chart.png",
+    "assets/ch02/ch02_powershell_data_type_run.png",
+    "assets/ch02/ch02_psychology_ebbinghaus_memory.png",
+    "assets/ch02/ch02_punch_card_sorter_photo.png",
+    "assets/ch02/ch02_practice_workbench.png",
+    "assets/ch02/ch02_roadmap.png",
+    "assets/ch02/ch02_string_material_workbench.png",
+    "assets/ch02/ch02_string_slice_ruler.png",
+    "assets/ch02/ch02_stroop_dataset_pack.png",
+    "assets/ch02/ch02_type_compass_preview.png",
+    "assets/ch02/ch02_type_decision_cards_preview.png",
+    "assets/ch02/ch02_type_to_file_bridge.png",
+    "assets/ch02/ch02_variable_label_metaphor.png",
+    "assets/ch02/web/ch02_data_type_lab_receipt.png",
+    "assets/ch02/web/ch02_data_type_runtime_evidence.png",
+    "assets/ch02/web/ch02_data_type_specimen_cabinet.png",
+    "assets/ch02/web/ch02_stroop_dataset_pack.png",
+    "assets/ch02/web/ch02_type_compass_preview.png",
+    "assets/ch02/web/ch02_type_decision_cards_preview.png",
+    "assets/ch02/web/claude_shannon_mfo3807.jpg",
+    "assets/ch02/web/copyright_card_catalog_drawer.jpg",
+    "assets/ch02/web/george_boole_color.jpg",
+    "assets/ch02/web/hermann_ebbinghaus2.jpg",
+    "assets/ch02/web/ibm_080_card_sorter.jpg",
+    "assets/ch02/web/matryoshka_dolls.jpg",
+    "assets/ch02/web/powershell_ch02_data_types_run.png"
+  ],
+  "code": [
+    "code/ch02/01_constants_keywords.py",
+    "code/ch02/02_variables_labels.py",
+    "code/ch02/03_bool_numbers.py",
+    "code/ch02/04_string_playground.py",
+    "code/ch02/05_list_dict_workshop.py",
+    "code/ch02/06_learning_record_project.py",
+    "code/ch02/07_make_type_decision_cards.py",
+    "code/ch02/08_make_type_compass.py",
+    "code/ch02/09_make_data_type_lab_receipt.py",
+    "code/ch02/10_make_stroop_dataset_pack.py",
+    "code/ch02/11_make_data_type_specimen_cabinet.py",
+    "code/ch02/12_make_data_type_runtime_evidence.py",
+    "code/ch02/requirements.txt"
+  ],
+  "scripts": [
+    "scripts/generate_ch02_visuals.py",
+    "scripts/check_links.py"
+  ],
+  "source_role": {
+    "python_ppt": "primary course skeleton and topics",
+    "matlab_materials": "teaching style reference only"
+  },
+  "validation": {
+    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 27 local image refs after ch02 structure and visual refresh",
+    "python_syntax": "ok; py_compile checked scripts/generate_ch02_visuals.py, scripts/check_links.py and 12 code/ch02 Python files",
+    "figures_centered": true,
+    "figcaption_count": "ok; 27 <img> tags and 27 <figcaption> tags",
+    "chapter_structure_navigation": "updated; [TOC] now exposes a guide plus five level-2 parts, with the original 2.x sections demoted to clear level-3 subsections",
+    "markdown_image_syntax_count": 0,
+    "ascii_filenames": true,
+    "formal_visuals_generated": true,
+    "real_powershell_screenshot": true,
+    "internet_story_photos": true,
+    "quality_audit": "source_notes/quality_audit_ch02.md",
+    "generated_type_decision_cards": true,
+    "nested_data_photo": true,
+    "information_history_photo": true,
+    "images_open_with_pil": "ok; 46 PNG/JPG/GIF files across assets and output verified with PIL after regeneration",
+    "generated_type_compass": true,
+    "type_compass_preview": "ok; generated by code/ch02/08_make_type_compass.py and wrapped by scripts/generate_ch02_visuals.py",
+    "formal_visuals_regenerated": "updated; duplicate function overrides removed from scripts/generate_ch02_visuals.py and 27 formal chapter images regenerated",
+    "generated_visual_script_duplicates": "ok; 45 generator functions checked, no duplicate function names remain",
+    "mechanical_visual_copy_reduced": "ok; core concept visuals now use natural Chinese labels, sectioned cards, arrows and concise task-oriented explanations",
+    "script_smoke_test": "ok; 01 through 12 scripts ran successfully; runtime evidence reported 14/14 ready",
+    "contact_sheet_checked": "ok; contact sheet and key full-size images reviewed for alignment, text overflow and machine-translation feel after ch02 refresh",
+    "temporary_contact_sheet_removed": true,
+    "full_book_consistency_scan": "ok; 11 chapter dirs, 130 Python files, 108 code Python scripts, 280 chapter markdown image refs, 0 missing local images, 0 caption mismatches, 0 manifest mismatches, 0 PIL errors, 0 asset SVG residuals, 0 old audit files",
+    "generated_data_type_lab_receipt": true,
+    "data_type_lab_receipt_preview": "added; generated by code/ch02/09_make_data_type_lab_receipt.py and wrapped by scripts/generate_ch02_visuals.py",
+    "generated_stroop_dataset_pack": "added; generated by code/ch02/10_make_stroop_dataset_pack.py as JSON, CSV, Markdown and PNG",
+    "stroop_dataset_pack_preview": "ok; generated by code/ch02/10_make_stroop_dataset_pack.py and wrapped by scripts/generate_ch02_visuals.py",
+    "punch_card_sorter_photo": "added; IBM 080 Card Sorter photo wrapped by scripts/generate_ch02_visuals.py",
+    "generated_data_type_specimen_cabinet": "added; code/ch02/11_make_data_type_specimen_cabinet.py generated JSON, Markdown and PNG",
+    "runtime_evidence_board": "added; 12_make_data_type_runtime_evidence.py checks 14 chapter artifacts and generates report/output/web/formal images",
+    "text_light_concept_visuals": "updated; concept visuals now carry short, natural labels while longer teaching explanations stay in Markdown body and captions",
+    "string_material_workbench": "added; no-explanation-text visual inserted before string basics to connect numeric data with participant IDs, stimuli, paths and notes; ch02 max image gap reduced from 197 lines to 161 lines"
+  },
+  "source_notes": [
+    "source_notes/source_manifest_ch02.md",
+    "source_notes/quality_audit_ch02.md"
+  ]
+}

@@ -1,0 +1,26 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local generated website output
+public/
+web_build/
+
+# Temporary visual QA artifacts
+output_*contact_sheet*.png
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# Deployment scratch files
+deploy_tmp/
+*.log

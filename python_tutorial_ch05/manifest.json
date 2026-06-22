@@ -1,0 +1,179 @@
+{
+  "project": "Python Markdown Tutorial",
+  "delivery": "chapter_05_detailed",
+  "language": "zh-CN",
+  "filenames": "ASCII only",
+  "chapter": {
+    "id": "ch05",
+    "title": "面向对象程序设计",
+    "markdown": "chapters/ch05_oop.md",
+    "source_ppt": "第五章_面向对象程序设计2025.pptx",
+    "character_count": 20212,
+    "image_refs": 26,
+    "asset_count": 43,
+    "code_count": 11,
+    "internet_sources": [
+      {
+        "title": "Simula logo",
+        "url": "https://commons.wikimedia.org/wiki/File:Simula_-_logo.png",
+        "local_file": "assets/ch05/web/simula_logo.png",
+        "used_as": "assets/ch05/ch05_simula_origin_story.png"
+      },
+      {
+        "title": "Kristen-Nygaard-SBLP-1997-head",
+        "url": "https://commons.wikimedia.org/wiki/File:Kristen-Nygaard-SBLP-1997-head.png",
+        "author": "Jorge Stolfi",
+        "license": "Public domain",
+        "local_file": "assets/ch05/web/kristen_nygaard.png",
+        "used_as": "assets/ch05/ch05_kristen_nygaard_story.png"
+      },
+      {
+        "title": "Seattle - University Bridge blueprint, 1915",
+        "url": "https://commons.wikimedia.org/wiki/File:Seattle_-_University_Bridge_blueprint,_1915_(49781358396).jpg",
+        "author": "Seattle Municipal Archives",
+        "license": "CC BY 2.0",
+        "local_file": "assets/ch05/web/university_bridge_blueprint.jpg",
+        "used_as": "assets/ch05/ch05_blueprint_class_story.png"
+      },
+      {
+        "title": "Computer scientist Alan Kay",
+        "url": "https://commons.wikimedia.org/wiki/File:Computer_scientist_Alan_Kay.jpg",
+        "author": "Ryan Johnson",
+        "license": "CC BY-SA 4.0",
+        "local_file": "assets/ch05/web/alan_kay.jpg",
+        "used_as": "assets/ch05/ch05_alan_kay_oop_story.png"
+      },
+      {
+        "title": "Squeak 5.1 morphic interface screenshot",
+        "url": "https://commons.wikimedia.org/wiki/File:Squeak_51_morphic_interface_screenshot.png",
+        "local_file": "assets/ch05/web/squeak_morphic_interface_screenshot.png",
+        "used_as": "assets/ch05/ch05_smalltalk_environment_story.png"
+      },
+      {
+        "title": "xkcd 1513: Code Quality",
+        "url": "https://xkcd.com/1513/",
+        "author": "Randall Munroe",
+        "license": "CC BY-NC 2.5",
+        "local_file": "assets/ch05/web/xkcd_code_quality.png",
+        "used_as": "assets/ch05/ch05_xkcd_code_quality.png"
+      },
+      {
+        "title": "Lego Color Bricks",
+        "url": "https://commons.wikimedia.org/wiki/File:Lego_Color_Bricks.jpg",
+        "author": "Alan Chia",
+        "license": "CC BY-SA 2.0",
+        "local_file": "assets/ch05/web/lego_color_bricks.jpg",
+        "used_as": "assets/ch05/ch05_lego_composition_story.png"
+      },
+      {
+        "title": "Jean Piaget in Ann Arbor",
+        "url": "https://commons.wikimedia.org/wiki/File:Jean_Piaget_in_Ann_Arbor.png",
+        "author": "1968 Michiganensian",
+        "license": "Public domain in the United States",
+        "local_file": "assets/ch05/web/jean_piaget.png",
+        "used_as": "assets/ch05/ch05_piaget_schema_story.png"
+      },
+      {
+        "title": "Adele Goldberg at PyCon 2007",
+        "url": "https://commons.wikimedia.org/wiki/File:Adele_Goldberg_at_PyCon_2007.jpg",
+        "local_file": "assets/ch05/web/adele_goldberg_pycon_2007.jpg",
+        "used_as": "assets/ch05/ch05_adele_goldberg_story.png"
+      }
+    ]
+  },
+  "assets": [
+    "assets/ch05/ch05_adele_goldberg_story.png",
+    "assets/ch05/ch05_alan_kay_oop_story.png",
+    "assets/ch05/ch05_blueprint_class_story.png",
+    "assets/ch05/ch05_core_metaphor.png",
+    "assets/ch05/ch05_cover.png",
+    "assets/ch05/ch05_design_cards_preview.png",
+    "assets/ch05/ch05_gui_panel_object_model.png",
+    "assets/ch05/ch05_kristen_nygaard_story.png",
+    "assets/ch05/ch05_lego_composition_story.png",
+    "assets/ch05/ch05_minimal_demo.png",
+    "assets/ch05/ch05_object_collaboration_map.png",
+    "assets/ch05/ch05_object_delivery_package.png",
+    "assets/ch05/ch05_object_quality_receipt.png",
+    "assets/ch05/ch05_object_theater_story.png",
+    "assets/ch05/ch05_oop_model_preview.png",
+    "assets/ch05/ch05_oop_runtime_evidence.png",
+    "assets/ch05/ch05_piaget_schema_story.png",
+    "assets/ch05/ch05_pitfall_map.png",
+    "assets/ch05/ch05_powershell_oop_run.png",
+    "assets/ch05/ch05_project_dashboard.png",
+    "assets/ch05/ch05_psychology_link.png",
+    "assets/ch05/ch05_roadmap.png",
+    "assets/ch05/ch05_simula_origin_story.png",
+    "assets/ch05/ch05_smalltalk_environment_story.png",
+    "assets/ch05/ch05_story_scene.png",
+    "assets/ch05/ch05_xkcd_code_quality.png",
+    "assets/ch05/web/adele_goldberg_pycon_2007.jpg",
+    "assets/ch05/web/alan_kay.jpg",
+    "assets/ch05/web/ch05_design_cards_preview.png",
+    "assets/ch05/web/ch05_gui_panel_object_model.png",
+    "assets/ch05/web/ch05_object_collaboration_map.png",
+    "assets/ch05/web/ch05_object_delivery_package.png",
+    "assets/ch05/web/ch05_object_quality_receipt.png",
+    "assets/ch05/web/ch05_oop_model_preview.png",
+    "assets/ch05/web/ch05_oop_runtime_evidence.png",
+    "assets/ch05/web/jean_piaget.png",
+    "assets/ch05/web/kristen_nygaard.png",
+    "assets/ch05/web/lego_color_bricks.jpg",
+    "assets/ch05/web/powershell_ch05_oop_run.png",
+    "assets/ch05/web/simula_logo.png",
+    "assets/ch05/web/squeak_morphic_interface_screenshot.png",
+    "assets/ch05/web/university_bridge_blueprint.jpg",
+    "assets/ch05/web/xkcd_code_quality.png"
+  ],
+  "code": [
+    "code/ch05/01_learning_card_class.py",
+    "code/ch05/02_card_deck.py",
+    "code/ch05/03_trial_object.py",
+    "code/ch05/04_make_oop_model_report.py",
+    "code/ch05/05_make_design_cards.py",
+    "code/ch05/06_make_object_collaboration_map.py",
+    "code/ch05/07_make_object_quality_receipt.py",
+    "code/ch05/08_make_object_delivery_package.py",
+    "code/ch05/09_make_gui_panel_object_model.py",
+    "code/ch05/10_make_oop_runtime_evidence.py",
+    "code/ch05/requirements.txt"
+  ],
+  "scripts": [
+    "scripts/generate_ch05_visuals.py",
+    "scripts/check_links.py"
+  ],
+  "validation": {
+    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 26 local image refs",
+    "python_syntax": "ok; AST checked 12 python files including scripts",
+    "figures_centered": true,
+    "figcaption_count": 26,
+    "markdown_image_syntax_count": 0,
+    "formal_visuals_generated": "ok; generate_ch05_visuals.py produced 26 visuals",
+    "real_powershell_screenshot": true,
+    "internet_story_photos": true,
+    "oop_model_report_generated": true,
+    "design_cards_generated": true,
+    "quality_audit": "source_notes/quality_audit_ch05.md",
+    "formal_visuals_regenerated": true,
+    "adele_goldberg_downloaded": "ok",
+    "object_collaboration_map_generated": "ok",
+    "object_quality_receipt_generated": "ok",
+    "contact_sheet_checked": "ok; temporary contact sheet reviewed for alignment and overflow after ch5 student-facing text pass",
+    "full_book_cross_check": "ok; 11 chapter dirs, 130 python files, 108 code python scripts, 280 markdown image refs, 0 missing local images, 0 caption mismatches, 0 manifest mismatches, 0 temporary files",
+    "student_facing_language_pass": "ok; removed background tutorial phrasing and replaced repetitive route/concept rows with concrete learner actions",
+    "object_delivery_package_generated": true,
+    "gui_panel_object_model_generated": true,
+    "images_open_with_pil": "ok; 43 images verified",
+    "script_smoke_test": "ok; 01 through 10 scripts and visual generator ran successfully",
+    "temporary_contact_sheet_removed": true,
+    "generated_object_theater_story": "ok; generated no-text metaphor image for object responsibility and message collaboration",
+    "full_book_consistency_scan": "ok; 11 chapter dirs, 130 python files, 108 code python scripts, 280 markdown image refs, 0 missing local images, 0 caption mismatches, 0 manifest mismatches, 0 temporary files",
+    "generated_oop_runtime_evidence": "ok; 10_make_oop_runtime_evidence.py generated report, output image and web copy"
+  },
+  "source_notes": [
+    "source_notes/source_manifest_ch05.md",
+    "source_notes/quality_audit_ch05.md"
+  ]
+}
+

@@ -1,0 +1,67 @@
+{
+  "panel_title": "Stroop 数据浏览面板",
+  "source": "python_tutorial_ch03/workspace_ch03/organized/json/ch02_stroop_dataset_pack.json",
+  "metrics": {
+    "participant": "S001",
+    "trial_count": 4,
+    "accuracy_percent": 100.0,
+    "mean_reaction_time_ms": 585.0,
+    "conflict_trials": 2
+  },
+  "actions": [
+    "加载数据",
+    "查看试次",
+    "导出卡片",
+    "生成报告"
+  ],
+  "trial_preview": [
+    {
+      "trial_id": 1,
+      "participant": "S001",
+      "word": "RED",
+      "ink_color": "blue",
+      "response_key": "j",
+      "correct_key": "j",
+      "reaction_time_ms": 612.4,
+      "note": null,
+      "correct": true,
+      "congruent": false
+    },
+    {
+      "trial_id": 2,
+      "participant": "S001",
+      "word": "GREEN",
+      "ink_color": "green",
+      "response_key": "f",
+      "correct_key": "f",
+      "reaction_time_ms": 538.2,
+      "note": "congruent",
+      "correct": true,
+      "congruent": true
+    },
+    {
+      "trial_id": 3,
+      "participant": "S001",
+      "word": "BLUE",
+      "ink_color": "red",
+      "response_key": "f",
+      "correct_key": "f",
+      "reaction_time_ms": 701.8,
+      "note": "incongruent",
+      "correct": true,
+      "congruent": false
+    },
+    {
+      "trial_id": 4,
+      "participant": "S001",
+      "word": "RED",
+      "ink_color": "red",
+      "response_key": "f",
+      "correct_key": "f",
+      "reaction_time_ms": 487.6,
+      "note": "fast",
+      "correct": true,
+      "congruent": true
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "project": "Python Markdown Tutorial",
+  "delivery": "chapter_09_detailed",
+  "language": "zh-CN",
+  "filenames": "ASCII only",
+  "chapter": {
+    "id": "ch09",
+    "title": "Python 图像处理",
+    "markdown": "chapters/ch09_image_processing.md",
+    "source_ppt": "第九章_Python图像处理2025.pptx",
+    "character_count": 18817,
+    "image_refs": 24,
+    "asset_count": 40,
+    "code_count": 12,
+    "internet_sources": [
+      {
+        "title": "View from the Window at Le Gras",
+        "url": "https://commons.wikimedia.org/wiki/File:View_from_the_Window_at_Le_Gras,_Joseph_Nic%C3%A9phore_Ni%C3%A9pce.jpg",
+        "local_file": "assets/ch09/web/niepce_window_le_gras.jpg",
+        "used_as": "assets/ch09/ch09_niepce_photo_story.png"
+      },
+      {
+        "title": "NBS first scan image restored",
+        "url": "https://commons.wikimedia.org/wiki/File:NBSFirstScanImageRestored.jpg",
+        "local_file": "assets/ch09/web/first_digital_scan_nist.jpg",
+        "used_as": "assets/ch09/ch09_first_digital_scan_story.png"
+      },
+      {
+        "title": "Edwin H. Land, founder, Polaroid (cropped)",
+        "url": "https://commons.wikimedia.org/wiki/File:Edwin_H._Land,_founder,_Polaroid_(cropped).jpg",
+        "local_file": "assets/ch09/web/edwin_land_polaroid_cropped.jpg",
+        "used_as": "assets/ch09/ch09_edwin_land_color_story.png"
+      },
+      {
+        "title": "Fronalpstock big",
+        "url": "https://commons.wikimedia.org/wiki/File:Fronalpstock_big.jpg",
+        "local_file": "assets/ch09/web/fronalpstock_sample.jpg",
+        "used_as": "assets/ch09/ch09_real_photo_source.png"
+      },
+      {
+        "title": "Pillars of Creation",
+        "url": "https://commons.wikimedia.org/wiki/File:Pillars_of_Creation.jpeg",
+        "local_file": "assets/ch09/web/pillars_of_creation.jpg",
+        "used_as": "assets/ch09/ch09_pillars_science_image_story.png"
+      },
+      {
+        "title": "Hermann von Helmholtz 1894",
+        "url": "https://commons.wikimedia.org/wiki/File:Hermann_von_Helmholtz_1894.jpg",
+        "local_file": "assets/ch09/web/hermann_von_helmholtz_1894.jpg",
+        "used_as": "assets/ch09/ch09_helmholtz_perception_story.png"
+      },
+      {
+        "title": "Checker shadow illusion",
+        "url": "https://persci.mit.edu/gallery/checkershadow/",
+        "author": "Edward H. Adelson",
+        "license": "MIT Perceptual Science Group page states images may be copied and distributed freely",
+        "local_file": "assets/ch09/web/checker_shadow_illusion.jpg",
+        "used_as": "assets/ch09/ch09_checker_shadow_illusion_story.png"
+      }
+    ]
+  },
+  "assets": [
+    "assets/ch09/ch09_before_after_result.png",
+    "assets/ch09/ch09_ch08_image_intake.png",
+    "assets/ch09/ch09_checker_shadow_illusion_story.png",
+    "assets/ch09/ch09_core_metaphor.png",
+    "assets/ch09/ch09_cover.png",
+    "assets/ch09/ch09_edwin_land_color_story.png",
+    "assets/ch09/ch09_first_digital_scan_story.png",
+    "assets/ch09/ch09_helmholtz_perception_story.png",
+    "assets/ch09/ch09_image_processing_report_preview.png",
+    "assets/ch09/ch09_image_quality_contact_sheet.png",
+    "assets/ch09/ch09_image_runtime_evidence.png",
+    "assets/ch09/ch09_minimal_demo.png",
+    "assets/ch09/ch09_niepce_photo_story.png",
+    "assets/ch09/ch09_pillars_science_image_story.png",
+    "assets/ch09/ch09_pitfall_map.png",
+    "assets/ch09/ch09_powershell_image_run.png",
+    "assets/ch09/ch09_processing_storyboard.png",
+    "assets/ch09/ch09_project_dashboard.png",
+    "assets/ch09/ch09_psychology_link.png",
+    "assets/ch09/ch09_real_photo_source.png",
+    "assets/ch09/ch09_roadmap.png",
+    "assets/ch09/ch09_story_scene.png",
+    "assets/ch09/ch09_visual_evidence_archive.png",
+    "assets/ch09/ch09_visual_perception_lab.png",
+    "assets/ch09/web/ch09_ch08_image_intake.png",
+    "assets/ch09/web/ch09_image_processing_report_preview.png",
+    "assets/ch09/web/ch09_image_quality_contact_sheet.png",
+    "assets/ch09/web/ch09_image_runtime_evidence.png",
+    "assets/ch09/web/ch09_processing_storyboard.png",
+    "assets/ch09/web/ch09_visual_perception_lab.png",
+    "assets/ch09/web/checker_shadow_illusion.jpg",
+    "assets/ch09/web/edwin_land_polaroid_cropped.jpg",
+    "assets/ch09/web/first_digital_scan_nist.jpg",
+    "assets/ch09/web/fronalpstock_before_after.png",
+    "assets/ch09/web/fronalpstock_sample.jpg",
+    "assets/ch09/web/hermann_von_helmholtz_1894.jpg",
+    "assets/ch09/web/niepce_window_le_gras.jpg",
+    "assets/ch09/web/pillars_of_creation.jpg",
+    "assets/ch09/web/powershell_ch09_image_processing_run.png",
+    "assets/ch09/web/visual_evidence_archive.png"
+  ],
+  "code": [
+    "code/ch09/01_create_demo_image.py",
+    "code/ch09/02_resize_grayscale.py",
+    "code/ch09/03_batch_image_report.py",
+    "code/ch09/04_real_photo_before_after.py",
+    "code/ch09/05_make_image_processing_report.py",
+    "code/ch09/06_make_visual_perception_lab.py",
+    "code/ch09/07_make_image_quality_contact_sheet.py",
+    "code/ch09/08_make_ch08_image_intake.py",
+    "code/ch09/09_make_visual_evidence_archive.py",
+    "code/ch09/10_make_processing_storyboard.py",
+    "code/ch09/11_make_image_runtime_evidence.py",
+    "code/ch09/requirements.txt"
+  ],
+  "scripts": [
+    "scripts/generate_ch09_visuals.py",
+    "scripts/check_links.py"
+  ],
+  "validation": {
+    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 24 local image refs after ch09 student-facing language polish",
+    "python_syntax": "ok; AST checked 13 Python files in code/ and scripts/",
+    "figures_centered": true,
+    "figcaption_count": "ok; 24 <img> tags and 24 <figcaption> tags",
+    "markdown_image_syntax_count": 0,
+    "formal_visuals_generated": "ok; generate_ch09_visuals.py produced 23 visuals",
+    "quality_audit": "source_notes/quality_audit_ch09.md",
+    "images_open_with_pil": "ok; 40 PNG/JPG/GIF assets verified with PIL",
+    "powershell_screenshot": "ok",
+    "real_photo_before_after": "ok",
+    "image_processing_report_generated": "ok",
+    "visual_perception_lab_generated": "ok",
+    "formal_visuals_regenerated": true,
+    "checker_shadow_illusion_downloaded": "ok",
+    "image_quality_contact_sheet_generated": "ok",
+    "ch08_image_intake_generated": "ok; 08_make_ch08_image_intake.py generated JSON, report and chart",
+    "visual_evidence_archive_generated": "ok; 09_make_visual_evidence_archive.py generated report and preview",
+    "contact_sheet_checked": "ok; temporary contact sheet reviewed for image alignment and overflow after student-facing language polish",
+    "full_book_cross_check": "ok; 11 chapter dirs, 130 python files, 108 code python scripts, 280 markdown image refs, 0 missing local images, 0 caption mismatches, 0 manifest mismatches, 0 PIL errors, 0 temporary files",
+    "generated_processing_storyboard": "ok; 10_make_processing_storyboard.py generated report and storyboard image",
+    "visual_evidence_archive_updated": "ok; archive includes processing storyboard when generated before rerun",
+    "project_smoke_test": "ok; scripts 01-11 ran successfully and runtime evidence reported 16/16 ready artifacts",
+    "powershell_runtime_evidence": "added; 11_make_image_runtime_evidence.py generated report/output/web/formal visual and checked 16/16 artifacts",
+    "full_book_consistency_scan": "ok; 11 chapter dirs, 130 python files, 108 code python scripts, 280 markdown image refs, 0 missing local images, 0 caption mismatches, 0 manifest mismatches, 0 temporary files",
+    "temporary_contact_sheet_removed": true,
+    "student_facing_language_polish": "ok; route table, core concept bullets, psychology/research image connection and project steps rewritten as student-executable image processing tasks"
+  },
+  "source_notes": [
+    "source_notes/source_manifest_ch09.md",
+    "source_notes/quality_audit_ch09.md"
+  ]
+}
+

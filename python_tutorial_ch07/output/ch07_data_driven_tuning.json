@@ -1,0 +1,11 @@
+{
+  "source": "ch05",
+  "card_count": 2,
+  "tag_count": 5,
+  "reaction_time_ms": 438.5,
+  "difficulty_band": "flow",
+  "spawn_interval_ms": 950,
+  "target_window_ms": 620,
+  "round_cards": 7,
+  "advice": "保持节奏，增加少量新词。"
+}
