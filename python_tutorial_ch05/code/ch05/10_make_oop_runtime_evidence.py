@@ -25,15 +25,15 @@ EVIDENCE_PNG = OUTPUT / "ch05_oop_runtime_evidence.png"
 ASSET_COPY = WEB_DIR / "ch05_oop_runtime_evidence.png"
 
 CHECKS = [
-    ("model report", "reports/ch05_oop_model_report.md"),
-    ("model preview", "reports/ch05_oop_model_preview.png"),
-    ("design cards", "reports/ch05_design_cards.md"),
-    ("collab map", "reports/ch05_object_collaboration_map.md"),
-    ("quality receipt", "reports/ch05_object_quality_receipt.md"),
-    ("delivery json", "output/ch05_object_delivery_package.json"),
-    ("delivery report", "reports/ch05_object_delivery_package.md"),
-    ("gui model json", "output/ch05_gui_panel_object_model.json"),
-    ("gui model report", "reports/ch05_gui_panel_object_model.md"),
+    ("对象模型报告", "reports/ch05_oop_model_report.md"),
+    ("对象模型预览图", "reports/ch05_oop_model_preview.png"),
+    ("类职责卡片", "reports/ch05_design_cards.md"),
+    ("对象协作消息图", "reports/ch05_object_collaboration_map.md"),
+    ("对象质量回执", "reports/ch05_object_quality_receipt.md"),
+    ("交付包 JSON", "output/ch05_object_delivery_package.json"),
+    ("交付包报告", "reports/ch05_object_delivery_package.md"),
+    ("GUI 对象模型 JSON", "output/ch05_gui_panel_object_model.json"),
+    ("GUI 对象模型报告", "reports/ch05_gui_panel_object_model.md"),
 ]
 
 
@@ -52,14 +52,14 @@ def font(size: int, bold: bool = False):
 def collect_rows() -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     for label, rel_path in CHECKS:
-        status = "ready" if (ROOT / rel_path).exists() else "missing"
+        status = "就绪" if (ROOT / rel_path).exists() else "缺失"
         rows.append({"stage": label, "path": rel_path, "status": status})
     return rows
 
 
 def write_markdown(rows: list[dict[str, str]]) -> None:
     REPORTS.mkdir(exist_ok=True)
-    ready = sum(row["status"] == "ready" for row in rows)
+    ready = sum(row["status"] == "就绪" for row in rows)
     lines = [
         "# 第5章 OOP 运行证据清单",
         "",
@@ -92,8 +92,8 @@ def write_preview(rows: list[dict[str, str]]) -> None:
     code_font = font(19)
 
     draw.rounded_rectangle((90, 70, 1610, 1095), radius=30, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    draw.text((150, 125), "Windows PowerShell - OOP runtime evidence", fill="#162033", font=title_font)
-    draw.text((150, 200), "Object model outputs checked after running chapter 05 scripts.", fill="#5F6673", font=body_font)
+    draw.text((150, 125), "Windows PowerShell - OOP 运行证据", fill="#162033", font=title_font)
+    draw.text((150, 200), "运行第5章脚本后，检查对象模型相关交付物是否都存在。", fill="#5F6673", font=body_font)
 
     terminal = (150, 270, 1550, 1010)
     draw.rounded_rectangle(terminal, radius=24, fill="#0B1B3A", outline="#102A56", width=2)
@@ -115,7 +115,7 @@ def write_preview(rows: list[dict[str, str]]) -> None:
     y += 22
 
     for row in rows:
-        status_color = "#34D399" if row["status"] == "ready" else "#F87171"
+        status_color = "#34D399" if row["status"] == "就绪" else "#F87171"
         draw.rounded_rectangle((190, y, 1510, y + 44), radius=12, fill="#102A56", outline="#1E3A8A", width=1)
         draw.ellipse((220, y + 13, 240, y + 33), fill=status_color)
         draw.text((270, y + 10), row["stage"], fill="#EAF2FF", font=row_font)
@@ -123,9 +123,9 @@ def write_preview(rows: list[dict[str, str]]) -> None:
         draw.text((800, y + 12), row["path"], fill="#BFD7FF", font=code_font)
         y += 56
 
-    ready = sum(row["status"] == "ready" for row in rows)
+    ready = sum(row["status"] == "就绪" for row in rows)
     draw.rounded_rectangle((310, 1040, 1390, 1088), radius=18, fill="#ECFDF5", outline="#34D399", width=2)
-    draw.text((570, 1054), f"ready files: {ready}/{len(rows)}", fill="#047857", font=body_font)
+    draw.text((610, 1054), f"就绪文件：{ready}/{len(rows)}", fill="#047857", font=body_font)
 
     image.save(EVIDENCE_PNG, optimize=True, quality=95)
     WEB_DIR.mkdir(parents=True, exist_ok=True)
@@ -136,9 +136,9 @@ def main() -> None:
     rows = collect_rows()
     write_markdown(rows)
     write_preview(rows)
-    print(f"generated {EVIDENCE_MD.relative_to(ROOT)}")
-    print(f"generated {EVIDENCE_PNG.relative_to(ROOT)}")
-    print(f"copied {ASSET_COPY.relative_to(ROOT)}")
+    print(f"已生成 {EVIDENCE_MD.relative_to(ROOT)}")
+    print(f"已生成 {EVIDENCE_PNG.relative_to(ROOT)}")
+    print(f"已同步 {ASSET_COPY.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

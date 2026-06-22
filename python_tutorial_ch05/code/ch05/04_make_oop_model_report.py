@@ -1,11 +1,21 @@
 """Generate a small object-model report for the OOP chapter."""
 from dataclasses import dataclass, field
+import shutil
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
 
-REPORTS = Path("reports")
+def project_root() -> Path:
+    here = Path.cwd()
+    if (here / "assets" / "ch05").exists():
+        return here
+    return Path(__file__).resolve().parents[2]
+
+
+ROOT = project_root()
+REPORTS = ROOT / "reports"
+WEB_DIR = ROOT / "assets" / "ch05" / "web"
 
 
 @dataclass
@@ -121,13 +131,22 @@ def make_preview(deck: CardDeck, trial: Trial):
     return path
 
 
+def copy_asset(preview: Path) -> Path:
+    WEB_DIR.mkdir(parents=True, exist_ok=True)
+    target = WEB_DIR / preview.name
+    shutil.copyfile(preview, target)
+    return target
+
+
 def main():
     deck, trial = build_model()
     report = make_markdown(deck, trial)
     preview = make_preview(deck, trial)
+    web_copy = copy_asset(preview)
     print("已生成对象模型报告：")
-    print(f"- {report}")
-    print(f"- {preview}")
+    print(f"- {report.relative_to(ROOT)}")
+    print(f"- {preview.relative_to(ROOT)}")
+    print(f"- {web_copy.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

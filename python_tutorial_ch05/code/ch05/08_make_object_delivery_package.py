@@ -113,8 +113,8 @@ def build_package() -> dict:
         "trial": asdict(trial) | {"is_fast": trial.is_fast()},
         "report": asdict(report),
         "handoff": {
-            "next_chapter": "ch06 data analysis",
-            "next_action": "Read this JSON and turn card/trial objects into a small dataframe.",
+            "next_chapter": "ch06 数据分析",
+            "next_action": "读取这个 JSON，把卡片和试次对象整理成小表格。",
         },
     }
 
@@ -159,13 +159,13 @@ def draw_preview(package: dict) -> None:
     im = Image.new("RGB", (1500, 930), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 850), radius=28, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "Object Delivery Package", fill="#162033", font=font(50, True))
-    d.text((152, 195), "A reusable object model exported by Python.", fill="#5F6673", font=font(26))
+    d.text((150, 125), "对象交付包", fill="#162033", font=font(50, True))
+    d.text((152, 195), "把 Python 对象导出成后续章节能继续读取的数据。", fill="#5F6673", font=font(26))
 
     panel(
         d,
         (150, 285, 675, 640),
-        "Model",
+        "对象模型",
         ["LearningCard", "CardDeck", "Trial", "ReportBuilder"],
         "#EEF6FF",
         "#9CC8FF",
@@ -173,8 +173,8 @@ def draw_preview(package: dict) -> None:
     panel(
         d,
         (825, 285, 1350, 640),
-        "Package",
-        [package["deck"]["summary"], "trial: 438.5 ms", "export: JSON", "handoff: ch06"],
+        "交付内容",
+        [package["deck"]["summary"], "试次：438.5 ms", "导出：JSON", "交给：ch06"],
         "#ECFDF3",
         "#8EE3B0",
     )
@@ -186,7 +186,7 @@ def draw_preview(package: dict) -> None:
     d.text((330, 722), "output/ch05_object_delivery_package.json", fill="#8A5A00", font=font(25, True))
 
     d.rounded_rectangle((250, 790, 1250, 845), radius=20, fill="#F8FAFC", outline="#D8E0EC", width=2)
-    d.text((375, 805), "Report: reports/ch05_object_delivery_package.md", fill="#465263", font=font(22))
+    d.text((405, 805), "报告：reports/ch05_object_delivery_package.md", fill="#465263", font=font(22))
 
     im.save(PREVIEW, optimize=True, quality=95)
 

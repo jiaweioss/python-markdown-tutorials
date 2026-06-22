@@ -4,10 +4,10 @@
 
 | 发送方向 | 消息 | 意义 |
 | --- | --- | --- |
-| LearningCard -> CardDeck | add | 一张卡片进入卡片盒 |
-| CardDeck -> Trial | draw | 从卡片盒抽出一次练习材料 |
-| Trial -> ReportBuilder | record | 试次把反应结果交给报告整理员 |
-| ReportBuilder -> LearningCard | summarize | 报告反过来帮助卡片复习与改进 |
+| LearningCard -> CardDeck | 加入 add() | 一张卡片进入卡片盒 |
+| CardDeck -> Trial | 抽取 draw() | 从卡片盒抽出一次练习材料 |
+| Trial -> ReportBuilder | 记录 record() | 试次把反应结果交给报告整理员 |
+| ReportBuilder -> LearningCard | 汇总 summarize() | 报告反过来帮助卡片复习与改进 |
 
 ## 观察提示
 

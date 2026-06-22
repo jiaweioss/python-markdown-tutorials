@@ -7,11 +7,11 @@
 
 | 检查项 | 状态 | 证据 |
 | --- | --- | --- |
-| Single Job | OK | Each class has a clear responsibility. |
-| Data + Method | OK | Object keeps data close to behavior. |
-| Messages | OK | Collaboration uses named actions. |
-| Composition | OK | CardDeck has cards instead of inheriting card. |
-| God Object | WATCH | Avoid one class doing file, GUI, stats and export. |
+| 单一职责 | 通过 | 每个类都有清楚边界。 |
+| 数据贴近方法 | 通过 | 对象把状态和行为放在一起。 |
+| 消息清楚 | 通过 | 对象协作用命名动作表达。 |
+| 组合优先 | 通过 | CardDeck 拥有 cards，而不是继承 card。 |
+| 万能类风险 | 留意 | 避免一个类同时做文件、GUI、统计和导出。 |
 
 下一步建议：一旦某个类同时负责读文件、管界面、做统计和导出报告，就先拆职责，而不是继续往里面塞方法。
 这份回执可以和对象模型报告、类职责卡片、对象协作消息图一起提交。

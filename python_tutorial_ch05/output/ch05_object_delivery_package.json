@@ -39,7 +39,7 @@
     ]
   },
   "handoff": {
-    "next_chapter": "ch06 data analysis",
-    "next_action": "Read this JSON and turn card/trial objects into a small dataframe."
+    "next_chapter": "ch06 数据分析",
+    "next_action": "读取这个 JSON，把卡片和试次对象整理成小表格。"
   }
 }

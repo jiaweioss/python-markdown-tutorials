@@ -58,7 +58,7 @@ class TrialRow:
     correct: bool
 
     def display_status(self) -> str:
-        return "ok" if self.correct else "check"
+        return "通过" if self.correct else "检查"
 
 
 @dataclass
@@ -230,8 +230,8 @@ def draw_preview(model: DataPanelModel) -> None:
     im = Image.new("RGB", (1600, 980), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((70, 70, 1530, 910), radius=30, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((120, 115), "GUI Panel Object Model", fill="#162033", font=font(48, True))
-    d.text((122, 180), "ch4 panel spec -> ch5 classes and objects", fill="#5F6673", font=font(25))
+    d.text((120, 115), "GUI 面板对象模型", fill="#162033", font=font(48, True))
+    d.text((122, 180), "把 ch4 面板规格拆成 ch5 的类和对象。", fill="#5F6673", font=font(25))
 
     box(
         d,
@@ -264,7 +264,7 @@ def draw_preview(model: DataPanelModel) -> None:
     box(
         d,
         (1090, 565, 1480, 825),
-        "Object Messages",
+        "对象消息",
         model.messages()[:4],
         "#18A9B5",
     )
@@ -275,7 +275,7 @@ def draw_preview(model: DataPanelModel) -> None:
     arrow(d, (1010, 690), (1090, 690))
 
     d.rounded_rectangle((120, 835, 1480, 880), radius=16, fill="#FFF7E8", outline="#F2B84B", width=2)
-    d.text((150, 846), f"Export: {JSON_FILE.relative_to(ROOT).as_posix()}  |  objects: {model.object_count()}", fill="#8A5A00", font=font(22, True))
+    d.text((150, 846), f"导出：{JSON_FILE.relative_to(ROOT).as_posix()}  |  对象数：{model.object_count()}", fill="#8A5A00", font=font(22, True))
     im.save(PREVIEW, optimize=True, quality=95)
 
 

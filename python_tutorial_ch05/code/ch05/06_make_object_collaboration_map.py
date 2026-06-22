@@ -8,9 +8,17 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 
-OUTPUT = Path("output")
-REPORTS = Path("reports")
-WEB_DIR = Path("assets/ch05/web")
+def project_root() -> Path:
+    here = Path.cwd()
+    if (here / "assets" / "ch05").exists():
+        return here
+    return Path(__file__).resolve().parents[2]
+
+
+ROOT = project_root()
+OUTPUT = ROOT / "output"
+REPORTS = ROOT / "reports"
+WEB_DIR = ROOT / "assets" / "ch05" / "web"
 PREVIEW = OUTPUT / "ch05_object_collaboration_map.png"
 REPORT = REPORTS / "ch05_object_collaboration_map.md"
 
@@ -22,10 +30,10 @@ NODES = [
 ]
 
 MESSAGES = [
-    ("add", (410, 345), (560, 345)),
-    ("draw", (870, 345), (1010, 345)),
-    ("record", (1115, 470), (820, 620)),
-    ("summarize", (610, 620), (360, 470)),
+    ("加入", (410, 345), (560, 345)),
+    ("抽取", (870, 345), (1010, 345)),
+    ("记录", (1115, 470), (820, 620)),
+    ("汇总", (610, 620), (360, 470)),
 ]
 
 
@@ -51,10 +59,10 @@ def make_markdown() -> Path:
         "",
         "| 发送方向 | 消息 | 意义 |",
         "| --- | --- | --- |",
-        "| LearningCard -> CardDeck | add | 一张卡片进入卡片盒 |",
-        "| CardDeck -> Trial | draw | 从卡片盒抽出一次练习材料 |",
-        "| Trial -> ReportBuilder | record | 试次把反应结果交给报告整理员 |",
-        "| ReportBuilder -> LearningCard | summarize | 报告反过来帮助卡片复习与改进 |",
+        "| LearningCard -> CardDeck | 加入 add() | 一张卡片进入卡片盒 |",
+        "| CardDeck -> Trial | 抽取 draw() | 从卡片盒抽出一次练习材料 |",
+        "| Trial -> ReportBuilder | 记录 record() | 试次把反应结果交给报告整理员 |",
+        "| ReportBuilder -> LearningCard | 汇总 summarize() | 报告反过来帮助卡片复习与改进 |",
         "",
         "## 观察提示",
         "",
@@ -78,7 +86,8 @@ def make_preview() -> Path:
     im = Image.new("RGB", (1500, 920), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 850), radius=28, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "Object Collaboration Map", fill="#162033", font=font(50, True))
+    d.text((150, 125), "对象协作消息图", fill="#162033", font=font(50, True))
+    d.text((152, 190), "对象不是各写各的，而是通过清楚的消息完成同一件事。", fill="#5F6673", font=font(26))
 
     for label, start, end in MESSAGES:
         arrow(d, start, end, "#94A3B8")
@@ -106,9 +115,10 @@ def main() -> None:
     report = make_markdown()
     preview = make_preview()
     copy_assets()
-    print("created object collaboration map:")
-    print(f"- {report}")
-    print(f"- {preview}")
+    print("已生成对象协作消息图：")
+    print(f"- {report.relative_to(ROOT)}")
+    print(f"- {preview.relative_to(ROOT)}")
+    print(f"- {(WEB_DIR / PREVIEW.name).relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

@@ -9,11 +9,11 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 CHECKS = [
-    ("Single Job", "OK", "Each class has a clear responsibility."),
-    ("Data + Method", "OK", "Object keeps data close to behavior."),
-    ("Messages", "OK", "Collaboration uses named actions."),
-    ("Composition", "OK", "CardDeck has cards instead of inheriting card."),
-    ("God Object", "WATCH", "Avoid one class doing file, GUI, stats and export."),
+    ("单一职责", "通过", "每个类都有清楚边界。"),
+    ("数据贴近方法", "通过", "对象把状态和行为放在一起。"),
+    ("消息清楚", "通过", "对象协作用命名动作表达。"),
+    ("组合优先", "通过", "CardDeck 拥有 cards，而不是继承 card。"),
+    ("万能类风险", "留意", "避免一个类同时做文件、GUI、统计和导出。"),
 ]
 
 
@@ -49,13 +49,13 @@ def draw_receipt() -> None:
     im = Image.new("RGB", (1500, 930), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 850), radius=26, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "Object Quality Receipt", fill="#162033", font=font(52, True))
-    d.text((152, 200), "A small delivery check for the card-factory object model.", fill="#5F6673", font=font(27))
+    d.text((150, 125), "对象质量回执", fill="#162033", font=font(52, True))
+    d.text((152, 200), "给卡片工厂对象模型做一次可提交的设计检查。", fill="#5F6673", font=font(27))
 
     panels = [
-        ("LearningCard", "stores one card", "#EEF6FF", "#2F6BFF"),
-        ("CardDeck", "manages cards", "#ECFDF3", "#24A06B"),
-        ("Trial", "records one response", "#FFF7E8", "#F28C28"),
+        ("LearningCard", "保存一张卡片", "#EEF6FF", "#2F6BFF"),
+        ("CardDeck", "管理一组卡片", "#ECFDF3", "#24A06B"),
+        ("Trial", "记录一次反应", "#FFF7E8", "#F28C28"),
     ]
     for i, (name, role, fill, color) in enumerate(panels):
         x1 = 150 + i * 415
@@ -64,24 +64,24 @@ def draw_receipt() -> None:
         d.text((x1 + 32, 358), role, fill="#162033", font=font(27, True))
 
     y = 500
-    colors = {"OK": "#24A06B", "WATCH": "#F28C28"}
+    colors = {"通过": "#24A06B", "留意": "#F28C28"}
     for label, status, note in CHECKS:
         d.rounded_rectangle((150, y, 1350, y + 52), radius=16, fill="#F1F5F9", outline="#E2E8F0", width=2)
         d.rounded_rectangle((180, y + 11, 300, y + 41), radius=15, fill=colors[status])
-        d.text((208, y + 15), status, fill="#FFFFFF", font=font(17, True))
+        d.text((206, y + 15), status, fill="#FFFFFF", font=font(17, True))
         d.text((340, y + 12), label, fill="#162033", font=font(22, True))
         d.text((610, y + 14), note, fill="#465263", font=font(20))
         y += 61
 
     d.rounded_rectangle((260, 815, 1240, 860), radius=18, fill="#F8FAFC", outline="#D8E0EC", width=2)
-    d.text((335, 826), "Report: reports/ch05_object_quality_receipt.md", fill="#465263", font=font(20))
+    d.text((430, 826), "报告：reports/ch05_object_quality_receipt.md", fill="#465263", font=font(20))
     OUTPUT.mkdir(exist_ok=True)
     im.save(RECEIPT, optimize=True, quality=95)
 
 
 def write_report() -> None:
     REPORTS.mkdir(exist_ok=True)
-    ok_count = sum(1 for _, status, _ in CHECKS if status == "OK")
+    ok_count = sum(1 for _, status, _ in CHECKS if status == "通过")
     watch_count = len(CHECKS) - ok_count
     lines = [
         "# 第5章对象质量回执",

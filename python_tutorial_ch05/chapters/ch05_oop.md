@@ -1,190 +1,98 @@
 # 第 5 章：面向对象程序设计
 
-<style>
-figure {
-  margin: 1.2em auto 1.8em;
-  text-align: center;
-}
-figure img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-}
-figcaption {
-  margin-top: 0.45em;
-  color: #5f6673;
-  font-size: 0.92em;
-  line-height: 1.55;
-}
-figcaption strong {
-  color: #2d3748;
-}
-</style>
-
+[TOC]
 
 <figure align="center">
-  <img src="../assets/ch05/ch05_cover.png" alt="第5章封面" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-1 本章封面</strong>：当代码从三十行长到三百行，问题不再是会不会写语句，而是如何不把自己写进迷宫。</figcaption>
+  <img src="../assets/ch05/ch05_cover.png" alt="第5章 面向对象程序设计封面" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-1 第5章封面</strong>：本章把散落变量收进对象，让职责、协作和交付证据都能看见。</figcaption>
 </figure>
 
-> 本章一句话：当代码从三十行长到三百行，问题不再是会不会写语句，而是如何不把自己写进迷宫。
+> 本章一句话：  
+> **面向对象不是把代码写得更“高级”，而是给数据和动作划清边界。一个好对象知道自己保存什么、能做什么、不该管什么，也知道需要把请求交给哪个对象。**
 
-第5章继续推进“科研卡片工厂”的结构能力。前面几章已经能写变量、装数据、读文件；这一章要解决的问题更像“工厂内部管理”：东西越来越多以后，谁负责保存卡片？谁负责管理卡片盒？谁负责记录一次实验试次？如果所有数据都散在地上，程序很快就会变成杂物间。
+第4章我们用 Tkinter 做了一个能点击、能反馈、能生成文件的 GUI 小项目。窗口代码一旦继续变长，就会出现一个新问题：输入框、按钮、保存函数、报告生成、实验试次、文件路径全挤在一起，修改一个功能很容易碰坏另一个功能。
 
-面向对象不是为了让代码显得高级，而是为了把复杂任务拆成有职责的小角色。每个对象像一个有岗位的人：知道自己保存什么，知道自己能做什么，也知道哪些事不该乱管。
+第5章要解决的正是这个问题。我们不急着学一堆术语，也不把“类”“继承”“多态”当作背诵任务。先从一个很小的 `LearningCard` 开始：一张学习卡片应该保存主题、问题、答案和标签，也应该能生成自己的预览。这个边界跑通以后，再引入 `CardDeck`、`Trial` 和 `ReportBuilder`，把对象之间的协作画出来、生成报告、导出 JSON，最后留下运行证据。
+
+这一章的读法和 ch01/ch04 保持一致：**先跑脚本，再看证据图，最后把概念拆成能复查的动作**。你不需要一开始就把 OOP 学成“设计模式大全”。先让小对象真的工作起来，再逐步把职责边界收紧。
 
 ---
 
-## 5.0 本章学习目标
+## 本章导读：先分职责，再写 `class`
 
-学完本章，你应该能够：
+### 5.0 本章学习目标
 
-1. 用自己的话解释本章核心概念。
-2. 运行本章配套脚本，看到明确输出。
-3. 把概念和“科研卡片工厂”的连续项目联系起来。
-4. 识别本章最常见的新手错误。
-5. 完成本章小项目：**学习卡片对象模型**。
+学完本章，你应该能够做到：
+
+1. 用自己的话解释类、对象、属性、方法、`self`、封装、组合和对象协作。
+2. 运行 `01_learning_card_class.py`，创建一个 `LearningCard` 对象，并说明它的属性和方法分别负责什么。
+3. 运行 `02_card_deck.py`，理解 `CardDeck` 为什么应该“拥有多张卡片”，而不是继承一张卡片。
+4. 运行 `03_trial_object.py`，把心理学实验中的一次试次建模成对象。
+5. 使用类职责卡片判断一个类该管什么、不该管什么。
+6. 读懂对象协作消息图，说明 `LearningCard`、`CardDeck`、`Trial` 和 `ReportBuilder` 如何互相请求。
+7. 生成对象模型报告、设计卡片、质量回执、交付包和运行证据。
+8. 把 ch04 的 GUI 面板规格拆成 ch05 的对象模型，为后续数据分析章节做准备。
+
+### 本章分区导航
+
+| 分区 | 对应小节 | 你要抓住的主线 | 产出证据 |
+| --- | --- | --- | --- |
+| 第一部分：从变量到对象 | 5.1-5.3 | 代码变长后，职责边界比语法更重要 | 最小类、真实运行截图 |
+| 第二部分：类、属性、方法与组合 | 5.4-5.7 | 对象保存状态，方法处理自己的状态，组合表达拥有关系 | 心智模型、Trial 对象、对象小剧场 |
+| 第三部分：对象协作与职责检查 | 5.8-5.12 | 类不是孤岛，要通过清楚消息合作 | 对象模型报告、职责卡片、协作图、质量回执 |
+| 第四部分：项目交付与跨章连接 | 5.13-5.15 | OOP 项目要交付文件、JSON 和下一章能接住的数据 | 交付包、GUI 面板对象模型 |
+| 第五部分：排错、练习与验收 | 5.16-5.21 | 用固定路线排查 OOP 常见问题并留下证据 | 常见坑地图、运行证据、复盘模板 |
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_roadmap.png" alt="第5章学习路线图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-2 本章学习路线</strong>：先写最小类，再拆职责、看协作，最后交付可复查的对象项目。</figcaption>
+</figure>
 
 ---
 
-## 5.1 开场故事：先有画面，再有术语
+## 第一部分：从散装变量到对象模型
 
-当代码从三十行长到三百行，问题不再是会不会写语句，而是如何不把自己写进迷宫。 这句话不是为了热闹，而是为了把本章的知识放进真实使用场景。初学者最怕一上来就被术语包围，像走进一个所有门牌都用缩写写成的楼层。我们先从画面进入，再慢慢把画面翻译成代码。
+### 5.1 代码变长后，真正难的是职责边界
 
-<figure align="center">
-  <img src="../assets/ch05/ch05_simula_origin_story.png" alt="Simula 标志" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-2 Simula 与对象思想源头</strong>：面向对象最早和“模拟真实系统”关系很深：船、队列、顾客、机器，都可以成为程序里的对象。</figcaption>
-</figure>
-
-面向对象的历史里，Simula 是一个绕不开的名字。它最初服务于模拟任务：现实世界里有很多“东西”会带着自己的状态行动，比如顾客在排队、机器在工作、实验被试在反应。把这些东西写成对象，比把所有变量摊在一张大桌子上更自然。
-
-学习这一章时，可以把对象想成“带着资料夹的小角色”。`LearningCard` 带着问题和答案，`CardDeck` 带着一组卡片，`Trial` 带着一次实验试次的数据。它们不是语法玩具，而是整理世界的一种办法。
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_kristen_nygaard_story.png" alt="Kristen Nygaard照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-3 Kristen Nygaard照片</strong>：Simula 的故事不是从“语法更酷”开始的，而是从真实系统模拟开始的。对象最早就带着一种朴素目标：让程序更像现实世界里的角色。</figcaption>
-</figure>
-
-Kristen Nygaard 和 Ole-Johan Dahl 设计 Simula 时，关心的不是让初学者多背几个单词，而是如何把复杂系统写得更像现实：船舶、港口、队列、机器、顾客，每个角色都有自己的状态和行为。
-
-这对初学者很重要。`class` 不是一顶学术帽子，而是一种“给角色分工”的方法。你写 `LearningCard`，不是为了显得专业，而是告诉程序：这张卡片自己保存问题、答案和标签；至于整盒卡片怎么统计，那是 `CardDeck` 的工作。
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_story_scene.png" alt="故事场景图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-4 故事场景</strong>：类像图纸，对象像按图纸造出来的设备；属性是设备状态，方法是设备按钮。</figcaption>
-</figure>
-
-这个画面对应本章的核心比喻：类像图纸，对象像按图纸造出来的设备；属性是设备状态，方法是设备按钮。 如果你能先记住这个比喻，后面的概念就不再是干巴巴的定义。
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_blueprint_class_story.png" alt="工程蓝图照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-5 工程蓝图照片</strong>：类就像图纸，描述“应该有哪些部件、状态和动作”；对象则是按这张图纸造出来的一件具体作品。</figcaption>
-</figure>
-
-蓝图本身不是桥，但没有蓝图，桥很难稳定地被建造、检查和维护。
-
-类也是这样。`LearningCard` 这个类本身不是某一张卡片，它只是说明：一张学习卡片应该有主题、问题、答案和标签，还应该能生成预览。真正的卡片，是按这个类创建出来的对象。
+刚开始写 Python 时，把数据放在几个变量里很自然：
 
 ```python
-card = LearningCard(
-    topic="Python",
-    question="变量是什么？",
-    answer="变量像贴在数据上的标签。",
-    tags=["基础", "比喻"],
-)
+topic = "OOP"
+question = "类是什么？"
+answer = "类像图纸，描述对象应该有什么。"
+tags = ["类", "对象"]
 ```
 
-这段代码不是在“背面向对象”，而是在给科研卡片工厂建立可重复生产的模具。
+如果只有一张卡片，这样写没问题。问题出现在需求变多以后：你想给卡片生成预览、保存 Markdown、按标签筛选、放进卡片盒、导出报告。函数越写越多，参数越传越长，最后你很难判断“主题、问题、答案、标签”到底属于谁。
 
 <figure align="center">
-  <img src="../assets/ch05/ch05_alan_kay_oop_story.png" alt="Alan Kay照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-6 Alan Kay照片</strong>：面向对象思想强调对象之间的协作；把程序拆成有状态、有行为的小对象，是为了让复杂系统更容易理解。</figcaption>
+  <img src="../assets/ch05/ch05_story_scene.png" alt="从散装变量到有职责的对象" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-3 从散装变量到有职责的对象</strong>：OOP 的第一步不是换一种写法，而是把数据和动作放回合适的边界里。</figcaption>
 </figure>
 
-Alan Kay 谈面向对象时，很重视“对象之间发送消息”的想法。你可以暂时不追历史细节，但要记住这个方向：程序不是一堆散落的变量和函数，而是一组彼此协作的对象。
+面向对象的价值在这里开始出现：如果一张卡片本来就拥有主题、问题、答案和标签，那它也可以拥有 `preview()` 这样的方法。对象把“状态”和“动作”放在一起，读代码的人更容易看懂任务边界。
 
-在本章项目里，`LearningCard` 负责一张卡片，`CardDeck` 负责一组卡片，`Trial` 负责一次心理学实验试次。每个对象只管自己的那一小块，整套系统才不会越写越乱。
+这一章我们会反复问三个问题：
 
-<figure align="center">
-  <img src="../assets/ch05/ch05_adele_goldberg_story.png" alt="Adele Goldberg 在 PyCon 2007" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-7 Adele Goldberg 照片</strong>：Smalltalk 的教育传统很重视“让人能探索系统”；学习 OOP 也应该从看见对象如何协作开始，而不是直接背一串语法词。</figcaption>
-</figure>
+1. 这个类保存什么数据？
+2. 这个类提供什么动作？
+3. 这个类不应该管什么？
 
-Adele Goldberg 参与了 Smalltalk 语言和教育环境的发展。这个故事对初学者特别友好：OOP 不是为了把代码变得神秘，而是为了让复杂系统变得可以探索。你点一个对象，看它知道什么、能做什么、会给谁发消息，程序就不再像一锅搅不开的粥，而像一张可以顺着线索走下去的地图。
+能回答这三个问题，比一开始背“封装、继承、多态”更重要。
 
-<figure align="center">
-  <img src="../assets/ch05/ch05_smalltalk_environment_story.png" alt="Smalltalk/Squeak 环境截图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-8 Smalltalk/Squeak 环境</strong>：Smalltalk 的世界里几乎一切都是对象；这能帮助你理解“对象之间协作”不是一句口号。</figcaption>
-</figure>
+### 5.2 最小类：先跑通 `01_learning_card_class.py`
 
-Smalltalk 把面向对象推进成了一整套世界观：界面、窗口、文本、按钮，都可以被看作对象。你不必现在学 Smalltalk，但它给 Python 初学者一个非常好的提醒：程序不是一条从上到下的长独白，也可以是一群对象互相配合完成任务。
+进入第5章目录后，先运行第一个脚本：
 
-<figure align="center">
-  <img src="../assets/ch05/ch05_xkcd_code_quality.png" alt="xkcd Code Quality漫画" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-9 xkcd Code Quality漫画</strong>：当代码越写越像一团毛线，面向对象不是魔法扫帚，但它至少会逼你问一句：这件事到底该由谁负责？</figcaption>
-</figure>
+```bash
+python code/ch05/01_learning_card_class.py
+```
 
-这张梗图适合贴在本章心里。坏消息是：`class` 不能自动让代码变优雅。好消息是：如果你认真给每个类划边界，代码会少很多“我也不知道这段变量从哪来的”时刻。
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_object_theater_story.png" alt="对象剧场示意图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-10 对象剧场</strong>：对象像舞台上的角色，每个角色有自己的道具、台词和出场时机；真正重要的不是角色多，而是它们能不能用清楚的消息把戏演完。</figcaption>
-</figure>
-
-可以把一个 OOP 程序想成一出小戏。`LearningCard` 不是万能主角，它只负责一张卡片；`CardDeck` 负责管理一盒卡片；`Trial` 负责记录一次实验试次；`ReportBuilder` 负责把结果整理成报告。每个对象都拿着自己的小剧本，谁该上场，谁该递消息，谁该退到旁边，都要清楚。
-
-新手写类时最容易犯的错，是让某个对象突然变成“全能主持人”：它既读文件，又画界面，又算统计，还负责导出报告。短期看起来省事，长期就像所有演员都挤到舞台中央抢话筒。OOP 的美感不在于把代码塞进 `class`，而在于让每个对象有边界、有动作、有合作方式。
-
----
-
-## 5.2 知识路线
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_roadmap.png" alt="知识路线图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-11 知识路线</strong>：先建立直觉，再运行代码，最后完成一个可展示的小项目。</figcaption>
-</figure>
-
-本章路线如下：
-
-| 顺序 | 主题 | 你要完成的动作 |
-| --- | --- | --- |
-| 1 | 类和对象 | 先画出“卡片模具”，再创建一张具体卡片 |
-| 2 | 属性和方法 | 给对象装上数据和能执行的动作 |
-| 3 | `__init__()` | 让对象出生时就带好必要资料 |
-| 4 | 封装 | 把同一件事的数据和操作收进一个角色 |
-| 5 | 继承 | 认识“扩展已有类”的用法，但不过早滥用 |
-| 6 | 组合 | 用“对象里装对象”的方式搭出卡片盒 |
-| 7 | 数据模型 | 把学习卡片、实验试次和报告结构说清楚 |
-| 8 | 对象协作 | 让对象通过清楚消息一起完成任务 |
-
----
-
-## 5.3 核心概念：从人话到术语
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_core_metaphor.png" alt="核心比喻图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-12 核心比喻</strong>：用一个稳定画面记住本章最重要的概念关系。</figcaption>
-</figure>
-
-先用人话说：类像图纸，对象像按图纸造出来的设备；属性是设备状态，方法是设备按钮。
-
-再用术语说，本章要掌握这些内容：
-
-- **类和对象**：类像模具，对象是按模具生产出来的具体卡片、卡片盒或实验试次。
-- **属性和方法**：属性保存状态，方法执行动作；卡片既知道自己的主题，也能生成预览。
-- **`__init__()`**：对象创建时的入厂登记，把必要资料一次性放好。
-- **封装**：不要让相关数据四处散落；一次 `Trial` 就应该带着刺激、反应和反应时。
-- **继承**：适合表达“它是一种……”的关系，初学阶段先认识，少炫技。
-- **组合**：适合表达“它拥有……”的关系，`CardDeck` 拥有一组 `LearningCard`。
-- **数据模型**：把项目里的角色、字段和动作整理成可复查的结构。
-- **对象协作**：对象之间通过清楚消息配合，程序就不会变成一个人独自扛全场。
-
-术语不是用来吓人的，它只是为了让大家交流时不用每次都讲一长串故事。你先用故事建立直觉，再用术语压缩表达，这样学得稳。
-
-本章先用 `dataclass` 让类的写法更清爽：
+脚本核心代码如下：
 
 ```python
 from dataclasses import dataclass
+
 
 @dataclass
 class LearningCard:
@@ -194,417 +102,508 @@ class LearningCard:
     tags: list[str]
 
     def preview(self) -> str:
-        return f"[{self.topic}] {self.question}"
+        return f"[{self.topic}] {self.question} -> {self.answer[:20]}..."
+
+
+card = LearningCard("Python", "变量是什么？", "变量像贴在数据上的标签。", ["基础", "比喻"])
+print(card.preview())
 ```
 
-`topic`、`question`、`answer`、`tags` 是属性，表示对象携带的数据。`preview()` 是方法，表示对象会做的动作。`self` 指向“当前这张卡片自己”，所以 `self.topic` 就是当前卡片的主题。
-
 <figure align="center">
-  <img src="../assets/ch05/ch05_lego_composition_story.png" alt="彩色积木照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-13 彩色积木照片</strong>：组合就像把不同积木拼在一起。`CardDeck` 不必继承 `LearningCard`，它只需要拥有一组 `LearningCard`。</figcaption>
+  <img src="../assets/ch05/ch05_minimal_demo.png" alt="LearningCard 最小类代码与对象对照图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-4 最小类代码与对象对照</strong>：`class` 定义图纸，属性保存状态，方法提供动作，`self` 指向当前这个对象。</figcaption>
 </figure>
 
-很多新手第一次学 OOP，会特别迷恋继承，仿佛所有关系都要写成“爸爸类”和“孩子类”。真实项目里更常见的是组合：一个对象里面放着另一些对象。
+这里先抓住四个点：
 
-`CardDeck` 和 `LearningCard` 就是这样。卡片盒不是一种“更大的卡片”，它是一个容器，里面装着很多卡片。这个区别听起来小，写项目时却能救命：继承问“它是不是一种……”，组合问“它有没有……”。问对问题，类就不容易长歪。
-
----
-
-## 5.4 最小可运行示例
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_minimal_demo.png" alt="最小示例图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-14 最小示例</strong>：先跑通最小代码，再逐步增加功能，学习会稳很多。</figcaption>
-</figure>
-
-本章第一件事不是背参数，而是运行一个最小例子。打开终端，进入本章目录后运行：
-
-```bash
-python code/ch05/01_learning_card_class.py
-```
-
-如果你能看到输出，说明这一章的入口已经打通。后面所有复杂功能，都是在这个入口上慢慢加能力。
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_powershell_oop_run.png" alt="PowerShell真实运行OOP脚本" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-15 PowerShell真实运行OOP脚本</strong>：五个脚本分别创建学习卡片、卡片盒、心理学试次对象，并生成对象模型报告与类职责卡片。</figcaption>
-</figure>
-
-上图是真实终端运行结果。注意最后一段：
-
-```text
-Trial(participant='S001', stimulus='RED/blue', response='j', reaction_time_ms=438.5)
-快速反应： True
-```
-
-这就是对象的好处：一次实验试次不再是四个散落变量，而是一份完整记录。你看到 `trial`，就知道它带着被试编号、刺激、反应和反应时。
-
-如果上一张图像第一次点火，下面这张图就是本章后半段的验收单。它检查的不是“有没有写出 `class`”，而是对象模型报告、职责卡片、协作图、质量回执、交付包和 GUI 面板对象模型这些真实文件是否已经生成。编程学习最怕停在“我看懂了”，而终端证据会温柔但坚定地提醒你：看懂很好，跑出来更香。
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_oop_runtime_evidence.png" alt="PowerShell风格的OOP运行证据" style="zoom:70%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-16 PowerShell 风格的 OOP 运行证据</strong>：`10_make_oop_runtime_evidence.py` 检查对象模型报告、职责卡片、协作图、质量回执、交付包和 GUI 面板对象模型是否都已经生成。</figcaption>
-</figure>
-
-
-这张图的用法很简单：绿色 `ready` 越多，说明本章成果越能被复查。以后你做自己的科研卡片工厂，也可以仿照这个思路：每做完一个功能，就让程序留下报告、图片、JSON 或日志。项目不是靠记忆维护的，而是靠证据维护的。
-
----
-
-## 5.5 与心理学/科研教学的连接
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_psychology_link.png" alt="心理学教学连接图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-17 心理学连接</strong>：把本章能力放进实验、记录、分析和学习分享的真实任务里。</figcaption>
-</figure>
-
-这一章会把例子贴近心理学、科研记录和学习分享。因为这些任务天然需要清晰流程：刺激是什么，反应是什么，数据存到哪里，结果如何展示，别人能不能复现。
-
-在本章里，你可以这样理解项目价值：
-
-- 它不是孤立练习，而是科研卡片工厂的一台新设备。
-- 它处理的材料可以是课程笔记、实验记录、问卷结果、图片、网页资料或报告模板。
-- 它最终要留下可检查的结果，而不是只在屏幕上闪一下。
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_piaget_schema_story.png" alt="Jean Piaget照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-18 Jean Piaget照片</strong>：学习 OOP 时，大脑也在建“图式”：类、对象、属性、方法不再是散点，而会组织成一张可调用的理解地图。</figcaption>
-</figure>
-
-心理学里常说“图式”：人不是把信息一粒一粒塞进脑子，而是会把信息组织成结构。OOP 对初学者有一个隐藏好处：它逼你把知识也组织成结构。
-
-比如 `Trial` 这个类，会把被试、刺激、反应、反应时绑在同一个意义单元里。你以后看到一条实验记录，不再需要在四个变量之间来回找关系；它们已经被放进同一个对象。这就是认知负担下降的时刻：不是记得更多，而是组织得更好。
-
----
-
-## 5.6 关键概念拆解表
-
-| 概念 | 人话理解 | 本章落点 |
+| 代码 | 人话解释 | 如果漏掉会怎样 |
 | --- | --- | --- |
-| 类和对象 | 类是图纸，对象是按图纸创建出来的具体实例 | `LearningCard(...)` 创建一张具体卡片 |
-| 属性 | 对象随身携带的数据 | `card.topic`、`trial.reaction_time_ms` |
-| 方法 | 对象能执行的动作 | `card.preview()`、`trial.is_fast()` |
-| `self` | 当前对象自己 | `self.topic` 读取当前卡片的主题 |
-| `__init__()` | 对象出生时的初始化流程 | `dataclass` 自动生成初始化方法 |
-| 封装 | 把数据和操作放在同一个对象里 | 一次 `Trial` 同时保存刺激、反应和反应时 |
-| 组合 | 一个对象包含多个对象或多份数据 | `CardDeck` 管理一组卡片 |
-| 继承 | 从已有类扩展新类 | 初学阶段先了解，不急着到处使用 |
+| `class LearningCard:` | 定义一种对象的图纸 | 代码里没有“卡片”这个概念 |
+| `topic: str` 等字段 | 规定对象保存哪些状态 | 数据仍然散落在外部变量里 |
+| `def preview(self)` | 给对象一个动作 | 预览逻辑只能写在外部函数里 |
+| `self.topic` | 访问当前对象自己的主题 | 方法不知道该拿哪张卡片的数据 |
 
-这张表的作用，是把“我好像懂了”变成“我知道它在哪用”。学习编程时，最危险的状态不是完全不会，而是听解释时点头，自己动手时发呆。每学一个概念，都要强迫自己问一句：它在本章项目里负责哪一段工作？
+<figure align="center">
+  <img src="../assets/ch05/ch05_powershell_oop_run.png" alt="PowerShell 中运行第5章 OOP 脚本" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-5 第5章真实运行截图</strong>：先让最小对象脚本跑起来，再逐步增加卡片盒、试次对象和交付证据。</figcaption>
+</figure>
+
+第一次运行时，不要急着修改。先确认终端输出里能看到卡片预览。这个输出说明三件事：类定义成功，对象创建成功，方法调用成功。
+
+### 5.3 `dataclass` 不是魔法，只是在少写样板代码
+
+本章大量使用 `@dataclass`。它不是 OOP 的必需品，而是 Python 提供的省事写法。没有 `dataclass` 时，你通常要手写：
+
+```python
+class LearningCard:
+    def __init__(self, topic, question, answer, tags):
+        self.topic = topic
+        self.question = question
+        self.answer = answer
+        self.tags = tags
+```
+
+有了 `@dataclass`，你可以把精力放在“对象应该保存什么”上：
+
+```python
+@dataclass
+class LearningCard:
+    topic: str
+    question: str
+    answer: str
+    tags: list[str]
+```
+
+它会自动帮你生成初始化方法，也会让打印对象时更清楚。初学阶段可以把 `dataclass` 理解成：**适合用来定义主要保存数据、再带一点方法的小对象**。
 
 ---
 
-## 5.7 配套代码逐个导览
+## 第二部分：类、属性、方法与组合
 
-### 脚本 1：`01_learning_card_class.py`
+### 5.4 类、对象、属性、方法、`self`
 
-运行方式：
+很多 OOP 术语听起来抽象，其实都可以落回一个小例子：
 
-```bash
-python code/ch05/01_learning_card_class.py
+<figure align="center">
+  <img src="../assets/ch05/ch05_core_metaphor.png" alt="OOP 最小心智模型" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-6 OOP 最小心智模型</strong>：类定义共同结构，对象保存具体状态，属性是对象的数据，方法是对象的动作，`self` 指向当前对象。</figcaption>
+</figure>
+
+| 术语 | 在本章中的例子 | 你可以这样理解 |
+| --- | --- | --- |
+| 类 | `LearningCard` | 一种对象的规则说明 |
+| 对象 | `card = LearningCard(...)` | 按规则创建出来的具体成员 |
+| 属性 | `card.topic` | 对象身上的数据 |
+| 方法 | `card.preview()` | 对象能执行的动作 |
+| `self` | `self.topic` | 方法里指向“当前这个对象” |
+
+关键是不要把类和对象混在一起。`LearningCard` 是图纸，`card` 才是一张具体卡片。图纸不会有某个具体主题；对象才会有 `"Python"`、`"变量是什么？"` 这些具体值。
+
+### 5.5 方法应该靠近它使用的数据
+
+如果一个函数总是需要同一组参数，它很可能适合变成对象的方法。比如下面这个外部函数：
+
+```python
+def preview_card(topic: str, question: str, answer: str) -> str:
+    return f"[{topic}] {question} -> {answer[:20]}..."
 ```
 
-阅读时重点看三件事：`LearningCard` 保存了哪些属性，`preview()` 做了什么，创建对象以后输出了什么。
+它每次都要拿 `topic`、`question`、`answer`。如果这些数据本来就属于一张卡片，就可以写成：
 
-这段代码的重点是：类定义了一张卡片应该有什么，对象承载了一张具体卡片的数据。`preview()` 方法把卡片内容压缩成一句预览，像卡片盒外面的标签。
+```python
+def preview(self) -> str:
+    return f"[{self.topic}] {self.question} -> {self.answer[:20]}..."
+```
 
-### 脚本 2：`02_card_deck.py`
+区别不是少写了几个参数，而是职责变清楚了：预览一张卡片，是卡片自己的能力。
 
-运行方式：
+判断一个函数是否应该变成方法，可以问：
+
+| 问题 | 如果答案是“是” |
+| --- | --- |
+| 这个函数总是处理某个对象的数据吗？ | 可以考虑放进这个类 |
+| 这个函数会改变某个对象的状态吗？ | 通常应该由这个对象的方法完成 |
+| 这个函数需要访问很多无关对象吗？ | 可能说明边界还没拆清楚 |
+
+### 5.6 `CardDeck`：组合比继承更自然
+
+运行第二个脚本：
 
 ```bash
 python code/ch05/02_card_deck.py
 ```
 
-阅读时重点看三件事：`CardDeck` 怎样保存多张卡片，怎样新增卡片，怎样统计整盒卡片。
+脚本里定义了一个卡片盒：
 
-`CardDeck` 展示的是组合思想：卡片盒不是继承卡片，而是“拥有”一组卡片。很多初学者一学继承就想把所有关系写成父子关系，其实真实项目里，组合往往更自然。
+```python
+@dataclass
+class CardDeck:
+    name: str
+    cards: list[str] = field(default_factory=list)
 
-### 脚本 3：`03_trial_object.py`
+    def add(self, card: str) -> None:
+        self.cards.append(card)
 
-运行方式：
+    def summary(self) -> str:
+        return f"{self.name}: {len(self.cards)} 张卡片"
+```
+
+`CardDeck` 和 `LearningCard` 的关系不是“卡片盒也是一张卡片”，而是“卡片盒拥有多张卡片”。这叫组合。组合通常比继承更符合初学阶段的直觉。
+
+| 关系 | 人话判断 | 本章例子 |
+| --- | --- | --- |
+| 组合 has-a | A 拥有 B | `CardDeck` 拥有多张 `LearningCard` |
+| 继承 is-a | A 是一种 B | “错题卡”也许是一种 `LearningCard` |
+
+如果你说不清 `A is a B`，先别写继承。很多初学者一上来就想设计复杂继承树，结果类之间关系越写越乱。本章优先使用组合：对象之间互相拥有、互相请求，边界更容易看清。
+
+### 5.7 `Trial`：心理学试次为什么适合对象
+
+运行第三个脚本：
 
 ```bash
 python code/ch05/03_trial_object.py
 ```
 
-阅读时重点看三件事：一次 `Trial` 保存了哪些实验信息，`is_fast()` 如何判断反应速度，对象如何让一条试次记录更完整。
+心理学实验里，一次试次通常包含被试、刺激、反应和反应时：
 
-`Trial` 适合心理学实验数据：被试、刺激、反应、反应时天然属于同一次试次。把它们封装成对象，后续做统计、筛选、导出时会更稳。
+```python
+@dataclass
+class Trial:
+    participant: str
+    stimulus: str
+    response: str
+    reaction_time_ms: float
 
-### 脚本 4：`04_make_oop_model_report.py`
+    def is_fast(self) -> bool:
+        return self.reaction_time_ms < 500
+```
 
-运行方式：
+<figure align="center">
+  <img src="../assets/ch05/ch05_psychology_link.png" alt="心理学试次对象示意图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-7 心理学试次对象</strong>：`Trial` 把一次刺激、一次反应和一次反应时收在同一个对象边界里。</figcaption>
+</figure>
+
+这样写的好处很直接：以后你要判断快速反应、导出 CSV、计算正确性，都可以围绕 `Trial` 这个对象展开，而不是让一堆列表互相对齐。
+
+| 散装写法 | 对象写法 |
+| --- | --- |
+| `participants[i]`、`stimuli[i]`、`responses[i]` | `trial.participant`、`trial.stimulus`、`trial.response` |
+| 需要小心多个列表长度一致 | 一次试次的数据天然在一起 |
+| 判断快慢要传入 `reaction_time_ms` | `trial.is_fast()` 自己判断 |
+
+这不是说所有实验数据都要立刻改成对象。正式统计分析时，表格和 DataFrame 很重要。第5章的重点是：当你在写实验流程、界面逻辑或交付对象时，用对象保存“同一件事”的状态，会让代码更稳。
+
+---
+
+## 第三部分：对象协作与职责检查
+
+### 5.8 对象不是孤岛：先看小剧场
+
+对象如果只保存自己的数据，还不够。项目里通常有多个对象协作：卡片进入卡片盒，卡片盒抽出练习材料，试次记录反应，报告整理员汇总结果。
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_object_theater_story.png" alt="对象协作小剧场" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-8 对象协作小剧场</strong>：每个对象只演自己的角色，通过消息把任务交给下一个对象。</figcaption>
+</figure>
+
+设计对象时，可以先不写代码，只写一句话：
+
+```text
+LearningCard 准备内容，CardDeck 管理集合，Trial 记录一次反应，ReportBuilder 整理证据。
+```
+
+如果这句话说不清，代码通常也会混乱。类名不是越多越好，边界清楚才有价值。
+
+### 5.9 对象模型报告：`04_make_oop_model_report.py`
+
+运行：
 
 ```bash
 python code/ch05/04_make_oop_model_report.py
 ```
 
-这个脚本会生成：
+它会生成：
 
 ```text
 reports/ch05_oop_model_report.md
 reports/ch05_oop_model_preview.png
+assets/ch05/web/ch05_oop_model_preview.png
 ```
 
-它把 `LearningCard`、`CardDeck` 和 `Trial` 三个类整理成一份对象模型报告。报告的价值不在于“多生成一个文件”，而在于训练你说清楚：每个类负责什么、保存什么、能做什么。面向对象最怕写成“万物归一个大类”，这份报告会迫使你把职责边界讲明白。
+<figure align="center">
+  <img src="../assets/ch05/ch05_project_dashboard.png" alt="科研卡片工厂对象交付链" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-9 科研卡片工厂对象交付链</strong>：对象设计最后要变成报告、JSON、图片和下一章能继续读取的数据。</figcaption>
+</figure>
 
-建议第一次运行时不要急着改代码。先原样运行，确认能看到输出；第二次再改一个最小参数；第三次再尝试把输出写入 `output/` 或 `reports/`。这种节奏比“一上来就大改”更稳。
+<figure align="center">
+  <img src="../assets/ch05/ch05_oop_model_preview.png" alt="对象模型报告预览图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-10 对象模型报告预览</strong>：`LearningCard`、`CardDeck` 和 `Trial` 的职责被整理成一张可提交的对象模型图。</figcaption>
+</figure>
 
-### 脚本 5：`05_make_design_cards.py`
+这一步的意义是把“我大概懂 OOP”变成可复查文件。报告里会列出类、职责、典型属性和典型方法。以后你改项目时，可以先看这张模型图，再决定该把新功能放到哪个类里。
 
-运行方式：
+### 5.10 类职责卡片：`05_make_design_cards.py`
+
+运行：
 
 ```bash
 python code/ch05/05_make_design_cards.py
 ```
 
-这个脚本会生成：
+它会生成：
 
 ```text
 reports/ch05_design_cards.md
 output/ch05_design_cards_preview.png
+assets/ch05/web/ch05_design_cards_preview.png
 ```
 
-它把类设计变成“职责卡片”：这个类是谁、像什么、保存什么、会做什么、不该管什么。写类之前先写职责卡片，能有效防止一种常见事故：一开始只是想写一个小类，写着写着它变成了会读文件、管界面、做统计、导出报告的万能角色。万能类听起来厉害，维护起来很像把整间宿舍塞进一个抽屉。
+<figure align="center">
+  <img src="../assets/ch05/ch05_design_cards_preview.png" alt="类职责卡片预览图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-11 类职责卡片</strong>：写类之前，先写清楚它保存什么、会做什么、不该管什么。</figcaption>
+</figure>
 
-### 脚本 6：`06_make_object_collaboration_map.py`
+职责卡片最重要的一栏是“不该管什么”。如果一个类的不该管范围写不出来，它很容易变成万能类。比如：
 
-运行方式：
+| 类 | 应该管 | 不该管 |
+| --- | --- | --- |
+| `LearningCard` | 一张卡片的主题、问题、答案、预览 | 管理整盒卡片 |
+| `CardDeck` | 卡片集合、添加、统计、筛选 | 保存单次实验反应 |
+| `Trial` | 一次试次的刺激、反应、反应时 | 负责 GUI 和报告排版 |
+| `ReportBuilder` | 汇总段落、写入报告 | 修改原始实验数据 |
+
+这张表能帮你在写代码前先降噪。类不是越“能干”越好，而是越清楚越好。
+
+### 5.11 对象协作消息图：`06_make_object_collaboration_map.py`
+
+运行：
 
 ```bash
 python code/ch05/06_make_object_collaboration_map.py
 ```
 
-这个脚本会生成：
+它会生成：
 
 ```text
 reports/ch05_object_collaboration_map.md
 output/ch05_object_collaboration_map.png
+assets/ch05/web/ch05_object_collaboration_map.png
 ```
 
-它把 `LearningCard`、`CardDeck`、`Trial` 和 `ReportBuilder` 放在同一张协作图里。请重点看箭头上的消息：`add`、`draw`、`record`、`summarize`。这些消息能帮你判断一件事该由谁负责。如果一条消息说不清楚，通常不是你语法没背熟，而是对象边界还没想清楚。
+<figure align="center">
+  <img src="../assets/ch05/ch05_object_collaboration_map.png" alt="对象协作消息图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-12 对象协作消息图</strong>：对象不是各写各的，而是通过“加入、抽取、记录、汇总”这样的消息完成同一件事。</figcaption>
+</figure>
 
-### 脚本 7：`07_make_object_quality_receipt.py`
+读这张图时，不要只看箭头。要问箭头背后的请求是否清楚：
 
-运行方式：
+| 消息 | 方向 | 含义 |
+| --- | --- | --- |
+| 加入 `add()` | `LearningCard -> CardDeck` | 一张卡片进入卡片盒 |
+| 抽取 `draw()` | `CardDeck -> Trial` | 卡片盒给一次练习提供材料 |
+| 记录 `record()` | `Trial -> ReportBuilder` | 试次把反应结果交给报告整理员 |
+| 汇总 `summarize()` | `ReportBuilder -> LearningCard` | 报告反过来帮助卡片复习与改进 |
+
+如果一条消息说不清，通常说明职责边界还没想清楚。先改设计，再急着写代码。
+
+### 5.12 对象质量回执：`07_make_object_quality_receipt.py`
+
+运行：
 
 ```bash
 python code/ch05/07_make_object_quality_receipt.py
 ```
 
-这个脚本会生成：
+它会生成：
 
 ```text
 reports/ch05_object_quality_receipt.md
 output/ch05_object_quality_receipt.png
+assets/ch05/web/ch05_object_quality_receipt.png
 ```
 
-它不再问“你写了几个 class”，而是问更实际的问题：每个类是不是只有清楚职责？数据和行为是不是放在一起？对象之间是不是通过清楚消息协作？有没有一个类开始变成什么都管的万能类？
+<figure align="center">
+  <img src="../assets/ch05/ch05_object_quality_receipt.png" alt="对象质量回执" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-13 对象质量回执</strong>：用单一职责、数据贴近方法、消息清楚、组合优先和万能类风险检查对象设计。</figcaption>
+</figure>
 
-OOP 最容易出现的幻觉是：只要代码里出现 `class`，程序就自动变高级了。现实更诚实一点：如果一个类既读文件、又管界面、又做统计、又导出报告，它只是披着类外套的杂物间。对象质量回执就是用来及时按住这个苗头的。
+这份回执不是为了给代码打分，而是为了提醒你：OOP 失败时，问题经常不是语法，而是边界。一个项目里如果出现 `ProjectManager`、`Helper`、`Everything` 这种类名，要格外小心。它们可能正在吞掉太多职责。
 
 ---
 
-## 5.8 常见坑
+## 第四部分：项目交付与跨章连接
 
-<figure align="center">
-  <img src="../assets/ch05/ch05_pitfall_map.png" alt="常见坑地图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-19 常见坑地图</strong>：错误不是判决，而是提醒你该检查 `self`、实例化、职责边界或继承关系。</figcaption>
-</figure>
+### 5.13 对象交付包：`08_make_object_delivery_package.py`
 
-本章常见坑：
-
-- 忘记 self
-- 把类当对象用
-- 所有东西都塞进一个大类
-- 为了炫技过早继承
-
-遇到问题时，先看报错信息，再看文件路径，最后看输入数据。不要一报错就重装环境。重装是最后手段，不是第一反应。
-
----
-
-## 5.9 本章小项目：学习卡片对象模型
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_project_dashboard.png" alt="项目仪表盘" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-20 本章项目</strong>：完成“学习卡片对象模型”，给科研卡片工厂增加一项新能力。</figcaption>
-</figure>
-
-项目目标：用类封装学习卡片、卡片盒和实验试次，让代码从散装零件变成可维护模型，并生成对象模型报告。
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_oop_model_preview.png" alt="Python 生成的对象模型报告预览" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-21 Python 生成的对象模型报告预览</strong>：对象模型只有能被解释、能被检查、能被复用，才真正帮程序走出迷宫。</figcaption>
-</figure>
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_design_cards_preview.png" alt="Python 生成的类职责卡片预览" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-22 Python 生成的类职责卡片预览</strong>：先把职责边界写成卡片，再动手写类，能让项目从一开始就少走弯路。</figcaption>
-</figure>
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_object_collaboration_map.png" alt="Python 生成的对象协作消息图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-23 Python 生成的对象协作消息图</strong>：对象不是孤岛；卡片、卡片盒、实验试次和报告整理员通过清楚的消息一起完成任务。</figcaption>
-</figure>
-
-这张图来自 `06_make_object_collaboration_map.py`。它提醒你，OOP 的重点不是“我写了几个 class”，而是“每个对象知道自己的职责，并且能用清楚的消息和别的对象配合”。如果一个对象什么都管，程序会变成万能胶；如果对象之间没有消息，程序会变成一堆漂亮但互不说话的零件。
-
-<figure align="center">
-  <img src="../assets/ch05/ch05_object_quality_receipt.png" alt="Python 生成的对象质量回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-24 Python 生成的对象质量回执</strong>：`07_make_object_quality_receipt.py` 把职责单一、数据行为贴近、消息清晰、避免万能类这些原则变成可检查证据。</figcaption>
-</figure>
-
-这张回执来自 `07_make_object_quality_receipt.py`。它故意保留一个 `WATCH` 项：警惕万能类。真实项目里的 OOP 不是一次写完就完美，而是不断检查边界，把“这个类是不是管太多了”这种直觉变成可以讨论、可以修改的证据。
-
-质量回执解决的是“对象模型是不是靠谱”。但科研卡片工厂还需要另一个问题：这个模型能不能交给后面的章节继续使用？因此本章再补一个对象交付包，把 `LearningCard`、`CardDeck`、`Trial` 和 `ReportBuilder` 组织成可导出的 JSON。这样到了 ch6，数据分析脚本就可以读取它，而不是重新猜本章写过什么。
-
-运行方式：
+运行：
 
 ```bash
 python code/ch05/08_make_object_delivery_package.py
 ```
 
-运行后会生成：
+它会生成：
 
 ```text
 output/ch05_object_delivery_package.json
 reports/ch05_object_delivery_package.md
 output/ch05_object_delivery_package.png
+assets/ch05/web/ch05_object_delivery_package.png
 ```
 
 <figure align="center">
-  <img src="../assets/ch05/ch05_object_delivery_package.png" alt="Python 生成的对象交付包预览" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-25 Python 生成的对象交付包</strong>：`08_make_object_delivery_package.py` 把对象模型导出成 JSON，让本章成果可以继续交给后续数据分析、GUI 或办公自动化脚本使用。</figcaption>
+  <img src="../assets/ch05/ch05_object_delivery_package.png" alt="对象交付包预览图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-14 对象交付包</strong>：对象模型不只停在代码里，也可以导出成 JSON，交给后续章节继续读取和分析。</figcaption>
 </figure>
 
-这一步很像把设计好的零件装进标准箱：对象负责保存状态和行为，JSON 负责把当前状态交给外部世界。到这里，OOP 就不只是“代码写得漂亮一点”，而是让卡片工厂的模型变得可交付、可复用、可继续加工。
+为什么要导出 JSON？因为一个小项目完成后，下一步通常不是“看起来写完了”，而是要把结果交给别的流程。第6章如果要做数据分析，就可以读取这个 JSON，把卡片和试次对象整理成表格。
 
-上一章 ch4 已经做出了一个 Stroop 数据浏览面板的规格文件。那张面板上有指标卡、按钮、试次行和导出动作。现在换一个 OOP 视角看它：这些东西并不是散落在界面上的“控件”，而是一组可以分工的对象。
+OOP 的交付物至少应该回答：
 
-这就像一个小型研究前台：`DataPanelModel` 负责统筹，`PanelMetric` 负责展示关键数字，`PanelAction` 负责把用户点击变成方法调用，`TrialRow` 负责保存一行实验记录。对象之间各管一段，程序就不容易长成一个什么都管的庞然大物。
+1. 对象模型是什么？
+2. 现在有哪些具体对象？
+3. 输出文件在哪里？
+4. 后续章节或后续工具如何继续读取？
 
-运行方式：
+### 5.14 接住 ch04 的 GUI 面板：`09_make_gui_panel_object_model.py`
+
+第4章生成过一个 GUI 面板规格。第5章可以把它拆成对象模型：
 
 ```bash
 python code/ch05/09_make_gui_panel_object_model.py
 ```
 
-运行后会生成：
+它会生成：
 
 ```text
 output/ch05_gui_panel_object_model.json
 reports/ch05_gui_panel_object_model.md
 output/ch05_gui_panel_object_model.png
+assets/ch05/web/ch05_gui_panel_object_model.png
 ```
 
 <figure align="center">
   <img src="../assets/ch05/ch05_gui_panel_object_model.png" alt="GUI 面板对象模型预览图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-26 GUI 面板对象模型</strong>：`09_make_gui_panel_object_model.py` 把 ch4 的 GUI 面板规格拆成对象职责；OOP 的重点不是多写几个 class，而是让每个对象知道自己该负责什么。</figcaption>
+  <figcaption><strong>图5-15 GUI 面板对象模型</strong>：ch04 的面板规格被拆成 `DataPanelModel`、`PanelMetric`、`PanelAction` 和 `TrialRow` 等对象。</figcaption>
 </figure>
 
-这张图把“类与对象”从抽象语法拉回真实项目：同一个面板，如果所有功能都塞进一个函数，后面会越来越难改；如果拆成对象，后续 ch6 分析数据、ch10 导出报告时，就能沿用这些清晰边界。
+这一步很重要，因为它说明面向对象不是单独一章的知识点，而是可以接住前面的 GUI、文件和数据任务：
 
-最后再运行一次证据脚本，把本章后半段的生成结果集中检查一遍：
+| ch04 的东西 | ch05 的对象 |
+| --- | --- |
+| 面板标题、数据来源 | `DataPanelModel` |
+| 准确率、平均反应时等指标 | `PanelMetric` |
+| 加载数据、查看试次、导出卡片等按钮 | `PanelAction` |
+| Stroop 试次预览行 | `TrialRow` |
+
+当项目继续变大时，这种拆法会比“所有按钮逻辑都写在一个函数里”更容易维护。
+
+### 5.15 本章脚本总览
+
+第一次学习本章时，建议按这个顺序运行：
+
+```bash
+python code/ch05/01_learning_card_class.py
+python code/ch05/02_card_deck.py
+python code/ch05/03_trial_object.py
+python code/ch05/04_make_oop_model_report.py
+python code/ch05/05_make_design_cards.py
+python code/ch05/06_make_object_collaboration_map.py
+python code/ch05/07_make_object_quality_receipt.py
+python code/ch05/08_make_object_delivery_package.py
+python code/ch05/09_make_gui_panel_object_model.py
+python code/ch05/10_make_oop_runtime_evidence.py
+```
+
+对应证据如下：
+
+| 脚本 | 主要产物 | 你要确认什么 |
+| --- | --- | --- |
+| `01_learning_card_class.py` | 终端输出 | `LearningCard` 能创建并调用 `preview()` |
+| `02_card_deck.py` | 终端输出 | `CardDeck` 能添加卡片并统计数量 |
+| `03_trial_object.py` | 终端输出 | `Trial` 能保存一次试次并判断快慢 |
+| `04_make_oop_model_report.py` | `reports/ch05_oop_model_report.md` | 类、职责、属性和方法清楚 |
+| `05_make_design_cards.py` | `reports/ch05_design_cards.md` | 每个类都有“不该管什么” |
+| `06_make_object_collaboration_map.py` | `reports/ch05_object_collaboration_map.md` | 对象消息方向清楚 |
+| `07_make_object_quality_receipt.py` | `reports/ch05_object_quality_receipt.md` | 能发现万能类风险 |
+| `08_make_object_delivery_package.py` | `output/ch05_object_delivery_package.json` | 对象模型能交给下一章 |
+| `09_make_gui_panel_object_model.py` | `output/ch05_gui_panel_object_model.json` | ch04 面板能拆成对象 |
+| `10_make_oop_runtime_evidence.py` | `reports/ch05_oop_runtime_evidence.md` | 后半段交付物都存在 |
+
+---
+
+## 第五部分：排错、练习与验收
+
+### 5.16 常见坑：先按职责边界排查
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_pitfall_map.png" alt="第5章 OOP 常见坑排查图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-16 第5章常见坑排查</strong>：OOP 报错和设计混乱，通常可以从 `self`、对象身份、万能类、继承、数据行为分离和职责重叠排查。</figcaption>
+</figure>
+
+| 问题 | 典型现象 | 优先检查 |
+| --- | --- | --- |
+| 忘记 `self` | 方法里找不到属性，或变量名未定义 | 方法参数有没有 `self`，属性访问是否写成 `self.xxx` |
+| 把类当对象 | 直接拿 `LearningCard.topic` 当具体主题 | 你是否创建了 `card = LearningCard(...)` |
+| 万能大类 | 一个类越来越长，什么都管 | 能不能拆成卡片、卡片盒、试次、报告 |
+| 过早继承 | 继承关系说不出“是一种” | 先改成组合 |
+| 数据行为分离 | 函数之间传一大串参数 | 是否应该让对象自己保存状态并提供方法 |
+| 职责重叠 | 两个类都在改同一份核心数据 | 回到职责卡片，重新划边界 |
+
+遇到 OOP 问题时，先不要马上重写所有类。建议按这个顺序缩小范围：
+
+1. 先用一个对象跑通最小例子。
+2. 打印对象，确认属性值是否正确。
+3. 单独调用一个方法，确认返回结果。
+4. 再让两个对象协作。
+5. 最后才加文件、GUI、报告和导出。
+
+### 5.17 运行证据：OOP 也要能交付
+
+运行：
 
 ```bash
 python code/ch05/10_make_oop_runtime_evidence.py
 ```
 
-运行后会生成：
+<figure align="center">
+  <img src="../assets/ch05/ch05_oop_runtime_evidence.png" alt="第5章 OOP 运行证据图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-17 OOP 运行证据</strong>：对象模型报告、职责卡片、协作图、质量回执、交付包和 GUI 面板对象模型都存在，才说明本章项目有完整证据链。</figcaption>
+</figure>
 
-```text
-reports/ch05_oop_runtime_evidence.md
-output/ch05_oop_runtime_evidence.png
-assets/ch05/web/ch05_oop_runtime_evidence.png
-```
+第1章强调环境要有证据，第4章强调 GUI 要有证据，第5章也一样。不要只说“我写了类”。你应该能指出：
 
-这一步很像实验记录里的“检查表”：它不会替你理解面向对象，但会帮你确认本章产物没有只停留在脑海里。学习编程时，能把结果留在硬盘上，本身就是一种小小的可靠感。
+1. 对象模型报告在哪里？
+2. 类职责卡片在哪里？
+3. 对象协作图在哪里？
+4. 质量回执检查了什么？
+5. 交付包 JSON 能交给谁？
+6. 运行证据是否显示所有文件就绪？
 
-建议项目结构：
+### 5.18 上机路线与提交证据
 
-```text
-python_card_factory/
-├── code/
-│   └── ch05/
-├── input/
-├── output/
-├── reports/
-└── assets/
-```
+提交本章作业时，可以按下面的清单整理：
 
-本章配套脚本：
+| 提交证据 | 要看到什么 |
+| --- | --- |
+| 最小类 | `01_learning_card_class.py` 能输出卡片预览 |
+| 卡片盒 | `02_card_deck.py` 能显示卡片数量 |
+| 试次对象 | `03_trial_object.py` 能打印 `Trial` 并判断快慢 |
+| 对象模型报告 | `reports/ch05_oop_model_report.md` 存在 |
+| 职责卡片 | `reports/ch05_design_cards.md` 存在 |
+| 协作消息图 | `reports/ch05_object_collaboration_map.md` 存在 |
+| 质量回执 | `reports/ch05_object_quality_receipt.md` 存在 |
+| 对象交付包 | `output/ch05_object_delivery_package.json` 存在 |
+| GUI 面板对象模型 | `output/ch05_gui_panel_object_model.json` 存在 |
+| 运行证据 | `reports/ch05_oop_runtime_evidence.md` 存在 |
 
-- `code/ch05/01_learning_card_class.py`
-- `code/ch05/02_card_deck.py`
-- `code/ch05/03_trial_object.py`
-- `code/ch05/04_make_oop_model_report.py`
-- `code/ch05/05_make_design_cards.py`
-- `code/ch05/06_make_object_collaboration_map.py`
-- `code/ch05/07_make_object_quality_receipt.py`
-- `code/ch05/08_make_object_delivery_package.py`
-- `code/ch05/09_make_gui_panel_object_model.py`
-- `code/ch05/10_make_oop_runtime_evidence.py`
+### 5.19 练习任务
 
-完成标准：
+1. 给 `LearningCard` 增加一个 `difficulty: int` 属性，表示卡片难度。
+2. 修改 `preview()`，让它同时显示主题和难度。
+3. 把 `CardDeck.cards` 从 `list[str]` 改成 `list[LearningCard]`，再运行测试。
+4. 给 `CardDeck` 增加一个 `filter_by_tag(tag: str)` 方法。
+5. 给 `Trial` 增加 `correct: bool` 属性，并写一个 `status()` 方法。
+6. 在 `05_make_design_cards.py` 里新增一个类职责卡片，例如 `StudySession`。
+7. 修改 `06_make_object_collaboration_map.py`，加入 `StudySession -> CardDeck` 的消息。
+8. 在质量回执里新增一个检查项：“测试是否容易写”。
+9. 修改对象交付包 JSON，让它包含你新增的 `difficulty`。
+10. 临时删除一个报告文件，再运行 `10_make_oop_runtime_evidence.py`，观察它如何提示缺失；检查后把文件恢复。
 
-1. 至少运行一个脚本。
-2. 能解释脚本输入、处理、输出分别是什么。
-3. 把生成结果保存到 `output/` 或 `reports/`。
-4. 在 README 或学习记录中写下运行命令。
-5. 能生成 `reports/ch05_oop_model_report.md` 和 `reports/ch05_oop_model_preview.png`。
-6. 能生成 `reports/ch05_design_cards.md` 和 `output/ch05_design_cards_preview.png`。
-7. 能生成 `reports/ch05_object_collaboration_map.md` 和 `output/ch05_object_collaboration_map.png`，并说明至少两条对象消息的方向。
-8. 能生成 `reports/ch05_object_quality_receipt.md` 和 `output/ch05_object_quality_receipt.png`，并说明为什么要警惕万能类。
-9. 能生成 `output/ch05_object_delivery_package.json` 和 `reports/ch05_object_delivery_package.md`，并说明这个 JSON 可以怎样交给后续章节继续使用。
-10. 能生成 `output/ch05_gui_panel_object_model.json` 和 `reports/ch05_gui_panel_object_model.md`，并说明 ch4 GUI 面板里的哪个部分最适合变成对象。
-11. 能生成 `reports/ch05_oop_runtime_evidence.md` 和 `output/ch05_oop_runtime_evidence.png`，并用它检查本章后半段产物是否齐全。
+### 5.20 自测问题
 
-动手步骤：
+1. 类和对象有什么区别？请用 `LearningCard` 举例。
+2. 属性和方法分别负责什么？
+3. 为什么方法里要写 `self.topic`，而不是直接写 `topic`？
+4. `CardDeck` 和 `LearningCard` 为什么更适合组合，而不是继承？
+5. `Trial` 对象适合保存哪些心理学实验信息？
+6. 什么是万能类？它为什么危险？
+7. 对象协作消息图里，“消息”代表什么？
+8. 为什么 OOP 项目也需要运行证据，而不是只提交 `.py` 文件？
 
-1. **准备目录**：确认 `python_card_factory/` 下有 `code/`、`input/`、`output/`、`reports/`。
-2. **运行最小脚本**：先运行本章第一个脚本，得到一个确定反馈。
-3. **记录环境**：把 Python 版本、运行命令和输出截图或输出文本写进 `reports/`。
-4. **连接真实材料**：把课程笔记、实验记录、图片、网页或 CSV 放进 `input/`。
-5. **生成作品**：让脚本在 `reports/` 中留下对象模型报告和预览图。
-6. **设计职责卡片**：运行 `05_make_design_cards.py`，检查每个类的边界是否说得清楚。
-7. **检查对象协作**：运行 `06_make_object_collaboration_map.py`，看每条消息是否有明确发送者和接收者。
-8. **生成质量回执**：运行 `07_make_object_quality_receipt.py`，确认对象模型没有开始长成万能类。
-9. **生成对象交付包**：运行 `08_make_object_delivery_package.py`，把对象模型导出成 JSON。
-10. **封装 GUI 面板**：运行 `09_make_gui_panel_object_model.py`，把 ch4 面板规格拆成对象模型。
-11. **生成运行证据**：运行 `10_make_oop_runtime_evidence.py`，检查报告、图片和 JSON 是否都已经留下。
-12. **写复盘**：说明这章让卡片工厂多了什么能力，哪些地方还容易出错。
+如果你能把 `LearningCard`、`CardDeck`、`Trial` 和 `ReportBuilder` 的职责讲清楚，再指出它们的协作方向，就说明本章主线已经抓住了。
 
----
-
-## 5.10 练习任务
-
-1. 修改一个输入参数，观察输出变化。
-2. 把脚本生成的结果保存成文件。
-3. 故意制造一个小错误，记录报错信息和修复方式。
-4. 把本章项目和前面章节连接起来，例如读取 ch03 整理出的文件，或使用 ch02 的数据结构保存结果。
-5. 给你自己的项目新增一个类职责卡片，先写“它不该管什么”，再写代码。
-6. 运行 `06_make_object_collaboration_map.py`，把其中一条消息改成自己的项目场景，例如 `filter`、`export` 或 `review`。
-7. 运行 `07_make_object_quality_receipt.py`，把 `God Object` 的 `WATCH` 项改写成你自己的项目风险。
-8. 打开 `output/ch05_object_delivery_package.json`，尝试新增一张自己的学习卡片，再解释它应该由哪个类生成。
-9. 运行 `09_make_gui_panel_object_model.py`，把 `PanelAction` 里的一个按钮改成你自己的科研工具动作，例如 `export_participant_report()`。
-10. 运行 `10_make_oop_runtime_evidence.py`，如果某一项变成 `missing`，追踪它对应的是哪一个脚本或文件路径。
-
----
-
-## 5.11 自测问题
-
-1. 本章最重要的三个概念是什么？请用人话解释，不要只背术语。
-2. 本章第一个脚本的输入、处理、输出分别是什么？
-3. 如果脚本运行失败，你第一步会检查路径、环境、依赖还是语法？为什么？
-4. 本章项目和“科研卡片工厂”有什么关系？
-5. 你能不能把本章项目改成一个心理学或教学场景的小任务？
-
-参考回答不唯一。判断自己是否真的理解，可以看你能不能把答案讲给一个完全没学过本章的人听。
-
----
-
-## 5.12 学习复盘模板
+### 5.21 学习复盘模板
 
 可以在 `reports/ch05_review.md` 中写下：
 
@@ -614,43 +613,43 @@ python_card_factory/
 ## 我新增的能力
 - 
 
-## 我跑通的脚本
+## 我跑通的对象
+- LearningCard：
+- CardDeck：
+- Trial：
+
+## 我生成的证据文件
 - 
 
-## 我遇到的报错
-- 报错信息：
+## 我遇到的 OOP 问题
+- 报错或现象：
 - 原因：
 - 修复方式：
 
-## 我能迁移到哪里
-- 心理学实验：
-- 教学分享：
-- 科研资料整理：
+## 我重新划清的职责
+- 这个类应该管：
+- 这个类不该管：
+
+## 我准备迁移到后续章节
+- GUI：
+- 文件：
+- 数据分析：
 ```
 
-复盘不是写作文，而是给未来的自己留路标。你现在记录清楚，后面做综合项目时就不用重新从记忆里翻箱倒柜。
+复盘不是写作文，而是把下一次调试的路标留下来。你现在把对象、职责、消息和输出文件写清楚，后面做综合项目时就不会重新猜。
 
----
+### 5.22 本章总结
 
-## 5.13 与后续章节的连接
+第5章的重点不是“终于开始写高级代码”，而是学会用对象管理复杂度：
 
-本章不是孤岛。它和整套教程的关系可以这样理解：
+1. 类定义一种对象的共同结构。
+2. 对象是按类创建出来的具体实例。
+3. 属性保存对象状态。
+4. 方法让对象使用自己的状态完成动作。
+5. `self` 指向当前这个对象。
+6. 组合表达“拥有”，通常比过早继承更稳。
+7. 对象之间通过清楚消息协作。
+8. 类职责卡片和质量回执能帮助你提前发现边界混乱。
+9. OOP 项目最终也要留下报告、图片、JSON 和运行证据。
 
-- 前面章节提供基础：环境、数据结构、文件管理。
-- 本章提供一项新能力：学习卡片对象模型。
-- 后面章节会把这项能力继续接到数据分析、图像处理、爬虫或办公自动化里。
-
-所以不要只问“这一章考试考什么”。更好的问题是：它能帮我少做哪一类重复劳动？它能让我的学习材料、实验记录或报告更稳定吗？
-
----
-
-## 5.14 本章总结
-
-面向对象程序设计的关键不是“记住所有 API”，而是理解它解决的问题。你已经从概念、图像、代码和小项目四个角度接触了本章内容。下一次复习时，不要只问“我会不会背”，而要问：
-
-- 我能不能讲出这个概念的比喻？
-- 我能不能运行一个最小脚本？
-- 我能不能把结果放进项目目录？
-- 我能不能说清楚它在科研卡片工厂里增加了什么能力？
-
-如果答案是肯定的，这一章就不是看过了，而是真的进入你的工具箱了。
+下一章会继续接住这些产物。你会把对象交付包里的卡片和试次整理成更适合分析的数据结构。也就是说，第5章不是孤立地学 `class`，而是在给后续的数据分析、GUI 扩展和综合项目打地基。

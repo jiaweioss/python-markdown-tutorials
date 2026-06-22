@@ -1,12 +1,22 @@
 """Generate responsibility cards for the OOP chapter."""
 from dataclasses import dataclass
+import shutil
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
 
-OUTPUT = Path("output")
-REPORTS = Path("reports")
+def project_root() -> Path:
+    here = Path.cwd()
+    if (here / "assets" / "ch05").exists():
+        return here
+    return Path(__file__).resolve().parents[2]
+
+
+ROOT = project_root()
+OUTPUT = ROOT / "output"
+REPORTS = ROOT / "reports"
+WEB_DIR = ROOT / "assets" / "ch05" / "web"
 
 
 @dataclass
@@ -129,13 +139,22 @@ def make_preview(cards: list[ResponsibilityCard]) -> Path:
     return path
 
 
+def copy_asset(preview: Path) -> Path:
+    WEB_DIR.mkdir(parents=True, exist_ok=True)
+    target = WEB_DIR / preview.name
+    shutil.copyfile(preview, target)
+    return target
+
+
 def main():
     cards = build_cards()
     markdown = make_markdown(cards)
     preview = make_preview(cards)
+    web_copy = copy_asset(preview)
     print("已生成类职责卡片：")
-    print(f"- {markdown}")
-    print(f"- {preview}")
+    print(f"- {markdown.relative_to(ROOT)}")
+    print(f"- {preview.relative_to(ROOT)}")
+    print(f"- {web_copy.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
