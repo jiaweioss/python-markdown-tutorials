@@ -5,12 +5,22 @@ Run after entering the chapter directory:
 """
 
 from pathlib import Path
+import shutil
 from statistics import mean
 
 from PIL import Image, ImageDraw, ImageFont
 
 
-OUTPUT = Path("output/ch06_anscombe_quartet.png")
+def project_root() -> Path:
+    cwd = Path.cwd()
+    if (cwd / "assets" / "ch06").exists():
+        return cwd
+    return Path(__file__).resolve().parents[2]
+
+
+ROOT = project_root()
+OUTPUT = ROOT / "output" / "ch06_anscombe_quartet.png"
+WEB_COPY = ROOT / "assets" / "ch06" / "web" / "ch06_anscombe_quartet_output.png"
 
 DATASETS = {
     "I": [
@@ -98,18 +108,18 @@ def draw_panel(draw: ImageDraw.ImageDraw, box, name: str, points, color: str):
         px, py = sx(x), sy(y)
         draw.ellipse((px - 7, py - 7, px + 7, py + 7), fill=color)
 
-    draw.text((x1 + 28, y1 + 22), f"Dataset {name}", fill="#162033", font=font(25, True))
+    draw.text((x1 + 28, y1 + 22), f"数据集 {name}", fill="#162033", font=font(25, True))
     mx = mean(x for x, _ in points)
     my = mean(y for _, y in points)
-    draw.text((x1 + 28, y2 - 45), f"mean x={mx:.1f}, mean y={my:.1f}", fill="#5F6673", font=font(18))
+    draw.text((x1 + 28, y2 - 45), f"x 均值={mx:.1f}，y 均值={my:.1f}", fill="#5F6673", font=font(18))
 
 
 def main():
     OUTPUT.parent.mkdir(exist_ok=True)
     im = Image.new("RGB", (1600, 1050), "#F7F8FB")
     draw = ImageDraw.Draw(im)
-    draw.text((80, 55), "Anscombe's Quartet", fill="#162033", font=font(54, True))
-    draw.text((82, 125), "Similar summary statistics, very different shapes.", fill="#5F6673", font=font(28))
+    draw.text((80, 55), "Anscombe 四重奏", fill="#162033", font=font(54, True))
+    draw.text((82, 125), "摘要统计很接近，图形结构却完全不同。", fill="#5F6673", font=font(28))
 
     boxes = [(80, 210, 760, 570), (840, 210, 1520, 570), (80, 630, 760, 990), (840, 630, 1520, 990)]
     colors = ["#2F6BFF", "#24A06B", "#F28C28", "#7A5AF8"]
@@ -117,7 +127,10 @@ def main():
         draw_panel(draw, box, name, points, color)
 
     im.save(OUTPUT, optimize=True)
-    print("已生成", OUTPUT)
+    WEB_COPY.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(OUTPUT, WEB_COPY)
+    print("已生成", OUTPUT.relative_to(ROOT))
+    print("已同步", WEB_COPY.relative_to(ROOT))
 
 
 if __name__ == "__main__":

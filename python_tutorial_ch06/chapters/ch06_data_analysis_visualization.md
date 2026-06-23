@@ -1,634 +1,465 @@
 # 第 6 章：数据分析与可视化
 
-<style>
-figure {
-  margin: 1.2em auto 1.8em;
-  text-align: center;
-}
-figure img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-}
-figcaption {
-  margin-top: 0.45em;
-  color: #5f6673;
-  font-size: 0.92em;
-  line-height: 1.55;
-}
-figcaption strong {
-  color: #2d3748;
-}
-</style>
-
+[TOC]
 
 <figure align="center">
-  <img src="../assets/ch06/ch06_cover.png" alt="第6章封面" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-1 本章封面</strong>：数据表像实验记录本：一行一个观察，一列一个变量。看懂它，图表才不是装饰。</figcaption>
+  <img src="../assets/ch06/ch06_cover.png" alt="第6章 数据分析与可视化封面" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-1 第6章封面</strong>：本章把学习记录变成表格、摘要、图表和下一步行动。图表不是装饰，它要能回答问题。</figcaption>
 </figure>
 
-> 本章一句话：数据表像实验记录本：一行一个观察，一列一个变量。看懂它，图表才不是装饰。
+> 本章一句话：
+> **数据分析不是把数字画漂亮，而是用一条可复查的链路回答问题：数据从哪里来，算出了什么，图表说明什么，下一步该做什么。**
 
-第6章继续推进“科研卡片工厂”的能力建设。前面几章让 Python 能运行、能管理数据、能处理文件；这一章开始把能力放进更具体的应用场景里。学习时不要把知识点当成散装零件，而要始终问：它能帮我的卡片工厂多做哪一件真实的事？
+前面几章里，我们已经能写函数、处理文件、构建 GUI，并在第5章把学习卡片、试次记录和交付包整理成对象。第6章开始，项目进入“看证据”的阶段：同样是一组学习记录，放在 CSV 里只是原材料；经过统计、可视化和复盘，它才会变成能指导下一次学习的判断。
+
+这一章不会把数据分析讲成一堆遥远术语。我们只抓住一条主线：**先提出一个足够具体的问题，再用 Python 留下可复查的输出。** 你会生成 `learning_records.csv`，计算平均时长和完成率，画出学习仪表盘，比较 Anscombe 四重奏，诊断异常值，把第5章的对象交付包读进来，最后生成一份运行证据总览。
 
 ---
 
-## 6.0 本章学习目标
+## 本章导读：先问问题，再画图
 
-学完本章，你应该能够：
+### 6.0 本章学习目标
 
-1. 用自己的话解释本章核心概念。
-2. 运行本章配套脚本，看到明确输出。
-3. 把概念和“科研卡片工厂”的连续项目联系起来。
-4. 识别本章最常见的新手错误。
-5. 完成本章小项目：**学习卡片统计仪表盘**与**记忆复习计划**。
+学完本章，你应该能够做到：
+
+1. 说清楚数据分析的最小链路：数据、摘要、图表、解释、行动。
+2. 运行 `01_make_sample_csv.py`，生成一份可复查的学习记录 CSV。
+3. 运行 `02_basic_statistics.py` 和 `03_optional_pandas_summary.py`，理解平均值、分组统计和完成率各回答什么问题。
+4. 运行 `04_make_dashboard_chart.py`，把学习记录画成一张清楚的统计仪表盘。
+5. 用 Anscombe 四重奏解释“统计摘要相似，不代表数据形状相同”。
+6. 用图表改造检查单判断一张图是否标题清楚、颜色克制、标注有效。
+7. 用异常值诊断图判断哪些记录需要回看，而不是草率删除。
+8. 把第5章导出的对象交付包变成第6章的分析输入，并生成最终运行证据。
+
+### 本章分区导航
+
+| 分区 | 对应小节 | 你要抓住的主线 | 产出证据 |
+| --- | --- | --- | --- |
+| 第一部分：从 CSV 到第一张图 | 6.1-6.5 | 先把数据来源和最小分析链跑通 | CSV、统计输出、最小链路图 |
+| 第二部分：摘要、分布与图表判断 | 6.6-6.9 | 平均数只能回答一部分问题，图形结构要单独检查 | 仪表盘、Anscombe、图表改造 |
+| 第三部分：异常值、跨章数据与复习计划 | 6.10-6.12 | 数据里的“奇怪点”要回到学习语境解释 | 异常值诊断、ch05 交接、复习曲线 |
+| 第四部分：图表风格与项目交付 | 6.13-6.14 | 好图只回答一个清楚问题，项目要留下可复查文件 | 审美诊所、项目交付链 |
+| 第五部分：排错、练习与验收 | 6.15-6.21 | 用固定清单排查图表和脚本，最后整理证据 | 常见坑地图、运行证据、复盘模板 |
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_roadmap.png" alt="第6章学习路线图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-2 本章学习路线</strong>：从生成 CSV 到画仪表盘，再到异常值、复习计划和运行证据，本章每一步都能落到文件。</figcaption>
+</figure>
 
 ---
 
-## 6.1 开场故事：先有画面，再有术语
+## 第一部分：从 CSV 到第一张图
 
-数据表像实验记录本：一行一个观察，一列一个变量。看懂它，图表才不是装饰。 这句话不是为了热闹，而是为了把本章的知识放进真实使用场景。初学者最怕一上来就被术语包围，像走进一个所有门牌都用缩写写成的楼层。我们先从画面进入，再慢慢把画面翻译成代码。
+### 6.1 数据分析先从问题开始
 
-<figure align="center">
-  <img src="../assets/ch06/ch06_nightingale_mortality_story.png" alt="Florence Nightingale 死亡原因玫瑰图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-2 Nightingale 的死亡原因图</strong>：这张历史图表提醒我们，可视化不是把数据画漂亮，而是把问题画到别人无法忽视。</figcaption>
-</figure>
+如果你一打开数据就急着画图，最容易得到一张“看起来很忙、实际上没回答问题”的图。第6章的第一条规则很朴素：**先问问题，再决定统计什么、画什么。**
 
-Florence Nightingale 常被记住为护士，但她也是数据可视化史上非常重要的人。她把克里米亚战争中的死亡原因画成图，让“卫生条件造成大量死亡”不再只是一串数字，而变成能推动决策的证据。这个故事很适合放在数据分析第一节：图表不是 PPT 的彩带，图表是让事实站出来说话。
+对学习卡片项目来说，问题可以很具体：
 
-<figure align="center">
-  <img src="../assets/ch06/ch06_playfair_timeseries_story.png" alt="William Playfair 时间序列图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-3 William Playfair 的时间序列图</strong>：把价格、工资和时间画在一起，变化不再躲在表格格子里。</figcaption>
-</figure>
+1. 最近学习了哪些主题？
+2. 每个主题花了多长时间？
+3. 哪些主题已经完成，哪些还需要补？
+4. 反应时偏高的主题，是不是值得提前复习？
 
-William Playfair 是统计图史上绕不开的人物。他把时间、价格、工资这类原本只能在表格中一格一格读的信息画成曲线。曲线的力量在于，它让趋势变成一眼能看见的动作：上涨、下跌、波动、转折。你第一次学折线图时，可能会以为它只是“把点连起来”，但 Playfair 的故事提醒我们：折线图真正表达的是“变化”。
-
-这对学习记录也很重要。如果你只看一张表，可能只看到“今天学了 25 分钟”；如果你把连续十天画出来，才会发现自己哪天断档、哪天状态最好、哪段内容明显拖慢了节奏。图表不是把数字涂漂亮，而是让时间里的变化露出线索。
+这些问题不需要宏大的数据集。三行学习记录就足够练习完整流程，因为重点不是数据量，而是让“输入、处理、输出、解释”形成闭环。
 
 <figure align="center">
-  <img src="../assets/ch06/ch06_minard_napoleon_story.png" alt="Minard 拿破仑远征俄国图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-4 Minard 的拿破仑远征俄国图</strong>：一张好图能同时讲清路线、人数、温度和灾难的推进。</figcaption>
+  <img src="../assets/ch06/ch06_story_scene.png" alt="从记录表到可解释图表的流水线" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-3 从记录表到可解释图表</strong>：输入数据、统计摘要和图表行动要连成一条证据链。缺少任意一环，结论都会变轻。</figcaption>
 </figure>
 
-Minard 的拿破仑远征俄国图常被称为经典信息图。它厉害的地方不是颜色很多，而是把多个变量组织到同一个故事里：军队往哪里走、人数如何减少、气温如何下降、撤退如何发生。观看者不需要先背一堆统计术语，也能感到那条线越来越细时发生了什么。
+### 6.2 本章数据源：`learning_records.csv`
 
-这给本章一个非常实用的审美标准：**图表越复杂，越要帮观看者减少混乱，而不是炫耀复杂。** 如果一张图让人看完只想问“所以呢”，它就还没完成任务。
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_dubois_data_portrait_story.png" alt="W.E.B. Du Bois 数据肖像" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-5 W.E.B. Du Bois 数据肖像</strong>：数据图表也可以有审美和立场，颜色、构图和标题一起服务于清楚表达。</figcaption>
-</figure>
-
-1900 年巴黎世博会上，W.E.B. Du Bois 和团队展出了一组关于非裔美国人生活、教育、收入和社会处境的数据图表。它们不像今天很多默认模板图那样冷冰冰，而是用强烈的颜色、几何构图和清楚标题，把统计资料变成能被观看、被讨论、被记住的视觉作品。
-
-这对本章很重要：图表审美不是给数据化妆，而是让观看者更快看见结构。标题要说人话，颜色要有意义，空白要敢留，图例不要像迷宫。Python 画图时，如果只是把数据扔进默认样式，当然也能生成图片；但如果想把图放进报告、学习分享或科研卡片，就要开始有设计意识。
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_story_scene.png" alt="故事场景图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-6 故事场景</strong>：Pandas 像超级 Excel，Matplotlib 像画图笔，NumPy 像高速计算积木。</figcaption>
-</figure>
-
-这个画面对应本章的核心比喻：Pandas 像超级 Excel，Matplotlib 像画图笔，NumPy 像高速计算积木。 如果你能先记住这个比喻，后面的概念就不再是干巴巴的定义。
-
----
-
-## 6.2 知识路线
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_roadmap.png" alt="知识路线图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-7 知识路线</strong>：先建立直觉，再运行代码，最后完成一个可展示的小项目。</figcaption>
-</figure>
-
-本章路线如下：
-
-| 顺序 | 主题 | 你要完成的动作 |
-| --- | --- | --- |
-| 1 | CSV 数据 | 先把学习记录写成一张可复查的表 |
-| 2 | Series/DataFrame | 再把表格读成 Python 可以筛选和统计的数据结构 |
-| 3 | 筛选与分组 | 找出不同主题、不同状态下的数据差异 |
-| 4 | 描述统计 | 先算平均值、完成率和反应时，建立第一眼判断 |
-| 5 | Matplotlib 图表 | 把关键比较画成能放进报告的图 |
-| 6 | 结果解释 | 用图表回答“下一步应该做什么” |
-
----
-
-## 6.3 核心概念：从人话到术语
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_core_metaphor.png" alt="核心比喻图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-8 核心比喻</strong>：用一个稳定画面记住本章最重要的概念关系。</figcaption>
-</figure>
-
-先用人话说：Pandas 像超级 Excel，Matplotlib 像画图笔，NumPy 像高速计算积木。
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_snow_cholera_map_story.png" alt="John Snow 霍乱地图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-9 John Snow 的霍乱地图</strong>：把死亡地点放到地图上，问题的中心开始显形；这就是“数据位置”和“图表解释”的力量。</figcaption>
-</figure>
-
-1854 年伦敦霍乱暴发时，John Snow 把病例位置标在地图上，发现它们集中在 Broad Street 水泵附近。这个故事可以帮我们理解：数据分析不是先有炫技，而是先有问题。你要问“这些记录在哪里聚集？哪个类别异常？哪个变量最值得比较？”图表只是工具，真正重要的是问题意识。
-
-再用术语说，本章要掌握这些内容：
-
-- **CSV 数据**：像一张朴素的实验记录表，负责保存原始学习记录。
-- **Series/DataFrame**：把表格变成可以筛选、分组、统计的对象，像给 Excel 装上自动分析手臂。
-- **筛选与分组**：把“所有记录”拆成更有意义的小组，例如按主题、完成状态或日期比较。
-- **描述统计**：先问平均值、完成率、反应时这些基础问题，再决定要不要继续深入。
-- **Matplotlib 图表**：把重点比较画出来，让趋势、差异和异常点不再躲在表格里。
-- **结果解释**：图表不是终点，真正的目标是说明下一步行动。
-
-术语不是用来吓人的，它只是为了让大家交流时不用每次都讲一长串故事。你先用故事建立直觉，再用术语压缩表达，这样学得稳。
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_anscombe_quartet_story.png" alt="Anscombe 四重奏示意图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-10 Anscombe 四重奏</strong>：统计摘要可能很像，但图形结构完全不同；这就是为什么数据分析不能只看平均数。</figcaption>
-</figure>
-
-Anscombe 四重奏是数据分析课上非常经典的“反直觉小剧场”：四组数据的均值、方差、相关系数和回归线都很接近，但画出来以后形状完全不同。有的像一条线，有的是曲线，有的被离群点牵着走，还有一组几乎所有 x 都一样。
-
-这个故事可以帮你建立一个重要习惯：**先算摘要，再看图形，最后解释语境。** 只算平均数，就像只听一个人的自我介绍；画出分布和关系，才像真正见到这个人的行为模式。数据也会“装乖”，图表能帮你拆穿它。
-
-John Tukey 推动的探索性数据分析也在讲同一件事：不要一上来就急着宣布结论，先像侦探一样观察数据。箱线图就是这种思想的好工具：中位数告诉你中心，四分位数告诉你拥挤程度，异常值像角落里突然亮起的小灯。它不一定代表错误，也可能是最值得追问的故事入口。
-
----
-
-## 6.4 最小可运行示例
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_minimal_demo.png" alt="最小示例图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-11 最小示例</strong>：先跑通最小代码，再逐步增加功能，学习会稳很多。</figcaption>
-</figure>
-
-本章第一件事不是背参数，而是运行一个最小例子。打开终端，进入本章目录后运行：
+先进入第6章目录，运行第一个脚本：
 
 ```bash
 python code/ch06/01_make_sample_csv.py
 ```
 
-如果你能看到输出，说明这一章的入口已经打通。后面所有复杂功能，都是在这个入口上慢慢加能力。
+它会生成 `input/learning_records.csv`。这份 CSV 很小，但字段设计已经足够表达一个学习记录：
 
-<figure align="center">
-  <img src="../assets/ch06/ch06_powershell_analysis_run.png" alt="PowerShell 运行 ch6 数据分析脚本截图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-12 PowerShell 真实运行结果</strong>：本章脚本会生成 CSV、统计输出、仪表盘、Anscombe 四重奏、图表改造图和审美检查单。</figcaption>
-</figure>
-
-请注意这张截图里的顺序：先生成 `learning_records.csv`，再计算记录数、平均学习时长、平均反应时和完成率，最后生成 `ch06_learning_dashboard.png`。数据分析不是“点一下神奇按钮”，而是输入、处理、输出一环扣一环。
-
----
-
-## 6.5 与心理学/科研教学的连接
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_psychology_link.png" alt="心理学和科研记录连接图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-13 心理学连接</strong>：把本章能力放进实验、记录、分析和学习分享的真实任务里。</figcaption>
-</figure>
-
-这一章会把例子贴近心理学、科研记录和学习分享。因为这些任务天然需要清晰流程：刺激是什么，反应是什么，数据存到哪里，结果如何展示，别人能不能复现。
-
-在本章里，你可以这样理解项目价值：
-
-- 它不是孤立练习，而是科研卡片工厂的一台新设备。
-- 它处理的材料可以是课程笔记、实验记录、问卷结果、图片、网页资料或报告模板。
-- 它最终要留下可检查的结果，而不是只在屏幕上闪一下。
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_ebbinghaus_story.png" alt="Hermann Ebbinghaus 肖像" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-14 Hermann Ebbinghaus 与记忆曲线</strong>：记忆不是硬盘保存按钮，刚学会的东西如果不回看，很快就会开始褪色。</figcaption>
-</figure>
-
-Hermann Ebbinghaus 用自己做记忆实验，研究人会怎样遗忘无意义音节。这个故事放在 Python 数据分析里并不突兀，因为学习记录本身就是一种很好的数据：今天学了什么、花了多久、有没有完成、反应时高不高。它们不是为了“打卡好看”，而是为了让复习安排更像一个有证据的计划。
-
-把它放回科研卡片工厂的主线里：ch0 启动工厂，ch2 存卡片，ch3 整理文件，ch5 把卡片封装成对象，到了 ch6，工厂终于能根据学习数据判断“哪张卡片该早点回来”。这比单纯喊“要复习”有用得多，因为 Python 会把提醒写进文件，也会把趋势画成图。
-
-运行方式：
-
-```bash
-python code/ch06/09_make_memory_review_curve.py
-```
-
-运行后会生成：
-
-```text
-output/ch06_memory_review_plan.json
-reports/ch06_memory_review_plan.md
-output/ch06_memory_review_plan.png
-```
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_memory_review_plan.png" alt="Python 生成的记忆复习曲线图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-15 Python 生成的记忆复习曲线</strong>：红线提醒你“不复习会掉得很快”，蓝线提醒你“间隔复习是在给记忆续航”。</figcaption>
-</figure>
-
-这张图不是要把艾宾浩斯曲线当成万能公式，而是训练一种数据习惯：把模糊的学习感受变成可以讨论的记录。比如“字典总是记不牢”这句话太模糊；如果文件里写着“字典未完成，反应时 610 ms，明天复习”，下一步行动就清楚了。数据分析最可爱的地方正在这里：它不替你学习，但它会让你少靠玄学安排复习。
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_hans_rosling_story.png" alt="Hans Rosling 演讲照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-16 Hans Rosling 的数据叙事</strong>：数据讲得好，不是把数字念完，而是让听众看见趋势、差异和人的处境。</figcaption>
-</figure>
-
-Hans Rosling 的演讲让很多人第一次感到：数据可视化可以像讲故事一样有节奏。气泡移动、国家变化、趋势展开，抽象指标突然有了时间感和场景感。这里的启发不是“每张图都要做动画”，而是：数据分析最终要面向人。图表如果不能帮助人理解问题，就算代码再复杂，也只是漂亮的噪音。
-
-所以本章做学习卡片统计仪表盘时，也要问同样的问题：观看者能不能一眼看出完成率？能不能看出哪个主题花时最多？能不能知道这张图下一步要支持什么行动？图表不是结尾，它应该把人带到下一步判断。
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_data_detective_desk.png" alt="数据侦探桌示意图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-17 数据侦探桌</strong>：数据分析像把证据铺在桌上：记录纸告诉你来源，图表显示模式，放大镜盯住异常点，最后才轮到结论上场。</figcaption>
-</figure>
-
-把自己想成一名数据侦探，会比把自己想成“画图机器”更接近本章精神。侦探不会一进门就宣布凶手是谁，他会先看证据：数据从哪里来？有没有缺失？有没有离群点？图表有没有把重点讲清楚？如果证据桌乱成一团，结论再响亮也只是拍桌子。
-
-所以本章的图表练习不是为了炫技，而是训练三件事：先检查数据，再选择图形，最后用审美把重点变清楚。审美不是给图表化妆，而是帮观看者少走弯路。一个好的统计仪表盘，应该像整齐的证据桌：每一张图都有位置，每一个颜色都有理由，每一个异常点都值得回头确认。
-
----
-
-## 6.6 关键概念拆解表
-
-| 概念 | 人话理解 | 本章落点 |
+| 字段 | 含义 | 本章会怎么用 |
 | --- | --- | --- |
-| CSV 数据 | 像一张朴素表格，用逗号分隔字段，适合保存实验记录和学习记录 | `01_make_sample_csv.py` 生成 `input/learning_records.csv` |
-| 行与列 | 一行是一条观察，一列是一个变量，不要把它们在脑子里搅成一锅 | 每一行对应一个学习主题，每一列记录时长、完成状态、反应时 |
-| 描述统计 | 先问“平均多少、完成多少、差异在哪里”，不要直接冲向复杂模型 | `02_basic_statistics.py` 计算平均时长、平均反应时和完成率 |
-| pandas | 像超级 Excel，可以更方便地筛选、分组和汇总表格 | `03_optional_pandas_summary.py` 展示可选 pandas 版本 |
-| 图表 | 图表不是装饰，它负责让一个比较变得清楚 | `04_make_dashboard_chart.py` 生成学习统计仪表盘 |
-| 结果解释 | 数字跑出来以后，要能说出它意味着什么 | 把输出写进复盘或报告，而不是只看一眼就关掉 |
-| 异常值诊断 | 异常值不是敌人，它可能是错误，也可能是故事入口 | `07_make_outlier_diagnosis.py` 生成箱线图诊断卡 |
-| 间隔复习 | 记忆不是一次保存成功，而是需要定期回看的系统 | `09_make_memory_review_curve.py` 生成复习计划和记忆曲线 |
-| 图表审美诊所 | 把同一份数据拆成几张清楚小图，让趋势、差异、完成度和反应时各说各的话 | `10_make_chart_style_clinic.py` 生成四宫格展示图和诊断单 |
+| `topic` | 学习主题 | 作为图表的标签和分组依据 |
+| `minutes` | 学习时长 | 计算平均值、画柱状图、发现异常 |
+| `done` | 是否完成 | 计算完成率，区分已完成和待补主题 |
+| `rt_ms` | 反应时 | 粗略提示理解负担，辅助安排复习 |
 
-这张表的作用，是把“我好像懂了”变成“我知道它在哪用”。学习编程时，最危险的状态不是完全不会，而是听解释时点头，自己动手时发呆。每学一个概念，都要强迫自己问一句：它在本章项目里负责哪一段工作？
+注意这里的 `rt_ms` 不是心理学实验中的严格测量，它只是本章项目里的学习反馈线索。初学阶段先把语义说清楚，比急着套复杂模型重要。
 
----
+### 6.3 最小分析链：CSV → 摘要 → 图表
 
-## 6.7 配套代码逐个导览
+本章最小代码链路只有三步：
 
-### 脚本 1：`01_make_sample_csv.py`
+1. 用 `csv.DictReader` 读取每一行记录。
+2. 把 `minutes`、`done`、`rt_ms` 转成可以统计的值。
+3. 生成摘要或图表文件，让结果可以重新打开。
 
-运行方式：
+<figure align="center">
+  <img src="../assets/ch06/ch06_minimal_demo.png" alt="CSV 到摘要再到图表的最小分析链" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-4 最小分析链</strong>：先读 CSV，再算摘要，最后画图。链路越短，越容易发现路径、字段名和类型转换的问题。</figcaption>
+</figure>
 
-```bash
-python code/ch06/01_make_sample_csv.py
-```
+最小链路里有一个容易被忽略的习惯：**每一步都要能单独检查。** 如果 CSV 没生成，后面的统计和图表都不可靠；如果摘要解释不清，图表再漂亮也只是装饰；如果图表没有保存成文件，就没法复盘和提交。
 
-阅读时重点看三件事：每一列记录什么，CSV 写到哪里，后面的统计脚本会怎样读取它。
+### 6.4 先跑脚本，拿到第一批证据
 
-### 脚本 2：`02_basic_statistics.py`
-
-运行方式：
+生成 CSV 之后，继续运行前三个分析脚本：
 
 ```bash
 python code/ch06/02_basic_statistics.py
-```
-
-阅读时重点看三件事：脚本读入了几条记录，平均学习时长怎么算，完成率怎样从原始记录里得出。
-
-### 脚本 3：`03_optional_pandas_summary.py`
-
-运行方式：
-
-```bash
 python code/ch06/03_optional_pandas_summary.py
+python code/ch06/04_make_dashboard_chart.py
 ```
 
-阅读时重点看三件事：DataFrame 怎样筛选列、怎样分组汇总，pandas 版本和纯标准库版本各自清爽在哪里。
+你应该看到记录数、平均学习时长、平均反应时和完成率。`03_optional_pandas_summary.py` 会尝试使用 pandas；如果你的环境里没有 pandas，也不用慌，本章核心链路依然可以用标准库和 Pillow 跑通。
 
-建议第一次运行时不要急着改代码。先原样运行，确认能看到输出；第二次再改一个最小参数；第三次再尝试把输出写入 `output/` 或 `reports/`。这种节奏比“一上来就大改”更稳。
+<figure align="center">
+  <img src="../assets/ch06/ch06_powershell_analysis_run.png" alt="PowerShell 运行第6章数据分析脚本截图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-5 第6章脚本运行证据</strong>：脚本不是只在正文里展示概念，而是真的生成 CSV、统计输出、图表、报告和运行证据。</figcaption>
+</figure>
 
-### 脚本 4：`04_make_dashboard_chart.py`
+这张运行图的价值不在于“终端很酷”，而在于它证明项目不是静态截图。你可以改 CSV，重新运行脚本，再比较输出是否改变。这就是数据分析项目的基本可信度。
 
-运行方式：
+### 6.5 最小心智模型：不要让图表越过解释
+
+数据分析很容易被讲成工具清单：pandas、NumPy、Matplotlib、Seaborn、Excel、Jupyter。工具当然重要，但初学阶段更该先记住下面这条链：
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_core_metaphor.png" alt="数据分析最小心智模型" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-6 数据分析最小心智模型</strong>：数据、摘要、图表、语境、判断和行动要按顺序互相支撑。图表不能替你自动下结论。</figcaption>
+</figure>
+
+这条链能帮你判断自己有没有跳步：
+
+| 环节 | 你要问的问题 | 常见跳步 |
+| --- | --- | --- |
+| 数据 | 它从哪里来，字段是什么意思？ | 直接拿不明来源的数据作结论 |
+| 摘要 | 它压缩了哪些信息，又丢掉了哪些信息？ | 只看平均数 |
+| 图表 | 它让哪个比较更容易看见？ | 一张图塞太多问题 |
+| 语境 | 这个数在项目里意味着什么？ | 离开学习记录讲统计术语 |
+| 判断 | 证据支持什么，不支持什么？ | 把猜测写成结论 |
+| 行动 | 下一次学习要怎么改？ | 图画完就结束 |
+
+---
+
+## 第二部分：摘要、分布与图表判断
+
+### 6.6 统计摘要回答“有多少”和“平均多少”
+
+`02_basic_statistics.py` 的输出很短，通常像这样：
+
+```text
+记录数： 3
+平均学习时长： 21.67
+平均反应时： 536.67
+完成率： 67%
+```
+
+这几个数适合回答“总体情况如何”。但是它们不能告诉你每个主题的形状，也不能告诉你是否有异常记录。统计摘要像把一页笔记压缩成几行目录，目录有用，但目录不是全文。
+
+学习数据里最常见的三个摘要是：
+
+| 摘要 | 能回答 | 不能回答 |
+| --- | --- | --- |
+| 记录数 | 一共有多少条观察 | 每条观察是否可靠 |
+| 平均学习时长 | 大致投入水平 | 是否有某一天特别高或特别低 |
+| 完成率 | 进度是否接近预期 | 未完成的主题为什么卡住 |
+
+### 6.7 仪表盘：让一个比较变清楚
+
+运行：
 
 ```bash
 python code/ch06/04_make_dashboard_chart.py
 ```
 
-这个脚本会读取 `input/learning_records.csv`，把统计摘要和学习时长画成一张 PNG 图表，保存到：
+脚本会读取 CSV，生成 `output/ch06_learning_dashboard.png`，并同步一份网页用图到 `assets/ch06/web/ch06_learning_dashboard_output.png`。正式教材图会把这张输出图放进统一版式里。
 
-```text
-output/ch06_learning_dashboard.png
-```
+<figure align="center">
+  <img src="../assets/ch06/ch06_generated_dashboard_chart.png" alt="Python 生成的学习卡片统计仪表盘" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-7 Python 生成的学习仪表盘</strong>：记录数、完成数、平均时长和平均反应时放在顶部，下面只比较各主题学习时长。</figcaption>
+</figure>
 
-它的重点不是“Pillow 有多厉害”，而是让你看到数据分析的闭环：CSV 输入、统计计算、图表输出、文件保存。图表生成以后，请打开看一眼：文字有没有挤在一起，颜色是否能区分类别，别人能不能一秒看懂主要比较。审美不是额外加分项，它会影响结果能不能被别人读懂。
+这张图故意很克制：没有复杂背景，没有太多颜色，也没有把所有指标塞进同一个坐标系。它只想回答一个问题：**哪几个主题占用了更多学习时间？**
 
-### 脚本 5：`05_anscombe_quartet.py`
+### 6.8 只看平均数会被骗：Anscombe 四重奏
 
-运行方式：
+Anscombe 四重奏是数据分析入门里很值得保留的经典例子。四组数据的均值、方差和相关关系很接近，但画出来的形状完全不同。
+
+运行：
 
 ```bash
 python code/ch06/05_anscombe_quartet.py
 ```
 
-这个脚本会把 Anscombe 四重奏画成一张图，保存到：
+<figure align="center">
+  <img src="../assets/ch06/ch06_anscombe_quartet_output.png" alt="Python 生成的 Anscombe 四重奏" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-8 Python 生成的 Anscombe 四重奏</strong>：摘要统计相似，不代表数据形状相同。先看摘要，再看图形，结论才不容易漂。</figcaption>
+</figure>
 
-```text
-output/ch06_anscombe_quartet.png
-```
+把这个例子放回学习记录里，你会得到一个很实用的提醒：两个人平均每天都学 30 分钟，不代表他们学习节奏一样。一个人可能每天稳定 30 分钟，另一个人可能前六天几乎没学，最后一天补了 180 分钟。平均数相同，学习策略完全不同。
 
-运行它时，请特别观察四个面板：均值看起来很像，但形状完全不同。这个脚本想训练的不是画点图本身，而是一个数据分析习惯：摘要统计负责快速概括，图表负责检查结构，解释负责回到真实问题。三者缺一块，都容易误判。
+### 6.9 图表改造：从能画到能读
 
-### 脚本 6：`06_make_chart_makeover.py`
+能画出图，只是第一步。真正能用的图至少要做到三件事：
 
-运行方式：
+1. 标题告诉读者要看什么，而不是只写变量名。
+2. 颜色有含义，不能只是为了热闹。
+3. 标注和网格服务于比较，不能抢走注意力。
+
+运行：
 
 ```bash
 python code/ch06/06_make_chart_makeover.py
 ```
 
-这个脚本会把同一份学习数据画成“Before / After”两种效果，并生成一份图表审美检查单：
+<figure align="center">
+  <img src="../assets/ch06/ch06_chart_makeover_output.png" alt="Python 生成的图表改造前后对比" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-9 图表改造前后对比</strong>：左图展示新手常见的颜色和标签噪音，右图保留主色、直接标注和平均线，阅读压力更低。</figcaption>
+</figure>
 
-```text
-output/ch06_chart_makeover.png
-output/ch06_visual_check.md
-output/ch06_visual_check_preview.png
-```
+<figure align="center">
+  <img src="../assets/ch06/ch06_visual_check_preview.png" alt="Python 生成的图表审美检查单" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-10 图表审美检查单</strong>：每张图交出去前，至少检查标题、颜色、标注、网格和输出文件这五件事。</figcaption>
+</figure>
 
-这不是单纯追求漂亮，而是训练一种图表判断力：颜色有没有意义，标题有没有结论，标签是不是别人一眼能看懂，输出文件能不能复现。
+图表审美不是“好不好看”这么简单。对学习项目来说，审美的底层目标是减少误读：让读者更快看见你想比较的东西，也更容易追问数据从哪里来。
 
-### 脚本 7：`07_make_outlier_diagnosis.py`
+---
 
-运行方式：
+## 第三部分：异常值、跨章数据与复习计划
+
+### 6.10 异常值不是错误，也不是结论
+
+异常值很容易引起两种误判：一种是立刻删掉，另一种是立刻写成故事。更稳的做法是先标出来，再回到原始记录确认。
+
+运行：
 
 ```bash
 python code/ch06/07_make_outlier_diagnosis.py
 ```
 
-这个脚本会生成：
+<figure align="center">
+  <img src="../assets/ch06/ch06_outlier_diagnosis.png" alt="Python 生成的异常值诊断卡" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-11 异常值诊断卡</strong>：箱线图把中位数、四分位距和可疑值放在同一条轴上，提醒你先检查记录，再解释原因。</figcaption>
+</figure>
 
-```text
-reports/ch06_outlier_diagnosis.md
-output/ch06_outlier_diagnosis.png
-```
+对学习记录来说，异常值可能有三种含义：
 
-它会读取学习时长数据，用箱线图做一次异常值诊断。如果原始 CSV 记录太少，脚本会临时加入几条“复盘日”演示值，只用于说明诊断方法，不会改写原始 CSV。请注意红色点：它不是“坏数据”的同义词，而是提醒你回到语境里问一句：这天为什么学了这么久？
+| 情况 | 例子 | 下一步 |
+| --- | --- | --- |
+| 记录错误 | 把 25 分钟误写成 250 分钟 | 修正 CSV，并说明修正原因 |
+| 真实困难 | 文件读写那天学了 95 分钟 | 回看当天任务，拆小复习计划 |
+| 特殊安排 | 周末集中补课 | 不一定删除，但要在解释里说明 |
 
-### 脚本 8：`08_make_ch05_handoff_analysis.py`
+异常值的处理要留痕。你可以在 `reports/ch06_outlier_diagnosis.md` 里写下判断：它是错误、困难，还是特殊安排。
 
-运行方式：
+### 6.11 把第5章对象交给第6章分析
+
+第5章最后会导出 `ch05_object_delivery_package.json`。它不是上一章的尾巴，而是第6章的数据输入。运行：
 
 ```bash
 python code/ch06/08_make_ch05_handoff_analysis.py
 ```
 
-这个脚本负责把 ch5 的对象交付包接进 ch6。它会读取上一章的对象模型输出，把卡片数量、标签计数和试次反应时整理成摘要。它像一个交接单：前一章把材料打包，后一章开始统计和解释。
+<figure align="center">
+  <img src="../assets/ch06/ch06_ch05_handoff_analysis.png" alt="第5章到第6章对象交接分析图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-12 第5章到第6章的对象交接</strong>：对象包里的卡片数量、标签计数和试次反应时，会被整理成第6章可以继续分析的数据摘要。</figcaption>
+</figure>
 
-### 脚本 9：`09_make_memory_review_curve.py`
+这一步的意义很重要：教程不是每章重新开始，而是逐章累积项目。第5章负责把对象边界收清楚，第6章负责把对象交付的数据读出来、看结构、做判断。
 
-运行方式：
+### 6.12 从学习记录到复习安排
+
+数据分析最终要回到行动。本章的行动不是“再画一张图”，而是安排下一轮复习。
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_psychology_link.png" alt="学习记录进入数据分析并生成复习安排" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-13 学习记录如何进入数据分析</strong>：学习时长、完成状态和反应时可以变成复习计划的证据，而不是只停留在记录表里。</figcaption>
+</figure>
+
+运行：
 
 ```bash
 python code/ch06/09_make_memory_review_curve.py
 ```
 
-这个脚本把学习记录变成复习计划。它不会神秘地“预测大脑”，只是根据完成状态、反应时和学习时长，给每张卡片安排一个下一次回看的时间，并生成记忆曲线图。它训练的是一种很实用的思维：让数据提醒行动，而不是让行动全靠心情。
+<figure align="center">
+  <img src="../assets/ch06/ch06_memory_review_plan.png" alt="Python 生成的记忆复习曲线" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-14 记忆复习曲线</strong>：红线提醒“不复习会快速下降”，蓝线提醒“间隔复习能延缓遗忘”。图表最后要落到下一轮卡片安排。</figcaption>
+</figure>
 
-### 脚本 10：`10_make_chart_style_clinic.py`
+这里不需要把记忆曲线当作精确模型。它在本章里的作用是提醒你：学习记录不是为了自我打分，而是为了决定下一次该复习什么、什么时候复习、为什么复习。
 
-运行方式：
+---
+
+## 第四部分：图表风格与项目交付
+
+### 6.13 图表审美诊所：一张小图只回答一个问题
+
+运行：
 
 ```bash
 python code/ch06/10_make_chart_style_clinic.py
 ```
 
-这个脚本继续读取同一份 `learning_records.csv`，但它不再只问“能不能画出来”，而是追问“能不能让别人舒服地读出来”。它会生成：
+脚本会把同一份学习记录拆成四个面板：趋势、重点、完成率和反应时。拆开的好处是，读者不用在一张图里同时寻找四种答案。
 
-```text
-output/ch06_chart_style_clinic.png
-reports/ch06_chart_style_clinic.md
-```
+<figure align="center">
+  <img src="../assets/ch06/ch06_chart_style_clinic.png" alt="Python 生成的图表审美诊所" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-15 图表审美诊所</strong>：趋势看走向，柱状图看投入，圆环看完成率，点线看反应时；每个面板只承担一个判断任务。</figcaption>
+</figure>
 
-四宫格里分别展示趋势、主题投入、完成率和反应时。你可以把它当成一张小型学习分享页：每个面板只负责一个问题，不把所有信息挤进一张图里开大会。数据可视化最怕“什么都想说”，结果别人什么都没听清。
+当你自己改图时，可以用这四条规则：
+
+1. 如果标题不能说出结论，就先别急着调颜色。
+2. 如果颜色没有含义，就减少颜色数量。
+3. 如果标签很少，直接标在数据旁边，比让读者查图例更轻松。
+4. 如果图表需要解释三分钟才看懂，说明它可能承担了太多任务。
+
+### 6.14 本章项目：学习卡片统计仪表盘
+
+本章项目不是单张图片，而是一组可以复查的交付物：
+
+| 类型 | 路径 | 用途 |
+| --- | --- | --- |
+| 输入数据 | `input/learning_records.csv` | 保存学习主题、时长、完成状态和反应时 |
+| 图表输出 | `output/ch06_learning_dashboard.png` | 展示主题学习时长和摘要指标 |
+| 分布检查 | `output/ch06_anscombe_quartet.png` | 提醒不能只看摘要统计 |
+| 图表改造 | `output/ch06_chart_makeover.png` | 练习从嘈杂图改成可读图 |
+| 异常值报告 | `reports/ch06_outlier_diagnosis.md` | 记录异常值解释 |
+| 复习计划 | `output/ch06_memory_review_plan.json` | 把分析结果落到下一轮行动 |
+| 运行证据 | `reports/ch06_analysis_runtime_evidence.md` | 汇总本章产物是否就绪 |
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_project_dashboard.png" alt="第6章学习卡片统计仪表盘交付链" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-16 项目交付链</strong>：本章验收不只看图表是否漂亮，还要看输入数据、代码、输出文件和解释能不能重新打开。</figcaption>
+</figure>
 
 ---
 
-## 6.8 常见坑
+## 第五部分：排错、练习与验收
+
+### 6.15 常见坑：让图表和结论回到证据
 
 <figure align="center">
-  <img src="../assets/ch06/ch06_pitfall_map.png" alt="常见坑地图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-18 常见坑地图</strong>：错误不是判决，而是提醒你该检查路径、输入、状态或依赖。</figcaption>
+  <img src="../assets/ch06/ch06_pitfall_map.png" alt="第6章常见坑地图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-17 第6章常见坑地图</strong>：只看平均数、缺少来源、颜色太多、忽略异常值、图表不保存、结论离开语境，都会削弱分析可信度。</figcaption>
 </figure>
 
-本章常见坑：
+遇到问题时，按这个顺序排查：
 
-- 只画图不解释
-- 列名混乱
-- 把缺失值当 0
-- 坐标轴没有单位
+1. **路径**：你是否在第6章目录运行脚本？输入文件是否在 `input/`？
+2. **字段名**：CSV 表头是否仍然是 `topic,minutes,done,rt_ms`？
+3. **类型**：`minutes` 和 `rt_ms` 是否能转成整数？
+4. **输出**：`output/` 和 `reports/` 是否生成了新文件？
+5. **解释**：图表标题和图注是否说清楚它回答的问题？
 
-遇到问题时，先看报错信息，再看文件路径，最后看输入数据。不要一报错就重装环境。重装是最后手段，不是第一反应。
+不要一出错就重写整章代码。数据分析项目最怕“盲修”。先定位是哪一环断了，再修那一环。
 
----
+### 6.16 运行证据与验收
 
-## 6.9 本章小项目：学习卡片统计仪表盘
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_project_dashboard.png" alt="项目仪表盘" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-19 本章项目</strong>：完成“学习卡片统计仪表盘”，给科研卡片工厂增加一项新能力。</figcaption>
-</figure>
-
-项目目标：读取学习记录 CSV，统计主题数量、完成率和反应时，生成图表；再把学习记录转成记忆复习计划，让科研卡片工厂不只会“生产卡片”，也会提醒“什么时候回来复习”。
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_generated_dashboard_chart.png" alt="Python 生成的学习统计仪表盘" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-20 Python 生成的仪表盘</strong>：这张图由 `04_make_dashboard_chart.py` 读取 CSV 后生成，审美要在线，结果也要能复现。</figcaption>
-</figure>
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_anscombe_quartet_output.png" alt="Python 生成的 Anscombe 四重奏图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-21 Python 生成的 Anscombe 四重奏</strong>：同样的摘要统计，画出来可能是四个世界；这张图由 `05_anscombe_quartet.py` 生成。</figcaption>
-</figure>
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_chart_makeover_output.png" alt="Python 生成的图表改造对比" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-22 Python 生成的图表改造对比</strong>：同一份数据，左边是新手常见的嘈杂图，右边是更适合报告和教学分享的干净图。</figcaption>
-</figure>
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_visual_check_preview.png" alt="Python 生成的图表审美检查单" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-23 Python 生成的图表审美检查单</strong>：图表交出去前，先检查标题、颜色、标签、网格和输出文件。</figcaption>
-</figure>
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_chart_style_clinic.png" alt="Python 生成的图表审美诊所总览" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-24 Python 生成的图表审美诊所</strong>：`10_make_chart_style_clinic.py` 把同一份学习记录拆成趋势、投入、完成率和反应时四个面板，让每张小图只回答一个问题。</figcaption>
-</figure>
-
-这张图像一张“图表体检报告”。如果把所有信息挤进一张大图，观看者就像被塞进信息地铁早高峰：每个变量都很努力，但谁也不让路。四宫格的好处是，每个问题有自己的位置：趋势负责讲变化，柱形负责讲投入，圆环负责讲完成度，反应时负责提示认知负荷。漂亮不是目的，清楚才是目的；审美只是清楚表达的外衣，衣服合身，行动才利落。
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_outlier_diagnosis.png" alt="Python 生成的异常值诊断卡" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-25 Python 生成的异常值诊断卡</strong>：箱线图把中位数、四分位数和异常值放到同一张图里，提醒你先看分布，再讲故事。</figcaption>
-</figure>
-
-这张图来自 `07_make_outlier_diagnosis.py`。它给学习卡片统计仪表盘补上一种很实用的能力：发现“不太一样”的记录。心理学实验里，异常反应时可能是按错键，也可能是刺激太难；学习记录里，超长学习时长可能是拖延，也可能是一次真正的突破。Python 负责把红点标出来，解释要回到人和任务。
-
-如果你已经运行过 ch5 的 `08_make_object_delivery_package.py`，本章还可以直接读取上一章导出的对象模型。这样，`LearningCard`、`CardDeck` 和 `Trial` 不再只停留在 OOP 章节，而是变成可以分析的真实数据。
-
-运行方式：
-
-```bash
-python code/ch06/08_make_ch05_handoff_analysis.py
-```
-
-运行后会生成：
-
-```text
-output/ch06_ch05_handoff_summary.json
-reports/ch06_ch05_handoff_analysis.md
-output/ch06_ch05_handoff_analysis.png
-```
-
-<figure align="center">
-  <img src="../assets/ch06/ch06_ch05_handoff_analysis.png" alt="第5章到第6章跨章节数据分析回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-26 第5章到第6章跨章节数据分析回执</strong>：`08_make_ch05_handoff_analysis.py` 读取 ch5 的对象交付包，把卡片数量、标签计数和试次反应时整理成 ch6 可以继续分析的数据摘要。</figcaption>
-</figure>
-
-这一步让“连续项目”真正接上了：ch5 负责把世界整理成对象，ch6 负责把对象留下的数据变成统计摘要和图表。对象像一盒整理好的实验材料，数据分析像把它们铺到桌面上，看趋势、看差异、看异常。
-
-最后，给这条数据分析流水线做一次验收。漂亮图表很容易让人兴奋，但科研和教学更看重“能不能复盘”：原始 CSV 在不在？图表是不是脚本生成的？报告有没有落盘？JSON 摘要能不能再次读取？`11_make_analysis_runtime_evidence.py` 会把这些问题集中检查一遍。
-
-运行方式：
+最后运行：
 
 ```bash
 python code/ch06/11_make_analysis_runtime_evidence.py
 ```
 
+它会检查本章关键产物是否都已生成，并输出总览图。
+
 <figure align="center">
-  <img src="../assets/ch06/ch06_analysis_runtime_evidence.png" alt="数据分析运行证据总览" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图6-27 数据分析运行证据总览</strong>：`11_make_analysis_runtime_evidence.py` 检查 CSV、仪表盘、Anscombe 四重奏、图表改造、异常值诊断、记忆复习计划、跨章节交接和图表审美诊所是否已经生成，把“图表好看”落到可复盘的文件证据上。</figcaption>
+  <img src="../assets/ch06/ch06_analysis_runtime_evidence.png" alt="第6章数据分析运行证据总览" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-18 第6章运行证据总览</strong>：CSV、仪表盘、Anscombe、图表改造、异常值诊断、复习计划、交接分析和审美诊所都要能重新生成。</figcaption>
 </figure>
 
-建议项目结构：
+如果运行证据不是全部就绪，先不要急着提交。缺哪个文件，就回到对应脚本重新运行。验收不是形式，它是在帮你确认“正文里说的东西，代码真的做到了”。
 
-```text
-python_card_factory/
-├── code/
-│   └── ch06/
-├── input/
-├── output/
-├── reports/
-└── assets/
+### 6.17 上机路线
+
+建议按下面顺序运行全章脚本：
+
+```bash
+python code/ch06/01_make_sample_csv.py
+python code/ch06/02_basic_statistics.py
+python code/ch06/03_optional_pandas_summary.py
+python code/ch06/04_make_dashboard_chart.py
+python code/ch06/05_anscombe_quartet.py
+python code/ch06/06_make_chart_makeover.py
+python code/ch06/07_make_outlier_diagnosis.py
+python code/ch06/08_make_ch05_handoff_analysis.py
+python code/ch06/09_make_memory_review_curve.py
+python code/ch06/10_make_chart_style_clinic.py
+python code/ch06/11_make_analysis_runtime_evidence.py
 ```
 
-本章配套脚本：
+然后运行图片整理和链接检查：
 
-- `code/ch06/01_make_sample_csv.py`
-- `code/ch06/02_basic_statistics.py`
-- `code/ch06/03_optional_pandas_summary.py`
-- `code/ch06/04_make_dashboard_chart.py`
-- `code/ch06/05_anscombe_quartet.py`
-- `code/ch06/06_make_chart_makeover.py`
-- `code/ch06/07_make_outlier_diagnosis.py`
-- `code/ch06/08_make_ch05_handoff_analysis.py`
-- `code/ch06/09_make_memory_review_curve.py`
-- `code/ch06/10_make_chart_style_clinic.py`
-- `code/ch06/11_make_analysis_runtime_evidence.py`
+```bash
+python scripts/generate_ch06_visuals.py
+python scripts/check_links.py
+```
 
-完成标准：
+如果你改了 CSV，建议至少重跑 `04`、`07`、`09`、`10`、`11`，因为它们直接依赖学习记录。
 
-1. 能按顺序运行 `01_make_sample_csv.py` 到 `11_make_analysis_runtime_evidence.py`。
-2. 能解释脚本输入、处理、输出分别是什么。
-3. 把生成结果保存到 `output/` 或 `reports/`。
-4. 在 README 或学习记录中写下运行命令。
-5. 能解释为什么 Anscombe 四重奏说明“只看平均数不够”。
-6. 能指出一张图至少 3 个可改进的设计点。
-7. 能生成 `reports/ch06_outlier_diagnosis.md` 和 `output/ch06_outlier_diagnosis.png`，并说明一个异常值可能有哪些解释。
-8. 能生成 `reports/ch06_ch05_handoff_analysis.md` 和 `output/ch06_ch05_handoff_summary.json`，并说明 ch5 的对象模型怎样变成 ch6 的分析数据。
-9. 能生成 `reports/ch06_memory_review_plan.md` 和 `output/ch06_memory_review_plan.png`，并说明间隔复习为什么比临时抱佛脚可靠。
-10. 能生成 `reports/ch06_chart_style_clinic.md` 和 `output/ch06_chart_style_clinic.png`，并说明为什么“四张小图”有时比“一张大杂烩图”更适合学习分享。
-11. 能生成 `reports/ch06_analysis_runtime_evidence.md` 和 `output/ch06_analysis_runtime_evidence.png`，并确认运行证据为 `16/16 ready`。
+### 6.18 练习任务
 
-动手步骤：
+基础练习：
 
-1. **准备目录**：确认 `python_card_factory/` 下有 `code/`、`input/`、`output/`、`reports/`。
-2. **运行最小脚本**：先运行本章第一个脚本，得到一个确定反馈。
-3. **记录环境**：把 Python 版本、运行命令和输出截图或输出文本写进 `reports/`。
-4. **连接真实材料**：把课程笔记、实验记录、图片、网页或 CSV 放进 `input/`。
-5. **生成作品**：让脚本在 `output/` 或 `reports/` 中留下文件。
-6. **审美检查**：用 `ch06_visual_check.md` 检查标题、颜色、标签、网格和输出文件。
-7. **制作审美诊所**：运行 `10_make_chart_style_clinic.py`，把趋势、投入、完成率和反应时拆成四个清楚面板。
-8. **诊断异常值**：运行 `07_make_outlier_diagnosis.py`，把异常值解释写进复盘。
-9. **接入上一章对象包**：运行 `08_make_ch05_handoff_analysis.py`，把 ch5 的对象交付包转换成数据分析摘要。
-10. **生成复习计划**：运行 `09_make_memory_review_curve.py`，把学习记录转换成下一轮卡片复习安排。
-11. **生成运行证据**：运行 `11_make_analysis_runtime_evidence.py`，检查本章关键产物是否齐全。
-12. **写复盘**：说明这章让卡片工厂多了什么能力，哪些地方还容易出错。
+1. 在 `learning_records.csv` 里新增一行主题，例如 `文件,55,no,980`，重新运行 `04_make_dashboard_chart.py`。
+2. 把某一行 `done` 从 `no` 改成 `yes`，观察仪表盘顶部“已完成”是否变化。
+3. 修改 `minutes`，让某个主题明显偏高，再运行 `07_make_outlier_diagnosis.py`。
 
----
+进阶练习：
 
-## 6.10 练习任务
+1. 给 CSV 增加一列 `difficulty`，记录 `easy`、`medium` 或 `hard`，然后写一个新脚本统计不同难度的平均学习时长。
+2. 在图表改造脚本里换一种主色，但保持颜色数量克制。
+3. 把复习计划里的间隔规则改成你自己的策略，并在报告中说明理由。
 
-1. 修改一个输入参数，观察输出变化。
-2. 把脚本生成的结果保存成文件。
-3. 故意制造一个小错误，记录报错信息和修复方式。
-4. 把本章项目和前面章节连接起来，例如读取 ch03 整理出的文件，或使用 ch02 的数据结构保存结果。
-5. 运行 `05_anscombe_quartet.py`，用自己的话解释四组数据为什么不能只看均值。
-6. 修改 `06_make_chart_makeover.py`，把右侧好图改成横向条形图，观察文字是否更容易阅读。
-7. 给 `ch06_visual_check.md` 增加一条自己的检查标准。
-8. 运行 `10_make_chart_style_clinic.py`，任选其中一个面板，说明它回答了哪个问题，为什么不应该和其他信息挤在同一个坐标轴里。
-9. 运行 `07_make_outlier_diagnosis.py`，任选一个异常值写出两种解释：一种是假设它是记录错误，另一种是假设它是真实故事。
-10. 打开 `output/ch06_ch05_handoff_summary.json`，尝试统计 `tag_counts` 中哪个标签出现最多，并解释这个结果对复习有什么提示。
-11. 打开 `reports/ch06_memory_review_plan.md`，选择一张需要明天复习的卡片，写下你认为它应该提前复习的原因。
-12. 运行 `11_make_analysis_runtime_evidence.py`，如果不是 `16/16 ready`，根据缺失文件反推应该补跑哪一个脚本。
+项目练习：
 
----
+把第5章生成的对象交付包和第6章学习记录放在一起，写一段短报告回答：哪些卡片主题最常出现，哪些主题需要更早复习，下一章的项目应该优先改哪一部分。
 
-## 6.11 自测问题
+### 6.19 自测问题
 
-1. 本章最重要的三个概念是什么？请用人话解释，不要只背术语。
-2. 本章第一个脚本的输入、处理、输出分别是什么？
-3. 如果脚本运行失败，你第一步会检查路径、环境、依赖还是语法？为什么？
-4. 本章项目和“科研卡片工厂”有什么关系？
-5. 你能不能把本章项目改成一个心理学或教学场景的小任务？
+1. 为什么不能只看平均学习时长就判断学习状态？
+2. `topic`、`minutes`、`done`、`rt_ms` 分别适合回答什么问题？
+3. Anscombe 四重奏想提醒你哪一个数据分析习惯？
+4. 异常值出现时，为什么不能立刻删除？
+5. 一张好图为什么通常只回答一个主要问题？
+6. 第5章对象交付包为什么能成为第6章的数据来源？
+7. 运行证据总览在项目验收中有什么作用？
 
-参考回答不唯一。判断自己是否真的理解，可以看你能不能把答案讲给一个完全没学过本章的人听。
+### 6.20 复盘模板
 
----
-
-## 6.12 学习复盘模板
-
-可以在 `reports/ch06_review.md` 中写下：
+完成本章后，用下面模板写一次复盘：
 
 ```markdown
-# 第6章复盘
+## 第6章复盘
 
-## 我新增的能力
-- 
-
-## 我跑通的脚本
-- 
-
-## 我遇到的报错
-- 报错信息：
-- 原因：
-- 修复方式：
-
-## 我能迁移到哪里
-- 心理学实验：
-- 教学分享：
-- 科研资料整理：
+- 我生成的输入数据是：
+- 我最先检查的摘要指标是：
+- 我画出的第一张图说明：
+- 我发现的异常值或可疑记录是：
+- 我如何解释这个可疑记录：
+- 我给下一轮学习安排的动作是：
+- 我最容易踩的图表坑是：
+- 我已经生成并检查的运行证据是：
 ```
 
-复盘不是写作文，而是给未来的自己留路标。你现在记录清楚，后面做综合项目时就不用重新从记忆里翻箱倒柜。
+复盘不需要长，但要具体。只写“我学会了数据分析”太空；写“我发现文件读写这行耗时偏高，所以安排明天先复习路径和编码”才是能改变下一次学习的分析。
 
----
+### 6.21 本章总结
 
-## 6.13 与后续章节的连接
+第6章把“会写代码”推进到“能用代码看证据”。你已经完成了从 CSV 到统计摘要、从摘要到图表、从图表到异常值诊断、从学习记录到复习计划的完整闭环。
 
-本章不是孤岛。它和整套教程的关系可以这样理解：
+请记住本章最重要的判断标准：
 
-- 前面章节提供基础：环境、数据结构、文件管理。
-- 本章提供一项新能力：学习卡片统计仪表盘，并把图表审美诊所加入教学分享链路。
-- 后面章节会把这项能力继续接到数据分析、图像处理、爬虫或办公自动化里。
+1. 数据要能追到来源。
+2. 摘要要说明自己压缩了什么。
+3. 图表要回答一个清楚问题。
+4. 异常值要先检查，再解释。
+5. 结论要落到下一步行动。
+6. 代码、输出和报告都要能重新打开。
 
-所以不要只问“这一章考试考什么”。更好的问题是：它能帮我少做哪一类重复劳动？它能让我的学习材料、实验记录或报告更稳定吗？
-
----
-
-## 6.14 本章总结
-
-数据分析与可视化的关键不是“记住所有 API”，而是理解它解决的问题。你已经从概念、图像、代码和小项目四个角度接触了本章内容。下一次复习时，不要只问“我会不会背”，而要问：
-
-- 我能不能讲出这个概念的比喻？
-- 我能不能运行一个最小脚本？
-- 我能不能把结果放进项目目录？
-- 我能不能说清楚它在科研卡片工厂里增加了什么能力？
-
-如果答案是肯定的，这一章就不是看过了，而是真的进入你的工具箱了。
+下一章继续扩展项目时，不要把本章当作“画图章节”。它真正训练的是一种工作习惯：让每个判断都有证据，让每个证据都能复查，让每次复查都能推动下一步行动。

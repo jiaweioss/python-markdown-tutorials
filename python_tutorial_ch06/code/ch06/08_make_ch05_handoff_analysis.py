@@ -56,8 +56,8 @@ FALLBACK_PACKAGE = {
         "is_fast": True,
     },
     "handoff": {
-        "next_chapter": "ch06 data analysis",
-        "next_action": "Read this JSON and turn card/trial objects into a small dataframe.",
+        "next_chapter": "第6章：数据分析与可视化",
+        "next_action": "读取这份 JSON，把卡片和试次对象整理成可以分析的小表。",
     },
 }
 
@@ -127,20 +127,20 @@ def draw_preview(summary: dict) -> None:
     im = Image.new("RGB", (1500, 930), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 850), radius=28, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "Ch05 -> Ch06 Handoff", fill="#162033", font=font(50, True))
-    d.text((152, 195), "Object package becomes analysis data.", fill="#5F6673", font=font(26))
+    d.text((150, 125), "第5章到第6章：对象交接数据", fill="#162033", font=font(50, True))
+    d.text((152, 195), "上一章导出的对象包，在本章变成可分析的表格线索。", fill="#5F6673", font=font(26))
 
     d.rounded_rectangle((150, 285, 575, 625), radius=24, fill="#EEF6FF", outline="#9CC8FF", width=3)
-    d.text((190, 325), "Input", fill="#28517A", font=font(30, True))
-    d.text((190, 385), "object package", fill="#162033", font=font(28, True))
-    d.text((190, 445), f"cards: {summary['card_count']}", fill="#465263", font=font(25))
-    d.text((190, 495), f"trial: {summary['trial_reaction_time_ms']} ms", fill="#465263", font=font(25))
+    d.text((190, 325), "输入", fill="#28517A", font=font(30, True))
+    d.text((190, 385), "对象交付包", fill="#162033", font=font(28, True))
+    d.text((190, 445), f"卡片数：{summary['card_count']}", fill="#465263", font=font(25))
+    d.text((190, 495), f"试次反应：{summary['trial_reaction_time_ms']} ms", fill="#465263", font=font(25))
 
     d.line((625, 455, 785, 455), fill="#98A5B8", width=6)
     d.polygon([(785, 455), (755, 438), (755, 472)], fill="#98A5B8")
 
     d.rounded_rectangle((835, 285, 1350, 625), radius=24, fill="#ECFDF3", outline="#8EE3B0", width=3)
-    d.text((875, 325), "Analysis", fill="#166534", font=font(30, True))
+    d.text((875, 325), "分析", fill="#166534", font=font(30, True))
     tag_items = list(summary["tag_counts"].items())[:4]
     y = 390
     colors = ["#2F6BFF", "#24A06B", "#F28C28", "#7A5AF8"]
@@ -153,7 +153,7 @@ def draw_preview(summary: dict) -> None:
     d.rounded_rectangle((250, 705, 1250, 765), radius=20, fill="#FFF7E8", outline="#F2B84B", width=2)
     d.text((320, 722), "output/ch06_ch05_handoff_summary.json", fill="#8A5A00", font=font(25, True))
     d.rounded_rectangle((250, 790, 1250, 845), radius=20, fill="#F8FAFC", outline="#D8E0EC", width=2)
-    d.text((350, 805), "Report: reports/ch06_ch05_handoff_analysis.md", fill="#465263", font=font(22))
+    d.text((350, 805), "报告：reports/ch06_ch05_handoff_analysis.md", fill="#465263", font=font(22))
 
     OUTPUT.mkdir(exist_ok=True)
     im.save(PREVIEW, optimize=True, quality=95)

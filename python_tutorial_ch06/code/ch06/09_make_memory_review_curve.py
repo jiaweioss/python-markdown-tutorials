@@ -16,10 +16,18 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 
-INPUT = Path("input/learning_records.csv")
-OUTPUT = Path("output")
-REPORTS = Path("reports")
-WEB_DIR = Path("assets/ch06/web")
+def project_root() -> Path:
+    cwd = Path.cwd()
+    if (cwd / "assets" / "ch06").exists():
+        return cwd
+    return Path(__file__).resolve().parents[2]
+
+
+ROOT = project_root()
+INPUT = ROOT / "input" / "learning_records.csv"
+OUTPUT = ROOT / "output"
+REPORTS = ROOT / "reports"
+WEB_DIR = ROOT / "assets" / "ch06" / "web"
 JSON_PATH = OUTPUT / "ch06_memory_review_plan.json"
 REPORT_PATH = REPORTS / "ch06_memory_review_plan.md"
 PREVIEW_PATH = OUTPUT / "ch06_memory_review_plan.png"
@@ -96,7 +104,7 @@ def build_plan(rows: list[dict[str, str]]) -> dict:
         for day in [0, 1, 2, 4, 7, 14, 30]
     ]
     return {
-        "project": "learning-card memory review plan",
+        "project": "学习卡片记忆复习计划",
         "created": today.isoformat(),
         "curve": curve,
         "schedule": schedule,
@@ -138,8 +146,8 @@ def make_preview(plan: dict) -> None:
     im = Image.new("RGB", (1500, 900), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((80, 65, 1420, 835), radius=32, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((135, 115), "Memory Review Curve", fill="#162033", font=font(50, True))
-    d.text((138, 178), "A Python-generated review plan for learning cards.", fill="#526071", font=font(24))
+    d.text((135, 115), "记忆复习曲线", fill="#162033", font=font(50, True))
+    d.text((138, 178), "由 Python 根据学习记录生成下一轮复习安排。", fill="#526071", font=font(24))
 
     left, top, right, bottom = 150, 280, 930, 700
     d.line((left, bottom, right, bottom), fill="#94A3B8", width=4)
@@ -178,23 +186,23 @@ def make_preview(plan: dict) -> None:
         x, _ = xy(day, 0)
         d.line((x, bottom - 8, x, bottom + 8), fill="#94A3B8", width=3)
         d.text((x - 14, bottom + 24), str(day), fill="#64748B", font=font(18))
-    d.text((left + 275, bottom + 66), "days after learning", fill="#64748B", font=font(20))
+    d.text((left + 275, bottom + 66), "学习后的天数", fill="#64748B", font=font(20))
 
     legend_x = 1010
     d.rounded_rectangle((legend_x, 278, 1350, 510), radius=22, fill="#F8FAFC", outline="#E2E8F0", width=2)
     d.ellipse((legend_x + 32, 325, legend_x + 56, 349), fill="#E84C61")
-    d.text((legend_x + 75, 319), "no review", fill="#243047", font=font(24, True))
+    d.text((legend_x + 75, 319), "不复习", fill="#243047", font=font(24, True))
     d.ellipse((legend_x + 32, 393, legend_x + 56, 417), fill="#2F6BFF")
-    d.text((legend_x + 75, 387), "spaced review", fill="#243047", font=font(24, True))
+    d.text((legend_x + 75, 387), "间隔复习", fill="#243047", font=font(24, True))
     d.text((legend_x + 30, 455), "复习不是补救，是给记忆续航。", fill="#526071", font=font(22))
 
     d.rounded_rectangle((legend_x, 550, 1350, 720), radius=22, fill="#F0FDF4", outline="#BBF7D0", width=2)
-    d.text((legend_x + 30, 578), "Next cards", fill="#166534", font=font(25, True))
+    d.text((legend_x + 30, 578), "下一轮卡片", fill="#166534", font=font(25, True))
     for i, item in enumerate(plan["schedule"][:3]):
         y = 622 + i * 31
         d.text(
             (legend_x + 30, y),
-            f"{item['topic']}  +{item['review_after_days']}d",
+            f"{item['topic']}  +{item['review_after_days']} 天",
             fill="#166534",
             font=font(21),
         )
@@ -213,10 +221,10 @@ def main() -> None:
     write_outputs(plan)
     make_preview(plan)
     copy_assets()
-    print("created memory review plan:")
-    print(f"- {JSON_PATH}")
-    print(f"- {REPORT_PATH}")
-    print(f"- {PREVIEW_PATH}")
+    print("已生成记忆复习计划：")
+    print(f"- {JSON_PATH.relative_to(ROOT)}")
+    print(f"- {REPORT_PATH.relative_to(ROOT)}")
+    print(f"- {PREVIEW_PATH.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

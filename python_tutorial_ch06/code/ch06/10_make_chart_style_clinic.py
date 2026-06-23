@@ -10,12 +10,20 @@ from statistics import mean
 from PIL import Image, ImageDraw, ImageFont
 
 
-INPUT = Path("input/learning_records.csv")
-OUTPUT = Path("output")
-REPORTS = Path("reports")
+def project_root() -> Path:
+    cwd = Path.cwd()
+    if (cwd / "assets" / "ch06").exists():
+        return cwd
+    return Path(__file__).resolve().parents[2]
+
+
+ROOT = project_root()
+INPUT = ROOT / "input" / "learning_records.csv"
+OUTPUT = ROOT / "output"
+REPORTS = ROOT / "reports"
 CLINIC = OUTPUT / "ch06_chart_style_clinic.png"
 REPORT = REPORTS / "ch06_chart_style_clinic.md"
-WEB_COPY = Path("assets/ch06/web/ch06_chart_style_clinic.png")
+WEB_COPY = ROOT / "assets" / "ch06" / "web" / "ch06_chart_style_clinic.png"
 
 
 INK = "#162033"
@@ -42,7 +50,7 @@ def font(size: int, bold: bool = False):
 
 def load_rows() -> list[dict[str, str]]:
     if not INPUT.exists():
-        raise FileNotFoundError("Run 01_make_sample_csv.py first.")
+        raise FileNotFoundError("请先运行 code/ch06/01_make_sample_csv.py。")
     with INPUT.open(encoding="utf-8") as file:
         return list(csv.DictReader(file))
 
@@ -59,7 +67,7 @@ def draw_panel_title(draw: ImageDraw.ImageDraw, x: int, y: int, title: str, note
 def draw_trend(draw: ImageDraw.ImageDraw, box, rows: list[dict[str, str]]) -> None:
     x1, y1, x2, y2 = box
     rounded(draw, box)
-    draw_panel_title(draw, x1 + 28, y1 + 24, "Trend", "少量点也要能看出走向")
+    draw_panel_title(draw, x1 + 28, y1 + 24, "趋势", "少量点也要能看出走向")
     values = [int(row["minutes"]) for row in rows]
     max_v = max(values)
     min_v = min(values)
@@ -79,14 +87,14 @@ def draw_trend(draw: ImageDraw.ImageDraw, box, rows: list[dict[str, str]]) -> No
     draw.line(pts, fill=BLUE, width=6)
     for (x, y), row in zip(pts, rows):
         draw.ellipse((x - 11, y - 11, x + 11, y + 11), fill="#FFFFFF", outline=BLUE, width=5)
-        draw.text((x - 24, y - 42), f"{row['minutes']}m", fill=INK, font=font(17, True))
+        draw.text((x - 24, y - 42), f"{row['minutes']}分", fill=INK, font=font(17, True))
         draw.text((x - 22, bottom + 22), row["topic"], fill="#334155", font=font(17))
 
 
 def draw_bars(draw: ImageDraw.ImageDraw, box, rows: list[dict[str, str]]) -> None:
     x1, y1, x2, y2 = box
     rounded(draw, box)
-    draw_panel_title(draw, x1 + 28, y1 + 24, "Focus", "一眼看出时间投给了谁")
+    draw_panel_title(draw, x1 + 28, y1 + 24, "重点", "一眼看出时间投给了谁")
     values = [int(row["minutes"]) for row in rows]
     max_v = max(values)
     base = y2 - 72
@@ -103,13 +111,13 @@ def draw_bars(draw: ImageDraw.ImageDraw, box, rows: list[dict[str, str]]) -> Non
     avg = mean(values)
     y_avg = base - int(avg / max_v * 210)
     draw.line((x1 + 52, y_avg, x2 - 50, y_avg), fill=ORANGE, width=4)
-    draw.text((x2 - 170, y_avg + 8), f"avg {avg:.1f}", fill="#9A5A00", font=font(16, True))
+    draw.text((x2 - 170, y_avg + 8), f"平均 {avg:.1f}", fill="#9A5A00", font=font(16, True))
 
 
 def draw_completion(draw: ImageDraw.ImageDraw, box, rows: list[dict[str, str]]) -> None:
     x1, y1, x2, y2 = box
     rounded(draw, box)
-    draw_panel_title(draw, x1 + 28, y1 + 24, "Done", "完成率先说清楚")
+    draw_panel_title(draw, x1 + 28, y1 + 24, "完成", "完成率先说清楚")
     done = sum(row["done"] == "yes" for row in rows)
     total = len(rows)
     pct = done / total
@@ -123,7 +131,7 @@ def draw_completion(draw: ImageDraw.ImageDraw, box, rows: list[dict[str, str]]) 
     y = y1 + 152
     for row in rows:
         color = GREEN if row["done"] == "yes" else RED
-        label = "ready" if row["done"] == "yes" else "todo"
+        label = "完成" if row["done"] == "yes" else "待补"
         draw.ellipse((x1 + 300, y + 8, x1 + 318, y + 26), fill=color)
         draw.text((x1 + 332, y + 2), row["topic"], fill=INK, font=font(18, True))
         draw.text((x1 + 410, y + 2), label, fill=color, font=font(18, True))
@@ -133,7 +141,7 @@ def draw_completion(draw: ImageDraw.ImageDraw, box, rows: list[dict[str, str]]) 
 def draw_reaction(draw: ImageDraw.ImageDraw, box, rows: list[dict[str, str]]) -> None:
     x1, y1, x2, y2 = box
     rounded(draw, box)
-    draw_panel_title(draw, x1 + 28, y1 + 24, "Response", "反应时像认知负荷温度计")
+    draw_panel_title(draw, x1 + 28, y1 + 24, "反应时", "反应时像认知负荷温度计")
     values = [int(row["rt_ms"]) for row in rows]
     min_v, max_v = min(values), max(values)
     left = x1 + 92
@@ -154,16 +162,16 @@ def draw_reaction(draw: ImageDraw.ImageDraw, box, rows: list[dict[str, str]]) ->
 def write_image(rows: list[dict[str, str]]) -> None:
     image = Image.new("RGB", (1700, 1120), "#F7F8FB")
     draw = ImageDraw.Draw(image)
-    draw.text((100, 70), "Chart Style Clinic", fill=INK, font=font(56, True))
+    draw.text((100, 70), "图表审美诊所", fill=INK, font=font(56, True))
     draw.text((100, 138), "同一份学习记录，换成四张干净小图，结论会更愿意自己走出来。", fill=MUTED, font=font(27))
     draw.rounded_rectangle((1180, 72, 1550, 134), radius=24, fill="#EEF6FF", outline="#9CC8FF", width=2)
-    draw.text((1210, 90), "clean chart pack", fill="#28517A", font=font(23, True))
+    draw.text((1210, 90), "干净图表包", fill="#28517A", font=font(23, True))
 
     draw_trend(draw, (100, 220, 790, 570), rows)
     draw_bars(draw, (910, 220, 1600, 570), rows)
     draw_completion(draw, (100, 650, 790, 1000), rows)
     draw_reaction(draw, (910, 650, 1600, 1000), rows)
-    draw.text((560, 1040), "Generated by code/ch06/10_make_chart_style_clinic.py", fill="#5F6673", font=font(20))
+    draw.text((560, 1040), "由 code/ch06/10_make_chart_style_clinic.py 生成", fill="#5F6673", font=font(20))
 
     OUTPUT.mkdir(exist_ok=True)
     image.save(CLINIC, optimize=True, quality=95)
@@ -200,9 +208,9 @@ def main() -> None:
     write_image(rows)
     write_report(rows)
     copy_asset()
-    print(f"已生成 {CLINIC}")
-    print(f"已生成 {REPORT}")
-    print(f"已复制 {WEB_COPY}")
+    print(f"已生成 {CLINIC.relative_to(ROOT)}")
+    print(f"已生成 {REPORT.relative_to(ROOT)}")
+    print(f"已复制 {WEB_COPY.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

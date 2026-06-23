@@ -10,10 +10,18 @@ from statistics import median
 from PIL import Image, ImageDraw, ImageFont
 
 
-INPUT = Path("input/learning_records.csv")
-OUTPUT = Path("output")
-REPORTS = Path("reports")
-WEB_DIR = Path("assets/ch06/web")
+def project_root() -> Path:
+    cwd = Path.cwd()
+    if (cwd / "assets" / "ch06").exists():
+        return cwd
+    return Path(__file__).resolve().parents[2]
+
+
+ROOT = project_root()
+INPUT = ROOT / "input" / "learning_records.csv"
+OUTPUT = ROOT / "output"
+REPORTS = ROOT / "reports"
+WEB_DIR = ROOT / "assets" / "ch06" / "web"
 PREVIEW = OUTPUT / "ch06_outlier_diagnosis.png"
 REPORT = REPORTS / "ch06_outlier_diagnosis.md"
 
@@ -120,7 +128,7 @@ def make_preview(values: list[int]) -> Path:
     im = Image.new("RGB", (1500, 900), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 830), radius=28, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "Outlier Diagnosis", fill="#162033", font=font(52, True))
+    d.text((150, 125), "异常值诊断卡", fill="#162033", font=font(52, True))
 
     left, right = 220, 1280
     min_v = min(min(values), low) - 8
@@ -153,14 +161,14 @@ def make_preview(values: list[int]) -> Path:
     for value in outliers:
         x = x_for(value, min_v, max_v, left, right)
         d.ellipse((x - 17, axis_y - 17, x + 17, axis_y + 17), fill="#E84C61")
-        d.text((x - 45, axis_y - 70), f"{value} min", fill="#E84C61", font=font(24, True))
+        d.text((x - 45, axis_y - 70), f"{value} 分钟", fill="#E84C61", font=font(24, True))
 
     stats = [
         ("Q1", q1),
-        ("Median", q2),
+        ("中位数", q2),
         ("Q3", q3),
-        ("IQR", iqr),
-        ("Outliers", len(outliers)),
+        ("四分位距", iqr),
+        ("可疑值", len(outliers)),
     ]
     x = 190
     for label, value in stats:
@@ -183,9 +191,9 @@ def main() -> None:
     report = make_report(values)
     preview = make_preview(values)
     copy_assets()
-    print("created outlier diagnosis:")
-    print(f"- {report}")
-    print(f"- {preview}")
+    print("已生成异常值诊断：")
+    print(f"- {report.relative_to(ROOT)}")
+    print(f"- {preview.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

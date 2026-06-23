@@ -1,6 +1,6 @@
 {
-  "project": "learning-card memory review plan",
-  "created": "2026-06-14",
+  "project": "学习卡片记忆复习计划",
+  "created": "2026-06-23",
   "curve": [
     {
       "day": 0,
@@ -38,7 +38,7 @@
       "done": "yes",
       "rt_ms": 520,
       "review_after_days": 4,
-      "review_date": "2026-06-18"
+      "review_date": "2026-06-27"
     },
     {
       "topic": "列表",
@@ -46,7 +46,7 @@
       "done": "yes",
       "rt_ms": 480,
       "review_after_days": 4,
-      "review_date": "2026-06-18"
+      "review_date": "2026-06-27"
     },
     {
       "topic": "字典",
@@ -54,7 +54,7 @@
       "done": "no",
       "rt_ms": 610,
       "review_after_days": 1,
-      "review_date": "2026-06-15"
+      "review_date": "2026-06-24"
     }
   ]
 }
