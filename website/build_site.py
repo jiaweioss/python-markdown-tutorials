@@ -21,9 +21,9 @@ CHAPTER_OUT = OUT / "chapters"
 FILES_OUT = OUT / "files"
 DOWNLOADS_OUT = OUT / "downloads"
 
-PUBLIC_CHAPTER_MAX = 5
-PUBLIC_RELEASE_NOTE = "当前开放到第 5 章；后续章节正在分批整理，暂时不在网页中展示。"
-ASSET_VERSION = "20260623-open-ch05"
+PUBLIC_CHAPTER_MAX = 6
+PUBLIC_RELEASE_NOTE = "当前开放到第 6 章；后续章节正在分批整理，暂时不在网页中展示。"
+ASSET_VERSION = "20260623-open-ch06"
 MATERIAL_FOLDERS = ["chapters", "code", "reports", "output", "source_notes", "scripts"]
 MATERIAL_FILES = ["README.md", "manifest.json"]
 
