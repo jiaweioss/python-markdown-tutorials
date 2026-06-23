@@ -1,6 +1,6 @@
 (function () {
   const root = document.documentElement;
-  const publicChapterMax = 3;
+  const publicChapterMax = 5;
   const key = "python-tutorial-theme";
   const saved = localStorage.getItem(key);
   if (saved === "dark") root.dataset.theme = "dark";
