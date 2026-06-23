@@ -18,8 +18,8 @@
 | 需求 | 当前证据 | 状态 |
 | --- | --- | --- |
 | 结构清晰 | 正文已重写为 `[TOC]`、五大分区、多级标题，分区边界清楚 | 已完成 |
-| 图片有意义 | 正文引用 18 张结构化教学图，覆盖路线、最小链路、运行证据、仪表盘、异常值、复习计划和验收 | 已完成 |
-| 去掉杂乱堆图 | 历史图片与人物素材保留在资产和来源记录中，但当前正文不再引用 | 已完成 |
+| 图片有意义 | 正文引用 27 张正式图，覆盖路线、最小链路、运行证据、仪表盘、异常值、复习计划、验收，以及数据可视化史与人物故事 | 已完成 |
+| 去掉杂乱堆图 | 历史图片与人物素材重新进入正文，但按概念分散穿插，不集中堆放 | 已完成 |
 | 图中文字自然 | `04` 到 `11` 输出脚本的图中文字已改成中文标签，去掉机械英文状态词 | 已完成 |
 | 中文不溢出不变方块 | 已修复生成脚本和运行证据脚本的字体优先级，抽检核心图、最小示例图、项目交付图和运行证据图 | 已完成 |
 | 真实运行环境证据 | `ch06_powershell_analysis_run.png` 展示运行链路，`ch06_analysis_runtime_evidence.png` 展示 16 个运行产物检查结果 | 已完成 |
@@ -28,9 +28,9 @@
 
 ## 当前结果
 
-- 正文字符数：12978
-- 正文图片引用数：18
-- 正文图注数：18
+- 正文字符数：16184
+- 正文图片引用数：27
+- 正文图注数：27
 - Markdown 图片语法数量：0
 - manifest 素材数：45
 - 本章 code 文件数：12
@@ -81,9 +81,9 @@ from PIL import Image
 import ast, json, re
 root = Path.cwd()
 text = (root / "chapters/ch06_data_analysis_visualization.md").read_text(encoding="utf-8")
-assert len(text) == 12978
-assert len(re.findall(r"<img\b", text)) == 18
-assert len(re.findall(r"<figcaption>", text)) == 18
+assert len(text) == 16184
+assert len(re.findall(r"<img\b", text)) == 27
+assert len(re.findall(r"<figcaption>", text)) == 27
 assert not re.findall(r"!\[[^\]]*\]\(", text)
 for py in list((root / "code").rglob("*.py")) + list((root / "scripts").rglob("*.py")):
     ast.parse(py.read_text(encoding="utf-8"), filename=str(py))
@@ -93,17 +93,17 @@ for img in (root / "assets").rglob("*"):
             im.verify()
 data = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
 assert data["chapter"]["character_count"] == len(text)
-assert data["chapter"]["image_refs"] == 18
+assert data["chapter"]["image_refs"] == 27
 assert data["chapter"]["asset_count"] == 45
 assert data["chapter"]["code_count"] == 12
-assert data["validation"]["figcaption_count"] == 18
+assert data["validation"]["figcaption_count"] == 27
 print("ch06 quality audit OK")
 '@ | python -
 ```
 
 ## 当前补充验收结果
 
-- 临时联系表人工检查：通过，正文引用的 18 张图排布清楚，关键图片已全尺寸抽检。
+- 临时联系表人工检查：通过，正文引用的 27 张图排布清楚，关键图片已全尺寸抽检。
 - 字体问题复查：通过，`ch06_minimal_demo.png` 与 `ch06_analysis_runtime_evidence.png` 的中文不再显示为方块字。
 - 项目交付图复查：通过，`ch06_project_dashboard.png` 中右侧标签不再被路径文字挤断。
-- 最终命令复核：通过，`scripts/check_links.py` 检查 18 个本地图片引用；13 个 Python 文件通过不落盘语法检查；45 个素材图片通过 PIL 打开检查；临时联系表已清理。
+- 最终命令复核：通过，`scripts/check_links.py` 检查 27 个本地图片引用；13 个 Python 文件通过不落盘语法检查；45 个素材图片通过 PIL 打开检查；临时联系表已清理。

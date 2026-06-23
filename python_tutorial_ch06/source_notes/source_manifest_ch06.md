@@ -8,7 +8,7 @@
 
 ## 生成素材
 
-本章资产目录包含 27 张正式图片，均由 `scripts/generate_ch06_visuals.py` 生成或整理。当前正文引用其中 18 张结构化教学图；历史图、人物图和数据可视化史素材保留在资产目录与来源记录中，暂不进入正文，避免图片堆叠削弱学习主线。
+本章资产目录包含 27 张正式图片，均由 `scripts/generate_ch06_visuals.py` 生成或整理。当前正文引用全部 27 张正式图片；历史图、人物图和数据可视化史素材已经重新进入正文，但都贴在对应知识点附近，用 Nightingale、John Snow、Playfair、Anscombe、Minard、Du Bois、Ebbinghaus 和 Hans Rosling 解释数据分析为什么要服务判断、公共问题、记忆和讲述。
 
 新增 `ch06_analysis_runtime_evidence.png`：由 `11_make_analysis_runtime_evidence.py` 先生成 `output/ch06_analysis_runtime_evidence.png`，复制到 `assets/ch06/web/ch06_analysis_runtime_evidence.png`，再由 `generate_ch06_visuals.py` 整理为正式正文图。它用于展示本章 CSV、图表、报告、JSON 和跨章节分析产物是否齐全。
 
@@ -38,32 +38,29 @@
 - `ch06_cover.png`
 - `ch06_roadmap.png`
 - `ch06_story_scene.png`
+- `ch06_nightingale_mortality_story.png`
+- `ch06_snow_cholera_map_story.png`
 - `ch06_minimal_demo.png`
 - `ch06_powershell_analysis_run.png`
 - `ch06_core_metaphor.png`
+- `ch06_playfair_timeseries_story.png`
 - `ch06_generated_dashboard_chart.png`
 - `ch06_anscombe_quartet_output.png`
+- `ch06_anscombe_quartet_story.png`
 - `ch06_chart_makeover_output.png`
 - `ch06_visual_check_preview.png`
+- `ch06_minard_napoleon_story.png`
+- `ch06_dubois_data_portrait_story.png`
 - `ch06_outlier_diagnosis.png`
 - `ch06_ch05_handoff_analysis.png`
 - `ch06_psychology_link.png`
 - `ch06_memory_review_plan.png`
+- `ch06_ebbinghaus_story.png`
+- `ch06_hans_rosling_story.png`
 - `ch06_chart_style_clinic.png`
 - `ch06_project_dashboard.png`
 - `ch06_pitfall_map.png`
 - `ch06_analysis_runtime_evidence.png`
-
-## 保留但当前正文不引用的素材
-
-- `ch06_nightingale_mortality_story.png`
-- `ch06_playfair_timeseries_story.png`
-- `ch06_minard_napoleon_story.png`
-- `ch06_dubois_data_portrait_story.png`
-- `ch06_snow_cholera_map_story.png`
-- `ch06_anscombe_quartet_story.png`
-- `ch06_ebbinghaus_story.png`
-- `ch06_hans_rosling_story.png`
 - `ch06_data_detective_desk.png`
 
 ## 图文呈现规则
@@ -72,4 +69,4 @@
 - 每张图片都有 `<figcaption>`。
 - 图片中不新增解释性长文字；故事、判断和教学说明写在正文与图注中。
 - 示例代码与项目任务围绕“科研卡片工厂”连续推进。
-- 本轮继续做学生视角修订：正文重写为 `[TOC]`、五大分区和多级标题；图片从历史素材堆叠改为结构化步骤图、证据图和验收图。
+- 本轮继续做学生视角修订：正文重写为 `[TOC]`、五大分区和多级标题；历史素材重新穿插进概念讲解，结构化步骤图、证据图和验收图继续承担操作说明。

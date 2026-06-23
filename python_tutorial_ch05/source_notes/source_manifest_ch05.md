@@ -8,7 +8,7 @@
 
 ## 互联网图片来源
 
-以下互联网图片保留在 `assets/ch05/web/`，并由 `scripts/generate_ch05_visuals.py` 整理成正式资产。当前正文为了对标 ch01/ch04 的步骤图标准，已经不再引用这些历史照片和梗图；它们保留用于来源追溯、后续扩展和必要时再开放。
+以下互联网图片保留在 `assets/ch05/web/`，并由 `scripts/generate_ch05_visuals.py` 整理成正式资产。当前正文已经重新引用这些历史照片、认知心理学素材和文化梗图，但不再集中堆放；每张图都贴着对应概念出现，用来解释 Simula、Smalltalk、类、对象协作、组合优先、认知图式和代码质量。
 
 | 用途 | 原图 | 本地原图 | 正式图片 | 来源、作者与授权 |
 | --- | --- | --- | --- | --- |
@@ -50,21 +50,30 @@
 
 ## 当前正文正式图片
 
-当前正文引用 17 张正式图片，全部使用居中的 `<figure>` 结构并带 `<figcaption>`：
+当前正文引用 26 张正式图片，全部使用居中的 `<figure>` 结构并带 `<figcaption>`：
 
 - `ch05_cover.png`
 - `ch05_roadmap.png`
 - `ch05_story_scene.png`
+- `ch05_simula_origin_story.png`
+- `ch05_kristen_nygaard_story.png`
 - `ch05_minimal_demo.png`
 - `ch05_powershell_oop_run.png`
 - `ch05_core_metaphor.png`
+- `ch05_blueprint_class_story.png`
+- `ch05_alan_kay_oop_story.png`
+- `ch05_lego_composition_story.png`
 - `ch05_psychology_link.png`
+- `ch05_piaget_schema_story.png`
 - `ch05_object_theater_story.png`
+- `ch05_adele_goldberg_story.png`
+- `ch05_smalltalk_environment_story.png`
 - `ch05_project_dashboard.png`
 - `ch05_oop_model_preview.png`
 - `ch05_design_cards_preview.png`
 - `ch05_object_collaboration_map.png`
 - `ch05_object_quality_receipt.png`
+- `ch05_xkcd_code_quality.png`
 - `ch05_object_delivery_package.png`
 - `ch05_gui_panel_object_model.png`
 - `ch05_pitfall_map.png`
@@ -72,12 +81,12 @@
 
 ## 生成素材总览
 
-`scripts/generate_ch05_visuals.py` 会重新生成 26 张正式资产，其中 17 张用于当前正文，其余历史/来源素材保留但暂不在正文展示。所有脚本生成图均采用本地字体和固定版式，避免 AI 随机图、无意义装饰图和长文字越界。
+`scripts/generate_ch05_visuals.py` 会重新生成 26 张正式资产，当前 26 张全部进入正文。所有脚本生成图均采用本地字体和固定版式，避免 AI 随机图、无意义装饰图和长文字越界。
 
 ## 图文呈现规则
 
 - 正文图片统一使用居中的 `<figure>` 结构。
 - 每张正文图片都有 `<figcaption>`，图注解释图片在当前知识点中的作用。
-- 历史照片不再集中堆放在开头，当前正文优先使用路线图、代码对照图、对象协作图和运行证据图。
+- 历史照片不再集中堆放在开头，而是穿插在 Simula、类/对象、组合、认知图式、Smalltalk 和代码质量等知识点附近。
 - 示例代码与项目任务围绕“科研卡片工厂”连续推进。
 - 正文口吻改为学生可直接执行和观察的对象动作，避免后台式说明和机翻式标题。

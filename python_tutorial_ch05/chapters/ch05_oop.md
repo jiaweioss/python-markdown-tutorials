@@ -80,6 +80,18 @@ tags = ["类", "对象"]
 
 能回答这三个问题，比一开始背“封装、继承、多态”更重要。
 
+面向对象并不是从“高级语法”里凭空长出来的。Simula 这个名字就带着它的源头：simulation，仿真。早期研究者想描述船、港口、队列、事件这类不断互动的系统，仅靠一堆变量和过程很快就不够用了。把“东西”建成对象，让它们保存状态、响应动作、互相发送消息，是为了让复杂世界在程序里有更清楚的边界。
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_simula_origin_story.png" alt="Simula 语言标识" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-S1 Simula 与对象思想源头</strong>：对象思想最早和仿真、事件、复杂系统联系在一起，不是为了把代码写得神秘。</figcaption>
+</figure>
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_kristen_nygaard_story.png" alt="Kristen Nygaard 照片" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-S2 Kristen Nygaard</strong>：OOP 的人文背景里有一个朴素问题：当世界由许多互相影响的实体组成，程序怎样表达它们的状态和关系？</figcaption>
+</figure>
+
 ### 5.2 最小类：先跑通 `01_learning_card_class.py`
 
 进入第5章目录后，先运行第一个脚本：
@@ -179,6 +191,20 @@ class LearningCard:
 
 关键是不要把类和对象混在一起。`LearningCard` 是图纸，`card` 才是一张具体卡片。图纸不会有某个具体主题；对象才会有 `"Python"`、`"变量是什么？"` 这些具体值。
 
+类和对象的“图纸/成品”比喻不是为了好玩。工程图纸把桥梁的共同结构固定下来，真正的桥才承受具体重量、风、车辆和时间。类也是这样：它定义对象应该有什么属性、能做什么动作；对象才带着具体数据参与程序运行。
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_blueprint_class_story.png" alt="桥梁蓝图照片" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-S3 蓝图与类</strong>：类像图纸，对象像按图纸建出来的具体作品；别把规则本身和具体实例混在一起。</figcaption>
+</figure>
+
+Alan Kay 后来谈对象时，经常强调“消息”比“类层级”更重要。这个提醒对初学者很有价值：不要把 OOP 学成继承树比赛。对象真正有生命力的地方，是它们能各自负责一小块事情，并通过清楚的消息合作。
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_alan_kay_oop_story.png" alt="Alan Kay 照片" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-S4 Alan Kay 与对象消息</strong>：对象不是孤立的数据盒子，而是可以通过消息协作的小角色。</figcaption>
+</figure>
+
 ### 5.5 方法应该靠近它使用的数据
 
 如果一个函数总是需要同一组参数，它很可能适合变成对象的方法。比如下面这个外部函数：
@@ -237,6 +263,13 @@ class CardDeck:
 
 如果你说不清 `A is a B`，先别写继承。很多初学者一上来就想设计复杂继承树，结果类之间关系越写越乱。本章优先使用组合：对象之间互相拥有、互相请求，边界更容易看清。
 
+组合可以用乐高来理解：你不是把轮子“继承成”车，也不是把车“继承成”房子；你是把合适的部件组合起来，让整体承担新的功能。程序里的 `CardDeck` 也是这样，它不需要成为一张卡片，它只需要拥有多张卡片，并负责集合层面的动作。
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_lego_composition_story.png" alt="乐高积木照片" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-S5 组合优先于继承</strong>：组合让对象像部件一样协作，关系更直观，也更容易替换和扩展。</figcaption>
+</figure>
+
 ### 5.7 `Trial`：心理学试次为什么适合对象
 
 运行第三个脚本：
@@ -274,6 +307,13 @@ class Trial:
 
 这不是说所有实验数据都要立刻改成对象。正式统计分析时，表格和 DataFrame 很重要。第5章的重点是：当你在写实验流程、界面逻辑或交付对象时，用对象保存“同一件事”的状态，会让代码更稳。
 
+把一次试次收成一个对象，也和心理学里的“图式”有一点相通：人理解世界时，会把分散信息组织成可重复使用的结构。Piaget 研究儿童认知发展时关心的正是这种结构如何形成、调整和迁移。写代码当然不是照搬心理学理论，但这个类比能提醒我们：好对象不是一堆字段，而是一个有边界、有意义、能参与后续动作的认知单元。
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_piaget_schema_story.png" alt="Jean Piaget 照片" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-S6 Piaget 与认知图式</strong>：对象可以帮助我们把分散信息组织成稳定结构，方便理解、复用和继续扩展。</figcaption>
+</figure>
+
 ---
 
 ## 第三部分：对象协作与职责检查
@@ -294,6 +334,18 @@ LearningCard 准备内容，CardDeck 管理集合，Trial 记录一次反应，R
 ```
 
 如果这句话说不清，代码通常也会混乱。类名不是越多越好，边界清楚才有价值。
+
+Smalltalk 之所以常被放进 OOP 历史里，不只是因为它影响了语法和环境，更因为它把“对象之间发送消息”做成了可以探索、可以观看、可以修改的学习空间。Adele Goldberg 等人推动的 Smalltalk 教育传统提醒我们：对象不是书本术语，它应该能帮助学习者观察系统如何一步步工作。
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_adele_goldberg_story.png" alt="Adele Goldberg 照片" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-S7 Adele Goldberg 与 Smalltalk 教育传统</strong>：OOP 不是只给大型工程师用的术语，也可以成为学习者理解系统协作的方式。</figcaption>
+</figure>
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_smalltalk_environment_story.png" alt="Smalltalk/Squeak 环境截图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-S8 Smalltalk 环境</strong>：对象、窗口、消息和工具在同一个环境里互相呼应，这种“可探索性”影响了后来许多编程学习工具。</figcaption>
+</figure>
 
 ### 5.9 对象模型报告：`04_make_oop_model_report.py`
 
@@ -409,6 +461,13 @@ assets/ch05/web/ch05_object_quality_receipt.png
 </figure>
 
 这份回执不是为了给代码打分，而是为了提醒你：OOP 失败时，问题经常不是语法，而是边界。一个项目里如果出现 `ProjectManager`、`Helper`、`Everything` 这种类名，要格外小心。它们可能正在吞掉太多职责。
+
+xkcd 的“代码质量”梗图很好笑，是因为它戳中了所有程序员都经历过的尴尬：代码能跑，不代表它好理解；今天自己觉得“先凑合一下”的地方，明天可能变成别人接手时的迷宫。OOP 的职责卡片和质量回执，就是为了尽早发现这种迷宫入口。
+
+<figure align="center">
+  <img src="../assets/ch05/ch05_xkcd_code_quality.png" alt="xkcd 代码质量漫画" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-S9 xkcd：代码质量</strong>：幽默背后是真问题：如果对象边界不清楚，代码迟早会变成连作者自己都要绕路的迷宫。</figcaption>
+</figure>
 
 ---
 

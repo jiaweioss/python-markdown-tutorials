@@ -28,6 +28,7 @@
 | 学生阅读口吻 | 正文面向学生，不写“教师应该如何讲” | 已完成 |
 | 真实运行环境 | `ch03_powershell_file_operations_run.png` 展示 ch3 脚本在 PowerShell 中真实运行 | 已完成 |
 | 故事与知识点穿插 | 档案盒对应资料归档，Vannevar Bush 对应信息线索，文件柜与档案库对应路径和层级，Rosetta Stone 对应文本编码 | 已完成 |
+| 人文背景补强 | 新增“外置记忆”叙事，把 `open()`、`Path`、`shutil`、`os.walk()` 和哈希摘要连接到保存、定位、追踪资料的长期人类问题 | 已完成 |
 | 图片平均穿插 | 章末新增 `ch03_review_checkpoint.png`、`ch03_practice_evidence_workbench.png` 与 `ch03_gui_handoff_bridge.png`，最大图片间隔从 248 行降到 151 行 | 已完成 |
 | 学以致用 | 13 个可运行脚本逐步生成示例资料、报告、清单、归档回执、路径安全体检回执、ch2 数据交接回执、归档证据板和资料入库登记册 | 已完成 |
 | 项目交付闭环 | `08_make_archive_manifest.py`、`09_make_archive_receipt.py`、`10_make_path_safety_receipt.py`、`11_make_ch02_stroop_file_handoff.py`、`12_make_archive_evidence_board.py`、`13_make_material_intake_register.py` 让资料整理从“能跑”走到“可检查、可登记、可交付” | 已完成 |

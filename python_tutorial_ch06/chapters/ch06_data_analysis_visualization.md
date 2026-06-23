@@ -68,6 +68,18 @@
   <figcaption><strong>图6-3 从记录表到可解释图表</strong>：输入数据、统计摘要和图表行动要连成一条证据链。缺少任意一环，结论都会变轻。</figcaption>
 </figure>
 
+数据可视化最动人的地方，是它经常把“看不见的问题”变成公共讨论里的证据。Florence Nightingale 把克里米亚战争中的死亡原因画出来，不是为了漂亮，而是为了让卫生条件造成的死亡无法继续躲在表格里。John Snow 把霍乱死亡地点放到地图上，也是在用空间位置逼近问题中心。第6章虽然只处理学习记录，但背后的精神一样：图表要让证据站出来。
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_nightingale_mortality_story.png" alt="Florence Nightingale 死亡原因图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-S1 Nightingale 的死亡原因图</strong>：可视化可以推动公共卫生决策，因为它把“数字很多”改成了“问题清楚”。</figcaption>
+</figure>
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_snow_cholera_map_story.png" alt="John Snow 霍乱地图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-S2 John Snow 的霍乱地图</strong>：当数据有地点、时间和语境时，图表能帮助我们发现表格里不容易看见的模式。</figcaption>
+</figure>
+
 ### 6.2 本章数据源：`learning_records.csv`
 
 先进入第6章目录，运行第一个脚本：
@@ -166,6 +178,13 @@ python code/ch06/04_make_dashboard_chart.py
 | 平均学习时长 | 大致投入水平 | 是否有某一天特别高或特别低 |
 | 完成率 | 进度是否接近预期 | 未完成的主题为什么卡住 |
 
+William Playfair 早期把价格、工资和时间画成曲线时，做的也是类似转换：把一格一格读的表格，变成能一眼看出变化的轨迹。你在学习仪表盘里画柱状图、折线图时，也是在做这个动作：让时间、差异和转折露出来。
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_playfair_timeseries_story.png" alt="William Playfair 时间序列图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-S3 Playfair 的时间序列图</strong>：折线图真正表达的不是“把点连起来”，而是让变化从表格里走出来。</figcaption>
+</figure>
+
 ### 6.7 仪表盘：让一个比较变清楚
 
 运行：
@@ -198,6 +217,13 @@ python code/ch06/05_anscombe_quartet.py
   <figcaption><strong>图6-8 Python 生成的 Anscombe 四重奏</strong>：摘要统计相似，不代表数据形状相同。先看摘要，再看图形，结论才不容易漂。</figcaption>
 </figure>
 
+Anscombe 四重奏像一个很温柔但很锋利的提醒：统计摘要会压缩信息，压缩就会丢东西。它不是反对统计，而是在提醒我们给统计配上图形检查。只看平均数，就像只看一本书的目录；目录有用，但不能替你读完整故事。
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_anscombe_quartet_story.png" alt="Anscombe 四重奏历史示意图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-S4 Anscombe 四重奏</strong>：相似的均值和相关关系，可能藏着完全不同的数据形状；这就是“先算再看”的理由。</figcaption>
+</figure>
+
 把这个例子放回学习记录里，你会得到一个很实用的提醒：两个人平均每天都学 30 分钟，不代表他们学习节奏一样。一个人可能每天稳定 30 分钟，另一个人可能前六天几乎没学，最后一天补了 180 分钟。平均数相同，学习策略完全不同。
 
 ### 6.9 图表改造：从能画到能读
@@ -222,6 +248,18 @@ python code/ch06/06_make_chart_makeover.py
 <figure align="center">
   <img src="../assets/ch06/ch06_visual_check_preview.png" alt="Python 生成的图表审美检查单" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图6-10 图表审美检查单</strong>：每张图交出去前，至少检查标题、颜色、标注、网格和输出文件这五件事。</figcaption>
+</figure>
+
+Minard 的拿破仑远征俄国图和 W.E.B. Du Bois 的数据肖像，适合放在这里提醒我们：图表审美不是装饰，它和表达立场、降低混乱、组织变量有关。一张好图可能同时有路线、人数、温度、时间，也可能用大胆构图展示社会处境；关键不是复杂，而是让读者知道该沿着哪条线索读。
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_minard_napoleon_story.png" alt="Minard 拿破仑远征俄国图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-S5 Minard 的远征图</strong>：复杂变量可以共处一张图，但前提是结构清楚，读者能沿着故事线走。</figcaption>
+</figure>
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_dubois_data_portrait_story.png" alt="W.E.B. Du Bois 数据肖像" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-S6 Du Bois 的数据肖像</strong>：数据图表也有人文立场；颜色、构图和标题都在服务“把什么问题说清楚”。</figcaption>
 </figure>
 
 图表审美不是“好不好看”这么简单。对学习项目来说，审美的底层目标是减少误读：让读者更快看见你想比较的东西，也更容易追问数据从哪里来。
@@ -288,6 +326,18 @@ python code/ch06/09_make_memory_review_curve.py
 <figure align="center">
   <img src="../assets/ch06/ch06_memory_review_plan.png" alt="Python 生成的记忆复习曲线" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图6-14 记忆复习曲线</strong>：红线提醒“不复习会快速下降”，蓝线提醒“间隔复习能延缓遗忘”。图表最后要落到下一轮卡片安排。</figcaption>
+</figure>
+
+Ebbinghaus 的遗忘曲线常被讲成一条学习技巧，但它更重要的启发是：人的记忆会随时间变化，学习系统不能只记录“今天学过”。它还应该提醒你什么时候回看、哪些内容需要更早回看。Hans Rosling 的数据演讲则提醒我们，图表如果讲得好，可以把冷冰冰的数据变成“趋势、差异和人的处境”。
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_ebbinghaus_story.png" alt="Hermann Ebbinghaus 肖像" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-S7 Ebbinghaus 与遗忘曲线</strong>：记忆不是一次保存成功就结束，复习计划要承认遗忘会随时间发生。</figcaption>
+</figure>
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_hans_rosling_story.png" alt="Hans Rosling 演讲照片" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-S8 Hans Rosling 的数据叙事</strong>：好的数据讲述不是念数字，而是帮助听众看见趋势、差异和现实处境。</figcaption>
 </figure>
 
 这里不需要把记忆曲线当作精确模型。它在本章里的作用是提醒你：学习记录不是为了自我打分，而是为了决定下一次该复习什么、什么时候复习、为什么复习。
@@ -371,6 +421,13 @@ python code/ch06/11_make_analysis_runtime_evidence.py
 <figure align="center">
   <img src="../assets/ch06/ch06_analysis_runtime_evidence.png" alt="第6章数据分析运行证据总览" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图6-18 第6章运行证据总览</strong>：CSV、仪表盘、Anscombe、图表改造、异常值诊断、复习计划、交接分析和审美诊所都要能重新生成。</figcaption>
+</figure>
+
+如果把本章想成一次数据侦查，最后不是“我画了几张图”，而是“我把证据、来源、图表和结论摆在桌上，别人能沿着同一路线检查”。这也是 ch0/ch1 一直强调的学习方式：技术动作要回到真实材料和可复查证据。
+
+<figure align="center">
+  <img src="../assets/ch06/ch06_data_detective_desk.png" alt="数据侦探桌示意图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图6-S9 数据侦探桌</strong>：数据分析不是把图表交出去就结束，而是把证据摆清楚，让结论能被追问、复查和改进。</figcaption>
 </figure>
 
 如果运行证据不是全部就绪，先不要急着提交。缺哪个文件，就回到对应脚本重新运行。验收不是形式，它是在帮你确认“正文里说的东西，代码真的做到了”。
