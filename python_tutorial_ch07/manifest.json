@@ -8,7 +8,7 @@
     "title": "PyGame 游戏开发",
     "markdown": "chapters/ch07_pygame_game.md",
     "source_ppt": "第七章_PyGame游戏开发2025.pptx",
-    "character_count": 18722,
+    "character_count": 19563,
     "image_refs": 25,
     "asset_count": 41,
     "code_count": 11,
@@ -122,7 +122,7 @@
     "scripts/check_links.py"
   ],
   "validation": {
-    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 25 local image refs after ch07 student-facing guide polish",
+    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 25 local image refs after ch07 five-part structure polish",
     "python_syntax": "ok; AST checked 12 python files including scripts",
     "figures_centered": true,
     "figcaption_count": "ok; 25 <img> tags and 25 <figcaption> tags",
@@ -142,7 +142,8 @@
     "teaching_feedback_game_generated": "ok; 09_make_teaching_feedback_game.py generated JSON, report and chart",
     "flow_curve_image_checked": true,
     "temporary_contact_sheet_removed": true,
-    "manifest_count_sync": "ok; synchronized after ch07 student-facing route and script guide polish",
+    "manifest_count_sync": "ok; synchronized after ch07 five-part structure polish",
+    "chapter_structure_pass": "ok; added [TOC], guide, section navigation and five clear parts while keeping the website public range capped at ch06",
     "generated_feedback_playground_loop": "ok; generated no-text metaphor image for teaching feedback loop",
     "script_smoke_test": "ok; non-interactive scripts 01 and 03 through 10 ran successfully; runtime evidence reported 14/14 ready",
     "generated_game_runtime_evidence": "added; 10_make_game_runtime_evidence.py generated report, output image and web/formal assets"

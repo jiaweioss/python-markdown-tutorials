@@ -18,17 +18,18 @@
 
 | 需求 | 当前证据 | 状态 |
 | --- | --- | --- |
-| 符合 ch0/ch1 图文标准 | 正文约 18724 字，包含 Tennis for Two、Pong、Magnavox Odyssey、Spacewar、Csikszentmihalyi、Stroop、Skinner teaching machine、反馈回路操场、真实 PyGame 窗口、PowerShell 运行图、心流难度调参曲线、教学反馈小游戏计划、游戏运行证据、代码、项目、练习与总结 | 已完成 |
+| 符合 ch0/ch1 图文标准 | 正文约 19563 字，包含 `[TOC]`、本章导读、分区导航、五个清晰部分、Tennis for Two、Pong、Magnavox Odyssey、Spacewar、Csikszentmihalyi、Stroop、Skinner teaching machine、反馈回路操场、真实 PyGame 窗口、PowerShell 运行图、心流难度调参曲线、教学反馈小游戏计划、游戏运行证据、代码、项目、练习与总结 | 已完成 |
 | 图片居中且有图注 | 正文 25 张图片全部使用 `<figure>` 与 `<figcaption>` | 已完成 |
 | 图片内部不堆解释文字 | 整理图不新增解释性长文字，说明放在正文和图注；真实历史图、心理学素材和脚本生成成果图保留自身内容 | 已完成 |
 | 故事与知识点穿插 | Tennis for Two 对应交互起点，Pong 对应反馈，Odyssey 对应家庭场景，Spacewar 对应游戏循环，Csikszentmihalyi 对应心流，Stroop 对应反应时任务，Skinner teaching machine 与反馈回路操场对应即时反馈和重试循环；路线表、核心概念和脚本导读已改成学生视角的可执行动作 | 已完成 |
+| 线上开放范围统一 | 网站构建脚本保持 `PUBLIC_CHAPTER_MAX = 6`，ch07 仅作为本地后续章节整理，不推进线上开放范围 | 已完成 |
 | 真实运行环境截图 | 包含本机 PyGame 窗口截图和 PowerShell 运行图 | 已完成 |
 | 学以致用 | 本章项目为“关键词反应小游戏”，新增反应报告、难度调参报告、心流难度调参曲线、反馈循环卡、数据驱动调参回执、教学反馈小游戏计划、游戏运行证据和多张预览图 | 已完成 |
 | 代码可检查 | 示例脚本均为 ASCII 文件名，可进行 AST 语法检查 | 已完成 |
 
 ## 当前结果
 
-- 正文字符数：18724
+- 正文字符数：19563
 - 正文图片引用数：25
 - manifest 素材数：41
 - 本章代码清单项：11
