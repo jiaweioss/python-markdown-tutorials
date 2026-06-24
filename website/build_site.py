@@ -21,9 +21,9 @@ CHAPTER_OUT = OUT / "chapters"
 FILES_OUT = OUT / "files"
 DOWNLOADS_OUT = OUT / "downloads"
 
-PUBLIC_CHAPTER_MAX = 6
-PUBLIC_RELEASE_NOTE = "当前开放到第 6 章；后续章节正在分批整理，暂时不在网页中展示。"
-ASSET_VERSION = "20260623-open-ch06"
+PUBLIC_CHAPTER_MAX = 5
+PUBLIC_RELEASE_NOTE = "当前开放到第 5 章；第 6-10 章已在目录中占位，点击后显示敬请期待。"
+ASSET_VERSION = "20260624-open-ch05-lock-ch06-plus"
 MATERIAL_FOLDERS = ["chapters", "code", "reports", "output", "source_notes", "scripts"]
 MATERIAL_FILES = ["README.md", "manifest.json"]
 
@@ -91,7 +91,7 @@ def discover_chapters() -> list[Chapter]:
         if not folder.is_dir():
             continue
         number = chapter_number(folder)
-        if number is None or number > PUBLIC_CHAPTER_MAX:
+        if number is None:
             continue
         markdown_files = sorted((folder / "chapters").glob("*.md"))
         if not markdown_files:
@@ -121,6 +121,14 @@ def discover_chapters() -> list[Chapter]:
             )
         )
     return sorted(chapters, key=lambda item: item.index)
+
+
+def is_public(chapter: Chapter) -> bool:
+    return chapter.index <= PUBLIC_CHAPTER_MAX
+
+
+def open_chapters(chapters: Iterable[Chapter]) -> list[Chapter]:
+    return [chapter for chapter in chapters if is_public(chapter)]
 
 
 def find_cover(md: str, number: int) -> str:
@@ -222,6 +230,8 @@ def copy_public_assets(chapters: Iterable[Chapter]) -> None:
     write_text(ASSET_OUT / "pygments.css", HtmlFormatter().get_style_defs(".codehilite"))
     for chapter in chapters:
         copytree_clean(chapter.folder / "assets" / chapter.key, ASSET_OUT / chapter.key)
+        if not is_public(chapter):
+            continue
         chapter_files = FILES_OUT / chapter.folder.name
         for name in ["chapters", "code", "reports", "output", "source_notes", "scripts"]:
             copytree_clean(chapter.folder / name, chapter_files / name)
@@ -256,12 +266,19 @@ def chapter_nav(chapters: list[Chapter], active: int | None, depth: str = "", sa
     items = []
     for chapter in chapters:
         href = chapter.page_name if same_dir else f"{depth}chapters/{chapter.page_name}"
-        cls = "active" if active == chapter.index else ""
+        classes = []
+        if active == chapter.index:
+            classes.append("active")
+        if not is_public(chapter):
+            classes.append("locked")
+        cls = " ".join(classes)
         current = ' aria-current="page"' if active == chapter.index else ""
+        status = '<span class="chapter-status">敬请期待</span>' if not is_public(chapter) else ""
         items.append(
             f'<a class="{cls}" href="{html.escape(href)}" data-chapter-index="{chapter.index}"{current}>'
             f'<span class="chapter-number">{chapter.key.upper()}</span>'
             f'<span class="chapter-name">{html.escape(short_title(chapter.title))}</span>'
+            f"{status}"
             "</a>"
         )
     return '<nav class="chapter-nav">' + "\n".join(items) + "</nav>"
@@ -318,20 +335,26 @@ def layout_page(title: str, body: str, depth: str = "") -> str:
 def build_home(chapters: list[Chapter]) -> None:
     total_images = sum(chapter.image_count for chapter in chapters)
     total_code = sum(chapter.code_count for chapter in chapters)
+    released = open_chapters(chapters)
     cards = []
     for chapter in chapters:
+        locked = not is_public(chapter)
+        lock_badge = '<span class="meta-pill locked-pill">敬请期待</span>' if locked else ""
+        card_class = "chapter-card locked-card" if locked else "chapter-card"
+        summary = "本章已在课程路线中占位，内容正在分批整理；当前点击进入敬请期待页面。" if locked else chapter.summary
         cards.append(
             f"""
-<a class="chapter-card" data-search-card href="chapters/{chapter.page_name}">
+<a class="{card_class}" data-search-card href="chapters/{chapter.page_name}">
   <img src="{html.escape(chapter.cover)}" alt="{html.escape(chapter.title)}封面" loading="lazy" />
   <span class="chapter-card-body">
     <span class="meta-row">
       <span class="meta-pill">{chapter.key.upper()}</span>
       <span class="meta-pill">{chapter.image_count} 张图</span>
       <span class="meta-pill">{chapter.code_count} 个脚本</span>
+      {lock_badge}
     </span>
     <h2>{html.escape(short_title(chapter.title))}</h2>
-    <p>{html.escape(chapter.summary)}</p>
+    <p>{html.escape(summary)}</p>
   </span>
 </a>
 """
@@ -350,13 +373,13 @@ def build_home(chapters: list[Chapter]) -> None:
     <section class="course-header">
       <div>
         <h1 class="course-title">Python教程</h1>
-        <p class="course-copy">当前开放环境搭建、基础语法、数据结构、函数、文件读写和异常处理。每章都包含正文、配图、代码和可复查输出。</p>
+        <p class="course-copy">当前开放 ch00-ch05；ch06-ch10 已进入网页目录，点击后会显示“敬请期待”。开放章节包含正文、配图、代码和可复查输出。</p>
       </div>
       <div class="stat-board" aria-label="课程统计">
-        <div class="stat"><strong>{len(chapters)}</strong><span>当前开放</span></div>
+        <div class="stat"><strong>{len(chapters)}</strong><span>章节总数</span></div>
+        <div class="stat"><strong>{len(released)}</strong><span>当前开放</span></div>
         <div class="stat"><strong>{total_images}</strong><span>正文图片</span></div>
         <div class="stat"><strong>{total_code}</strong><span>代码脚本</span></div>
-        <div class="stat"><strong>{release_range_label()}</strong><span>发布范围</span></div>
       </div>
     </section>
     <p class="release-note">{html.escape(PUBLIC_RELEASE_NOTE)}</p>
@@ -467,31 +490,49 @@ def build_chapter_file_index(chapter: Chapter, chapters: list[Chapter]) -> None:
 
 def build_files_index(chapters: list[Chapter]) -> None:
     rows = []
+    released = open_chapters(chapters)
     for chapter in chapters:
         base = f"{chapter.folder.name}"
         package = DOWNLOADS_OUT / f"{chapter.folder.name}.zip"
+        locked = not is_public(chapter)
+        actions = (
+            f"""
+      <a class="button primary" href="../downloads/{html.escape(chapter.folder.name)}.zip">下载整包</a>
+      <a class="button" href="{html.escape(base)}/">查看文件</a>
+      <a class="button" href="../chapters/{html.escape(chapter.page_name)}">阅读章节</a>
+"""
+            if not locked
+            else f"""
+      <a class="button primary" href="../chapters/{html.escape(chapter.page_name)}">敬请期待</a>
+"""
+        )
+        status_pill = (
+            f'<span class="meta-pill">{human_size(package)}</span>'
+            if not locked
+            else '<span class="meta-pill locked-pill">暂未开放</span>'
+        )
+        summary = chapter.summary if not locked else "本章材料已列入发布计划；当前网页端先展示占位状态，正式材料会随章节开放同步上线。"
         rows.append(
             f"""
-<article class="download-card" data-search-card>
+<article class="download-card {'locked-card' if locked else ''}" data-search-card>
   <div class="chapter-card-body">
     <span class="meta-row">
       <span class="meta-pill">{chapter.key.upper()}</span>
       <span class="meta-pill">{chapter.code_count} 个脚本</span>
       <span class="meta-pill">{chapter.report_count} 份报告</span>
-      <span class="meta-pill">{human_size(package)}</span>
+      {status_pill}
     </span>
     <h2>{html.escape(short_title(chapter.title))}</h2>
-    <p>{html.escape(chapter.summary)}</p>
+    <p>{html.escape(summary)}</p>
     <div class="download-actions">
-      <a class="button primary" href="../downloads/{html.escape(chapter.folder.name)}.zip">下载整包</a>
-      <a class="button" href="{html.escape(base)}/">查看文件</a>
-      <a class="button" href="../chapters/{html.escape(chapter.page_name)}">阅读章节</a>
+      {actions}
     </div>
   </div>
 </article>
 """
         )
-        build_chapter_file_index(chapter, chapters)
+        if not locked:
+            build_chapter_file_index(chapter, chapters)
     archive_link = ""
     if (FILES_OUT / "archives" / "python_tutorial_ch02_optimized.zip").exists():
         archive_link = '<a class="button" href="archives/python_tutorial_ch02_optimized.zip">ch02 优化包</a>'
@@ -509,11 +550,12 @@ def build_files_index(chapters: list[Chapter]) -> None:
     <section class="course-header">
       <div>
         <h1 class="course-title">材料下载</h1>
-        <p class="course-copy">当前只开放 {release_range_label()}。每章都提供整包下载，也可以进入章节材料页按“原文、代码、报告、输出、脚本”分组查看。</p>
+        <p class="course-copy">当前开放 {release_range_label()} 的材料下载；ch06-ch10 已在列表中占位，点击后显示敬请期待。</p>
       </div>
       <div class="stat-board">
-        <div class="stat"><strong>{len(chapters)}</strong><span>开放章节</span></div>
-        <div class="stat"><strong>{sum(c.code_count for c in chapters)}</strong><span>代码脚本</span></div>
+        <div class="stat"><strong>{len(chapters)}</strong><span>章节总数</span></div>
+        <div class="stat"><strong>{len(released)}</strong><span>开放材料</span></div>
+        <div class="stat"><strong>{sum(c.code_count for c in released)}</strong><span>可下载脚本</span></div>
       </div>
     </section>
     <p class="release-note">{html.escape(PUBLIC_RELEASE_NOTE)}</p>
@@ -571,8 +613,13 @@ def toc_links(chapter: Chapter) -> str:
 
 def build_chapter_pages(chapters: list[Chapter]) -> None:
     for i, chapter in enumerate(chapters):
-        md = read_text(chapter.markdown)
-        chapter.html_body, chapter.headings = render_markdown(md, chapter.key)
+        locked = not is_public(chapter)
+        if locked:
+            chapter.headings = []
+            chapter.html_body = ""
+        else:
+            md = read_text(chapter.markdown)
+            chapter.html_body, chapter.headings = render_markdown(md, chapter.key)
         prev_chapter = chapters[i - 1] if i > 0 else None
         next_chapter = chapters[i + 1] if i + 1 < len(chapters) else None
         pager = ['<nav class="pager" aria-label="章节切换">']
@@ -587,7 +634,39 @@ def build_chapter_pages(chapters: list[Chapter]) -> None:
             else '<span></span>'
         )
         pager.append("</nav>")
-        body = f"""
+        if locked:
+            body = f"""
+{topbar("../")}
+<div class="chapter-shell">
+  <aside class="sidebar" id="course-sidebar">
+    <div class="sidebar-inner">
+      <p class="sidebar-title">课程目录</p>
+      {sidebar_header("../")}
+      {chapter_nav(chapters, chapter.index, "../", same_dir=True)}
+    </div>
+  </aside>
+  <main class="article-main">
+    <section class="locked-hero">
+      <p class="article-kicker">{chapter.key.upper()}</p>
+      <h1>敬请期待</h1>
+      <p class="course-copy">{html.escape(short_title(chapter.title))} 正在整理上线。当前网页端只开放 {release_range_label()}，后续章节会按质量验收进度逐步放开。</p>
+      <div class="locked-actions">
+        <a class="button primary" href="../index.html">返回课程目录</a>
+        <a class="button" href="{prev_chapter.page_name if prev_chapter else '../index.html'}">阅读上一章</a>
+      </div>
+    </section>
+    {''.join(pager)}
+  </main>
+  <aside class="toc-panel">
+    <div class="toc-inner">
+      <p class="toc-title">本页目录</p>
+      <ol><li><a class="level-2" href="#top">敬请期待</a></li></ol>
+    </div>
+  </aside>
+</div>
+"""
+        else:
+            body = f"""
 {topbar("../")}
 <div class="chapter-shell">
   <aside class="sidebar" id="course-sidebar">
@@ -632,6 +711,7 @@ def build_manifest(chapters: list[Chapter]) -> None:
     payload = {
         "title": "Python教程",
         "chapter_count": len(chapters),
+        "open_chapter_count": len(open_chapters(chapters)),
         "public_chapter_max": PUBLIC_CHAPTER_MAX,
         "public_range": release_range_label(),
         "release_note": PUBLIC_RELEASE_NOTE,
@@ -643,6 +723,8 @@ def build_manifest(chapters: list[Chapter]) -> None:
                 "markdown": str(c.markdown.relative_to(ROOT)).replace("\\", "/"),
                 "images": c.image_count,
                 "code_files": c.code_count,
+                "is_public": is_public(c),
+                "status": "open" if is_public(c) else "coming_soon",
             }
             for c in chapters
         ],

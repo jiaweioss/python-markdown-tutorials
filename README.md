@@ -24,7 +24,7 @@
 
 ## 网页站点
 
-站点生成器位于 [website/build_site.py](website/build_site.py)。它会把 ch00-ch10 的 Markdown 自动渲染成静态 HTML，并生成首页、章节导航、页内目录、配套文件入口和阅读交互。
+站点生成器位于 [website/build_site.py](website/build_site.py)。它会把 ch00-ch10 都放入网页目录；当前只开放 ch00-ch05 的正文和材料，ch06-ch10 点击后显示“敬请期待”占位页。
 
 当前网页体验包含：
 
@@ -58,4 +58,3 @@ python -m http.server 8124 --directory public
 ## GitHub 协作
 
 仓库协作、分支建议和发布检查见 [GITHUB_MANAGEMENT.md](GITHUB_MANAGEMENT.md)。
-
