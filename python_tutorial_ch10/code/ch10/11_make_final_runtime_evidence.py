@@ -1,4 +1,4 @@
-"""Generate a final runtime evidence snapshot for the office automation chapter."""
+"""Generate a final runtime record snapshot for the office automation chapter."""
 
 from __future__ import annotations
 
@@ -31,10 +31,10 @@ CHECKS = [
     ("slides", "reports/final_slides.pptx"),
     ("report preview", "reports/final_report_preview.png"),
     ("excel preview", "reports/excel_workbook_preview.png"),
-    ("delivery index", "reports/delivery_index.md"),
-    ("delivery receipt", "reports/delivery_receipt.md"),
-    ("delivery zip", "reports/ch10_delivery_package.zip"),
-    ("zip manifest", "reports/delivery_package_manifest.md"),
+    ("成果索引", "reports/delivery_index.md"),
+    ("打包记录", "reports/delivery_receipt.md"),
+    ("成果 zip", "reports/ch10_delivery_package.zip"),
+    ("zip 目录", "reports/delivery_package_manifest.md"),
     ("course portfolio", "reports/course_portfolio.md"),
     ("showcase board", "reports/final_showcase_board.png"),
     ("capstone dossier", "reports/capstone_handoff_dossier.png"),
@@ -72,13 +72,13 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
     REPORTS.mkdir(exist_ok=True)
     ready = sum(row["status"] == "ready" for row in rows)
     lines = [
-        "# 第10章最终运行证据清单",
+        "# 第10章最终运行记录清单",
         "",
-        "这份清单由 Python 生成，用来确认办公自动化章从输入数据到 Word、Excel、PPT、作品集、展示墙和 zip 交付包都已经留下可复查文件。",
+        "这份清单由 Python 生成，用来确认办公自动化章从输入数据到 Word、Excel、PPT、作品集、展示墙和 zip 成果包都已经留下可复查文件。",
         "",
         f"- 通过项：{ready}/{len(rows)}",
         "",
-        "| 环节 | 状态 | 大小 bytes | 证据路径 |",
+        "| 环节 | 状态 | 大小 bytes | 文件路径 |",
         "| --- | --- | ---: | --- |",
     ]
     for row in rows:
@@ -86,7 +86,7 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
     lines.extend(
         [
             "",
-            "复盘提示：办公自动化的最后一步不是生成一个文件，而是确认该交付的文件都能被找到、打开、解释和复用。",
+            "复盘提示：办公自动化的最后一步不是生成一个文件，而是确认该打包的文件都能被找到、打开、解释和复用。",
         ]
     )
     EVIDENCE_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -103,8 +103,8 @@ def write_preview(rows: list[dict[str, str]]) -> None:
     code_font = font(18)
 
     draw.rounded_rectangle((90, 70, 1710, 1280), radius=30, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    draw.text((150, 125), "Windows PowerShell - final delivery evidence", fill="#162033", font=title_font)
-    draw.text((150, 197), "Office automation outputs checked before handing over the final package.", fill="#5F6673", font=body_font)
+    draw.text((150, 125), "Windows PowerShell - 最终运行记录", fill="#162033", font=title_font)
+    draw.text((150, 197), "打包最终成果前，先集中检查办公自动化输出。", fill="#5F6673", font=body_font)
 
     terminal = (150, 265, 1650, 1188)
     draw.rounded_rectangle(terminal, radius=24, fill="#0B1B3A", outline="#102A56", width=2)
@@ -137,7 +137,7 @@ def write_preview(rows: list[dict[str, str]]) -> None:
 
     ready = sum(row["status"] == "ready" for row in rows)
     draw.rounded_rectangle((360, 1225, 1440, 1276), radius=18, fill="#ECFDF5", outline="#34D399", width=2)
-    draw.text((780, 1240), f"ready files: {ready}/{len(rows)}", fill="#047857", font=body_font)
+    draw.text((780, 1240), f"就绪文件： {ready}/{len(rows)}", fill="#047857", font=body_font)
 
     image.save(EVIDENCE_PNG, optimize=True, quality=95)
     WEB_DIR.mkdir(parents=True, exist_ok=True)

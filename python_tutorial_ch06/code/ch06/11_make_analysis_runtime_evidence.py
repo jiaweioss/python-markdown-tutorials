@@ -70,7 +70,7 @@ def build_report(rows: list[dict[str, str | int | bool]]) -> str:
     ready = sum(1 for row in rows if row["exists"])
     total = len(rows)
     lines = [
-        "# 第6章数据分析运行证据",
+        "# 第6章数据分析运行记录",
         "",
         f"- 检查时间：{_dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         f"- 运行产物：{ready}/{total} 就绪",
@@ -121,7 +121,7 @@ def draw_image(path: Path, rows: list[dict[str, str | int | bool]]) -> None:
     ready = sum(1 for row in rows if row["exists"])
     total = len(rows)
 
-    draw.text((92, 70), "第6章数据分析运行证据", font=title, fill=ink)
+    draw.text((92, 70), "第6章数据分析运行记录", font=title, fill=ink)
     draw.text(
         (96, 144),
         "CSV、图表、报告、JSON 与跨章交接结果集中检查。",
@@ -185,7 +185,7 @@ def draw_image(path: Path, rows: list[dict[str, str | int | bool]]) -> None:
     draw.rounded_rectangle((95, 1015, 1705, 1082), radius=24, fill="#FFF7E8", outline="#F2B84B", width=3)
     draw.text(
         (140, 1033),
-        "验收口径：好看的图必须能回到数据、代码和报告，才算真正可用。",
+        "自查口径：好看的图必须能回到数据、代码和报告，才算真正可用。",
         font=body,
         fill="#8A5A00",
     )
@@ -212,7 +212,7 @@ def main() -> None:
     shutil.copy2(image_file, web_file)
 
     ready = sum(1 for row in rows if row["exists"])
-    print(f"第6章运行证据：{ready}/{len(rows)} 就绪")
+    print(f"第6章运行记录：{ready}/{len(rows)} 就绪")
     print(f"报告：{report_file.relative_to(root)}")
     print(f"图片：{image_file.relative_to(root)}")
 

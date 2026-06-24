@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 def project_root() -> Path:
     here = Path.cwd()
-    if (here / "assets" / "ch05").exists():
+    if (here / "manifest.json").exists() and (here / "assets" / "ch05").exists():
         return here
     return Path(__file__).resolve().parents[2]
 
@@ -29,9 +29,9 @@ CHECKS = [
     ("对象模型预览图", "reports/ch05_oop_model_preview.png"),
     ("类职责卡片", "reports/ch05_design_cards.md"),
     ("对象协作消息图", "reports/ch05_object_collaboration_map.md"),
-    ("对象质量回执", "reports/ch05_object_quality_receipt.md"),
-    ("交付包 JSON", "output/ch05_object_delivery_package.json"),
-    ("交付包报告", "reports/ch05_object_delivery_package.md"),
+    ("对象质量记录", "reports/ch05_object_quality_receipt.md"),
+    ("成果包 JSON", "output/ch05_object_delivery_package.json"),
+    ("成果包报告", "reports/ch05_object_delivery_package.md"),
     ("GUI 对象模型 JSON", "output/ch05_gui_panel_object_model.json"),
     ("GUI 对象模型报告", "reports/ch05_gui_panel_object_model.md"),
 ]
@@ -61,13 +61,13 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
     REPORTS.mkdir(exist_ok=True)
     ready = sum(row["status"] == "就绪" for row in rows)
     lines = [
-        "# 第5章 OOP 运行证据清单",
+        "# 第5章 OOP 运行记录清单",
         "",
-        "这份清单由 Python 生成，用来确认对象模型报告、职责卡片、协作图、质量回执、交付包和 GUI 面板对象模型都已经留下可复查文件。",
+        "这份清单由 Python 生成，用来确认对象模型报告、职责卡片、协作图、质量记录、成果包和 GUI 面板对象模型都已经留下可复查文件。",
         "",
         f"- 通过项：{ready}/{len(rows)}",
         "",
-        "| 环节 | 状态 | 证据路径 |",
+        "| 环节 | 状态 | 文件路径 |",
         "| --- | --- | --- |",
     ]
     for row in rows:
@@ -75,7 +75,7 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
     lines.extend(
         [
             "",
-            "复盘提示：面向对象不是只写出 `class`，而是让对象职责、协作消息和可交付文件都能被看见。",
+            "复盘提示：面向对象不是只写出 `class`，而是让对象职责、协作消息和成果文件都能被看见。",
         ]
     )
     EVIDENCE_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -92,8 +92,8 @@ def write_preview(rows: list[dict[str, str]]) -> None:
     code_font = font(19)
 
     draw.rounded_rectangle((90, 70, 1610, 1095), radius=30, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    draw.text((150, 125), "Windows PowerShell - OOP 运行证据", fill="#162033", font=title_font)
-    draw.text((150, 200), "运行第5章脚本后，检查对象模型相关交付物是否都存在。", fill="#5F6673", font=body_font)
+    draw.text((150, 125), "Windows PowerShell - OOP 运行记录", fill="#162033", font=title_font)
+    draw.text((150, 200), "运行第5章脚本后，检查对象模型相关成果文件是否都存在。", fill="#5F6673", font=body_font)
 
     terminal = (150, 270, 1550, 1010)
     draw.rounded_rectangle(terminal, radius=24, fill="#0B1B3A", outline="#102A56", width=2)

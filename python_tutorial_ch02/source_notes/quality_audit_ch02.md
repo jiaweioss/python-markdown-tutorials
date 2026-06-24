@@ -1,10 +1,10 @@
-# 第2章质量验收记录
+# 第2章质量检查记录
 
-验收日期：2026-06-17
+检查日期：2026-06-17
 
-## 验收范围
+## 检查范围
 
-本次验收范围是 `python_tutorial_ch02` 包，重点包括：
+本次检查范围是 `python_tutorial_ch02` 包，重点包括：
 
 - `chapters/ch02_python_data_types.md`
 - `assets/ch02/`
@@ -17,25 +17,25 @@
 
 ## 目标对照
 
-| 需求 | 当前证据 | 状态 |
+| 需求 | 当前记录 | 状态 |
 | --- | --- | --- |
 | 基于原 Python 课件改写 | 第2章正文覆盖课件中的常量、变量、布尔、数值、字符串、列表和字典 | 已完成 |
 | 面向初学者、语言生动 | 正文使用变量标签、类型容器、红绿灯、抽屉、查表系统等比喻 | 已完成 |
-| 图文并茂 | 正文引用 27 张本地正式配图，含历史照片、心理学人物照片、IBM 打孔卡分拣机、套娃嵌套照片、检索照片、真实 PowerShell 截图、类型选择罗盘、字符串材料工作台、脚本生成成果图、本章运行证据总览、报错线索卡、练习工作台和下一章过渡图 | 已完成 |
+| 图文并茂 | 正文引用 27 张本地正式配图，含历史照片、心理学人物照片、IBM 打孔卡分拣机、套娃嵌套照片、检索照片、真实 PowerShell 截图、类型选择罗盘、字符串材料工作台、脚本生成成果图、本章运行记录总览、报错线索卡、练习工作台和下一章过渡图 | 已完成 |
 | 图片少放解释文字 | 变量标签、路线图、数据类型地图、布尔逻辑、字符串切片、列表、字典和小项目等核心概念图已重新生成，删减图内长解释文字，说明放回正文和图注 | 已完成 |
 | 图片全部居中 | 正文 27 张图片全部使用 `<figure align="center">` 与 `display:block; margin:0 auto` 居中显示 | 已完成 |
 | 图片图注清晰 | 正文 27 张图片全部配有 `<figcaption>`，图注显示图片标题和学习提示 | 已完成 |
-| 学生阅读口吻 | 已将“给老师的提醒”“课堂练习”等教师视角文字改成学生自学口吻 | 已完成 |
+| 学生阅读口吻 | 已将“后台提示”“课堂练习”等教师视角文字改成学生自学口吻 | 已完成 |
 | 图表审美在线 | `ch02_number_rounding_chart.png` 由 Python 脚本生成，并经肉眼检查修正图例挤压 | 已完成 |
 | 字符串段落补图 | 新增 `ch02_string_material_workbench.png`，图片内部不放解释文字，正文用被试编号、刺激词、文件路径和日志备注解释为什么“文字也是数据” | 已完成 |
 | 真实运行环境 | 新增 `ch02_powershell_data_type_run.png`，展示 ch2 脚本在 PowerShell 中真实运行 | 已完成 |
 | 故事与知识点穿插 | Claude Shannon 对应信息编码，George Boole 对应布尔值，Hermann Ebbinghaus 对应列表与记忆数据，IBM 分拣机对应批量数据整理，套娃对应嵌套结构，卡片目录对应字典检索 | 已完成 |
-| 学以致用 | 新增 12 个可运行脚本、学习记录整理小项目、类型选择卡片、类型选择罗盘、数据类型实验回执、Stroop 数据类型包、数据类型标本柜成果图和运行证据报告 | 已完成 |
+| 学以致用 | 新增 12 个可运行脚本、学习记录整理小项目、类型选择卡片、类型选择罗盘、数据类型实验记录、Stroop 数据类型包、数据类型标本柜成果图和运行记录报告 | 已完成 |
 | 类型判断工具 | 新增 `08_make_type_compass.py`，生成 `reports/ch02_type_compass.md` 和 `output/ch02_type_compass_preview.png`，把“看到数据先选类型”做成练习闭环 | 已完成 |
-| 项目成果回执 | 新增 `09_make_data_type_lab_receipt.py`，生成 `reports/ch02_data_type_lab_receipt.md` 和 `output/ch02_data_type_lab_receipt.png`，把学习记录和心理学 trial 的类型选择做成可视化成果 | 已完成 |
+| 项目成果记录 | 新增 `09_make_data_type_lab_receipt.py`，生成 `reports/ch02_data_type_lab_receipt.md` 和 `output/ch02_data_type_lab_receipt.png`，把学习记录和心理学 trial 的类型选择做成可视化成果 | 已完成 |
 | 心理学数据包 | 新增 `10_make_stroop_dataset_pack.py`，生成 JSON、CSV、Markdown 报告和 PNG 预览，把 ch1 的 Stroop trial 延伸成 `list[dict]` 数据包 | 已完成 |
 | 数据类型标本柜 | 新增 `11_make_data_type_specimen_cabinet.py`，生成 JSON、Markdown 报告和 PNG 预览，把同一组 Stroop 记录拆成类型角色展示 | 已完成 |
-| 运行证据总览 | 新增 `12_make_data_type_runtime_evidence.py`，检查本章 14 个关键产物并生成 Markdown 报告、输出图和正文正式图 | 已完成 |
+| 运行记录总览 | 新增 `12_make_data_type_runtime_evidence.py`，检查本章 14 个关键产物并生成 Markdown 报告、输出图和正文正式图 | 已完成 |
 | 图片平均穿插 | 在数字到字符串之间新增 `ch02_string_material_workbench.png`，并保留尾部 `ch02_error_clue_cards.png`、`ch02_practice_workbench.png` 与 `ch02_type_to_file_bridge.png`；最大图片间隔从 197 行降到 161 行 | 已完成 |
 | 图片引用不缺失 | `python scripts/check_links.py` 同时检查 Markdown 图片和 HTML `<img>` 图片，检查通过 | 已完成 |
 | 代码与脚本可检查 | AST 语法解析检查通过，且不生成 `__pycache__` 缓存 | 已完成 |
@@ -73,7 +73,7 @@
 - `ch02_error_clue_cards.png`
 - `ch02_type_to_file_bridge.png`
 
-## 验收命令
+## 检查命令
 
 在 `python_tutorial_ch02` 目录下运行：
 

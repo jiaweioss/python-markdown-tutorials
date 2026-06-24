@@ -291,7 +291,7 @@ def cover():
         ("环境", "运行现场", "认清解释器、终端、IDE、脚本文件之间的关系。", GREEN),
         ("工厂", "项目目录", "把 input、cards、output、reports 放在清楚位置。", ORANGE),
         ("闭环", "运行反馈", "先跑通，再改一点，出错后顺着线索修复。", PURPLE),
-        ("作品", "可交付结果", "每章留下一个能复用的小工具或小报告。", RED),
+        ("作品", "可复查结果", "每章留下一个能复用的小工具或小报告。", RED),
     ]
     xs = [245, 555, 865, 1175, 1485]
     y = 575
@@ -376,7 +376,7 @@ def city():
 
 def roadmap():
     im, d = canvas()
-    title(d, "整套课程路线图", "基础、组织、应用、项目交付逐步接力")
+    title(d, "整套课程路线图", "基础、组织、应用、项目成果逐步接力")
     chapters = [
         ("0", "地图", "学习方法"),
         ("1", "环境", "运行代码"),
@@ -388,7 +388,7 @@ def roadmap():
         ("7", "游戏", "动画交互"),
         ("8", "爬虫", "网页资料"),
         ("9", "图像", "像素处理"),
-        ("10", "办公", "文档交付"),
+        ("10", "办公", "文档成果"),
     ]
     x0, y0 = 85, 310
     card_w, card_h = 245, 170
@@ -419,7 +419,7 @@ def roadmap():
 
 def project_ladder():
     im, d = canvas()
-    title(d, "项目阶梯：从空目录到可交付", "小台阶比大口号更可靠")
+    title(d, "项目阶梯：从空目录到可复查", "小台阶比大口号更可靠")
     steps = [
         ("01", "建目录", "先分清 input、cards、output、reports。", BLUE),
         ("02", "放原料", "课程笔记、数据、图片各归其位。", GREEN),
@@ -529,7 +529,7 @@ def learning_momentum_chart():
         ("作品", 58),
         ("复盘", 66),
         ("复用", 74),
-        ("交付", 86),
+        ("成果", 86),
     ]
     curve = []
     for i, (_, v) in enumerate(points):
@@ -553,10 +553,10 @@ def tech_stack_workbench():
         ("整理资料", "numpy\npandas\nopenpyxl", GREEN),
         ("画成图表", "matplotlib\nPillow / OpenCV", ORANGE),
         ("做出交互", "tkinter\npygame\nrequests", PURPLE),
-        ("交付作品", "python-docx\npython-pptx\n报告与演示", CYAN),
+        ("最终作品", "python-docx\npython-pptx\n报告与演示", CYAN),
     ]
     x0, y0, w, h, gap = 90, 320, 290, 350, 38
-    labels = ["基础", "数据", "图表", "交互", "交付"]
+    labels = ["基础", "数据", "图表", "交互", "成果"]
     for idx, (heading, body, color) in enumerate(groups):
         x = x0 + idx * (w + gap)
         step_card(d, (x, y0, x + w, y0 + h), labels[idx], heading, body, color)
@@ -581,7 +581,7 @@ def chapter_relay_station():
         ("6", "分析", "表格图表", BLUE),
         ("7", "游戏", "动画交互", GREEN),
         ("8", "爬虫", "公开资料", ORANGE),
-        ("9-10", "图像/办公", "最终交付", PURPLE),
+        ("9-10", "图像/办公", "最终成果", PURPLE),
     ]
     x0, w, gap = 90, 290, 40
     for idx, item in enumerate(top):

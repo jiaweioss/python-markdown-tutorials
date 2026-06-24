@@ -199,7 +199,7 @@ def write_report(model: DataPanelModel) -> None:
         [
             "",
             f"对象总数：{model.object_count()}",
-            f"JSON 交付物：`{JSON_FILE.relative_to(ROOT).as_posix()}`",
+            f"JSON 成果文件：`{JSON_FILE.relative_to(ROOT).as_posix()}`",
             f"预览图：`{PREVIEW.relative_to(ROOT).as_posix()}`",
             "",
             "下一步：如果继续进入 ch6，可以读取这个 JSON，把试次对象整理成表格，再分析正确率、反应时和冲突效应。",

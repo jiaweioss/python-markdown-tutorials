@@ -101,7 +101,7 @@ def make_preview(cards: list[dict[str, str]]) -> Path:
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 830), radius=28, fill="#FFFFFF", outline="#D8E0EC", width=3)
     d.text((150, 125), "公开资料来源卡片", fill="#162033", font=font(52, True))
-    d.text((150, 198), "爬虫不是只拿链接，而是留下能复查的证据链。", fill="#5F6673", font=font(28))
+    d.text((150, 198), "爬虫不是只拿链接，而是留下能复查的学习记录链。", fill="#5F6673", font=font(28))
 
     palette = {"高可信": "#24A06B", "需交叉验证": "#F28C28", "待检查": "#7A5AF8"}
     visible = cards[:4]

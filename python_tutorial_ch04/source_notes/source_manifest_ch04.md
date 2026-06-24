@@ -36,17 +36,17 @@
 - `assets/ch04/web/ch04_gui_usability_check_output.png`：本地运行 `python code/ch04/04_gui_usability_check.py` 生成的界面可用性检查图。
 - `assets/ch04/web/ch04_target_feedback_lab.png`：本地运行 `python code/ch04/05_make_gui_feedback_lab.py` 生成的 GUI 目标与反馈实验图。
 - `assets/ch04/web/ch04_gui_feedback_scorecard.png`：本地运行 `python code/ch04/05_make_gui_feedback_lab.py` 生成的 GUI 反馈检查卡。
-- `assets/ch04/web/ch04_interaction_receipt.png`：本地运行 `python code/ch04/06_make_interaction_receipt.py` 生成的 GUI 交互回执。
-- `assets/ch04/web/ch04_card_factory_delivery.png`：本地运行 `python code/ch04/07_make_card_factory_delivery.py` 生成的卡片工厂交付回执。
+- `assets/ch04/web/ch04_interaction_receipt.png`：本地运行 `python code/ch04/06_make_interaction_receipt.py` 生成的 GUI 交互记录。
+- `assets/ch04/web/ch04_card_factory_delivery.png`：本地运行 `python code/ch04/07_make_card_factory_delivery.py` 生成的卡片工厂学习成果记录。
 - `assets/ch04/web/ch04_ch03_data_gui_panel.png`：本地运行 `python code/ch04/08_make_ch03_data_gui_panel.py` 读取 ch3 整理后的 Stroop JSON 数据后生成的 GUI 数据浏览面板预览。
 - `assets/ch04/web/ch04_gui_journey_storyboard.png`：本地运行 `python code/ch04/09_make_gui_journey_storyboard.py` 生成的 GUI 交互旅程图。
-- `assets/ch04/web/ch04_gui_runtime_evidence.png`：本地运行 `python code/ch04/10_make_gui_runtime_evidence.py` 生成的 GUI 运行证据图，用于核对窗口截图、报告、回执和跨章节 GUI 面板是否 ready。
+- `assets/ch04/web/ch04_gui_runtime_evidence.png`：本地运行 `python code/ch04/10_make_gui_runtime_evidence.py` 生成的 GUI 运行记录图，用于核对窗口截图、报告、记录和跨章节 GUI 面板是否 ready。
 - `cards/working_memory_load_card.md`：本地运行 `python code/ch04/07_make_card_factory_delivery.py` 生成的 Markdown 学习卡片。
-- `reports/ch04_card_factory_delivery.md`：本地运行 `python code/ch04/07_make_card_factory_delivery.py` 生成的项目交付报告。
+- `reports/ch04_card_factory_delivery.md`：本地运行 `python code/ch04/07_make_card_factory_delivery.py` 生成的项目成果报告。
 - `reports/ch04_ch03_data_gui_panel.md`：本地运行 `python code/ch04/08_make_ch03_data_gui_panel.py` 生成的跨章节数据面板交接报告。
 - `output/ch04_ch03_data_gui_panel.json`：本地运行 `python code/ch04/08_make_ch03_data_gui_panel.py` 生成的 GUI 面板规格文件。
 - `reports/ch04_gui_journey_storyboard.md`：本地运行 `python code/ch04/09_make_gui_journey_storyboard.py` 生成的交互旅程说明。
-- `reports/ch04_gui_runtime_evidence.md`：本地运行 `python code/ch04/10_make_gui_runtime_evidence.py` 生成的运行证据清单。
+- `reports/ch04_gui_runtime_evidence.md`：本地运行 `python code/ch04/10_make_gui_runtime_evidence.py` 生成的运行记录清单。
 
 这些素材分别整理为 `ch04_tkinter_hello_window_screenshot.png`、`ch04_tkinter_card_form_screenshot.png`、`ch04_tkinter_stroop_screenshot.png`、`ch04_gui_runtime_evidence.png`、`ch04_gui_usability_check.png`、`ch04_target_feedback_lab.png`、`ch04_gui_feedback_scorecard.png`、`ch04_interaction_receipt.png`、`ch04_card_factory_delivery.png`、`ch04_ch03_data_gui_panel.png` 和 `ch04_gui_journey_storyboard.png`；新生成的无文字类比图为 `ch04_norman_door_affordance.png`。
 
@@ -54,12 +54,12 @@
 
 本章保留 26 张可由 `scripts/generate_ch04_visuals.py` 生成或整理的正式图片资产，正文当前引用 26 张。旧版无信息量的图标拼贴已经替换为结构化步骤图；GUI 历史照片也重新穿插到对应知识点中，用 Engelbart 鼠标、Xerox Alto、Macintosh、Susan Kare、Don Norman 和 HyperCard 解释“输入设备、窗口、图标、可用性、卡片式界面”这些概念从哪里来。
 
-新版生成脚本使用中文换行和字号适配，图片内部允许放必要的短文本标签，但不再堆砌长段说明。长解释仍放在 Markdown 正文和图注中。脚本生成的 GUI 结果图保留界面自身文字，用于展示真实产物。`ch04_norman_door_affordance.png` 用推板和拉手解释 GUI 控件为什么需要清楚的可发现性和反馈；GUI 交互旅程图把打开窗口、输入内容、点击按钮、看到反馈和得到文件连成闭环；GUI 运行证据图把窗口截图、报告、回执和跨章节面板状态集中到一张 PowerShell 风格证据板；ch3 数据 GUI 面板把 ch2 的 Stroop 数据、ch3 的文件整理和 ch4 的界面设计连成一个连续项目。
+新版生成脚本使用中文换行和字号适配，图片内部允许放必要的短文本标签，但不再堆砌长段说明。长解释仍放在 Markdown 正文和图注中。脚本生成的 GUI 结果图保留界面自身文字，用于展示真实产物。`ch04_norman_door_affordance.png` 用推板和拉手解释 GUI 控件为什么需要清楚的可发现性和反馈；GUI 交互旅程图把打开窗口、输入内容、点击按钮、看到反馈和得到文件连成闭环；GUI 运行记录图把窗口截图、报告、记录和跨章节面板状态集中到一张 PowerShell 风格记录板；ch3 数据 GUI 面板把 ch2 的 Stroop 数据、ch3 的文件整理和 ch4 的界面设计连成一个连续项目。
 
 ## 图文呈现规则
 
 - 正文图片统一使用居中的 `<figure>` 结构。
 - 每张图片都有 `<figcaption>`。
 - 示例代码与项目任务围绕“科研卡片工厂”连续推进。
-- 本轮对标 ch01 标准重排：正文包含导读、学习目标、分区导航、五个部分、上机路线、提交证据、自测问题和复盘模板。
-- 正文不再使用“本教程会……”这类后台口吻，路线表和核心概念表改成学生可直接执行、可检查、可交付的 GUI 小任务。
+- 本轮对标 ch01 标准重排：正文包含导读、学习目标、分区导航、五个部分、上机路线、学习成果记录、自测问题和复盘模板。
+- 正文不再使用“本教程会……”这类后台口吻，路线表和核心概念表改成学生可直接执行、可检查、可复盘的 GUI 小任务。

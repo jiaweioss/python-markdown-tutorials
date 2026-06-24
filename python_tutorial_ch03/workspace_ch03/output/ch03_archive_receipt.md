@@ -1,25 +1,25 @@
-# Chapter 03 Archive Receipt
+# 第3章资料归档记录
 
-This receipt is a compact delivery note for the demo archive in `workspace_ch03`.
+这份记录用来说明 `workspace_ch03` 里的资料是否已经整理清楚。
 
 ## Summary
 
 - Source files: 6
 - Organized copies: 6
 - File types: 5
-- Total recorded size: 262543 bytes
+- Total recorded size: 331275 bytes
 
-## File Types
+## 文件类型
 
 | Suffix | Count |
 | --- | ---: |
 | `.csv` | 5 |
-| `.json` | 3 |
+| `.json` | 4 |
 | `.md` | 6 |
-| `.png` | 5 |
+| `.png` | 6 |
 | `.txt` | 5 |
 
-## Hash Spot Check
+## 哈希抽查
 
 | Path | SHA-256 prefix |
 | --- | --- |
@@ -28,7 +28,7 @@ This receipt is a compact delivery note for the demo archive in `workspace_ch03`
 | `organized/json/ch02_stroop_dataset_pack.json` | `6bc28f91a067` |
 | `organized/md/summary.md` | `c6f8232937e3` |
 
-## Delivery Meaning
+## 复查意义
 
 A manifest answers: what exact files are present?
-A receipt answers: can this archive be handed to another person for review?
+这份记录回答一个朴素问题：别人能不能沿着清单复查这批资料？

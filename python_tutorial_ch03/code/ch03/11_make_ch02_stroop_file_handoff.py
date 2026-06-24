@@ -135,9 +135,9 @@ def build_report(data: dict, copied: dict, source_json: Path, source_csv: Path) 
 
     return dedent(
         f"""
-        # 第3章 ch2 Stroop 文件交接回执
+        # 第3章 ch2 Stroop 文件交接记录
 
-        这份回执证明：第2章生成的数据包没有停留在内存里，而是被第3章读取、复制、归档并留下路径证据。
+        这份记录证明：第2章生成的数据包没有停留在内存里，而是被第3章读取、复制、归档并留下路径记录。
 
         ## 来源
 
@@ -217,15 +217,15 @@ def write_preview_png(path: Path, data: dict, copied: dict) -> bool:
         draw.text((x + 20, y + 8), text, font=small_font, fill="white")
 
     summary = data["summary"]
-    draw.text((80, 58), "ch2 -> ch3 文件交接回执", font=title_font, fill=ink)
-    draw.text((84, 123), "数据离开上一章，进入安全工作区；路径、大小和哈希都留下证据。", font=body_font, fill=muted)
+    draw.text((80, 58), "ch2 -> ch3 文件交接记录", font=title_font, fill=ink)
+    draw.text((84, 123), "数据离开上一章，进入安全工作区；路径、大小和哈希都留下记录。", font=body_font, fill=muted)
     draw.line((80, 178, 1520, 178), fill=line, width=3)
 
     cards = [
         ("source", "ch02/output", "读取上一章", blue),
         ("inbox", "workspace/inbox", "接收副本", green),
         ("organized", "json + csv", "分类归档", orange),
-        ("receipt", "output/report", "留下证据", purple),
+        ("receipt", "output/report", "留下记录", purple),
     ]
     for idx, (label, value, note, color) in enumerate(cards):
         x = 80 + idx * 380
@@ -250,7 +250,7 @@ def write_preview_png(path: Path, data: dict, copied: dict) -> bool:
         y += 40
 
     shadow((840, 455, 1520, 770))
-    draw.text((885, 500), "文件证据", font=h_font, fill=ink)
+    draw.text((885, 500), "文件记录", font=h_font, fill=ink)
     y = 560
     for label in ["organized_json", "organized_csv"]:
         path_item = copied[label]
@@ -286,7 +286,7 @@ def main() -> None:
         PREVIEW_ASSET.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(PREVIEW, PREVIEW_ASSET)
 
-    print("ch2 Stroop 文件交接回执已生成：")
+    print("ch2 Stroop 文件交接记录已生成：")
     print("-", REPORT)
     print("-", PREVIEW if has_preview else "未生成 PNG：当前环境缺少 Pillow")
     print("-", copied["organized_json"])

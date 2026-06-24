@@ -1,4 +1,4 @@
-"""Chapter 02 artifact: collect runtime evidence for the data type chapter."""
+"""Generate a runtime record for the chapter 02 data type workflow."""
 
 from __future__ import annotations
 
@@ -8,20 +8,20 @@ from pathlib import Path
 
 
 CHECKS = [
-    ("learning report", "output/ch02_learning_report.txt"),
-    ("decision cards report", "reports/ch02_type_decision_cards.md"),
-    ("decision cards preview", "output/ch02_type_decision_cards_preview.png"),
-    ("type compass report", "reports/ch02_type_compass.md"),
-    ("type compass preview", "output/ch02_type_compass_preview.png"),
-    ("lab receipt report", "reports/ch02_data_type_lab_receipt.md"),
-    ("lab receipt image", "output/ch02_data_type_lab_receipt.png"),
-    ("stroop report", "reports/ch02_stroop_dataset_pack.md"),
-    ("stroop json", "output/ch02_stroop_dataset_pack.json"),
-    ("stroop csv", "output/ch02_stroop_dataset_pack.csv"),
-    ("stroop image", "output/ch02_stroop_dataset_pack.png"),
-    ("specimen cabinet report", "reports/ch02_data_type_specimen_cabinet.md"),
-    ("specimen cabinet json", "output/ch02_data_type_specimen_cabinet.json"),
-    ("specimen cabinet image", "output/ch02_data_type_specimen_cabinet.png"),
+    ("学习记录", "output/ch02_learning_report.txt"),
+    ("类型选择报告", "reports/ch02_type_decision_cards.md"),
+    ("类型选择预览", "output/ch02_type_decision_cards_preview.png"),
+    ("类型罗盘报告", "reports/ch02_type_compass.md"),
+    ("类型罗盘预览", "output/ch02_type_compass_preview.png"),
+    ("实验记录报告", "reports/ch02_data_type_lab_receipt.md"),
+    ("实验记录图", "output/ch02_data_type_lab_receipt.png"),
+    ("Stroop 报告", "reports/ch02_stroop_dataset_pack.md"),
+    ("Stroop JSON", "output/ch02_stroop_dataset_pack.json"),
+    ("Stroop CSV", "output/ch02_stroop_dataset_pack.csv"),
+    ("Stroop 图", "output/ch02_stroop_dataset_pack.png"),
+    ("标本柜报告", "reports/ch02_data_type_specimen_cabinet.md"),
+    ("标本柜 JSON", "output/ch02_data_type_specimen_cabinet.json"),
+    ("标本柜图", "output/ch02_data_type_specimen_cabinet.png"),
 ]
 
 
@@ -52,7 +52,7 @@ def build_report(rows: list[dict[str, str | int | bool]]) -> str:
     ready = sum(1 for row in rows if row["exists"])
     total = len(rows)
     lines = [
-        "# 第2章数据类型运行证据",
+        "# 第2章数据类型运行记录",
         "",
         f"- 检查时间：{_dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         f"- 运行产物：{ready}/{total} ready",
@@ -62,7 +62,7 @@ def build_report(rows: list[dict[str, str | int | bool]]) -> str:
         "| --- | --- | --- | --- |",
     ]
     for row in rows:
-        status = "READY" if row["exists"] else "MISSING"
+        status = "就绪" if row["exists"] else "缺失"
         size = f'{row["size"]} bytes' if row["exists"] else "-"
         lines.append(f'| {status} | {row["label"]} | `{row["path"]}` | {size} |')
     lines.append("")
@@ -81,9 +81,10 @@ def draw_runtime_image(path: Path, rows: list[dict[str, str | int | bool]]) -> b
 
     def font(size: int, bold: bool = False):
         candidates = [
-            "C:/Windows/Fonts/consolab.ttf" if bold else "C:/Windows/Fonts/consola.ttf",
-            "C:/Windows/Fonts/segoeuib.ttf" if bold else "C:/Windows/Fonts/segoeui.ttf",
             "C:/Windows/Fonts/msyhbd.ttc" if bold else "C:/Windows/Fonts/msyh.ttc",
+            "C:/Windows/Fonts/simhei.ttf",
+            "C:/Windows/Fonts/segoeuib.ttf" if bold else "C:/Windows/Fonts/segoeui.ttf",
+            "C:/Windows/Fonts/consolab.ttf" if bold else "C:/Windows/Fonts/consola.ttf",
         ]
         for candidate in candidates:
             try:
@@ -119,10 +120,10 @@ def draw_runtime_image(path: Path, rows: list[dict[str, str | int | bool]]) -> b
     ready = sum(1 for row in rows if row["exists"])
     total = len(rows)
 
-    draw.text((92, 70), "PowerShell - ch02 data type runtime evidence", font=title, fill=ink)
+    draw.text((92, 70), "PowerShell - 第2章数据类型运行记录", font=title, fill=ink)
     draw.text(
         (96, 144),
-        "One chapter, one evidence board: scripts, reports, JSON/CSV files, and project images are checked together.",
+        "一章一张运行记录板：脚本、报告、JSON/CSV 和项目图片一起检查。",
         font=subtitle,
         fill=muted,
     )
@@ -138,22 +139,22 @@ def draw_runtime_image(path: Path, rows: list[dict[str, str | int | bool]]) -> b
         "python code\\ch02\\11_make_data_type_specimen_cabinet.py",
         "python code\\ch02\\12_make_data_type_runtime_evidence.py",
         "",
-        f"Runtime artifacts: {ready}/{total} ready",
-        "Status: ready for review" if ready == total else "Status: missing files",
+        f"运行产物： {ready}/{total} ready",
+        "状态：可以复查" if ready == total else "状态：仍有文件缺失",
     ]
     y = 306
     for line_text in terminal_lines:
         color = "#BEE3F8"
         if line_text.startswith("Runtime"):
             color = "#A7F3D0" if ready == total else "#FDE68A"
-        if line_text.startswith("Status"):
+        if line_text.startswith("状态"):
             color = "#A7F3D0" if ready == total else "#FCA5A5"
         draw.text((132, y), line_text, font=mono, fill=color)
         y += 52 if line_text else 26
 
     shadow_box((875, 260, 1705, 980), radius=28)
-    draw.text((925, 308), "Artifact checklist", font=h2, fill=ink)
-    draw.text((928, 356), "Data types become useful when they leave files you can inspect.", font=body, fill=muted)
+    draw.text((925, 308), "产物检查清单", font=h2, fill=ink)
+    draw.text((928, 356), "数据类型能落成文件，才真正能复查。", font=body, fill=muted)
 
     for i, row in enumerate(rows):
         col = i // 7
@@ -163,7 +164,7 @@ def draw_runtime_image(path: Path, rows: list[dict[str, str | int | bool]]) -> b
         exists = bool(row["exists"])
         status_color = green if exists else red
         draw.rounded_rectangle((x, y - 8, x + 98, y + 34), radius=21, fill=status_color)
-        draw.text((x + 18, y), "READY" if exists else "MISS", font=small, fill="white")
+        draw.text((x + 18, y), "就绪" if exists else "缺失", font=small, fill="white")
         file_name = Path(str(row["path"])).name
         if len(file_name) > 28:
             file_name = file_name[:25] + "..."
@@ -173,14 +174,14 @@ def draw_runtime_image(path: Path, rows: list[dict[str, str | int | bool]]) -> b
     draw.rounded_rectangle((95, 1015, 1705, 1082), radius=24, fill="#FFF7E8", outline="#F2B84B", width=3)
     draw.text(
         (140, 1033),
-        "Rule of thumb: if a Python type lesson cannot produce files, reports, or data, it is still floating in the air.",
+        "经验提醒：数据类型练习要能留下文件、报告和数据，才算真正落地。",
         font=body,
         fill="#8A5A00",
     )
 
     if ready != total:
         draw.rounded_rectangle((1460, 70, 1705, 130), radius=30, fill=orange)
-        draw.text((1512, 86), "CHECK", font=body, fill="white")
+        draw.text((1512, 86), "检查", font=body, fill="white")
 
     image.save(path, optimize=True, quality=95)
     return True
@@ -206,7 +207,7 @@ def main() -> None:
         shutil.copy2(image_file, web_file)
 
     ready = sum(1 for row in rows if row["exists"])
-    print(f"ch02 runtime evidence: {ready}/{len(rows)} ready")
+    print(f"第2章运行记录：{ready}/{len(rows)} 就绪")
     print(f"report: {report_file}")
     if image_ok:
         print(f"image: {image_file}")

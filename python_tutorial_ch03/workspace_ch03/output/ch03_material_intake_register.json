@@ -1,8 +1,8 @@
 {
-  "workspace": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03",
+  "workspace": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03",
   "zones": {
     "inbox": {
-      "path": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\inbox",
+      "path": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03\\inbox",
       "files": 6,
       "suffixes": {
         ".csv": 2,
@@ -13,7 +13,7 @@
       }
     },
     "organized": {
-      "path": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\organized",
+      "path": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03\\organized",
       "files": 6,
       "suffixes": {
         ".csv": 2,
@@ -24,7 +24,7 @@
       }
     },
     "output": {
-      "path": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output",
+      "path": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03\\output",
       "files": 15,
       "suffixes": {
         ".json": 2,
@@ -34,7 +34,7 @@
       }
     },
     "reports": {
-      "path": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\reports",
+      "path": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\reports",
       "files": 2,
       "suffixes": {
         ".md": 2
@@ -50,11 +50,11 @@
     "evidence": true
   },
   "required_paths": {
-    "inventory": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\file_inventory.md",
-    "manifest": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_archive_manifest.md",
-    "receipt": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_archive_receipt.md",
-    "safety": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_path_safety_receipt.md",
-    "handoff": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_ch02_stroop_file_handoff.md",
-    "evidence": "C:\\Users\\jiaweiding\\Desktop\\Python教程\\PythonMarkdown教程书\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_archive_evidence_board.png"
+    "inventory": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03\\output\\file_inventory.md",
+    "manifest": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_archive_manifest.md",
+    "receipt": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_archive_receipt.md",
+    "safety": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_path_safety_receipt.md",
+    "handoff": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_ch02_stroop_file_handoff.md",
+    "evidence": "C:\\Users\\84763\\Desktop\\Python教程\\python_tutorial_ch03\\workspace_ch03\\output\\ch03_archive_evidence_board.png"
   }
 }

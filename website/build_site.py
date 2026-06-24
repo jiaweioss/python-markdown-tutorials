@@ -23,7 +23,7 @@ DOWNLOADS_OUT = OUT / "downloads"
 
 PUBLIC_CHAPTER_MAX = 5
 PUBLIC_RELEASE_NOTE = "当前正文开放到第 5 章；ch06-ch10 页面显示“敬请期待”，整章材料包已全部开放下载。"
-ASSET_VERSION = "20260624-unified-course-shell"
+ASSET_VERSION = "20260624-sidebar-unified"
 MATERIAL_FOLDERS = ["chapters", "code", "reports", "output", "source_notes", "scripts"]
 MATERIAL_FILES = ["README.md", "manifest.json"]
 
@@ -296,7 +296,7 @@ def link(href: str, label: str, css_class: str = "") -> str:
 def topbar(depth: str = "") -> str:
     return f"""
 <header class="topbar">
-  <button class="icon-button nav-toggle" data-nav-toggle title="打开课程目录" aria-label="打开课程目录" aria-expanded="false">目录</button>
+  <button class="icon-button nav-toggle" data-nav-toggle title="打开课程目录" aria-label="打开课程目录" aria-controls="course-sidebar" aria-expanded="false">目录</button>
   <a class="brand" href="{depth}index.html" aria-label="Python 教程首页">
     <span class="brand-mark">Py</span>
     <span class="brand-text">Python 教程</span>
@@ -309,21 +309,10 @@ def topbar(depth: str = "") -> str:
 """
 
 
-def sidebar_header(depth: str = "") -> str:
-    return f"""
-<div class="sidebar-status">
-  <span>开放正文</span>
-  <strong>{release_range_label()}</strong>
-  <small>后续章节正文敬请期待，整章材料包可先下载。</small>
-</div>
-<a class="sidebar-download" href="{depth}files/">下载全部材料</a>
-"""
-
-
 def nav_group(label: str, chapters: list[Chapter], active: int | None, depth: str, same_dir: bool) -> str:
     if not chapters:
         return ""
-    items = [f'<p class="nav-section-label">{html.escape(label)}</p>']
+    items = [f'<section class="nav-group" aria-label="{html.escape(label)}">', f'<h2 class="nav-section-label">{html.escape(label)}</h2>']
     for chapter in chapters:
         href = chapter.page_name if same_dir else f"{depth}chapters/{chapter.page_name}"
         classes = ["nav-chapter", status_class(chapter)]
@@ -338,6 +327,7 @@ def nav_group(label: str, chapters: list[Chapter], active: int | None, depth: st
             f'<span class="chapter-status {status_class(chapter)}">{status_label(chapter)}</span>'
             "</a>"
         )
+    items.append("</section>")
     return "\n".join(items)
 
 
@@ -345,6 +335,29 @@ def chapter_nav(chapters: list[Chapter], active: int | None, depth: str = "", sa
     opened = nav_group("已开放章节", open_chapters(chapters), active, depth, same_dir)
     upcoming = nav_group("敬请期待章节", upcoming_chapters(chapters), active, depth, same_dir)
     return f'<nav class="chapter-nav">{opened}{upcoming}</nav>'
+
+
+def course_sidebar(chapters: list[Chapter], active: int | None, depth: str = "", same_dir: bool = False) -> str:
+    return f"""
+  <aside class="course-sidebar" id="course-sidebar" aria-label="课程目录">
+    <div class="course-sidebar-inner">
+      <div class="course-sidebar-brand">
+        <span class="course-sidebar-mark">Py</span>
+        <div>
+          <p>Python 教程</p>
+          <small>{release_range_label()} 正文开放</small>
+        </div>
+      </div>
+      <div class="course-sidebar-summary">
+        <span>当前开放</span>
+        <strong>{release_range_label()}</strong>
+        <small>ch06-ch10 正文敬请期待，整章材料包可以先下载。</small>
+      </div>
+      <a class="course-sidebar-materials" href="{depth}files/">材料中心与整章下载</a>
+      {chapter_nav(chapters, active, depth, same_dir)}
+    </div>
+  </aside>
+"""
 
 
 def layout_page(title: str, body: str, depth: str = "") -> str:
@@ -422,13 +435,7 @@ def build_home(chapters: list[Chapter]) -> None:
     body = f"""
 {topbar()}
 <div class="site-shell">
-  <aside class="sidebar" id="course-sidebar">
-    <div class="sidebar-inner">
-      <p class="sidebar-title">课程目录</p>
-      {sidebar_header()}
-      {chapter_nav(chapters, None)}
-    </div>
-  </aside>
+  {course_sidebar(chapters, None)}
   <main class="home-main">
     <section class="course-hero">
       <div class="hero-copy">
@@ -514,13 +521,7 @@ def build_chapter_file_index(chapter: Chapter, chapters: list[Chapter]) -> None:
     body = f"""
 {topbar("../../")}
 <div class="site-shell">
-  <aside class="sidebar" id="course-sidebar">
-    <div class="sidebar-inner">
-      <p class="sidebar-title">课程目录</p>
-      {sidebar_header("../../")}
-      {chapter_nav(chapters, chapter.index, "../../")}
-    </div>
-  </aside>
+  {course_sidebar(chapters, chapter.index, "../../")}
   <main class="home-main">
     <section class="download-hero">
       <div>
@@ -581,13 +582,7 @@ def build_files_index(chapters: list[Chapter]) -> None:
     body = f"""
 {topbar("../")}
 <div class="site-shell">
-  <aside class="sidebar" id="course-sidebar">
-    <div class="sidebar-inner">
-      <p class="sidebar-title">课程目录</p>
-      {sidebar_header("../")}
-      {chapter_nav(chapters, None, "../")}
-    </div>
-  </aside>
+  {course_sidebar(chapters, None, "../")}
   <main class="home-main">
     <section class="download-center-hero">
       <div>
@@ -689,18 +684,12 @@ def build_chapter_pages(chapters: list[Chapter]) -> None:
             body = f"""
 {topbar("../")}
 <div class="chapter-shell">
-  <aside class="sidebar" id="course-sidebar">
-    <div class="sidebar-inner">
-      <p class="sidebar-title">课程目录</p>
-      {sidebar_header("../")}
-      {chapter_nav(chapters, chapter.index, "../", same_dir=True)}
-    </div>
-  </aside>
+  {course_sidebar(chapters, chapter.index, "../", same_dir=True)}
   <main class="article-main">
     <section class="locked-hero" id="top">
       <p class="article-kicker">{chapter.key.upper()} · 正文待开放</p>
       <h1>敬请期待</h1>
-      <p>{html.escape(short_title(chapter.title))} 的网页正文正在整理验收。当前正文开放范围是 {release_range_label()}；本章材料包已生成，可以先下载代码、报告、图片与 Markdown 原文。</p>
+      <p>{html.escape(short_title(chapter.title))} 的网页正文正在整理完善。当前正文开放范围是 {release_range_label()}；本章材料包已生成，可以先下载代码、报告、图片与 Markdown 原文。</p>
       <div class="locked-actions">
         <a class="button primary large" href="../downloads/{html.escape(chapter.folder.name)}.zip">下载本章材料包</a>
         <a class="button large" href="../files/{html.escape(chapter.folder.name)}/">查看材料清单</a>
@@ -721,13 +710,7 @@ def build_chapter_pages(chapters: list[Chapter]) -> None:
             body = f"""
 {topbar("../")}
 <div class="chapter-shell">
-  <aside class="sidebar" id="course-sidebar">
-    <div class="sidebar-inner">
-      <p class="sidebar-title">课程目录</p>
-      {sidebar_header("../")}
-      {chapter_nav(chapters, chapter.index, "../", same_dir=True)}
-    </div>
-  </aside>
+  {course_sidebar(chapters, chapter.index, "../", same_dir=True)}
   <main class="article-main">
     <header class="article-head">
       <p class="article-kicker">{chapter.key.upper()} · 正文已开放</p>

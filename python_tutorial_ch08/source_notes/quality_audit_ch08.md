@@ -1,8 +1,8 @@
-# 第8章质量验收记录
+# 第8章质量检查记录
 
-验收日期：2026-06-15
+检查日期：2026-06-15
 
-## 验收范围
+## 检查范围
 
 - `chapters/`
 - `assets/ch08/`
@@ -16,15 +16,15 @@
 
 ## 目标对照
 
-| 需求 | 当前证据 | 状态 |
+| 需求 | 当前记录 | 状态 |
 | --- | --- | --- |
-| 符合 ch0/ch1 图文标准 | 正文约 19941 字，包含 `[TOC]`、本章导读、分区导航、五个清晰部分、Tim Berners-Lee、Vannevar Bush、WorldWideWeb、CERN 服务器、Mosaic、Internet Archive、xkcd 梗图、真实运行图、爬虫运行证据图、爬虫礼仪检查卡、来源可信度评分卡、公开资料采集包、来源追踪档案、代码、项目、练习与总结 | 已完成 |
+| 符合 ch0/ch1 图文标准 | 正文约 19941 字，包含 `[TOC]`、本章导读、分区导航、五个清晰部分、Tim Berners-Lee、Vannevar Bush、WorldWideWeb、CERN 服务器、Mosaic、Internet Archive、xkcd 梗图、真实运行图、爬虫运行记录图、爬虫礼仪检查卡、来源可信度评分卡、公开资料采集包、来源追踪档案、代码、项目、练习与总结 | 已完成 |
 | 图片居中且有图注 | 正文 24 张图片全部使用 `<figure>` 与 `<figcaption>` | 已完成 |
 | 图片内部不堆解释文字 | 整理图不新增解释性长文字，说明放在正文和图注；真实历史图、浏览器图、xkcd 漫画和脚本生成图保留自身内容 | 已完成 |
 | 故事穿插在知识点中 | Web 起源对应 URL/链接，Vannevar Bush 对应关联路径和来源路标，服务器对应请求，Mosaic 对应页面结构，Internet Archive 和 xkcd 对应来源复查，来源卡片和评分卡对应科研材料管理；路线表、核心概念和脚本导读已改成学生视角的可执行采集动作 | 已完成 |
 | 线上开放范围统一 | 网站构建脚本保持 `PUBLIC_CHAPTER_MAX = 6`，ch08 仅作为本地后续章节整理，不推进线上开放范围 | 已完成 |
-| 真实运行环境截图 | PowerShell 运行图展示脚本的运行路径与生成结果；新增爬虫运行证据图集中检查 CSV、报告、来源卡片、评分卡、采集包和追踪档案 | 已完成 |
-| 学以致用 | 本章项目为“公开资料采集器”，新增采集报告、来源卡片、爬虫礼仪检查卡、来源可信度评分卡、公开资料采集包、来源追踪档案、运行证据和七张脚本生成预览/证据图 | 已完成 |
+| 真实运行环境截图 | PowerShell 运行图展示脚本的运行路径与生成结果；新增爬虫运行记录图集中检查 CSV、报告、来源卡片、评分卡、采集包和追踪档案 | 已完成 |
+| 学以致用 | 本章项目为“公开资料采集器”，新增采集报告、来源卡片、爬虫礼仪检查卡、来源可信度评分卡、公开资料采集包、来源追踪档案、运行记录和七张脚本生成预览/记录图 | 已完成 |
 | 代码可检查 | 示例脚本均为 ASCII 文件名，可进行 AST 语法检查 | 已完成 |
 
 ## 当前结果
@@ -72,7 +72,7 @@ python code/ch08/10_make_scraper_runtime_evidence.py
 - `output/ch08_scraper_runtime_evidence.png`
 - `assets/ch08/web/ch08_scraper_runtime_evidence.png`
 
-## 验收动作
+## 检查动作
 
 - 运行 `python scripts/generate_ch08_visuals.py`，重新生成 24 张正式图片。
 - 运行 `python scripts/check_links.py`，确认 Markdown 图片链接有效。
@@ -81,7 +81,7 @@ python code/ch08/10_make_scraper_runtime_evidence.py
 - 生成临时总览图检查构图与排版，确认后删除临时文件。
 - 运行全书交叉检查：通过，11 个章节包、130 个 Python 文件、108 个 code Python 脚本、263 个 Markdown 图片引用，0 个缺失本地图片链接，0 个图注不匹配，0 个 manifest 计数不一致，0 个 PIL 图片错误，0 个临时文件残留。
 
-当前补充验收结果：
+当前补充检查结果：
 
 - `scripts/check_links.py`：通过，检查 24 个本地图片引用
 - Python 语法检查：通过，AST 覆盖 12 个 `.py` 文件

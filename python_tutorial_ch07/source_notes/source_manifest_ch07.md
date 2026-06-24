@@ -38,15 +38,15 @@
 - `assets/ch07/web/ch07_game_balance_preview.png`：本机运行 `05_make_game_balance_report.py` 生成的小游戏难度调参预览图。
 - `assets/ch07/web/ch07_game_feedback_loop.png`：本机运行 `06_make_game_feedback_loop.py` 生成的游戏反馈循环预览图。
 - `assets/ch07/web/ch07_flow_tuning_curve.png`：本机运行 `07_make_flow_tuning_curve.py` 生成的心流难度调参曲线。
-- `assets/ch07/web/ch07_data_driven_tuning.png`：本机运行 `08_make_data_driven_tuning.py` 生成的数据驱动调参回执。
+- `assets/ch07/web/ch07_data_driven_tuning.png`：本机运行 `08_make_data_driven_tuning.py` 生成的数据驱动调参记录。
 - `assets/ch07/web/ch07_teaching_feedback_game.png`：本机运行 `09_make_teaching_feedback_game.py` 生成的教学反馈小游戏计划图。
-- `assets/ch07/web/ch07_game_runtime_evidence.png`：本机运行 `10_make_game_runtime_evidence.py` 生成的游戏运行证据图。
-- `reports/ch07_game_runtime_evidence.md`：游戏运行证据 Markdown 报告，检查本章 14 个关键产物。
-- `output/ch07_game_runtime_evidence.png`：游戏运行证据输出图。
+- `assets/ch07/web/ch07_game_runtime_evidence.png`：本机运行 `10_make_game_runtime_evidence.py` 生成的游戏运行记录图。
+- `reports/ch07_game_runtime_evidence.md`：游戏运行记录 Markdown 报告，检查本章 14 个关键产物。
+- `output/ch07_game_runtime_evidence.png`：游戏运行记录输出图。
 
 ## 生成素材
 
-本章包含 25 张正文正式图片、7 张互联网原图/素材、1 张本机 PyGame 窗口截图、1 张本机 PowerShell 运行图、1 张无文字反馈回路类比图和 8 张脚本生成预览/证据图。
+本章包含 25 张正文正式图片、7 张互联网原图/素材、1 张本机 PyGame 窗口截图、1 张本机 PowerShell 运行图、1 张无文字反馈回路类比图和 8 张脚本生成预览/记录图。
 
 正式图片：
 

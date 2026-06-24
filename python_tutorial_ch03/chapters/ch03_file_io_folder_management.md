@@ -70,7 +70,7 @@ figcaption strong {
 
 <figure align="center">
   <img src="../assets/ch03/ch03_archive_box_project_story.png" alt="档案盒照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-3 档案盒照片</strong>：文件夹管理的目标不是“把文件藏起来”，而是像整理档案一样，让资料能被找到、能被复现、能被交付。</figcaption>
+  <figcaption><strong>图3-3 档案盒照片</strong>：文件夹管理的目标不是“把文件藏起来”，而是像整理档案一样，让资料能被找到、能被复现、能被成果。</figcaption>
 </figure>
 
 可以把本章想象成一次资料归档任务。
@@ -88,7 +88,7 @@ figcaption strong {
 
 1945 年，工程师 Vannevar Bush 写下《As We May Think》，想象一种叫 Memex 的机器：人可以把书籍、照片、笔记和索引连接起来，像沿着一串脚印一样重新找到想法。后来超文本、信息检索和知识管理的发展，都能看到这条思想线索的影子。
 
-这和本章的文件读写有什么关系？关系非常直接。一个杂乱文件夹里当然也有资料，但它缺少“线索”。当你用 Python 把原始数据、整理结果、报告、图片和清单放到明确位置时，你其实是在给资料修路：哪份是原始文件，哪份是处理结果，哪份可以交付，哪份只是中间产物，都变得可追踪。
+这和本章的文件读写有什么关系？关系非常直接。一个杂乱文件夹里当然也有资料，但它缺少“线索”。当你用 Python 把原始数据、整理结果、报告、图片和清单放到明确位置时，你其实是在给资料修路：哪份是原始文件，哪份是处理结果，哪份可以复查，哪份只是中间产物，都变得可追踪。
 
 所以第3章的人文背景不是“文件夹好整齐”这么简单，而是一个更老的问题：人类如何把记忆放到身体之外，又如何在未来重新找到它？档案盒、卡片目录、索引、编号、入库登记、借阅记录，本质上都在做三件事：
 
@@ -96,7 +96,7 @@ figcaption strong {
 2. **定位**：资料不能只说“在电脑里”，要有路径、目录和命名。
 3. **追踪**：资料从哪里来、被移动到哪里、处理后生成了什么，要能说清楚。
 
-这一章的 `open()`、`Path`、`shutil`、`os.walk()` 和哈希摘要，都是这三件事的现代版本。你不是在学一堆零散 API，而是在学习如何让资料从“散落的文件”变成“有来路、有位置、有证据的材料”。
+这一章的 `open()`、`Path`、`shutil`、`os.walk()` 和哈希摘要，都是这三件事的现代版本。你不是在学一堆零散 API，而是在学习如何让资料从“散落的文件”变成“有来路、有位置、有记录的材料”。
 
 ---
 
@@ -207,7 +207,7 @@ C:\Users\name\Desktop\my_project\data\raw.txt
   <figcaption><strong>图3-8 档案库货架照片</strong>：真实档案库依靠货架、编号和清单保持秩序；程序里的文件夹也需要同样清楚的层级。</figcaption>
 </figure>
 
-把文件夹想象成一排档案货架会更容易理解：`data/` 是原始资料区，`output/` 是加工结果区，`organized/` 是分类归档区，`reports/` 是交付说明区。货架本身不会变聪明，聪明的是你制定了清楚的规则，并让 Python 按规则执行。
+把文件夹想象成一排档案货架会更容易理解：`data/` 是原始资料区，`output/` 是加工结果区，`organized/` 是分类归档区，`reports/` 是成果说明区。货架本身不会变聪明，聪明的是你制定了清楚的规则，并让 Python 按规则执行。
 
 所以后面看到 `Path.mkdir()`、`os.walk()`、`shutil.copyfile()` 时，不要把它们看成零散函数。它们是档案库里的几种动作：建新格子、巡检货架、复制材料、移动材料、生成清单。
 
@@ -684,11 +684,11 @@ python code/ch03/06_safe_delete_demo.py
 
 这个脚本有一个保护函数：如果目标不在 `workspace_ch03` 里，就拒绝删除。
 
-正式做批量复制、移动或删除之前，可以再生成一张“路径安全体检回执”。它不删除任何东西，只检查当前工作区、必要文件夹、源文件数量、整理副本、报告编码和哈希抽查是否正常。
+正式做批量复制、移动或删除之前，可以再生成一张“路径安全体检记录”。它不删除任何东西，只检查当前工作区、必要文件夹、源文件数量、整理副本、报告编码和哈希抽查是否正常。
 
 <figure align="center">
-  <img src="../assets/ch03/ch03_path_safety_receipt.png" alt="路径安全体检回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-17 路径安全体检回执</strong>：文件操作前先确认工作区边界、必要文件夹、源文件、整理副本、编码和哈希抽查；路径先打印清楚，手就不容易抖错地方。</figcaption>
+  <img src="../assets/ch03/ch03_path_safety_receipt.png" alt="路径安全体检记录" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-17 路径安全体检记录</strong>：文件操作前先确认工作区边界、必要文件夹、源文件、整理副本、编码和哈希抽查；路径先打印清楚，手就不容易抖错地方。</figcaption>
 </figure>
 
 配套脚本：
@@ -704,11 +704,11 @@ workspace_ch03/output/ch03_path_safety_receipt.md
 workspace_ch03/output/ch03_path_safety_receipt.png
 ```
 
-有了安全边界以后，就可以接住上一章留下的真实数据了。ch2 已经把 Stroop trial 保存成 JSON 和 CSV；ch3 的任务不是重新发明数据，而是把它读进来、复制进安全工作区、按类型归档，并生成一份能复查的交接回执。
+有了安全边界以后，就可以接住上一章留下的真实数据了。ch2 已经把 Stroop trial 保存成 JSON 和 CSV；ch3 的任务不是重新发明数据，而是把它读进来、复制进安全工作区、按类型归档，并生成一份能复查的交接记录。
 
 <figure align="center">
-  <img src="../assets/ch03/ch03_ch02_stroop_file_handoff.png" alt="ch2 Stroop 文件交接回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-18 ch2 到 ch3 文件交接回执</strong>：第2章的数据包进入第3章安全工作区，JSON 和 CSV 被复制、分类、记录大小与哈希，文件读写从“会打开文件”升级为“会交接资料”。</figcaption>
+  <img src="../assets/ch03/ch03_ch02_stroop_file_handoff.png" alt="ch2 Stroop 文件交接记录" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-18 ch2 到 ch3 文件交接记录</strong>：第2章的数据包进入第3章安全工作区，JSON 和 CSV 被复制、分类、记录大小与哈希，文件读写从“会打开文件”升级为“会交接资料”。</figcaption>
 </figure>
 
 配套脚本：
@@ -820,7 +820,7 @@ workspace_ch03/output/ch03_archive_manifest.md
 
 当文件数量很少时，手工检查还可以忍一忍；当文件变成几十个、几百个时，清单就是你的第二双眼睛。它不替你思考，但它会诚实记录：有什么文件、放在哪里、大小是多少、有没有发生变化。
 
-如果说档案清单回答的是“有哪些文件”，归档回执回答的就是“这批资料能不能交付给别人检查”。继续运行：
+如果说档案清单回答的是“有哪些文件”，归档记录回答的就是“这批资料能不能复查给别人检查”。继续运行：
 
 ```bash
 python code/ch03/09_make_archive_receipt.py
@@ -834,17 +834,17 @@ workspace_ch03/output/ch03_archive_receipt_preview.png
 ```
 
 <figure align="center">
-  <img src="../assets/ch03/ch03_archive_receipt_preview.png" alt="归档回执预览" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-21 归档回执预览</strong>：回执把源文件数量、整理副本、文件类型、总大小和哈希抽查放在一起，适合用作项目交付前的最后检查。</figcaption>
+  <img src="../assets/ch03/ch03_archive_receipt_preview.png" alt="归档记录预览" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-21 归档记录预览</strong>：记录把源文件数量、整理副本、文件类型、总大小和哈希抽查放在一起，适合用作项目收尾前的最后检查。</figcaption>
 </figure>
 
-这一步很像快递员递给你的签收单：箱子里有什么，数量对不对，有没有基本检查记录。文件管理学到这里，已经不只是“会读写文件”，而是开始接近真实工作里的资料交付流程。
+这一步很像快递员递给你的签收单：箱子里有什么，数量对不对，有没有基本检查记录。文件管理学到这里，已经不只是“会读写文件”，而是开始接近真实工作里的资料成果流程。
 
-最后，把本章已经生成的几份证据集中到一张板上。文件读写学习最怕停留在“我好像跑过了”，因为真正做项目时，别人不会检查你的记忆，只会检查文件。
+最后，把本章已经生成的几份记录集中到一张板上。文件读写学习最怕停留在“我好像跑过了”，因为真正做项目时，别人不会检查你的记忆，只会检查文件。
 
 <figure align="center">
-  <img src="../assets/ch03/ch03_archive_evidence_board.png" alt="归档证据板" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-22 归档证据板</strong>：`12_make_archive_evidence_board.py` 汇总输入区、整理区、输出区、归档清单、交付回执、路径安全和 ch2 数据交接状态，给本章项目一个可检查的收尾。</figcaption>
+  <img src="../assets/ch03/ch03_archive_evidence_board.png" alt="归档记录板" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-22 归档记录板</strong>：`12_make_archive_evidence_board.py` 汇总输入区、整理区、输出区、归档清单、成果记录、路径安全和 ch2 数据交接状态，给本章项目一个可检查的收尾。</figcaption>
 </figure>
 
 配套脚本：
@@ -861,9 +861,9 @@ workspace_ch03/output/ch03_archive_evidence_board.png
 reports/ch03_archive_evidence_board.md
 ```
 
-这张图的任务很朴素：把“文件在哪里、整理好了没有、关键回执是否存在”摆到一页上。到了这里，文件管理就不再是零散命令，而是一条清楚的资料交付链。
+这张图的任务很朴素：把“文件在哪里、整理好了没有、关键记录是否存在”摆到一页上。到了这里，文件管理就不再是零散命令，而是一条清楚的资料整理链。
 
-如果再往真实科研项目靠近一步，还可以给这批资料做一份“入库登记册”。证据板更像验收清单，入库登记册更像档案馆门口的登记台：哪些资料从 `inbox/` 进来，哪些已经进入 `organized/`，哪些报告留在 `output/` 和 `reports/`，关键登记文件是否都 ready。
+如果再往真实科研项目靠近一步，还可以给这批资料做一份“入库登记册”。记录板更像检查清单，入库登记册更像档案馆门口的登记台：哪些资料从 `inbox/` 进来，哪些已经进入 `organized/`，哪些报告留在 `output/` 和 `reports/`，关键登记文件是否都 ready。
 
 ```bash
 python code/ch03/13_make_material_intake_register.py
@@ -879,10 +879,10 @@ reports/ch03_material_intake_register.md
 
 <figure align="center">
   <img src="../assets/ch03/ch03_material_intake_register.png" alt="资料入库登记册" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-23 资料入库登记册</strong>：`13_make_material_intake_register.py` 扫描 `inbox/`、`organized/`、`output/` 和 `reports/`，把资料入口、整理结果、输出报告和关键证据文件放在同一张图里，让“我整理过文件”升级为“我能说明资料从哪里来、现在在哪里、凭什么可信”。</figcaption>
+  <figcaption><strong>图3-23 资料入库登记册</strong>：`13_make_material_intake_register.py` 扫描 `inbox/`、`organized/`、`output/` 和 `reports/`，把资料入口、整理结果、输出报告和关键记录文件放在同一张图里，让“我整理过文件”升级为“我能说明资料从哪里来、现在在哪里、凭什么可信”。</figcaption>
 </figure>
 
-这张图里没有长篇解释，因为真正的解释应该留在 Markdown 里：文件管理最有价值的地方，不是让文件夹看起来很干净，而是让未来的你、项目伙伴、甚至一个完全没参与项目的人，都能沿着登记册找到材料、报告和证据。资料一旦能被别人复查，就从“个人电脑里的东西”变成了“可以交付的项目材料”。
+这张图里没有长篇解释，因为真正的解释应该留在 Markdown 里：文件管理最有价值的地方，不是让文件夹看起来很干净，而是让未来的你、项目伙伴、甚至一个完全没参与项目的人，都能沿着登记册找到材料、报告和记录。资料一旦能被别人复查，就从“个人电脑里的东西”变成了“可以复查的项目材料”。
 
 ---
 
@@ -904,10 +904,10 @@ reports/ch03_material_intake_register.md
 
 <figure align="center">
   <img src="../assets/ch03/ch03_review_checkpoint.png" alt="文件读写复盘检查点" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-24 文件读写复盘检查点</strong>：学完这一章，脑子里最好留下的不是一串 API 名字，而是一条能复现的路线：从文件夹出发，找到资料，读入程序，生成输出，再用清单和回执把结果检查一遍。</figcaption>
+  <figcaption><strong>图3-24 文件读写复盘检查点</strong>：学完这一章，脑子里最好留下的不是一串 API 名字，而是一条能复现的路线：从文件夹出发，找到资料，读入程序，生成输出，再用清单和记录把结果检查一遍。</figcaption>
 </figure>
 
-如果把这一章想成一次档案馆夜间巡检，表格里的概念就是手电筒、钥匙、登记册和搬运车。每个工具单独看都不复杂，真正重要的是顺序：先确认位置，再读写文件，再整理输出，最后留下证据。这个顺序一旦稳定，后面做 GUI、爬虫、数据分析时，程序就不会把材料丢在路上。
+如果把这一章想成一次档案馆夜间巡检，表格里的概念就是手电筒、钥匙、登记册和搬运车。每个工具单独看都不复杂，真正重要的是顺序：先确认位置，再读写文件，再整理输出，最后留下记录。这个顺序一旦稳定，后面做 GUI、爬虫、数据分析时，程序就不会把材料丢在路上。
 
 ---
 
@@ -951,7 +951,7 @@ reports/ch03_material_intake_register.md
 
 读取 `workspace_ch03/output/ch03_archive_manifest.md`，观察每个文件的 SHA-256 前缀。然后修改一个示例文件，重新运行 `08_make_archive_manifest.py`，看看对应指纹是否发生变化。
 
-### 练习 6：生成归档回执
+### 练习 6：生成归档记录
 
 运行：
 
@@ -969,7 +969,7 @@ workspace_ch03/output/ch03_archive_receipt.md
 
 1. 这次归档有多少个源文件？
 2. 哪种后缀的文件最多？
-3. 为什么“清单”和“回执”都需要保留？
+3. 为什么“清单”和“记录”都需要保留？
 
 ### 练习 7：接收上一章的数据包
 
@@ -992,7 +992,7 @@ python code/ch03/11_make_ch02_stroop_file_handoff.py
 3. `workspace_ch03/output/ch03_ch02_stroop_file_handoff.md`
 4. `workspace_ch03/output/ch03_ch02_stroop_file_handoff.png`
 
-然后打开 Markdown 回执，回答：为什么文件交接时要记录大小和哈希？如果只说“我复制过了”，证据够不够？
+然后打开 Markdown 记录，回答：为什么文件交接时要记录大小和哈希？如果只说“我复制过了”，记录够不够？
 
 ### 练习 8：生成资料入库登记册
 
@@ -1011,15 +1011,15 @@ reports/ch03_material_intake_register.md
 回答三个问题：
 
 1. `inbox/`、`organized/`、`output/`、`reports/` 各有多少个文件？
-2. 哪个区域最像“原料入口”，哪个区域最像“交付出口”？
-3. 如果别人只拿到这份登记册，能不能判断本章项目是否值得信任？还缺什么证据？
+2. 哪个区域最像“原料入口”，哪个区域最像“成果出口”？
+3. 如果别人只拿到这份登记册，能不能判断本章项目是否值得信任？还缺什么记录？
 
 <figure align="center">
-  <img src="../assets/ch03/ch03_practice_evidence_workbench.png" alt="文件管理练习证据工作台" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-25 文件管理练习证据工作台</strong>：练习不是把命令敲完就结束，而是把输入文件、整理目录、输出报告和终端运行结果都摆上桌面，检查它们是否彼此对得上。</figcaption>
+  <img src="../assets/ch03/ch03_practice_evidence_workbench.png" alt="文件管理练习记录工作台" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图3-25 文件管理练习记录工作台</strong>：练习不是把命令敲完就结束，而是把输入文件、整理目录、输出报告和终端运行结果都摆上桌面，检查它们是否彼此对得上。</figcaption>
 </figure>
 
-做这些练习时，可以把自己当成项目资料管理员：不是“我跑过代码”，而是“我能证明这批资料从哪里来、被放到哪里、生成了什么结果”。这种证据意识会在后面的科研自动化任务里反复出现，尤其是处理问卷、实验记录、图片素材和报告附件时。
+做这些练习时，可以把自己当成项目资料管理员：不是“我跑过代码”，而是“我能证明这批资料从哪里来、被放到哪里、生成了什么结果”。这种记录意识会在后面的科研自动化任务里反复出现，尤其是处理问卷、实验记录、图片素材和报告附件时。
 
 ---
 

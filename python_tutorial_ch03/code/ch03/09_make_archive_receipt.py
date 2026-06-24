@@ -1,4 +1,4 @@
-"""Chapter 03 project extension: create an archive delivery receipt."""
+"""Chapter 03 project extension: create an archive 打包记录."""
 
 from __future__ import annotations
 
@@ -87,9 +87,9 @@ def write_markdown(summary: dict[str, object]) -> None:
     sample_hashes: list[tuple[str, str]] = summary["sample_hashes"]  # type: ignore[assignment]
 
     lines = [
-        "# Chapter 03 Archive Receipt",
+        "# 第3章资料归档记录",
         "",
-        "This receipt is a compact delivery note for the demo archive in `workspace_ch03`.",
+        "这份记录用来说明 `workspace_ch03` 里的资料是否已经整理清楚。",
         "",
         "## Summary",
         "",
@@ -98,7 +98,7 @@ def write_markdown(summary: dict[str, object]) -> None:
         f"- File types: {summary['type_count']}",
         f"- Total recorded size: {summary['total_size']} bytes",
         "",
-        "## File Types",
+        "## 文件类型",
         "",
         "| Suffix | Count |",
         "| --- | ---: |",
@@ -106,17 +106,17 @@ def write_markdown(summary: dict[str, object]) -> None:
     for suffix, count in sorted(suffix_counts.items()):
         lines.append(f"| `{suffix}` | {count} |")
 
-    lines.extend(["", "## Hash Spot Check", "", "| Path | SHA-256 prefix |", "| --- | --- |"])
+    lines.extend(["", "## 哈希抽查", "", "| Path | SHA-256 prefix |", "| --- | --- |"])
     for path, digest in sample_hashes:
         lines.append(f"| `{path}` | `{digest}` |")
 
     lines.extend(
         [
             "",
-            "## Delivery Meaning",
+            "## 复查意义",
             "",
             "A manifest answers: what exact files are present?",
-            "A receipt answers: can this archive be handed to another person for review?",
+            "这份记录回答一个朴素问题：别人能不能沿着清单复查这批资料？",
             "",
         ]
     )
@@ -151,8 +151,8 @@ def make_preview(summary: dict[str, object]) -> bool:
     mono_font = load_font(21)
 
     colors = ["#2F6BFF", "#24A06B", "#F28C28", "#7A5AF8"]
-    draw.text((75, 58), "Archive Receipt", font=title_font, fill="#172033")
-    draw.text((80, 128), "A compact delivery note for the organized workspace.", font=body_font, fill="#5D6678")
+    draw.text((75, 58), "资料归档记录", font=title_font, fill="#172033")
+    draw.text((80, 128), "把整理后的工作区压成一页记录。", font=body_font, fill="#5D6678")
 
     metrics = [
         ("source", summary["source_count"]),
@@ -171,7 +171,7 @@ def make_preview(summary: dict[str, object]) -> bool:
     suffix_counts: Counter[str] = summary["suffix_counts"]  # type: ignore[assignment]
     max_count = max(suffix_counts.values()) if suffix_counts else 1
     draw.rounded_rectangle((80, 420, 700, 760), radius=24, fill="white", outline="#D9E1EE", width=2)
-    draw.text((120, 455), "File Types", font=h_font, fill="#172033")
+    draw.text((120, 455), "文件类型", font=h_font, fill="#172033")
     y = 520
     for idx, (suffix, count) in enumerate(sorted(suffix_counts.items())):
         color = colors[idx % len(colors)]
@@ -183,7 +183,7 @@ def make_preview(summary: dict[str, object]) -> bool:
 
     sample_hashes: list[tuple[str, str]] = summary["sample_hashes"]  # type: ignore[assignment]
     draw.rounded_rectangle((780, 420, 1420, 760), radius=24, fill="white", outline="#D9E1EE", width=2)
-    draw.text((820, 455), "Hash Spot Check", font=h_font, fill="#172033")
+    draw.text((820, 455), "哈希抽查", font=h_font, fill="#172033")
     y = 520
     for path, digest in sample_hashes:
         short_path = path if len(path) <= 33 else "..." + path[-30:]
@@ -192,7 +192,7 @@ def make_preview(summary: dict[str, object]) -> bool:
         y += 52
 
     draw.rounded_rectangle((250, 815, 1250, 872), radius=22, fill="#F1FFF7", outline="#9BD7B7", width=2)
-    draw.text((320, 830), "Manifest records the files. Receipt tells whether the archive is ready to hand over.", font=small_font, fill="#176342")
+    draw.text((320, 830), "清单记录有哪些文件，归档记录说明它们是否方便复查。", font=small_font, fill="#176342")
 
     PREVIEW.parent.mkdir(parents=True, exist_ok=True)
     image.save(PREVIEW, optimize=True, quality=95)

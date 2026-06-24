@@ -1,4 +1,4 @@
-"""Package generated office artifacts and write a delivery receipt."""
+"""Package generated office artifacts and write a 打包记录."""
 
 from __future__ import annotations
 
@@ -67,11 +67,11 @@ def make_zip(rows: list[dict[str, str | int]]) -> None:
 
 def write_receipt(rows: list[dict[str, str | int]]) -> None:
     lines = [
-        "# 第10章交付回执",
+        "# 第10章成果记录",
         "",
-        "这份回执由 Python 生成，用来记录最终打包前的文件状态。",
+        "这份记录由 Python 生成，用来记录最终打包前的文件状态。",
         "",
-        f"- 交付包：`{PACKAGE.as_posix()}`",
+        f"- 成果包：`{PACKAGE.as_posix()}`",
         f"- 包大小：{PACKAGE.stat().st_size if PACKAGE.exists() else 0} bytes",
         "",
         "| 文件 | 状态 | 大小 bytes |",
@@ -86,8 +86,8 @@ def write_preview(rows: list[dict[str, str | int]]) -> None:
     image = Image.new("RGB", (1700, 1260), "#F7F8FB")
     draw = ImageDraw.Draw(image)
     draw.rounded_rectangle((90, 70, 1610, 1175), radius=26, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    draw.text((150, 125), "Delivery Receipt", fill="#162033", font=font(52, True))
-    draw.text((150, 200), "打包前检查文件状态，给交付物留一张回执。", fill="#5F6673", font=font(28))
+    draw.text((150, 125), "成果打包记录", fill="#162033", font=font(52, True))
+    draw.text((150, 200), "打包前检查文件状态，给成果文件留一张记录。", fill="#5F6673", font=font(28))
 
     y = 290
     for row in rows:
@@ -100,7 +100,7 @@ def write_preview(rows: list[dict[str, str | int]]) -> None:
         y += 52
 
     draw.rounded_rectangle((250, 1045, 1450, 1095), radius=18, fill="#FFF7E8", outline="#F2B84B", width=2)
-    draw.text((440, 1057), "Package: reports/ch10_delivery_package.zip", fill="#8A5A00", font=font(20))
+    draw.text((440, 1057), "成果包：reports/ch10_delivery_package.zip", fill="#8A5A00", font=font(20))
 
     image.save(PREVIEW, optimize=True, quality=95)
     ASSET_COPY.parent.mkdir(parents=True, exist_ok=True)

@@ -7,6 +7,7 @@
   const body = document.body;
   const navToggle = document.querySelector("[data-nav-toggle]");
   const navBackdrop = document.querySelector("[data-nav-backdrop]");
+  const desktopQuery = window.matchMedia("(min-width: 861px)");
 
   const closeNav = () => {
     body.classList.remove("nav-open");
@@ -29,6 +30,11 @@
   document.querySelectorAll(".chapter-nav a").forEach((link) => {
     link.addEventListener("click", closeNav);
   });
+  const closeNavOnDesktop = () => {
+    if (desktopQuery.matches || window.innerWidth > 860) closeNav();
+  };
+  desktopQuery.addEventListener("change", closeNavOnDesktop);
+  window.addEventListener("resize", closeNavOnDesktop);
 
   const themeButton = document.querySelector("[data-theme-toggle]");
   if (themeButton) {

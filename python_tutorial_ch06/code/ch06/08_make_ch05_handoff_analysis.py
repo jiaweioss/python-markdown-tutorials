@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 def project_root() -> Path:
     here = Path.cwd()
-    if (here / "assets" / "ch06").exists():
+    if (here / "manifest.json").exists() and (here / "assets" / "ch06").exists():
         return here
     return Path(__file__).resolve().parents[2]
 
@@ -104,9 +104,9 @@ def write_outputs(summary: dict) -> None:
 
     tag_text = "、".join(f"{tag}={count}" for tag, count in summary["tag_counts"].items())
     lines = [
-        "# 第 6 章跨章节数据分析回执",
+        "# 第 6 章跨章节数据分析记录",
         "",
-        "这份回执读取第 5 章导出的对象交付包，把对象模型转换成可以分析的摘要数据。",
+        "这份记录读取第 5 章导出的对象成果包，把对象模型转换成可以分析的摘要数据。",
         "",
         "| 指标 | 结果 |",
         "| --- | --- |",
@@ -132,7 +132,7 @@ def draw_preview(summary: dict) -> None:
 
     d.rounded_rectangle((150, 285, 575, 625), radius=24, fill="#EEF6FF", outline="#9CC8FF", width=3)
     d.text((190, 325), "输入", fill="#28517A", font=font(30, True))
-    d.text((190, 385), "对象交付包", fill="#162033", font=font(28, True))
+    d.text((190, 385), "对象成果包", fill="#162033", font=font(28, True))
     d.text((190, 445), f"卡片数：{summary['card_count']}", fill="#465263", font=font(25))
     d.text((190, 495), f"试次反应：{summary['trial_reaction_time_ms']} ms", fill="#465263", font=font(25))
 

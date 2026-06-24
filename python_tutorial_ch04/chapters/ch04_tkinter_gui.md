@@ -12,7 +12,7 @@
 
 第4章继续推进“科研卡片工厂”。前面几章已经打通了环境、数据类型和文件管理；现在我们要给这些能力做一个前台入口。用户不需要记住 `Path.write_text()`，也不需要知道脚本内部函数名，只要在窗口里填内容、点按钮、看到反馈，最后能在 `cards/` 或 `reports/` 里找到结果。
 
-本章的读法和第1章保持一致：**先跑真实脚本，再看截图证据，最后把概念拆成能复查的动作**。不要一上来背 Tkinter API。先让一个窗口真的停在屏幕上，再逐步问：窗口是谁创建的，控件从哪里来，按钮点下去之后到底调用了哪个函数，保存结果在哪里。
+本章的读法和第1章保持一致：**先跑真实脚本，再看截图记录，最后把概念拆成能复查的动作**。不要一上来背 Tkinter API。先让一个窗口真的停在屏幕上，再逐步问：窗口是谁创建的，控件从哪里来，按钮点下去之后到底调用了哪个函数，保存结果在哪里。
 
 ---
 
@@ -28,17 +28,17 @@
 4. 解释 `command=save_card` 与 `command=save_card()` 的区别，避免回调函数提前执行。
 5. 运行 `03_stroop_gui_preview.py`，理解 GUI 如何承接心理学实验里的刺激、按键、正确性和反应时。
 6. 使用可用性检查清单判断一个小窗口是否让用户少猜、少错、少迷路。
-7. 完成本章小项目：**科研卡片工厂控制面板**，并留下卡片、报告、输出图和运行证据。
+7. 完成本章小项目：**科研卡片工厂控制面板**，并留下卡片、报告、输出图和运行记录。
 
 ### 本章分区导航
 
-| 分区 | 对应小节 | 你要抓住的主线 | 产出证据 |
+| 分区 | 对应小节 | 你要抓住的主线 | 产出记录 |
 | --- | --- | --- | --- |
 | 第一部分：窗口通电与心智模型 | 4.1-4.3 | GUI 是把函数包装成用户能操作的动作 | 最小窗口截图、代码与界面对照图 |
 | 第二部分：控件、布局与表单 | 4.4-4.6 | 控件负责收集输入，布局负责让它们有秩序 | 学习卡片表单窗口、保存函数 |
 | 第三部分：事件、回调与反馈 | 4.7-4.10 | 点击、按键和消息框形成交互闭环 | Stroop GUI、可用性检查、反馈检查卡 |
-| 第四部分：项目交付与跨章连接 | 4.11-4.14 | GUI 项目最后要留下文件、报告和用户旅程证据 | 交互回执、卡片交付物、ch3 数据面板 |
-| 第五部分：排错、练习与验收 | 4.15-4.20 | 用固定路线排查 GUI 常见问题 | 常见坑地图、运行证据清单、复盘报告 |
+| 第四部分：学习成果与跨章连接 | 4.11-4.14 | GUI 项目最后要留下文件、报告和用户旅程记录 | 交互记录、卡片成果、ch3 数据面板 |
+| 第五部分：排错、练习与自查 | 4.15-4.20 | 用固定路线排查 GUI 常见问题 | 常见坑地图、运行记录清单、复盘报告 |
 
 <figure align="center">
   <img src="../assets/ch04/ch04_roadmap.png" alt="第4章学习路线图" style="zoom:50%; display:block; margin:0 auto;" />
@@ -150,7 +150,7 @@ root.mainloop()
 3. 终端有没有报错？
 4. 有没有远程环境或无图形界面环境导致窗口无法显示？
 
-这和第1章查环境是同一套思路：先找证据，再改问题。
+这和第1章查环境是同一套思路：先看记录，再改问题。
 
 ### 4.3 Tkinter 的五个角色
 
@@ -409,11 +409,11 @@ Don Norman 写“诺曼门”的故事时，批评的不是某一扇门，而是
 
 ---
 
-## 第四部分：项目交付与跨章连接
+## 第四部分：学习成果与跨章连接
 
-### 4.11 交互回执：证明窗口不是只会弹出来
+### 4.11 交互记录：证明窗口不是只会弹出来
 
-运行交互回执脚本：
+运行交互记录脚本：
 
 ```bash
 python code/ch04/06_make_interaction_receipt.py
@@ -427,15 +427,15 @@ reports/ch04_interaction_receipt.md
 ```
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_interaction_receipt.png" alt="GUI 交互回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-15 GUI 交互回执</strong>：交互回执把窗口用途、输入字段、主按钮、反馈和待改进项集中到一张可复查证据里。</figcaption>
+  <img src="../assets/ch04/ch04_interaction_receipt.png" alt="GUI 交互记录" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-15 GUI 交互记录</strong>：交互记录把窗口用途、输入字段、主按钮、反馈和待改进项集中到一张可复查记录里。</figcaption>
 </figure>
 
-这张回执保留一个 `FIX` 项：空标题还需要更友好的提醒。真实项目不必假装每一步都满分。能发现问题、记录问题、继续改进，本身就是工程能力。
+这张记录保留一个 `FIX` 项：空标题还需要更友好的提醒。真实项目不必假装每一步都满分。能发现问题、记录问题、继续改进，本身就是工程能力。
 
-### 4.12 卡片工厂交付物：最后要有文件留下来
+### 4.12 卡片工厂学习成果：最后要有文件留下来
 
-运行卡片交付脚本：
+运行卡片成果脚本：
 
 ```bash
 python code/ch04/07_make_card_factory_delivery.py
@@ -450,8 +450,8 @@ output/ch04_card_factory_delivery.png
 ```
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_card_factory_delivery.png" alt="卡片工厂交付回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-16 卡片工厂交付回执</strong>：GUI 项目的终点不是“窗口看起来不错”，而是输入被保存成可以继续编辑的 Markdown 学习卡片。</figcaption>
+  <img src="../assets/ch04/ch04_card_factory_delivery.png" alt="卡片工厂学习成果" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-16 卡片工厂学习成果</strong>：GUI 项目的终点不是“窗口看起来不错”，而是输入被保存成可以继续编辑的 Markdown 学习卡片。</figcaption>
 </figure>
 
 这一步非常重要。很多 GUI 入门练习只停在窗口截图，但真实工具要留下结果。对“科研卡片工厂”来说，结果就是卡片、报告、输出图和后续可以接着处理的数据。
@@ -505,7 +505,7 @@ output/ch04_ch03_data_gui_panel.png
 
 ---
 
-## 第五部分：排错、练习与验收
+## 第五部分：排错、练习与自查
 
 ### 4.15 常见坑：先按线索排查
 
@@ -525,20 +525,20 @@ output/ch04_ch03_data_gui_panel.png
 
 遇到 GUI 问题时，先不要大改。先把问题缩到最小脚本里：一个窗口、一个标签、一个按钮、一个回调。最小版本能跑，再把功能加回来。
 
-### 4.16 运行证据：GUI 也要能交付
+### 4.16 运行记录：GUI 也要能复查
 
-运行证据脚本：
+运行记录脚本：
 
 ```bash
 python code/ch04/10_make_gui_runtime_evidence.py
 ```
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_gui_runtime_evidence.png" alt="第4章 GUI 运行证据图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-20 GUI 运行证据</strong>：窗口截图、可用性报告、交互回执、卡片交付物、ch3 数据面板和用户旅程图都存在，才说明本章 GUI 项目有完整证据链。</figcaption>
+  <img src="../assets/ch04/ch04_gui_runtime_evidence.png" alt="第4章 GUI 运行记录图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-20 GUI 运行记录</strong>：窗口截图、可用性报告、交互记录、卡片成果、ch3 数据面板和用户旅程图都存在，才说明本章 GUI 项目有完整学习记录。</figcaption>
 </figure>
 
-第1章强调环境要有证据，第4章也一样。GUI 项目不能只说“我看见窗口了”，还要能说清楚：
+第1章强调环境要能复查，第4章也一样。GUI 项目不能只说“我看见窗口了”，还要能说清楚：
 
 1. 真实窗口截图在哪里？
 2. 用户输入如何变成文件？
@@ -546,7 +546,7 @@ python code/ch04/10_make_gui_runtime_evidence.py
 4. 检查报告在哪里？
 5. 跨章节数据如何接入下一步？
 
-### 4.17 上机路线与提交证据
+### 4.17 上机路线与学习成果记录
 
 第一次学习本章时，建议按这个顺序运行：
 
@@ -563,18 +563,18 @@ python code/ch04/09_make_gui_journey_storyboard.py
 python code/ch04/10_make_gui_runtime_evidence.py
 ```
 
-其中前三个脚本会打开窗口，后面的脚本主要生成报告和图片。提交证据可以按下面这张表整理：
+其中前三个脚本会打开窗口，后面的脚本主要生成报告和图片。学习成果记录可以按下面这张表整理：
 
-| 提交证据 | 要看到什么 |
+| 学习成果记录 | 要看到什么 |
 | --- | --- |
 | 最小窗口 | `01_hello_window.py` 能弹出窗口 |
 | 卡片表单 | `02_card_form.py` 能保存一张 Markdown 卡片 |
 | Stroop 预告 | `03_stroop_gui_preview.py` 能显示刺激并响应按键 |
 | 可用性检查 | `reports/ch04_gui_usability_check.md` 存在 |
 | 反馈检查卡 | `reports/ch04_gui_feedback_scorecard.md` 存在 |
-| 交互回执 | `reports/ch04_interaction_receipt.md` 存在 |
-| 卡片交付物 | `cards/working_memory_load_card.md` 存在 |
-| 运行证据 | `reports/ch04_gui_runtime_evidence.md` 存在 |
+| 交互记录 | `reports/ch04_interaction_receipt.md` 存在 |
+| 卡片成果 | `cards/working_memory_load_card.md` 存在 |
+| 运行记录 | `reports/ch04_gui_runtime_evidence.md` 存在 |
 
 ### 4.18 练习任务
 
@@ -587,7 +587,7 @@ python code/ch04/10_make_gui_runtime_evidence.py
 7. 运行 `05_make_gui_feedback_lab.py`，挑一个按钮，从 Target、Spacing、State、Error、Copy 中选一个方向改进。
 8. 运行 `06_make_interaction_receipt.py`，把 `FIX` 项改写成你的下一步计划。
 9. 运行 `08_make_ch03_data_gui_panel.py`，把按钮文案改得更像真实科研工具，例如“导出被试报告”。
-10. 临时移走一个输出文件，再运行 `10_make_gui_runtime_evidence.py`，观察证据清单如何提示缺失；检查后把文件恢复。
+10. 临时移走一个输出文件，再运行 `10_make_gui_runtime_evidence.py`，观察记录清单如何提示缺失；检查后把文件恢复。
 
 ### 4.19 自测问题
 
@@ -595,7 +595,7 @@ python code/ch04/10_make_gui_runtime_evidence.py
 2. 为什么 `command=save_card` 和 `command=save_card()` 结果不同？
 3. `Entry.get()` 和 `Text.get("1.0", "end")` 分别适合拿什么输入？
 4. 保存卡片以后，为什么要给用户反馈？
-5. 一个 GUI 小项目的提交证据应该包含哪些文件？
+5. 一个 GUI 小项目的学习成果记录应该包含哪些文件？
 6. 如果窗口没有出现，你会按什么顺序排查？
 
 判断自己是否真的学会，可以看你能不能把 `02_card_form.py` 讲给同学听：窗口里有什么，用户怎么操作，点击后哪个函数执行，最后文件保存到哪里。
@@ -613,7 +613,7 @@ python code/ch04/10_make_gui_runtime_evidence.py
 ## 我跑通的窗口
 - 
 
-## 我生成的文件证据
+## 我生成的文件记录
 - 
 
 ## 我遇到的 GUI 问题

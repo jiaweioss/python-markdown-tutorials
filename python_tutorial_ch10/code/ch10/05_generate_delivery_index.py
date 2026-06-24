@@ -46,7 +46,7 @@ def collect_rows():
 def write_markdown(rows):
     REPORTS.mkdir(exist_ok=True)
     lines = [
-        "# 第10章交付索引",
+        "# 第10章成果索引",
         "",
         "这份索引由 Python 自动扫描 `reports/` 目录生成，用来确认办公自动化成果是否齐全。",
         "",
@@ -58,7 +58,7 @@ def write_markdown(rows):
     lines.extend(
         [
             "",
-            "复盘提示：办公自动化不是只生成文件，还要留下可检查的交付记录。",
+            "复盘提示：办公自动化不是只生成文件，还要留下可检查的成果记录。",
         ]
     )
     path = REPORTS / "delivery_index.md"
@@ -70,7 +70,7 @@ def write_preview(rows):
     im = Image.new("RGB", (1500, 980), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 900), radius=26, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "第10章交付索引", fill="#162033", font=font(54))
+    d.text((150, 125), "第10章成果索引", fill="#162033", font=font(54))
     d.text((150, 205), "Python 自动扫描 reports/，确认成品文件是否齐全。", fill="#5F6673", font=font(28))
 
     x0, y0 = 150, 300
@@ -104,7 +104,7 @@ def main():
     rows = collect_rows()
     md = write_markdown(rows)
     preview = write_preview(rows)
-    print("已生成交付索引：")
+    print("已生成成果索引：")
     print(f"- {md}")
     print(f"- {preview}")
 

@@ -50,7 +50,7 @@ figcaption strong {
 | 第一部分：变量、常量与类型地图 | 2.2 - 2.6 | 名字、常量、关键字和类型总览 |
 | 第二部分：基础类型 | 2.7 - 2.16 | `bool`、数值和字符串分别适合什么任务 |
 | 第三部分：容器类型 | 2.17 - 2.22 | 什么时候用 `list`，什么时候用 `dict` |
-| 第四部分：项目、证据与复盘 | 2.23 - 2.27 | 如何把类型放进小项目、报错处理和练习里 |
+| 第四部分：项目、记录与复盘 | 2.23 - 2.27 | 如何把类型放进小项目、报错处理和练习里 |
 | 第五部分：配套文件与下一章 | 2.28 - 2.29 | 本章文件有哪些，以及为什么下一章要学路径 |
 
 ### 2.1 本章路线
@@ -228,11 +228,11 @@ b = 3
   <figcaption><strong>图2-4 PowerShell真实运行数据类型脚本</strong>：在终端里运行变量脚本和学习记录项目，能看到 `id()`、`dict`、`list` 与输出文件一起出现，数据类型不再只是纸面概念。</figcaption>
 </figure>
 
-数据类型学得稳不稳，最后要看它能不能变成文件、报告和小作品。下面这张运行证据图把本章关键产物放在一起检查：学习记录、类型选择卡片、类型罗盘、实验回执、Stroop 数据包和类型标本柜都要 ready。它不是多一张“好看的图”，而是给自己留下一张可复盘的上机证据。
+数据类型学得稳不稳，最后要看它能不能变成文件、报告和小作品。下面这张运行记录图把本章关键产物放在一起检查：学习记录、类型选择卡片、类型罗盘、实验记录、Stroop 数据包和类型标本柜都要 ready。它不是多一张“好看的图”，而是给自己留下一张可复盘的上机记录。
 
 <figure align="center">
-  <img src="../assets/ch02/ch02_data_type_runtime_evidence.png" alt="PowerShell风格的数据类型运行证据总览" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图2-5 PowerShell风格的数据类型运行证据</strong>：`12_make_data_type_runtime_evidence.py` 检查本章学习报告、类型选择工具、Stroop 数据包和类型标本柜是否已经生成，把“我理解类型”变成可复盘的项目证据。</figcaption>
+  <img src="../assets/ch02/ch02_data_type_runtime_evidence.png" alt="PowerShell风格的数据类型运行记录总览" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图2-5 PowerShell风格的数据类型运行记录</strong>：`12_make_data_type_runtime_evidence.py` 检查本章学习报告、类型选择工具、Stroop 数据包和类型标本柜是否已经生成，把“我理解类型”变成可复盘的项目记录。</figcaption>
 </figure>
 
 ---
@@ -1070,9 +1070,9 @@ print(color)
 
 ---
 
-## 第四部分：项目、证据与复盘
+## 第四部分：项目、记录与复盘
 
-这一部分把前面的类型放进真实一点的任务里：整理学习记录、生成实验数据包、检查运行证据、处理常见报错。它的目标是让类型从“概念表”变成“能做事的结构”。
+这一部分把前面的类型放进真实一点的任务里：整理学习记录、生成实验数据包、检查运行记录、处理常见报错。它的目标是让类型从“概念表”变成“能做事的结构”。
 
 ### 2.23 本章小项目：学习记录整理器
 
@@ -1132,11 +1132,11 @@ status = "通过" if passed else "需要继续练习"
 
 这个小项目的意义不是“写一个多厉害的软件”，而是让你第一次感觉到：数据类型不是孤立知识点，它们会一起工作。
 
-还可以再往前走一步：把学习记录和一个极简心理学 trial 记录放进同一份“实验回执”。这样你会发现，数据类型不是只服务练习题，它也可以保存实验材料、反应键、反应时和正确性判断。
+还可以再往前走一步：把学习记录和一个极简心理学 trial 记录放进同一份“实验记录”。这样你会发现，数据类型不是只服务练习题，它也可以保存实验材料、反应键、反应时和正确性判断。
 
 <figure align="center">
-  <img src="../assets/ch02/ch02_data_type_lab_receipt.png" alt="数据类型实验回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图2-21 数据类型实验回执</strong>：同一份回执里，`str` 保存文字标签，`list` 保存分数序列，`dict` 保存完整记录，`float` 保存反应时，`bool` 保存判断结果，`None` 表示暂时缺失。</figcaption>
+  <img src="../assets/ch02/ch02_data_type_lab_receipt.png" alt="数据类型实验记录" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图2-21 数据类型实验记录</strong>：同一份记录里，`str` 保存文字标签，`list` 保存分数序列，`dict` 保存完整记录，`float` 保存反应时，`bool` 保存判断结果，`None` 表示暂时缺失。</figcaption>
 </figure>
 
 配套脚本：
@@ -1398,7 +1398,7 @@ reports/ch02_stroop_dataset_pack.md
 2. 故意把某条 trial 的 `response_key` 改错，观察 `accuracy` 如何变化。
 3. 把 `note` 从 `None` 改成一段文字，并说明为什么 `None` 比空字符串更适合表达“暂时没有备注”。
 
-#### 练习 7：生成本章运行证据
+#### 练习 7：生成本章运行记录
 
 依次运行本章的项目脚本后，再运行：
 
@@ -1413,7 +1413,7 @@ reports/ch02_data_type_runtime_evidence.md
 output/ch02_data_type_runtime_evidence.png
 ```
 
-请检查报告中是否显示 `14/14 ready`。如果出现 `MISSING`，先不要急着改代码，回到缺失路径对应的脚本，把它补跑一遍。这个练习的目的，是把“我学过数据类型”变成一组能被检查的文件证据。
+请检查报告中是否显示 `14/14 ready`。如果出现“缺失”，先不要急着改代码，回到缺失路径对应的脚本，把它补跑一遍。这个练习的目的，是把“我学过数据类型”变成一组能被检查的文件记录。
 
 ---
 

@@ -49,9 +49,9 @@ def build_report(summary: dict) -> str:
     ]
     return dedent(
         f"""
-        # 第3章归档证据板
+        # 第3章归档记录板
 
-        这份回执把第3章的文件操作成果集中到一页：输入区、整理区、输出区，以及四份关键证据文件。
+        这份记录把第3章的文件操作成果集中到一页：输入区、整理区、输出区，以及四份关键记录文件。
 
         ## 文件计数
 
@@ -59,9 +59,9 @@ def build_report(summary: dict) -> str:
         - organized 文件数：{summary["organized_files"]}
         - output 文件数：{summary["output_files"]}
 
-        ## 关键证据
+        ## 关键记录
 
-        | 证据 | 状态 | 路径 |
+        | 记录 | 状态 | 路径 |
         | --- | --- | --- |
         {chr(10).join(required_rows)}
 
@@ -78,9 +78,10 @@ def draw_png(path: Path, summary: dict) -> bool:
 
     def load_font(size: int, bold: bool = False):
         candidates = [
-            "C:/Windows/Fonts/arialbd.ttf" if bold else "C:/Windows/Fonts/arial.ttf",
-            "C:/Windows/Fonts/segoeuib.ttf" if bold else "C:/Windows/Fonts/segoeui.ttf",
             "C:/Windows/Fonts/msyhbd.ttc" if bold else "C:/Windows/Fonts/msyh.ttc",
+            "C:/Windows/Fonts/simhei.ttf",
+            "C:/Windows/Fonts/segoeuib.ttf" if bold else "C:/Windows/Fonts/segoeui.ttf",
+            "C:/Windows/Fonts/arialbd.ttf" if bold else "C:/Windows/Fonts/arial.ttf",
         ]
         for candidate in candidates:
             try:
@@ -119,40 +120,46 @@ def draw_png(path: Path, summary: dict) -> bool:
         draw.rounded_rectangle((x, y, x + w, y + 42), radius=21, fill=color)
         draw.text((x + 18, y + 8), text, font=small, fill="white")
 
-    draw.text((94, 72), "Archive Evidence Board", font=title, fill=ink)
-    draw.text((98, 146), "Input, archive, output, safety, and cross-chapter handoff.", font=subtitle, fill=muted)
+    draw.text((94, 72), "资料归档记录板", font=title, fill=ink)
+    draw.text((98, 146), "输入区、归档区、输出区、安全检查和跨章交接集中复查。", font=subtitle, fill=muted)
     draw.line((96, 206, 1704, 206), fill=line, width=3)
 
     count_cards = [
-        ("inbox", summary["inbox_files"], blue),
-        ("organized", summary["organized_files"], green),
-        ("output", summary["output_files"], orange),
+        ("待整理区", summary["inbox_files"], blue),
+        ("归档区", summary["organized_files"], green),
+        ("输出区", summary["output_files"], orange),
     ]
     for idx, (label, value, color) in enumerate(count_cards):
         x = 110 + idx * 540
         shadow_box((x, 270, x + 440, 445))
         pill(x + 30, 304, label, color, 140)
         draw.text((x + 250, 324), str(value), font=title, fill=ink)
-        draw.text((x + 30, 378), "files", font=body, fill=muted)
+        draw.text((x + 30, 378), "个文件", font=body, fill=muted)
 
     evidence = [
-        ("manifest", "archive list", blue),
-        ("receipt", "delivery proof", green),
-        ("safety", "path check", red),
-        ("handoff", "ch2 data", purple),
+        ("manifest", "归档清单", blue),
+        ("receipt", "归档记录", green),
+        ("safety", "路径检查", red),
+        ("handoff", "第2章数据", purple),
     ]
+    tag_labels = {
+        "manifest": "清单",
+        "receipt": "记录",
+        "safety": "安全",
+        "handoff": "衔接",
+    }
     for idx, (name, label, color) in enumerate(evidence):
         x = 140 + (idx % 2) * 780
         y = 545 + (idx // 2) * 200
         shadow_box((x, y, x + 650, y + 140))
-        pill(x + 30, y + 32, name, color, 150)
+        pill(x + 30, y + 32, tag_labels[name], color, 150)
         draw.text((x + 210, y + 30), label, font=h2, fill=ink)
-        status = "ready" if summary["required"][name] else "missing"
-        status_color = green if status == "ready" else red
+        status = "就绪" if summary["required"][name] else "缺失"
+        status_color = green if status == "就绪" else red
         draw.text((x + 210, y + 82), status, font=mono, fill=status_color)
 
     shadow_box((425, 950, 1375, 1040))
-    draw.text((470, 980), "Files are evidence, not decoration.", font=body, fill="#8A5A00")
+    draw.text((470, 980), "文件不是装饰，记录才方便复查。", font=body, fill="#8A5A00")
 
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, optimize=True, quality=95)
@@ -179,7 +186,7 @@ def main() -> None:
     if has_image:
         shutil.copy2(image_file, web_dir / image_file.name)
 
-    print("Archive evidence board generated:")
+    print("资料归档记录板已生成：")
     print("-", json_file)
     print("-", report_file)
     print("-", image_file if has_image else "PNG skipped because Pillow is unavailable")

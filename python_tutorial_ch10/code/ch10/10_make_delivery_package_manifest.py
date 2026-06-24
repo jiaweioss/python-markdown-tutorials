@@ -29,7 +29,7 @@ def font(size: int, bold: bool = False):
 
 def package_rows() -> list[dict[str, str | int]]:
     if not PACKAGE.exists():
-        raise FileNotFoundError("请先运行 code/ch10/07_make_delivery_package.py 生成交付包。")
+        raise FileNotFoundError("请先运行 code/ch10/07_make_delivery_package.py 生成成果包。")
 
     rows: list[dict[str, str | int]] = []
     with ZipFile(PACKAGE) as zf:
@@ -46,11 +46,11 @@ def package_rows() -> list[dict[str, str | int]]:
 
 def write_manifest(rows: list[dict[str, str | int]]) -> None:
     lines = [
-        "# 第10章交付包目录清单",
+        "# 第10章成果包目录清单",
         "",
-        "这份清单由 Python 打开 zip 交付包后生成，用来确认压缩包内部到底包含哪些文件。",
+        "这份清单由 Python 打开 zip 成果包后生成，用来确认压缩包内部到底包含哪些文件。",
         "",
-        f"- 交付包：`{PACKAGE.as_posix()}`",
+        f"- 成果包：`{PACKAGE.as_posix()}`",
         f"- 包内文件数：{len(rows)}",
         f"- 包大小：{PACKAGE.stat().st_size} bytes",
         "",
@@ -72,12 +72,12 @@ def write_preview(rows: list[dict[str, str | int]]) -> None:
     row_font = font(20)
     small_font = font(18)
 
-    draw.text((150, 125), "Delivery Package Manifest", fill="#162033", font=title_font)
-    draw.text((150, 200), "打开 zip 交付包，核对包内文件、类型和大小。", fill="#5F6673", font=body_font)
+    draw.text((150, 125), "成果包目录清单", fill="#162033", font=title_font)
+    draw.text((150, 200), "打开 zip 成果包，核对包内文件、类型和大小。", fill="#5F6673", font=body_font)
 
     package_size = PACKAGE.stat().st_size if PACKAGE.exists() else 0
     draw.rounded_rectangle((150, 255, 1550, 315), radius=18, fill="#EFF6FF", outline="#BFDBFE", width=2)
-    draw.text((190, 270), f"Package: {PACKAGE.as_posix()}    Files: {len(rows)}    Size: {package_size} bytes", fill="#1E3A8A", font=small_font)
+    draw.text((190, 270), f"成果包： {PACKAGE.as_posix()}    Files: {len(rows)}    Size: {package_size} bytes", fill="#1E3A8A", font=small_font)
 
     y = 365
     headers = [("file", 180), ("type", 1030), ("size", 1240)]
@@ -109,7 +109,7 @@ def write_preview(rows: list[dict[str, str | int]]) -> None:
         draw.text((150, y + 10), f"... 还有 {len(rows) - 14} 个文件写入 Markdown 清单", fill="#64748B", font=small_font)
 
     draw.rounded_rectangle((150, 1145, 1550, 1202), radius=18, fill="#FFF7E8", outline="#F2B84B", width=2)
-    draw.text((350, 1160), "交付前最后一问：压缩包里真的装了该交付的文件吗？", fill="#8A5A00", font=body_font)
+    draw.text((350, 1160), "打包前最后一问：压缩包里真的装了该打包的文件吗？", fill="#8A5A00", font=body_font)
 
     MANIFEST_PNG.parent.mkdir(parents=True, exist_ok=True)
     image.save(MANIFEST_PNG, optimize=True, quality=95)

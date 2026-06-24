@@ -51,8 +51,8 @@
 - `assets/ch02/web/ch02_type_decision_cards_preview.png`：类型选择卡片预览的本地整理源。
 - `output/ch02_type_compass_preview.png`：由 `python code/ch02/08_make_type_compass.py` 生成的类型选择罗盘预览。
 - `assets/ch02/web/ch02_type_compass_preview.png`：类型选择罗盘预览的本地整理源。
-- `output/ch02_data_type_lab_receipt.png`：由 `python code/ch02/09_make_data_type_lab_receipt.py` 生成的数据类型实验回执预览。
-- `assets/ch02/web/ch02_data_type_lab_receipt.png`：数据类型实验回执预览的本地整理源。
+- `output/ch02_data_type_lab_receipt.png`：由 `python code/ch02/09_make_data_type_lab_receipt.py` 生成的数据类型实验记录预览。
+- `assets/ch02/web/ch02_data_type_lab_receipt.png`：数据类型实验记录预览的本地整理源。
 - `output/ch02_stroop_dataset_pack.png`：由 `python code/ch02/10_make_stroop_dataset_pack.py` 生成的 Stroop 数据类型包预览。
 - `assets/ch02/web/ch02_stroop_dataset_pack.png`：Stroop 数据类型包预览的本地整理源。
 - `output/ch02_stroop_dataset_pack.json`：Stroop trial 数据包，保存汇总信息和多条 trial 记录。
@@ -60,14 +60,14 @@
 - `output/ch02_data_type_specimen_cabinet.png`：由 `python code/ch02/11_make_data_type_specimen_cabinet.py` 生成的数据类型标本柜预览。
 - `output/ch02_data_type_specimen_cabinet.json`：数据类型标本柜的结构化摘要。
 - `assets/ch02/web/ch02_data_type_specimen_cabinet.png`：数据类型标本柜预览的本地整理源。
-- `output/ch02_data_type_runtime_evidence.png`：由 `python code/ch02/12_make_data_type_runtime_evidence.py` 生成的数据类型运行证据图，检查本章 14 个关键产物。
-- `assets/ch02/web/ch02_data_type_runtime_evidence.png`：数据类型运行证据图的本地整理源。
+- `output/ch02_data_type_runtime_evidence.png`：由 `python code/ch02/12_make_data_type_runtime_evidence.py` 生成的数据类型运行记录图，检查本章 14 个关键产物。
+- `assets/ch02/web/ch02_data_type_runtime_evidence.png`：数据类型运行记录图的本地整理源。
 - `reports/ch02_type_decision_cards.md`：类型选择卡片 Markdown 报告。
 - `reports/ch02_type_compass.md`：类型选择罗盘 Markdown 报告。
-- `reports/ch02_data_type_lab_receipt.md`：数据类型实验回执 Markdown 报告。
+- `reports/ch02_data_type_lab_receipt.md`：数据类型实验记录 Markdown 报告。
 - `reports/ch02_stroop_dataset_pack.md`：Stroop 数据类型包 Markdown 报告。
 - `reports/ch02_data_type_specimen_cabinet.md`：数据类型标本柜 Markdown 报告。
-- `reports/ch02_data_type_runtime_evidence.md`：数据类型运行证据 Markdown 报告。
+- `reports/ch02_data_type_runtime_evidence.md`：数据类型运行记录 Markdown 报告。
 
 ## 生成素材
 
@@ -101,7 +101,7 @@
 - `ch02_error_clue_cards.png`
 - `ch02_type_to_file_bridge.png`
 
-这些图片用于解释变量标签模型、真实运行证据、数据类型选择、类型选择罗盘、布尔逻辑、数值取整、字符串材料、字符串切片、列表操作、早期打孔卡分拣、嵌套结构、字典映射、本章综合项目、数据类型实验回执、Stroop 数据类型包、数据类型标本柜、常见报错线索、练习任务收束和下一章文件管理衔接。正式 Markdown 只引用本地整理图，无远程图片依赖。
+这些图片用于解释变量标签模型、真实运行记录、数据类型选择、类型选择罗盘、布尔逻辑、数值取整、字符串材料、字符串切片、列表操作、早期打孔卡分拣、嵌套结构、字典映射、本章综合项目、数据类型实验记录、Stroop 数据类型包、数据类型标本柜、常见报错线索、练习任务收束和下一章文件管理衔接。正式 Markdown 只引用本地整理图，无远程图片依赖。
 
 ## 图文呈现规则
 

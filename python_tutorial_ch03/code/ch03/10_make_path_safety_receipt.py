@@ -86,7 +86,7 @@ def collect_checks() -> list[dict[str, str]]:
         {
             "item": "delete policy",
             "status": "OK",
-            "detail": "this receipt performs no delete or move operation",
+            "detail": "这份记录不会执行删除或移动操作",
         },
     ]
     return checks
@@ -94,9 +94,9 @@ def collect_checks() -> list[dict[str, str]]:
 
 def write_markdown(checks: list[dict[str, str]]) -> None:
     lines = [
-        "# Chapter 03 Path Safety Receipt",
+        "# 第3章路径安全检查记录",
         "",
-        "This receipt checks whether the demo file workspace is ready for safe file operations.",
+        "这份记录检查演示工作区是否适合继续做文件操作。",
         "",
         "| Check | Status | Detail |",
         "| --- | --- | --- |",
@@ -153,8 +153,8 @@ def make_preview(checks: list[dict[str, str]]) -> bool:
     blue = "#2F6BFF"
     red = "#E84C61"
 
-    draw.text((75, 58), "Path Safety Receipt", font=title_font, fill=ink)
-    draw.text((80, 128), "Before file operations, prove the workspace, paths, outputs, encoding and hashes.", font=body_font, fill=muted)
+    draw.text((75, 58), "路径安全检查记录", font=title_font, fill=ink)
+    draw.text((80, 128), "移动或删除前，先确认工作区、路径、输出、编码和哈希。", font=body_font, fill=muted)
     draw.line((80, 178, 1420, 178), fill=line, width=3)
 
     ok_count = sum(check["status"] == "OK" for check in checks)
@@ -169,7 +169,7 @@ def make_preview(checks: list[dict[str, str]]) -> bool:
         draw.text((x + 40, 292), str(value), font=h_font, fill=ink)
 
     draw.rounded_rectangle((80, 395, 1420, 835), radius=24, fill="white", outline=line, width=2)
-    draw.text((120, 432), "Checks", font=h_font, fill=ink)
+    draw.text((120, 432), "检查项", font=h_font, fill=ink)
     for idx, check in enumerate(checks[:8]):
         status = check["status"]
         color = green if status == "OK" else orange if status == "WATCH" else red
@@ -184,7 +184,7 @@ def make_preview(checks: list[dict[str, str]]) -> bool:
         draw.text((x + 430, row_y + 4), detail, font=mono_font, fill=muted)
 
     draw.rounded_rectangle((250, 860, 1250, 910), radius=24, fill="#EEF6FF", outline="#9CC8FF", width=3)
-    draw.text((318, 873), "Print paths first. Move slowly. Keep every result inside the project workspace.", font=small_font, fill=blue)
+    draw.text((318, 873), "先打印路径，再慢慢移动；所有结果都留在项目工作区里。", font=small_font, fill=blue)
 
     PREVIEW.parent.mkdir(parents=True, exist_ok=True)
     image.save(PREVIEW, optimize=True, quality=95)
@@ -201,7 +201,7 @@ def main() -> None:
 
     print(f"Wrote {RECEIPT}")
     print(f"Wrote {PREVIEW if has_preview else 'no preview: Pillow not installed'}")
-    print("Checks:", ", ".join(f"{item['item']}={item['status']}" for item in checks))
+    print("检查项:", ", ".join(f"{item['item']}={item['status']}" for item in checks))
 
 
 if __name__ == "__main__":

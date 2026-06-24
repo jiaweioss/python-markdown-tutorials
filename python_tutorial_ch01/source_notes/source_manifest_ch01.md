@@ -61,10 +61,10 @@
 - PowerShell 创建 `.venv` 图：由 `scripts/generate_ch01_visuals.py` 按本章推荐命令生成终端输出素材，图内不再放额外解释文字
 - PowerShell 执行策略与 `.venv` 备用运行图：由 `scripts/generate_ch01_visuals.py` 按本章推荐命令生成终端输出素材，图内不再放额外解释文字
 - PowerShell 连续运行截图：本机依次运行 `python --version`、`python -m pip --version`、`01_hello_python.py` 和 `02_environment_check.py` 后截取
-- PowerShell 本章完整运行证据图：`scripts/generate_ch01_visuals.py` 在当前机器上实际运行 `python --version`、`python -m pip --version`、`01_hello_python.py`、`02_environment_check.py` 和 `04_show_me_the_python.py` 后整理，图内只保留命令和输出，正文图 `ch01_powershell_full_runtime_check.png` 使用该素材
+- PowerShell 本章完整运行记录图：`scripts/generate_ch01_visuals.py` 在当前机器上实际运行 `python --version`、`python -m pip --version`、`01_hello_python.py`、`02_environment_check.py` 和 `04_show_me_the_python.py` 后整理，图内只保留命令和输出，正文图 `ch01_powershell_full_runtime_check.png` 使用该素材
 - PyCharm 解释器与运行结果核对图：`scripts/generate_ch01_visuals.py` 组合 JetBrains 官方真实 PyCharm 选择已有解释器截图与 Run 窗口截图，图内不新增解释文字，正文图 `ch01_pycharm_environment_focus.png` 使用该素材
-- PowerShell 与 PyCharm 同屏核对图：`scripts/generate_ch01_visuals.py` 组合本章 PowerShell 完整运行证据素材与 JetBrains 官方 PyCharm Run 窗口截图，图内不新增解释文字，正文图 `ch01_runtime_environment_side_by_side.png` 使用该素材
-- 第一段脚本反馈回路图：`scripts/generate_ch01_visuals.py` 生成 `ch01_first_script_feedback_loop.png`，用文件、终端、反馈卡片、日志和文件夹符号连接 `print()`、脚本命名、项目目录与运行证据，图片内部不新增解释文字。
+- PowerShell 与 PyCharm 同屏核对图：`scripts/generate_ch01_visuals.py` 组合本章 PowerShell 完整运行记录素材与 JetBrains 官方 PyCharm Run 窗口截图，图内不新增解释文字，正文图 `ch01_runtime_environment_side_by_side.png` 使用该素材
+- 第一段脚本反馈回路图：`scripts/generate_ch01_visuals.py` 生成 `ch01_first_script_feedback_loop.png`，用文件、终端、反馈卡片、日志和文件夹符号连接 `print()`、脚本命名、项目目录与运行记录，图片内部不新增解释文字。
 - `import antigravity` 梗图：xkcd 353《Python》  
   <https://xkcd.com/353/>
 - Python 环境梗图：xkcd 1987《Python Environment》  
@@ -140,7 +140,7 @@
 - `web/pycharm_selecting_target_interpreter_dark.png`
 - `web/pycharm_new_virtualenv_environment_dark.png`
 
-当前正文重点使用 Guido、CWI、Grace Hopper 与 UNIVAC、BBC Broadcasting House、Wundt 实验室、Stroop 心理学任务、PowerShell 项目目录定位、PowerShell 本机环境检查实拍、PowerShell 环境检查复盘、PowerShell Python 与 PyCharm 定位探针、PowerShell 创建 `.venv`、PowerShell 执行策略备用运行、PowerShell `pathlib` 路径检查、PowerShell 连续运行脚本、PowerShell 本章完整运行证据总览、PowerShell 第1章提交证据、第一段脚本反馈回路图、PyCharm 解释器与运行结果核对图、PowerShell 与 PyCharm 同屏核对图、PyCharm 主窗口总览、解释器选择、新建项目、解释器配置、新建或选择已有 virtualenv、Run Configuration、Run 窗口输出、pip 管道、报错地图、`import antigravity` 梗图和 Python 环境混乱梗图。本轮继续精简 ch0 重复内容，把开头改成真实运行任务，把 PowerShell 配置压缩为 4 步验电表，把 PyCharm 配置压缩为 5 步核对表，并把 1.8 改成环境证据总表；同时在中段补入脚本反馈回路图，在后半章补入历史照片、PowerShell 复盘图、`pathlib` 路径图和提交证据图，让图片更平均穿插。生成图不再额外放置解释性长文字，解释内容统一放在 Markdown 正文与图注中。互联网原图仅用于学习类比，详细来源与授权说明集中记录在本文件中。
+当前正文重点使用 Guido、CWI、Grace Hopper 与 UNIVAC、BBC Broadcasting House、Wundt 实验室、Stroop 心理学任务、PowerShell 项目目录定位、PowerShell 本机环境检查实拍、PowerShell 环境检查复盘、PowerShell Python 与 PyCharm 定位探针、PowerShell 创建 `.venv`、PowerShell 执行策略备用运行、PowerShell `pathlib` 路径检查、PowerShell 连续运行脚本、PowerShell 本章完整运行记录总览、PowerShell 第1章学习成果记录、第一段脚本反馈回路图、PyCharm 解释器与运行结果核对图、PowerShell 与 PyCharm 同屏核对图、PyCharm 主窗口总览、解释器选择、新建项目、解释器配置、新建或选择已有 virtualenv、Run Configuration、Run 窗口输出、pip 管道、报错地图、`import antigravity` 梗图和 Python 环境混乱梗图。本轮继续精简 ch0 重复内容，把开头改成真实运行任务，把 PowerShell 配置压缩为 4 步验电表，把 PyCharm 配置压缩为 5 步核对表，并把 1.8 改成环境记录总表；同时在中段补入脚本反馈回路图，在后半章补入历史照片、PowerShell 复盘图、`pathlib` 路径图和学习成果记录图，让图片更平均穿插。生成图不再额外放置解释性长文字，解释内容统一放在 Markdown 正文与图注中。互联网原图仅用于学习类比，详细来源与授权说明集中记录在本文件中。
 
 ## 图文呈现规则
 

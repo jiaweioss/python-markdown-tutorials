@@ -131,7 +131,7 @@ def write_audit_preview() -> None:
     draw = ImageDraw.Draw(image)
     draw.rounded_rectangle((90, 70, 1410, 850), radius=26, fill="#FFFFFF", outline="#D8E0EC", width=3)
     draw.text((150, 125), "图表审美检查单", fill="#162033", font=font(50, True))
-    draw.text((150, 198), "一张图交出去前，先问这五个问题。", fill="#5F6673", font=font(27))
+    draw.text((150, 198), "一张图发布或归档前，先问这五个问题。", fill="#5F6673", font=font(27))
     rows = [
         ("标题", "写结论，不只写变量名"),
         ("颜色", "一主色 + 一强调色"),

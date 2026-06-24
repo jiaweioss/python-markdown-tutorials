@@ -1,4 +1,4 @@
-"""Generate a runtime evidence snapshot for the chapter 08 web-scraping workflow."""
+"""Generate a runtime record snapshot for the chapter 08 web-scraping workflow."""
 
 from __future__ import annotations
 
@@ -69,13 +69,13 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
     REPORTS.mkdir(exist_ok=True)
     ready = sum(row["status"] == "ready" for row in rows)
     lines = [
-        "# 第8章爬虫运行证据清单",
+        "# 第8章爬虫运行记录清单",
         "",
         "这份清单由 Python 生成，用来确认链接 CSV、采集报告、来源卡片、爬虫礼仪卡、来源质量评分、公开资料包和来源追踪档案都已经留下可复查文件。",
         "",
         f"- 通过项：{ready}/{len(rows)}",
         "",
-        "| 环节 | 状态 | 大小 bytes | 证据路径 |",
+        "| 环节 | 状态 | 大小 bytes | 文件路径 |",
         "| --- | --- | ---: | --- |",
     ]
     for row in rows:
@@ -100,8 +100,8 @@ def write_preview(rows: list[dict[str, str]]) -> None:
     code_font = font(18)
 
     draw.rounded_rectangle((90, 70, 1670, 1165), radius=30, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    draw.text((150, 125), "Windows PowerShell - scraper runtime evidence", fill="#162033", font=title_font)
-    draw.text((150, 198), "Local web-scraping outputs checked before using collected sources.", fill="#5F6673", font=body_font)
+    draw.text((150, 125), "Windows PowerShell - 爬虫运行记录", fill="#162033", font=title_font)
+    draw.text((150, 198), "使用采集来源前，先检查本地爬虫输出。", fill="#5F6673", font=body_font)
 
     terminal = (150, 270, 1610, 1035)
     draw.rounded_rectangle(terminal, radius=24, fill="#0B1B3A", outline="#102A56", width=2)
@@ -134,7 +134,7 @@ def write_preview(rows: list[dict[str, str]]) -> None:
 
     ready = sum(row["status"] == "ready" for row in rows)
     draw.rounded_rectangle((360, 1085, 1400, 1138), radius=18, fill="#ECFDF5", outline="#34D399", width=2)
-    draw.text((760, 1101), f"ready files: {ready}/{len(rows)}", fill="#047857", font=body_font)
+    draw.text((760, 1101), f"就绪文件： {ready}/{len(rows)}", fill="#047857", font=body_font)
 
     image.save(EVIDENCE_PNG, optimize=True, quality=95)
     WEB_DIR.mkdir(parents=True, exist_ok=True)

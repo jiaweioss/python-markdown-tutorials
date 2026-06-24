@@ -1,4 +1,4 @@
-"""Chapter 07 artifact: collect runtime evidence for the PyGame chapter."""
+"""Generate a runtime record for the PyGame chapter."""
 
 from __future__ import annotations
 
@@ -10,20 +10,20 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 CHECKS = [
-    ("reaction report", "reports/ch07_reaction_report.md"),
-    ("reaction preview", "reports/ch07_reaction_report_preview.png"),
-    ("balance report", "reports/ch07_game_balance_report.md"),
-    ("balance preview", "output/ch07_game_balance_preview.png"),
-    ("feedback report", "reports/ch07_game_feedback_loop.md"),
-    ("feedback preview", "output/ch07_game_feedback_loop.png"),
-    ("flow report", "reports/ch07_flow_tuning_curve.md"),
-    ("flow curve", "output/ch07_flow_tuning_curve.png"),
-    ("data tuning report", "reports/ch07_data_driven_tuning.md"),
-    ("data tuning json", "output/ch07_data_driven_tuning.json"),
-    ("data tuning image", "output/ch07_data_driven_tuning.png"),
-    ("teaching game report", "reports/ch07_teaching_feedback_game.md"),
-    ("teaching game json", "output/ch07_teaching_feedback_game.json"),
-    ("teaching game image", "output/ch07_teaching_feedback_game.png"),
+    ("反应报告", "reports/ch07_reaction_report.md"),
+    ("反应预览", "reports/ch07_reaction_report_preview.png"),
+    ("平衡报告", "reports/ch07_game_balance_report.md"),
+    ("平衡预览", "output/ch07_game_balance_preview.png"),
+    ("反馈报告", "reports/ch07_game_feedback_loop.md"),
+    ("反馈预览", "output/ch07_game_feedback_loop.png"),
+    ("心流报告", "reports/ch07_flow_tuning_curve.md"),
+    ("心流曲线", "output/ch07_flow_tuning_curve.png"),
+    ("调参报告", "reports/ch07_data_driven_tuning.md"),
+    ("调参 JSON", "output/ch07_data_driven_tuning.json"),
+    ("调参图", "output/ch07_data_driven_tuning.png"),
+    ("教学游戏报告", "reports/ch07_teaching_feedback_game.md"),
+    ("教学游戏 JSON", "output/ch07_teaching_feedback_game.json"),
+    ("教学游戏图", "output/ch07_teaching_feedback_game.png"),
 ]
 
 
@@ -36,9 +36,10 @@ def project_root() -> Path:
 
 def font(size: int, bold: bool = False):
     candidates = [
-        Path("C:/Windows/Fonts/consolab.ttf") if bold else Path("C:/Windows/Fonts/consola.ttf"),
         Path("C:/Windows/Fonts/msyhbd.ttc") if bold else Path("C:/Windows/Fonts/msyh.ttc"),
+        Path("C:/Windows/Fonts/simhei.ttf"),
         Path("C:/Windows/Fonts/segoeuib.ttf") if bold else Path("C:/Windows/Fonts/segoeui.ttf"),
+        Path("C:/Windows/Fonts/consolab.ttf") if bold else Path("C:/Windows/Fonts/consola.ttf"),
         Path("C:/Windows/Fonts/arialbd.ttf") if bold else Path("C:/Windows/Fonts/arial.ttf"),
     ]
     for candidate in candidates:
@@ -67,7 +68,7 @@ def build_report(rows: list[dict[str, str | int | bool]]) -> str:
     ready = sum(1 for row in rows if row["exists"])
     total = len(rows)
     lines = [
-        "# 第7章游戏运行证据",
+        "# 第7章游戏运行记录",
         "",
         f"- 检查时间：{_dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         f"- 运行产物：{ready}/{total} ready",
@@ -77,7 +78,7 @@ def build_report(rows: list[dict[str, str | int | bool]]) -> str:
         "| --- | --- | --- | --- |",
     ]
     for row in rows:
-        status = "READY" if row["exists"] else "MISSING"
+        status = "就绪" if row["exists"] else "缺失"
         size = f'{row["size"]} bytes' if row["exists"] else "-"
         lines.append(f'| {status} | {row["label"]} | `{row["path"]}` | {size} |')
     lines.append("")
@@ -118,10 +119,10 @@ def draw_image(path: Path, rows: list[dict[str, str | int | bool]]) -> None:
     ready = sum(1 for row in rows if row["exists"])
     total = len(rows)
 
-    d.text((92, 70), "PyGame chapter runtime evidence", font=title, fill=ink)
+    d.text((92, 70), "PyGame 章节运行记录", font=title, fill=ink)
     d.text(
         (96, 144),
-        "A small game is not finished until the window, reports, tuning data, and feedback plan leave evidence.",
+        "小游戏不只要窗口能打开，还要让报告、调参和反馈计划都能复查。",
         font=subtitle,
         fill=muted,
     )
@@ -138,28 +139,28 @@ def draw_image(path: Path, rows: list[dict[str, str | int | bool]]) -> None:
         "python code\\ch07\\09_make_teaching_feedback_game.py",
         "python code\\ch07\\10_make_game_runtime_evidence.py",
         "",
-        f"Game artifacts: {ready}/{total} ready",
-        "Status: playable ideas, reviewable files",
+        f"游戏产物：{ready}/{total} 就绪",
+        "状态：可以试玩，也可以复查文件",
     ]
     y = 306
     for line_text in command_lines:
         color = "#BEE3F8"
-        if line_text.startswith("Game artifacts"):
+        if line_text.startswith("游戏产物"):
             color = "#A7F3D0" if ready == total else "#FDE68A"
-        if line_text.startswith("Status"):
+        if line_text.startswith("状态"):
             color = "#A7F3D0" if ready == total else "#FCA5A5"
         d.text((132, y), line_text, font=mono, fill=color)
         y += 48 if line_text else 24
 
     # A tiny no-text game scene keeps the image playful without becoming a dense explanation card.
-    d.rounded_rectangle((240, 775, 680, 915), radius=28, fill="#F8FAFC", outline="#CBD5E1", width=3)
-    d.ellipse((290, 820, 350, 880), fill=blue)
-    d.rounded_rectangle((395, 810, 500, 890), radius=20, fill=orange)
-    d.polygon([(590, 810), (660, 850), (590, 890)], fill=purple)
+    d.rounded_rectangle((240, 835, 680, 955), radius=28, fill="#F8FAFC", outline="#CBD5E1", width=3)
+    d.ellipse((290, 872, 350, 932), fill=blue)
+    d.rounded_rectangle((395, 862, 500, 942), radius=20, fill=orange)
+    d.polygon([(590, 862), (660, 902), (590, 942)], fill=purple)
 
     shadow_box((875, 260, 1705, 980), radius=28)
-    d.text((925, 308), "Artifact checklist", font=h2, fill=ink)
-    d.text((928, 356), "The game loop becomes teachable when every result can be reopened.", font=body, fill=muted)
+    d.text((925, 308), "产物检查清单", font=h2, fill=ink)
+    d.text((928, 356), "每个结果都能重新打开，游戏循环才真正适合学习。", font=body, fill=muted)
 
     for i, row in enumerate(rows):
         col = i // 7
@@ -169,7 +170,7 @@ def draw_image(path: Path, rows: list[dict[str, str | int | bool]]) -> None:
         exists = bool(row["exists"])
         color = green if exists else red
         d.rounded_rectangle((x, y - 8, x + 98, y + 34), radius=21, fill=color)
-        d.text((x + 18, y), "READY" if exists else "MISS", font=small, fill="white")
+        d.text((x + 18, y), "就绪" if exists else "缺失", font=small, fill="white")
         file_name = Path(str(row["path"])).name
         if len(file_name) > 28:
             file_name = file_name[:25] + "..."
@@ -179,7 +180,7 @@ def draw_image(path: Path, rows: list[dict[str, str | int | bool]]) -> None:
     d.rounded_rectangle((95, 1015, 1705, 1082), radius=24, fill="#FFF7E8", outline="#F2B84B", width=3)
     d.text(
         (140, 1033),
-        "Rule of thumb: a learning game earns trust when feedback, tuning, and reports can be checked after play.",
+        "经验提醒：小游戏好不好，不只看能不能玩，也要看反馈、调参和报告能否复查。",
         font=body,
         fill="#8A5A00",
     )
@@ -206,7 +207,7 @@ def main() -> None:
     shutil.copy2(image_file, web_file)
 
     ready = sum(1 for row in rows if row["exists"])
-    print(f"ch07 game runtime evidence: {ready}/{len(rows)} ready")
+    print(f"第7章游戏运行记录：{ready}/{len(rows)} 就绪")
     print(f"report: {report_file}")
     print(f"image: {image_file}")
 

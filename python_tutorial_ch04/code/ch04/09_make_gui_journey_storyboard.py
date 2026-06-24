@@ -8,9 +8,10 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
-WEB_DIR = Path("assets/ch04/web")
-OUTPUT = Path("output")
-REPORTS = Path("reports")
+ROOT = Path(__file__).resolve().parents[2]
+WEB_DIR = ROOT / "assets" / "ch04" / "web"
+OUTPUT = ROOT / "output"
+REPORTS = ROOT / "reports"
 STORYBOARD = OUTPUT / "ch04_gui_journey_storyboard.png"
 REPORT = REPORTS / "ch04_gui_journey_storyboard.md"
 WEB_COPY = WEB_DIR / "ch04_gui_journey_storyboard.png"
@@ -142,7 +143,7 @@ def write_report() -> None:
         "- 输入内容：表单字段清楚，不让用户猜。",
         "- 点击按钮：动作入口明确。",
         "- 收到反馈：系统告诉用户已经发生了什么。",
-        "- 得到文件：界面操作最终留下真实交付物。",
+        "- 得到文件：界面操作最终留下真实学习成果。",
         "",
         "GUI 不是给代码贴一层漂亮皮肤，而是让真实任务变得可完成、可确认、可复盘。",
     ]

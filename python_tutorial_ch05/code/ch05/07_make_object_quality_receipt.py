@@ -19,7 +19,7 @@ CHECKS = [
 
 def project_root() -> Path:
     here = Path.cwd()
-    if (here / "assets" / "ch05").exists():
+    if (here / "manifest.json").exists() and (here / "assets" / "ch05").exists():
         return here
     return Path(__file__).resolve().parents[2]
 
@@ -49,8 +49,8 @@ def draw_receipt() -> None:
     im = Image.new("RGB", (1500, 930), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 850), radius=26, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "对象质量回执", fill="#162033", font=font(52, True))
-    d.text((152, 200), "给卡片工厂对象模型做一次可提交的设计检查。", fill="#5F6673", font=font(27))
+    d.text((150, 125), "对象质量记录", fill="#162033", font=font(52, True))
+    d.text((152, 200), "给卡片工厂对象模型做一次面向自己的设计检查。", fill="#5F6673", font=font(27))
 
     panels = [
         ("LearningCard", "保存一张卡片", "#EEF6FF", "#2F6BFF"),
@@ -84,14 +84,14 @@ def write_report() -> None:
     ok_count = sum(1 for _, status, _ in CHECKS if status == "通过")
     watch_count = len(CHECKS) - ok_count
     lines = [
-        "# 第5章对象质量回执",
+        "# 第5章对象质量记录",
         "",
-        "写出 `class` 只是起点。对象质量回执用来检查：每个类是不是有明确职责，对象之间是不是靠清楚消息协作，项目里有没有开始长出万能类。",
+        "写出 `class` 只是起点。对象质量记录用来检查：每个类是不是有明确职责，对象之间是不是靠清楚消息协作，项目里有没有开始长出万能类。",
         "",
         f"- 已通过检查：{ok_count} 项",
         f"- 需要盯住：{watch_count} 项",
         "",
-        "| 检查项 | 状态 | 证据 |",
+        "| 检查项 | 状态 | 看到什么 |",
         "| --- | --- | --- |",
     ]
     for label, status, note in CHECKS:
@@ -100,7 +100,7 @@ def write_report() -> None:
         [
             "",
             "下一步建议：一旦某个类同时负责读文件、管界面、做统计和导出报告，就先拆职责，而不是继续往里面塞方法。",
-            "这份回执可以和对象模型报告、类职责卡片、对象协作消息图一起提交。",
+            "这份记录可以和对象模型报告、类职责卡片、对象协作消息图一起复盘。",
         ]
     )
     RECEIPT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")

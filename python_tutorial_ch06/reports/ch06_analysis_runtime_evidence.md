@@ -1,6 +1,6 @@
-# 第6章数据分析运行证据
+# 第6章数据分析运行记录
 
-- 检查时间：2026-06-23 10:22:01
+- 检查时间：2026-06-24 16:17:49
 - 运行产物：16/16 就绪
 - 说明：这份报告检查本章 CSV、仪表盘、图表改造、异常值诊断、记忆复习计划、跨章节交接和图表审美诊所是否已经生成。
 
@@ -16,7 +16,7 @@
 | 就绪 | 异常值图 | `output/ch06_outlier_diagnosis.png` | 29274 字节 |
 | 就绪 | 交接报告 | `reports/ch06_ch05_handoff_analysis.md` | 577 字节 |
 | 就绪 | 交接 JSON | `output/ch06_ch05_handoff_summary.json` | 301 字节 |
-| 就绪 | 交接图 | `output/ch06_ch05_handoff_analysis.png` | 74376 字节 |
+| 就绪 | 交接图 | `output/ch06_ch05_handoff_analysis.png` | 74187 字节 |
 | 就绪 | 复习报告 | `reports/ch06_memory_review_plan.md` | 717 字节 |
 | 就绪 | 复习 JSON | `output/ch06_memory_review_plan.json` | 1038 字节 |
 | 就绪 | 复习曲线 | `output/ch06_memory_review_plan.png` | 58347 字节 |

@@ -8,7 +8,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 
-ROOT = Path.cwd()
+ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "output"
 REPORTS = ROOT / "reports"
 WEB_DIR = ROOT / "assets" / "ch04" / "web"
@@ -23,8 +23,8 @@ CHECKS = [
     ("Stroop 窗口截图", "assets/ch04/web/tkinter_stroop_window.png"),
     ("可用性报告", "reports/ch04_gui_usability_check.md"),
     ("反馈检查卡", "reports/ch04_gui_feedback_scorecard.md"),
-    ("交互回执", "reports/ch04_interaction_receipt.md"),
-    ("卡片交付报告", "reports/ch04_card_factory_delivery.md"),
+    ("交互记录", "reports/ch04_interaction_receipt.md"),
+    ("卡片成果记录", "reports/ch04_card_factory_delivery.md"),
     ("ch3 数据面板", "reports/ch04_ch03_data_gui_panel.md"),
     ("交互旅程图", "reports/ch04_gui_journey_storyboard.md"),
 ]
@@ -61,13 +61,13 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
     REPORTS.mkdir(exist_ok=True)
     ready = sum(1 for row in rows if row["status"] == "就绪")
     lines = [
-        "# 第4章 GUI 运行证据清单",
+        "# 第4章 GUI 运行记录清单",
         "",
-        "这份清单由 Python 生成，用来确认 Tkinter 窗口截图、可用性报告、交互回执和跨章节 GUI 面板是否已经留下证据。",
+        "这份清单由 Python 生成，用来确认 Tkinter 窗口截图、可用性报告、交互记录和跨章节 GUI 面板是否已经留下学习记录。",
         "",
         f"- 通过项：{ready}/{len(rows)}",
         "",
-        "| 环节 | 状态 | 证据路径 |",
+        "| 环节 | 状态 | 文件路径 |",
         "| --- | --- | --- |",
     ]
     for row in rows:
@@ -92,8 +92,8 @@ def write_preview(rows: list[dict[str, str]]) -> None:
     row_font = font(20)
     code_font = font(18)
 
-    draw.text((150, 125), "Windows PowerShell - GUI 运行证据", fill="#162033", font=title)
-    draw.text((150, 198), "Tkinter 窗口、检查报告、回执和跨章节面板都要留下可复查证据。", fill="#5F6673", font=body)
+    draw.text((150, 125), "Windows PowerShell - GUI 运行记录", fill="#162033", font=title)
+    draw.text((150, 198), "Tkinter 窗口、检查报告、交互记录和跨章节面板都要能复查。", fill="#5F6673", font=body)
 
     terminal = (150, 270, 1550, 1010)
     draw.rounded_rectangle(terminal, radius=24, fill="#0B1B3A", outline="#102A56", width=2)
@@ -121,7 +121,7 @@ def write_preview(rows: list[dict[str, str]]) -> None:
         y += 55
 
     draw.rounded_rectangle((260, 1040, 1440, 1088), radius=18, fill="#FFF7E8", outline="#F2B84B", width=2)
-    draw.text((410, 1054), "GUI 的最后一步：别只说能弹窗，要能拿出运行证据。", fill="#8A5A00", font=body)
+    draw.text((410, 1054), "GUI 的最后一步：别只说能弹窗，要能找到自己的运行记录。", fill="#8A5A00", font=body)
 
     image.save(EVIDENCE_PNG, optimize=True, quality=95)
     WEB_DIR.mkdir(parents=True, exist_ok=True)

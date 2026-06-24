@@ -260,13 +260,13 @@ def cover() -> None:
     arrow(draw, (680, 525), (760, 525), width=7)
     arrow(draw, (1230, 525), (1310, 525), width=7)
     rounded(draw, (305, 900, 1495, 985), fill="#EEF6FF", outline="#B8D6FF", radius=24)
-    draw_text(draw, (340, 918, 1460, 970), "本章验收标准：CSV 能生成，摘要能解释，图表能复现，结论能回到学习行动。", size=30, min_size=22, fill=BLUE, bold=True, align="center", valign="center")
+    draw_text(draw, (340, 918, 1460, 970), "本章自查目标：CSV 能生成，摘要能解释，图表能复现，结论能回到学习行动。", size=30, min_size=22, fill=BLUE, bold=True, align="center", valign="center")
     save(image, "ch06_cover.png")
 
 
 def story_scene() -> None:
     image, draw = canvas()
-    title(draw, "从记录表到可解释图表", "数据分析不是神奇按钮，而是一条能复查的证据流水线")
+    title(draw, "从记录表到可解释图表", "数据分析不是神奇按钮，而是一条能复查的学习记录流水线")
     panels = [
         (120, 300, 560, 760, "输入数据", ["learning_records.csv", "topic / minutes", "done / rt_ms"], BLUE),
         (690, 300, 1110, 760, "统计摘要", ["记录数", "平均学习时长", "完成率"], GREEN),
@@ -299,7 +299,7 @@ def roadmap() -> None:
         ("三", "画仪表盘", "把主题、时长、完成状态放进一张图。", ORANGE),
         ("四", "看见分布", "Anscombe 与异常值提醒你别只看平均数。", PURPLE),
         ("五", "图表改造", "减少噪音，让图表主动说出重点。", CYAN),
-        ("六", "复习行动", "把 ch05 对象交付包和记忆曲线接起来。", RED),
+        ("六", "复习行动", "把 ch05 对象成果包和记忆曲线接起来。", RED),
     ]
     coords = [(125, 280), (650, 280), (1175, 280), (125, 640), (650, 640), (1175, 640)]
     for (x, y), item in zip(coords, items):
@@ -318,7 +318,7 @@ def core_metaphor() -> None:
         ((570, 280, 930, 470), "2", "摘要 Summary", "平均数、完成率、计数先压缩信息。", GREEN),
         ((1020, 280, 1380, 470), "3", "图表 Chart", "让趋势、差异和异常值被看见。", ORANGE),
         ((120, 650, 480, 840), "4", "语境 Context", "数据从哪来、代表什么、不能说明什么。", PURPLE),
-        ((570, 650, 930, 840), "5", "判断 Insight", "用证据回答问题，而不是只报数字。", CYAN),
+        ((570, 650, 930, 840), "5", "判断 Insight", "用数据回答问题，而不是只报数字。", CYAN),
         ((1020, 650, 1380, 840), "6", "行动 Action", "改复习计划、回看异常记录、补数据。", RED),
     ]
     for xy, tag, head, body, color in nodes:
@@ -361,7 +361,7 @@ def minimal_demo() -> None:
 
 def psychology_link() -> None:
     image, draw = canvas()
-    title(draw, "心理学学习记录如何进入数据分析", "学习时长、完成状态和反应时可以变成复习计划的证据")
+    title(draw, "心理学学习记录如何进入数据分析", "学习时长、完成状态和反应时可以变成复习计划的依据")
     steps = [
         ("1", "记录学习", "topic、minutes、done 写入 CSV。", BLUE),
         ("2", "记录反应", "rt_ms 近似提示认知负荷。", GREEN),
@@ -398,7 +398,7 @@ def pitfall_map() -> None:
 
 def project_dashboard() -> None:
     image, draw = canvas()
-    title(draw, "学习卡片统计仪表盘交付链", "本章项目要把学习记录加工成图表、报告、JSON 和复习计划")
+    title(draw, "学习卡片统计仪表盘成果链", "本章项目要把学习记录加工成图表、报告、JSON 和复习计划")
     data_table(draw, (115, 315, 565, 705), [["input/", "learning_records.csv"], ["字段", "topic"], ["字段", "minutes"], ["字段", "rt_ms"]], BLUE)
     chart_box(draw, (690, 280, 1120, 725), "统计仪表盘", GREEN, "bar")
     outputs = [
@@ -409,12 +409,12 @@ def project_dashboard() -> None:
     x = 1250
     y = 260
     for folder, filename, color in outputs:
-        card(draw, (x, y, 1740, y + 145), folder, "交付物", filename, color)
+        card(draw, (x, y, 1740, y + 145), folder, "学习成果", filename, color)
         y += 180
     arrow(draw, (575, 510), (680, 510), width=7)
     arrow(draw, (1130, 510), (1240, 510), width=7)
     rounded(draw, (315, 875, 1485, 965), fill="#FFF7E8", outline="#F2B84B", radius=24)
-    draw_text(draw, (350, 895, 1450, 940), "第6章的项目验收，不看图表是否花哨，而看数据、代码、输出和解释是否能重新打开。", size=28, min_size=20, fill="#8A5A00", bold=True, align="center", valign="center")
+    draw_text(draw, (350, 895, 1450, 940), "第6章的项目自查，不看图表是否花哨，而看数据、代码、输出和解释是否能重新打开。", size=28, min_size=20, fill="#8A5A00", bold=True, align="center", valign="center")
     save(image, "ch06_project_dashboard.png")
 
 

@@ -1,6 +1,6 @@
 # Python Markdown Tutorial - Chapter 00 Detailed
 
-这是第0章交付包：课程地图、科研卡片工厂启动章、配套素材与可运行代码。
+这是第0章成果包：课程地图、科研卡片工厂启动章、配套素材与可运行代码。
 
 ## 文件说明
 
@@ -9,7 +9,7 @@
 - `assets/ch00/web/`：从 xkcd、Wikimedia Commons、NASA Science 与 Python 官方文档相关来源整理的互联网原图和资料链接，正文中已保留来源与授权说明。
 - `code/ch00/`：第0章配套 Python 示例代码。
 - `source_notes/source_manifest_ch00.md`：来源与改写说明。
-- `source_notes/quality_audit_ch00.md`：第0章质量验收记录。
+- `source_notes/quality_audit_ch00.md`：第0章质量检查记录。
 - `scripts/check_links.py`：Markdown 图片链接检查脚本。
 - `scripts/generate_ch00_visuals.py`：第0章正式版图片生成脚本。
 
@@ -25,7 +25,7 @@
 - 重绘封面、课程路线图、Python 之城、环境流水线、项目阶梯、学习闭环和报错地图。
 - 将 `create_learning_base.py` 的运行结果升级为 `python_card_factory/`，目录统一为 `input/` 原料、`cards/` 卡片、`output/` 成品、`reports/` 报告、`assets/` 素材。
 - 将 `learning_passport.py` 的语义升级为科研卡片工厂启动卡，默认生成 `output/factory_start_card.md`。
-- 新增 `source_notes/source_manifest_ch00.md` 与 `source_notes/quality_audit_ch00.md`，让来源、授权和验收结果可追溯。
+- 新增 `source_notes/source_manifest_ch00.md` 与 `source_notes/quality_audit_ch00.md`，让来源、授权和检查结果可追溯。
 
 ## 建议阅读方式
 

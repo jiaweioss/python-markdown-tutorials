@@ -4,7 +4,7 @@
 
 <figure align="center">
   <img src="../assets/ch05/ch05_cover.png" alt="第5章 面向对象程序设计封面" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-1 第5章封面</strong>：本章把散落变量收进对象，让职责、协作和交付证据都能看见。</figcaption>
+  <figcaption><strong>图5-1 第5章封面</strong>：本章把散落变量收进对象，让职责、协作和学习成果都能看见。</figcaption>
 </figure>
 
 > 本章一句话：  
@@ -12,9 +12,9 @@
 
 第4章我们用 Tkinter 做了一个能点击、能反馈、能生成文件的 GUI 小项目。窗口代码一旦继续变长，就会出现一个新问题：输入框、按钮、保存函数、报告生成、实验试次、文件路径全挤在一起，修改一个功能很容易碰坏另一个功能。
 
-第5章要解决的正是这个问题。我们不急着学一堆术语，也不把“类”“继承”“多态”当作背诵任务。先从一个很小的 `LearningCard` 开始：一张学习卡片应该保存主题、问题、答案和标签，也应该能生成自己的预览。这个边界跑通以后，再引入 `CardDeck`、`Trial` 和 `ReportBuilder`，把对象之间的协作画出来、生成报告、导出 JSON，最后留下运行证据。
+第5章要解决的正是这个问题。我们不急着学一堆术语，也不把“类”“继承”“多态”当作背诵任务。先从一个很小的 `LearningCard` 开始：一张学习卡片应该保存主题、问题、答案和标签，也应该能生成自己的预览。这个边界跑通以后，再引入 `CardDeck`、`Trial` 和 `ReportBuilder`，把对象之间的协作画出来、生成报告、导出 JSON，最后留下运行记录。
 
-这一章的读法和 ch01/ch04 保持一致：**先跑脚本，再看证据图，最后把概念拆成能复查的动作**。你不需要一开始就把 OOP 学成“设计模式大全”。先让小对象真的工作起来，再逐步把职责边界收紧。
+这一章的读法和 ch01/ch04 保持一致：**先跑脚本，再看记录图，最后把概念拆成能复查的动作**。你不需要一开始就把 OOP 学成“设计模式大全”。先让小对象真的工作起来，再逐步把职责边界收紧。
 
 ---
 
@@ -30,22 +30,22 @@
 4. 运行 `03_trial_object.py`，把心理学实验中的一次试次建模成对象。
 5. 使用类职责卡片判断一个类该管什么、不该管什么。
 6. 读懂对象协作消息图，说明 `LearningCard`、`CardDeck`、`Trial` 和 `ReportBuilder` 如何互相请求。
-7. 生成对象模型报告、设计卡片、质量回执、交付包和运行证据。
+7. 生成对象模型报告、设计卡片、质量记录、成果包和运行记录。
 8. 把 ch04 的 GUI 面板规格拆成 ch05 的对象模型，为后续数据分析章节做准备。
 
 ### 本章分区导航
 
-| 分区 | 对应小节 | 你要抓住的主线 | 产出证据 |
+| 分区 | 对应小节 | 你要抓住的主线 | 产出记录 |
 | --- | --- | --- | --- |
 | 第一部分：从变量到对象 | 5.1-5.3 | 代码变长后，职责边界比语法更重要 | 最小类、真实运行截图 |
 | 第二部分：类、属性、方法与组合 | 5.4-5.7 | 对象保存状态，方法处理自己的状态，组合表达拥有关系 | 心智模型、Trial 对象、对象小剧场 |
-| 第三部分：对象协作与职责检查 | 5.8-5.12 | 类不是孤岛，要通过清楚消息合作 | 对象模型报告、职责卡片、协作图、质量回执 |
-| 第四部分：项目交付与跨章连接 | 5.13-5.15 | OOP 项目要交付文件、JSON 和下一章能接住的数据 | 交付包、GUI 面板对象模型 |
-| 第五部分：排错、练习与验收 | 5.16-5.21 | 用固定路线排查 OOP 常见问题并留下证据 | 常见坑地图、运行证据、复盘模板 |
+| 第三部分：对象协作与职责检查 | 5.8-5.12 | 类不是孤岛，要通过清楚消息合作 | 对象模型报告、职责卡片、协作图、质量记录 |
+| 第四部分：项目成果与跨章连接 | 5.13-5.15 | OOP 项目要留下文件、JSON 和下一章能接住的数据 | 成果包、GUI 面板对象模型 |
+| 第五部分：排错、练习与自查 | 5.16-5.21 | 用固定路线排查 OOP 常见问题并留下记录 | 常见坑地图、运行记录、复盘模板 |
 
 <figure align="center">
   <img src="../assets/ch05/ch05_roadmap.png" alt="第5章学习路线图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-2 本章学习路线</strong>：先写最小类，再拆职责、看协作，最后交付可复查的对象项目。</figcaption>
+  <figcaption><strong>图5-2 本章学习路线</strong>：先写最小类，再拆职责、看协作，最后生成可复查的对象项目。</figcaption>
 </figure>
 
 ---
@@ -137,7 +137,7 @@ print(card.preview())
 
 <figure align="center">
   <img src="../assets/ch05/ch05_powershell_oop_run.png" alt="PowerShell 中运行第5章 OOP 脚本" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-5 第5章真实运行截图</strong>：先让最小对象脚本跑起来，再逐步增加卡片盒、试次对象和交付证据。</figcaption>
+  <figcaption><strong>图5-5 第5章真实运行截图</strong>：先让最小对象脚本跑起来，再逐步增加卡片盒、试次对象和输出记录。</figcaption>
 </figure>
 
 第一次运行时，不要急着修改。先确认终端输出里能看到卡片预览。这个输出说明三件事：类定义成功，对象创建成功，方法调用成功。
@@ -305,7 +305,7 @@ class Trial:
 | 需要小心多个列表长度一致 | 一次试次的数据天然在一起 |
 | 判断快慢要传入 `reaction_time_ms` | `trial.is_fast()` 自己判断 |
 
-这不是说所有实验数据都要立刻改成对象。正式统计分析时，表格和 DataFrame 很重要。第5章的重点是：当你在写实验流程、界面逻辑或交付对象时，用对象保存“同一件事”的状态，会让代码更稳。
+这不是说所有实验数据都要立刻改成对象。正式统计分析时，表格和 DataFrame 很重要。第5章的重点是：当你在写实验流程、界面逻辑或成果对象时，用对象保存“同一件事”的状态，会让代码更稳。
 
 把一次试次收成一个对象，也和心理学里的“图式”有一点相通：人理解世界时，会把分散信息组织成可重复使用的结构。Piaget 研究儿童认知发展时关心的正是这种结构如何形成、调整和迁移。写代码当然不是照搬心理学理论，但这个类比能提醒我们：好对象不是一堆字段，而是一个有边界、有意义、能参与后续动作的认知单元。
 
@@ -330,7 +330,7 @@ class Trial:
 设计对象时，可以先不写代码，只写一句话：
 
 ```text
-LearningCard 准备内容，CardDeck 管理集合，Trial 记录一次反应，ReportBuilder 整理证据。
+LearningCard 准备内容，CardDeck 管理集合，Trial 记录一次反应，ReportBuilder 整理记录。
 ```
 
 如果这句话说不清，代码通常也会混乱。类名不是越多越好，边界清楚才有价值。
@@ -364,8 +364,8 @@ assets/ch05/web/ch05_oop_model_preview.png
 ```
 
 <figure align="center">
-  <img src="../assets/ch05/ch05_project_dashboard.png" alt="科研卡片工厂对象交付链" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-9 科研卡片工厂对象交付链</strong>：对象设计最后要变成报告、JSON、图片和下一章能继续读取的数据。</figcaption>
+  <img src="../assets/ch05/ch05_project_dashboard.png" alt="科研卡片工厂对象成果链" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-9 科研卡片工厂对象成果链</strong>：对象设计最后要变成报告、JSON、图片和下一章能继续读取的数据。</figcaption>
 </figure>
 
 <figure align="center">
@@ -439,7 +439,7 @@ assets/ch05/web/ch05_object_collaboration_map.png
 
 如果一条消息说不清，通常说明职责边界还没想清楚。先改设计，再急着写代码。
 
-### 5.12 对象质量回执：`07_make_object_quality_receipt.py`
+### 5.12 对象质量记录：`07_make_object_quality_receipt.py`
 
 运行：
 
@@ -456,13 +456,13 @@ assets/ch05/web/ch05_object_quality_receipt.png
 ```
 
 <figure align="center">
-  <img src="../assets/ch05/ch05_object_quality_receipt.png" alt="对象质量回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-13 对象质量回执</strong>：用单一职责、数据贴近方法、消息清楚、组合优先和万能类风险检查对象设计。</figcaption>
+  <img src="../assets/ch05/ch05_object_quality_receipt.png" alt="对象质量记录" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-13 对象质量记录</strong>：用单一职责、数据贴近方法、消息清楚、组合优先和万能类风险检查对象设计。</figcaption>
 </figure>
 
-这份回执不是为了给代码打分，而是为了提醒你：OOP 失败时，问题经常不是语法，而是边界。一个项目里如果出现 `ProjectManager`、`Helper`、`Everything` 这种类名，要格外小心。它们可能正在吞掉太多职责。
+这份记录不是为了给代码打分，而是为了提醒你：OOP 失败时，问题经常不是语法，而是边界。一个项目里如果出现 `ProjectManager`、`Helper`、`Everything` 这种类名，要格外小心。它们可能正在吞掉太多职责。
 
-xkcd 的“代码质量”梗图很好笑，是因为它戳中了所有程序员都经历过的尴尬：代码能跑，不代表它好理解；今天自己觉得“先凑合一下”的地方，明天可能变成别人接手时的迷宫。OOP 的职责卡片和质量回执，就是为了尽早发现这种迷宫入口。
+xkcd 的“代码质量”梗图很好笑，是因为它戳中了所有程序员都经历过的尴尬：代码能跑，不代表它好理解；今天自己觉得“先凑合一下”的地方，明天可能变成别人接手时的迷宫。OOP 的职责卡片和质量记录，就是为了尽早发现这种迷宫入口。
 
 <figure align="center">
   <img src="../assets/ch05/ch05_xkcd_code_quality.png" alt="xkcd 代码质量漫画" style="zoom:50%; display:block; margin:0 auto;" />
@@ -471,9 +471,9 @@ xkcd 的“代码质量”梗图很好笑，是因为它戳中了所有程序员
 
 ---
 
-## 第四部分：项目交付与跨章连接
+## 第四部分：项目成果与跨章连接
 
-### 5.13 对象交付包：`08_make_object_delivery_package.py`
+### 5.13 对象成果包：`08_make_object_delivery_package.py`
 
 运行：
 
@@ -491,13 +491,13 @@ assets/ch05/web/ch05_object_delivery_package.png
 ```
 
 <figure align="center">
-  <img src="../assets/ch05/ch05_object_delivery_package.png" alt="对象交付包预览图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-14 对象交付包</strong>：对象模型不只停在代码里，也可以导出成 JSON，交给后续章节继续读取和分析。</figcaption>
+  <img src="../assets/ch05/ch05_object_delivery_package.png" alt="对象成果包预览图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-14 对象成果包</strong>：对象模型不只停在代码里，也可以导出成 JSON，交给后续章节继续读取和分析。</figcaption>
 </figure>
 
 为什么要导出 JSON？因为一个小项目完成后，下一步通常不是“看起来写完了”，而是要把结果交给别的流程。第6章如果要做数据分析，就可以读取这个 JSON，把卡片和试次对象整理成表格。
 
-OOP 的交付物至少应该回答：
+OOP 的成果文件至少应该回答：
 
 1. 对象模型是什么？
 2. 现在有哪些具体对象？
@@ -554,7 +554,7 @@ python code/ch05/09_make_gui_panel_object_model.py
 python code/ch05/10_make_oop_runtime_evidence.py
 ```
 
-对应证据如下：
+对应记录如下：
 
 | 脚本 | 主要产物 | 你要确认什么 |
 | --- | --- | --- |
@@ -567,11 +567,11 @@ python code/ch05/10_make_oop_runtime_evidence.py
 | `07_make_object_quality_receipt.py` | `reports/ch05_object_quality_receipt.md` | 能发现万能类风险 |
 | `08_make_object_delivery_package.py` | `output/ch05_object_delivery_package.json` | 对象模型能交给下一章 |
 | `09_make_gui_panel_object_model.py` | `output/ch05_gui_panel_object_model.json` | ch04 面板能拆成对象 |
-| `10_make_oop_runtime_evidence.py` | `reports/ch05_oop_runtime_evidence.md` | 后半段交付物都存在 |
+| `10_make_oop_runtime_evidence.py` | `reports/ch05_oop_runtime_evidence.md` | 后半段成果文件都存在 |
 
 ---
 
-## 第五部分：排错、练习与验收
+## 第五部分：排错、练习与自查
 
 ### 5.16 常见坑：先按职责边界排查
 
@@ -597,7 +597,7 @@ python code/ch05/10_make_oop_runtime_evidence.py
 4. 再让两个对象协作。
 5. 最后才加文件、GUI、报告和导出。
 
-### 5.17 运行证据：OOP 也要能交付
+### 5.17 运行记录：OOP 也要能复查
 
 运行：
 
@@ -606,24 +606,24 @@ python code/ch05/10_make_oop_runtime_evidence.py
 ```
 
 <figure align="center">
-  <img src="../assets/ch05/ch05_oop_runtime_evidence.png" alt="第5章 OOP 运行证据图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图5-17 OOP 运行证据</strong>：对象模型报告、职责卡片、协作图、质量回执、交付包和 GUI 面板对象模型都存在，才说明本章项目有完整证据链。</figcaption>
+  <img src="../assets/ch05/ch05_oop_runtime_evidence.png" alt="第5章 OOP 运行记录图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图5-17 OOP 运行记录</strong>：对象模型报告、职责卡片、协作图、质量记录、成果包和 GUI 面板对象模型都存在，才说明本章项目有完整学习记录。</figcaption>
 </figure>
 
-第1章强调环境要有证据，第4章强调 GUI 要有证据，第5章也一样。不要只说“我写了类”。你应该能指出：
+第1章强调环境要能复查，第4章强调 GUI 要能复查，第5章也一样。不要只说“我写了类”。你应该能指出：
 
 1. 对象模型报告在哪里？
 2. 类职责卡片在哪里？
 3. 对象协作图在哪里？
-4. 质量回执检查了什么？
-5. 交付包 JSON 能交给谁？
-6. 运行证据是否显示所有文件就绪？
+4. 质量记录检查了什么？
+5. 成果包 JSON 能交给谁？
+6. 运行记录是否显示所有文件就绪？
 
-### 5.18 上机路线与提交证据
+### 5.18 上机路线与学习记录
 
 提交本章作业时，可以按下面的清单整理：
 
-| 提交证据 | 要看到什么 |
+| 学习记录 | 要看到什么 |
 | --- | --- |
 | 最小类 | `01_learning_card_class.py` 能输出卡片预览 |
 | 卡片盒 | `02_card_deck.py` 能显示卡片数量 |
@@ -631,10 +631,10 @@ python code/ch05/10_make_oop_runtime_evidence.py
 | 对象模型报告 | `reports/ch05_oop_model_report.md` 存在 |
 | 职责卡片 | `reports/ch05_design_cards.md` 存在 |
 | 协作消息图 | `reports/ch05_object_collaboration_map.md` 存在 |
-| 质量回执 | `reports/ch05_object_quality_receipt.md` 存在 |
-| 对象交付包 | `output/ch05_object_delivery_package.json` 存在 |
+| 质量记录 | `reports/ch05_object_quality_receipt.md` 存在 |
+| 对象成果包 | `output/ch05_object_delivery_package.json` 存在 |
 | GUI 面板对象模型 | `output/ch05_gui_panel_object_model.json` 存在 |
-| 运行证据 | `reports/ch05_oop_runtime_evidence.md` 存在 |
+| 运行记录 | `reports/ch05_oop_runtime_evidence.md` 存在 |
 
 ### 5.19 练习任务
 
@@ -645,8 +645,8 @@ python code/ch05/10_make_oop_runtime_evidence.py
 5. 给 `Trial` 增加 `correct: bool` 属性，并写一个 `status()` 方法。
 6. 在 `05_make_design_cards.py` 里新增一个类职责卡片，例如 `StudySession`。
 7. 修改 `06_make_object_collaboration_map.py`，加入 `StudySession -> CardDeck` 的消息。
-8. 在质量回执里新增一个检查项：“测试是否容易写”。
-9. 修改对象交付包 JSON，让它包含你新增的 `difficulty`。
+8. 在质量记录里新增一个检查项：“测试是否容易写”。
+9. 修改对象成果包 JSON，让它包含你新增的 `difficulty`。
 10. 临时删除一个报告文件，再运行 `10_make_oop_runtime_evidence.py`，观察它如何提示缺失；检查后把文件恢复。
 
 ### 5.20 自测问题
@@ -658,7 +658,7 @@ python code/ch05/10_make_oop_runtime_evidence.py
 5. `Trial` 对象适合保存哪些心理学实验信息？
 6. 什么是万能类？它为什么危险？
 7. 对象协作消息图里，“消息”代表什么？
-8. 为什么 OOP 项目也需要运行证据，而不是只提交 `.py` 文件？
+8. 为什么 OOP 项目也需要运行记录，而不是只提交 `.py` 文件？
 
 如果你能把 `LearningCard`、`CardDeck`、`Trial` 和 `ReportBuilder` 的职责讲清楚，再指出它们的协作方向，就说明本章主线已经抓住了。
 
@@ -677,7 +677,7 @@ python code/ch05/10_make_oop_runtime_evidence.py
 - CardDeck：
 - Trial：
 
-## 我生成的证据文件
+## 我生成的记录文件
 - 
 
 ## 我遇到的 OOP 问题
@@ -708,7 +708,7 @@ python code/ch05/10_make_oop_runtime_evidence.py
 5. `self` 指向当前这个对象。
 6. 组合表达“拥有”，通常比过早继承更稳。
 7. 对象之间通过清楚消息协作。
-8. 类职责卡片和质量回执能帮助你提前发现边界混乱。
-9. OOP 项目最终也要留下报告、图片、JSON 和运行证据。
+8. 类职责卡片和质量记录能帮助你提前发现边界混乱。
+9. OOP 项目最终也要留下报告、图片、JSON 和运行记录。
 
-下一章会继续接住这些产物。你会把对象交付包里的卡片和试次整理成更适合分析的数据结构。也就是说，第5章不是孤立地学 `class`，而是在给后续的数据分析、GUI 扩展和综合项目打地基。
+下一章会继续接住这些产物。你会把对象成果包里的卡片和试次整理成更适合分析的数据结构。也就是说，第5章不是孤立地学 `class`，而是在给后续的数据分析、GUI 扩展和综合项目打地基。

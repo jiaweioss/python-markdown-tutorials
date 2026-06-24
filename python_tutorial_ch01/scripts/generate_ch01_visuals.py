@@ -755,7 +755,7 @@ def powershell_submission_evidence_raw():
     )
     terminal_raw(
         "powershell_submission_evidence.png",
-        "Windows PowerShell - 第1章提交证据",
+        "Windows PowerShell - 第1章学习成果记录",
         lines[:24],
         width=1500,
         height=1080,
@@ -837,13 +837,13 @@ def xkcd_environment_card():
 
 def first_script_feedback_loop():
     im, d = canvas(1800, 1040)
-    title_block(d, "第一段脚本的反馈闭环", "脚本不是写完就结束，它要留下看得见的证据")
+    title_block(d, "第一段脚本的反馈闭环", "脚本不是写完就结束，它要留下看得见的记录")
     steps = [
         ("1", "写脚本", "把代码保存成 01_hello_python.py。", BLUE),
         ("2", "运行它", "在 PowerShell 或 PyCharm 里启动。", GREEN),
         ("3", "看输出", "先确认屏幕上真的有反馈。", ORANGE),
         ("4", "查路径", "确认脚本由哪个 Python 执行。", PURPLE),
-        ("5", "留日志", "把环境证据写进 reports。", CYAN),
+        ("5", "留日志", "把环境记录写进 reports。", CYAN),
         ("6", "再改一点", "只改一处，再运行一次。", RED),
     ]
     coords = [(170, 330), (670, 330), (1170, 330), (1170, 650), (670, 650), (170, 650)]

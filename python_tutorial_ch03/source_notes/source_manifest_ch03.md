@@ -51,30 +51,30 @@
 - `assets/ch03/ch03_powershell_file_operations_run.png`：由生成脚本整理后的正式教材图。
 - `assets/ch03/web/ch03_archive_manifest_preview.png`：运行 `python code/ch03/08_make_archive_manifest.py` 生成的档案清单预览图。
 - `assets/ch03/ch03_archive_manifest_preview.png`：正式教材中的档案清单图。
-- `assets/ch03/web/ch03_archive_receipt_preview.png`：运行 `python code/ch03/09_make_archive_receipt.py` 生成的归档回执预览图。
-- `assets/ch03/ch03_archive_receipt_preview.png`：正式教材中的归档回执图。
+- `assets/ch03/web/ch03_archive_receipt_preview.png`：运行 `python code/ch03/09_make_archive_receipt.py` 生成的归档记录预览图。
+- `assets/ch03/ch03_archive_receipt_preview.png`：正式教材中的归档记录图。
 - `assets/ch03/web/ch03_path_safety_receipt.png`：运行 `python code/ch03/10_make_path_safety_receipt.py` 生成的路径安全体检预览图。
-- `assets/ch03/ch03_path_safety_receipt.png`：正式教材中的路径安全体检回执图。
+- `assets/ch03/ch03_path_safety_receipt.png`：正式教材中的路径安全体检记录图。
 - `assets/ch03/web/ch03_ch02_stroop_file_handoff.png`：运行 `python code/ch03/11_make_ch02_stroop_file_handoff.py` 生成的 ch2 到 ch3 文件交接预览图。
-- `assets/ch03/ch03_ch02_stroop_file_handoff.png`：正式教材中的跨章节文件交接回执图。
-- `assets/ch03/web/ch03_archive_evidence_board.png`：运行 `python code/ch03/12_make_archive_evidence_board.py` 生成的归档证据板预览图。
-- `assets/ch03/ch03_archive_evidence_board.png`：正式教材中的归档证据板图。
+- `assets/ch03/ch03_ch02_stroop_file_handoff.png`：正式教材中的跨章节文件交接记录图。
+- `assets/ch03/web/ch03_archive_evidence_board.png`：运行 `python code/ch03/12_make_archive_evidence_board.py` 生成的归档记录板预览图。
+- `assets/ch03/ch03_archive_evidence_board.png`：正式教材中的归档记录板图。
 - `assets/ch03/web/ch03_material_intake_register.png`：运行 `python code/ch03/13_make_material_intake_register.py` 生成的资料入库登记册预览图。
 - `assets/ch03/ch03_material_intake_register.png`：正式教材中的资料入库登记册图。
 - `workspace_ch03/output/ch03_archive_manifest.md`：可复现档案清单。
-- `workspace_ch03/output/ch03_archive_receipt.md`：归档回执 Markdown 报告。
+- `workspace_ch03/output/ch03_archive_receipt.md`：归档记录 Markdown 报告。
 - `workspace_ch03/output/ch03_path_safety_receipt.md`：路径安全体检 Markdown 报告。
 - `workspace_ch03/output/ch03_ch02_stroop_file_handoff.md`：ch2 Stroop 数据包进入 ch3 工作区后的交接 Markdown 报告。
-- `workspace_ch03/output/ch03_archive_evidence_board.json`：归档证据板结构化摘要。
-- `workspace_ch03/output/ch03_archive_evidence_board.png`：归档证据板预览图。
-- `reports/ch03_archive_evidence_board.md`：归档证据板 Markdown 报告。
+- `workspace_ch03/output/ch03_archive_evidence_board.json`：归档记录板结构化摘要。
+- `workspace_ch03/output/ch03_archive_evidence_board.png`：归档记录板预览图。
+- `reports/ch03_archive_evidence_board.md`：归档记录板 Markdown 报告。
 - `workspace_ch03/output/ch03_material_intake_register.json`：资料入库登记册结构化摘要。
 - `workspace_ch03/output/ch03_material_intake_register.png`：资料入库登记册预览图。
 - `reports/ch03_material_intake_register.md`：资料入库登记册 Markdown 报告。
 - `workspace_ch03/organized/json/ch02_stroop_dataset_pack.json`：从第2章复制并归档的 JSON 数据包。
 - `workspace_ch03/organized/csv/ch02_stroop_dataset_pack.csv`：从第2章复制并归档的 CSV 数据包。
 - `assets/ch03/ch03_review_checkpoint.png`：脚本生成的文件读写复盘检查点，用无文字图形串起路径、文件、检查、终端、输出和复核。
-- `assets/ch03/ch03_practice_evidence_workbench.png`：脚本生成的练习证据工作台，用无文字图形呈现输入目录、输出目录、检查清单和终端运行结果。
+- `assets/ch03/ch03_practice_evidence_workbench.png`：脚本生成的练习记录工作台，用无文字图形呈现输入目录、输出目录、检查清单和终端运行结果。
 - `assets/ch03/ch03_gui_handoff_bridge.png`：脚本生成的文件到 GUI 交接桥，用无文字图形衔接第3章文件资料和第4章窗口界面。
 
 ## 正式教材图片

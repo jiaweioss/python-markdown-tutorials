@@ -629,7 +629,7 @@ def error_clue_cards():
 
 def practice_workbench():
     im, d = canvas()
-    title_block(d, "本章练习工作台", "练习的顺序不是随机刷题，而是从命名、操作到生成证据。")
+    title_block(d, "本章练习工作台", "练习的顺序不是随机刷题，而是从命名、操作到生成记录。")
     items = [
         ("1", "变量命名", "把 a、b、c 改成看得懂的名字。", BLUE),
         ("2", "字符串切片", "用索引取字符和片段。", GREEN),
@@ -637,7 +637,7 @@ def practice_workbench():
         ("4", "字典操作", "新增字段、修改值、get 默认值。", PURPLE),
         ("5", "类型罗盘", "为真实数据选择类型并写理由。", TEAL),
         ("6", "Stroop 数据包", "改 trial，观察正确率和缺失值。", RED),
-        ("7", "运行证据", "检查报告是否 14/14 ready。", YELLOW),
+        ("7", "运行记录", "检查报告是否 14/14 ready。", YELLOW),
     ]
     for i, (num, title, body, color) in enumerate(items):
         row = 0 if i < 4 else 1
@@ -646,7 +646,7 @@ def practice_workbench():
         y = 280 + row * 305
         card(d, (x, y, x + 355, y + 230), title, body, accent=color, tag=num)
     shadow_box(d, (300, 915, 1500, 1015), fill="#FCFDFE", radius=24)
-    text_box(d, (340, 938, 1460, 990), "推荐节奏：改一点，跑一次，看输出；最后留下可复查的文件证据。", 29, fill=INK, align="center", valign="middle", max_lines=1)
+    text_box(d, (340, 938, 1460, 990), "推荐节奏：改一点，跑一次，看输出；最后留下可复查的文件记录。", 29, fill=INK, align="center", valign="middle", max_lines=1)
     save(im, "ch02_practice_workbench.png")
 
 
@@ -777,7 +777,7 @@ def data_type_lab_receipt():
     photo_plate(
         "ch02_data_type_lab_receipt.png",
         "ch02_data_type_lab_receipt.png",
-        "数据类型实验回执",
+        "数据类型实验记录",
         "同一份记录里，字符串、列表、字典、浮点数、布尔值和 None 各自承担不同任务。",
     )
 
@@ -807,7 +807,7 @@ def data_type_runtime_evidence():
     photo_plate(
         "ch02_data_type_runtime_evidence.png",
         "ch02_data_type_runtime_evidence.png",
-        "运行证据板",
+        "运行记录板",
         "学习结果不只停在文字说明里；脚本、报告和输出文件都应该能被复查。",
     )
 

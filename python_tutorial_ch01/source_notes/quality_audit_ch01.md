@@ -1,10 +1,10 @@
-# 第1章质量验收记录
+# 第1章质量检查记录
 
-验收日期：2026-06-17
+检查日期：2026-06-17
 
-## 验收范围
+## 检查范围
 
-本次验收范围是 `python_tutorial_ch01` 包，重点包括：
+本次检查范围是 `python_tutorial_ch01` 包，重点包括：
 
 - `chapters/ch01_python_basics_work_env.md`
 - `assets/ch01/`
@@ -17,19 +17,19 @@
 
 ## 目标对照
 
-| 需求 | 当前证据 | 状态 |
+| 需求 | 当前记录 | 状态 |
 | --- | --- | --- |
-| 精简与 ch0 重复内容 | 开头进一步压缩为真实运行任务；1.4-1.6 继续压短为够用概念；1.8 改为环境证据总表；第1章聚焦“环境通电” | 已完成 |
-| 增加真实运行环境截图 | 正文前段集中呈现 PowerShell 本机窗口实拍、10 张 PowerShell 命令输出/运行证据素材、11 张 JetBrains 官方 PyCharm 真实界面原图整理图，并新增 PyCharm 解释器/Run 窗口核对图和 PowerShell/PyCharm 同屏核对图 | 已完成 |
+| 精简与 ch0 重复内容 | 开头进一步压缩为真实运行任务；1.4-1.6 继续压短为够用概念；1.8 改为环境记录总表；第1章聚焦“环境通电” | 已完成 |
+| 增加真实运行环境截图 | 正文前段集中呈现 PowerShell 本机窗口实拍、10 张 PowerShell 命令输出/运行记录素材、11 张 JetBrains 官方 PyCharm 真实界面原图整理图，并新增 PyCharm 解释器/Run 窗口核对图和 PowerShell/PyCharm 同屏核对图 | 已完成 |
 | 讲清环境配置步骤 | 1.1-1.2 按 PowerShell 4 步验电和 PyCharm 5 步核对重写；用真实截图讲目录、解释器、`.venv`、Run Configuration、Run 输出和本机 `pycharm64.exe` 路径核对 | 已完成 |
 | 减少流程图堆叠 | 移除正文中的环境排错流程图，保留 pip 管线和报错地图两个必要模型图 | 已完成 |
 | 图片居中与图注 | 正文 34 张图片均使用 `<figure align="center">` 和 `<figcaption>` | 已完成 |
 | 图片内不新增解释文字 | PowerShell 生成图已去掉额外英文说明，只保留命令和输出；讲解放在 Markdown 正文和图注中 | 已完成 |
 | 运行截图顺序统一 | 1.1 和 1.2 已调整为先讲文字、命令和核对点，再展示对应 PowerShell / PyCharm 运行截图与图注 | 已完成 |
 | 图1-8 中文乱码修复 | `generate_ch01_visuals.py` 对子进程统一设置 UTF-8 输出环境，重新生成后图1-8 中文正常显示 | 已完成 |
-| 学生视角 | 正文面向学习者操作，不写“老师应该如何教学” | 已完成 |
-| 图文叙事 | Guido、CWI、Grace Hopper、BBC Broadcasting House、Wundt、Stroop、xkcd 和真实 IDE/终端截图穿插在正文中，中段补入第一段脚本反馈回路图，后半章补入运行证据图与路径检查图以减少长段无图 | 已完成 |
-| 图片平均穿插 | 新增 `ch01_first_script_feedback_loop.png`，把 `print()`、注释、脚本命名、项目目录和运行证据之间的长段无图切开；最大图片间隔从 209 行降到 171 行 | 已完成 |
+| 学生视角 | 正文面向学习者操作，不写“后台教学说明” | 已完成 |
+| 图文叙事 | Guido、CWI、Grace Hopper、BBC Broadcasting House、Wundt、Stroop、xkcd 和真实 IDE/终端截图穿插在正文中，中段补入第一段脚本反馈回路图，后半章补入运行记录图与路径检查图以减少长段无图 | 已完成 |
+| 图片平均穿插 | 新增 `ch01_first_script_feedback_loop.png`，把 `print()`、注释、脚本命名、项目目录和运行记录之间的长段无图切开；最大图片间隔从 209 行降到 171 行 | 已完成 |
 
 ## 当前素材清单
 
@@ -118,12 +118,12 @@
 - PyCharm 新建项目与 Run 窗口截图：<https://www.jetbrains.com/help/pycharm/creating-and-running-your-first-python-project.html>
 - PyCharm 选择已有 virtualenv 截图：<https://resources.jetbrains.com/help/img/idea/2026.1/py_existing_virtualenv_environment_dark.png>
 - PyCharm Run/Debug Configuration 截图：<https://www.jetbrains.com/help/pycharm/run-debug-configuration.html>
-- PowerShell 项目目录定位、本机环境检查实拍、环境检查复盘、Python 与 PyCharm 定位探针、`.venv` 创建、执行策略备用运行、`pathlib` 路径检查、连续运行图、本章完整运行证据总览、第1章提交证据、PyCharm 解释器/Run 窗口核对图和 PowerShell/PyCharm 同屏核对图：本机运行命令后整理、截取或由本章生成脚本生成，图片内只保留命令和输出
+- PowerShell 项目目录定位、本机环境检查实拍、环境检查复盘、Python 与 PyCharm 定位探针、`.venv` 创建、执行策略备用运行、`pathlib` 路径检查、连续运行图、本章完整运行记录总览、第1章学习成果记录、PyCharm 解释器/Run 窗口核对图和 PowerShell/PyCharm 同屏核对图：本机运行命令后整理、截取或由本章生成脚本生成，图片内只保留命令和输出
 - xkcd 353：<https://xkcd.com/353/>
 - xkcd 1987：<https://xkcd.com/1987/>
 - xkcd 授权说明：<https://xkcd.com/license.html>
 
-## 验收命令
+## 检查命令
 
 在 `python_tutorial_ch01` 目录下运行：
 
@@ -177,4 +177,4 @@ print("ch01 quality audit OK")
 
 ## 剩余边界
 
-本次验收集中在 ch01。整套教程其他章节仍可继续沿用 ch0/ch1 的图文标准逐章审计、压缩重复内容、补真实运行截图和项目成果图。
+本次检查集中在 ch01。整套教程其他章节仍可继续沿用 ch0/ch1 的图文标准逐章审计、压缩重复内容、补真实运行截图和项目成果图。

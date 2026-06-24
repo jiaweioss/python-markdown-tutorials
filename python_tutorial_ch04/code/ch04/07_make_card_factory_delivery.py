@@ -1,4 +1,4 @@
-"""Generate a delivery receipt for the Tkinter card factory project."""
+"""Generate a learning-output card for the Tkinter card factory project."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ CARD = {
 
 def project_root() -> Path:
     here = Path.cwd()
-    if (here / "assets" / "ch04").exists():
+    if (here / "manifest.json").exists() and (here / "assets" / "ch04").exists():
         return here
     return Path(__file__).resolve().parents[2]
 
@@ -82,9 +82,9 @@ def write_report() -> None:
     card_rel = CARD_FILE.relative_to(ROOT).as_posix()
     preview_rel = PREVIEW.relative_to(ROOT).as_posix()
     lines = [
-        "# 第 4 章卡片工厂交付回执",
+        "# 第 4 章卡片工厂学习成果",
         "",
-        "这份回执记录 GUI 项目的真实产物：一张可打开、可继续编辑的 Markdown 学习卡片。",
+        "这份记录展示 GUI 小项目的真实成果：一张可打开、可继续编辑的 Markdown 学习卡片。",
         "",
         "| 项目 | 结果 |",
         "| --- | --- |",
@@ -104,7 +104,7 @@ def draw_preview() -> None:
     d = ImageDraw.Draw(im)
 
     d.rounded_rectangle((90, 70, 1410, 850), radius=28, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "卡片工厂交付回执", fill="#162033", font=font(50, True))
+    d.text((150, 125), "卡片工厂学习成果", fill="#162033", font=font(50, True))
     d.text((152, 195), "Tkinter 项目生成的一张真实 Markdown 学习卡片。", fill="#5F6673", font=font(26))
 
     d.rounded_rectangle((150, 275, 570, 735), radius=24, fill="#EEF6FF", outline="#9CC8FF", width=3)
@@ -130,7 +130,7 @@ def draw_preview() -> None:
         y += 70
 
     d.rounded_rectangle((255, 790, 1245, 845), radius=20, fill="#FFF7E8", outline="#F2B84B", width=2)
-    d.text((320, 805), "报告：reports/ch04_card_factory_delivery.md", fill="#8A5A00", font=font(22, True))
+    d.text((320, 805), "记录：已生成学习卡片和复盘报告", fill="#8A5A00", font=font(22, True))
 
     im.save(PREVIEW, optimize=True, quality=95)
 

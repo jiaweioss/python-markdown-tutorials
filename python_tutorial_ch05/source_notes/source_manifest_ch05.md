@@ -40,13 +40,13 @@
 - `assets/ch05/web/ch05_oop_model_preview.png`：本地运行 `04_make_oop_model_report.py` 生成的对象模型预览图。
 - `assets/ch05/web/ch05_design_cards_preview.png`：本地运行 `05_make_design_cards.py` 生成的类职责卡片预览图。
 - `assets/ch05/web/ch05_object_collaboration_map.png`：本地运行 `06_make_object_collaboration_map.py` 生成的对象协作消息图。
-- `assets/ch05/web/ch05_object_quality_receipt.png`：本地运行 `07_make_object_quality_receipt.py` 生成的对象质量回执。
-- `assets/ch05/web/ch05_object_delivery_package.png`：本地运行 `08_make_object_delivery_package.py` 生成的对象交付包预览图。
+- `assets/ch05/web/ch05_object_quality_receipt.png`：本地运行 `07_make_object_quality_receipt.py` 生成的对象质量记录。
+- `assets/ch05/web/ch05_object_delivery_package.png`：本地运行 `08_make_object_delivery_package.py` 生成的对象成果包预览图。
 - `assets/ch05/web/ch05_gui_panel_object_model.png`：本地运行 `09_make_gui_panel_object_model.py` 读取 ch4 GUI 面板规格后生成的对象模型预览图。
-- `assets/ch05/web/ch05_oop_runtime_evidence.png`：本地运行 `10_make_oop_runtime_evidence.py` 生成的 OOP 运行证据图。
+- `assets/ch05/web/ch05_oop_runtime_evidence.png`：本地运行 `10_make_oop_runtime_evidence.py` 生成的 OOP 运行记录图。
 - `output/ch05_object_delivery_package.json`：本地运行 `08_make_object_delivery_package.py` 导出的对象模型 JSON。
 - `output/ch05_gui_panel_object_model.json`：本地运行 `09_make_gui_panel_object_model.py` 导出的 GUI 面板对象模型 JSON。
-- `reports/ch05_oop_runtime_evidence.md`：本地运行 `10_make_oop_runtime_evidence.py` 生成的运行证据清单。
+- `reports/ch05_oop_runtime_evidence.md`：本地运行 `10_make_oop_runtime_evidence.py` 生成的运行记录清单。
 
 ## 当前正文正式图片
 

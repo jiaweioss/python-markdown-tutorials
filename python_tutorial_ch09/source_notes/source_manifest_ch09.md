@@ -39,13 +39,13 @@
 - `assets/ch09/web/ch09_image_quality_contact_sheet.png`：本机运行 `07_make_image_quality_contact_sheet.py` 后生成的无文字图像质量检查总览。
 - `assets/ch09/web/ch09_ch08_image_intake.png`：本机运行 `08_make_ch08_image_intake.py` 后生成的 ch8 图像素材入库体检单。
 - `assets/ch09/web/ch09_processing_storyboard.png`：本机运行 `10_make_processing_storyboard.py` 后生成的图像处理故事板。
-- `assets/ch09/web/visual_evidence_archive.png`：本机运行 `09_make_visual_evidence_archive.py` 后生成的视觉证据档案总览。
-- `assets/ch09/web/ch09_image_runtime_evidence.png`：本机运行 `11_make_image_runtime_evidence.py` 后生成的图像处理运行证据总览。
+- `assets/ch09/web/visual_evidence_archive.png`：本机运行 `09_make_visual_evidence_archive.py` 后生成的视觉记录档案总览。
+- `assets/ch09/web/ch09_image_runtime_evidence.png`：本机运行 `11_make_image_runtime_evidence.py` 后生成的图像处理运行记录总览。
 - `assets/ch09/web/powershell_ch09_image_processing_run.png`：本机运行图像处理脚本后整理的 PowerShell 运行图。
 
 ## 生成素材
 
-本章包含 25 张正文正式图片、7 张互联网原图/素材、1 张真实照片处理结果、1 张本机 PowerShell 运行图、1 张由既有素材合成的人文脉络图和 7 张脚本生成预览/证据图。
+本章包含 25 张正文正式图片、7 张互联网原图/素材、1 张真实照片处理结果、1 张本机 PowerShell 运行图、1 张由既有素材合成的人文脉络图和 7 张脚本生成预览/记录图。
 
 正式图片：
 

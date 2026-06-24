@@ -261,14 +261,14 @@ def photo_plate(output_name: str, image_name: str) -> None:
 
 def cover() -> None:
     image, draw = canvas()
-    title(draw, "第5章 面向对象程序设计", "把散落变量收进对象，让职责、协作和交付证据都能看见")
+    title(draw, "第5章 面向对象程序设计", "把散落变量收进对象，让职责、协作和学习成果都能看见")
     object_box(draw, (120, 320, 510, 760), "LearningCard", ["topic", "question", "answer", "preview()"], BLUE)
     object_box(draw, (705, 320, 1095, 760), "CardDeck", ["name", "cards[]", "add(card)", "summary()"], GREEN)
     object_box(draw, (1290, 320, 1680, 760), "Trial", ["participant", "stimulus", "response", "is_fast()"], ORANGE)
     arrow(draw, (520, 540), (690, 540), width=8)
     arrow(draw, (1110, 540), (1280, 540), width=8)
     rounded(draw, (350, 900, 1450, 984), fill="#EEF6FF", outline="#B8D6FF", radius=24)
-    draw_text(draw, (385, 918, 1415, 968), "本章验收标准：能写类，能创建对象，能解释对象协作，并能交付报告、JSON 和运行证据。", size=29, min_size=21, fill=BLUE, bold=True, align="center", valign="center")
+    draw_text(draw, (385, 918, 1415, 968), "本章自查目标：能写类，能创建对象，能解释对象协作，并能生成报告、JSON 和运行记录。", size=29, min_size=21, fill=BLUE, bold=True, align="center", valign="center")
     save(image, "ch05_cover.png")
 
 
@@ -298,14 +298,14 @@ def story_scene() -> None:
 
 def roadmap() -> None:
     image, draw = canvas()
-    title(draw, "本章学习路线", "先写最小类，再拆职责、看协作，最后交付可复查的对象项目")
+    title(draw, "本章学习路线", "先写最小类，再拆职责、看协作，最后生成可复查的对象项目")
     items = [
         ("一", "类与对象", "用 LearningCard 跑通 class、对象、属性和方法。", BLUE),
         ("二", "属性方法", "理解对象保存状态，方法负责读取、更新和导出。", GREEN),
         ("三", "封装组合", "让 CardDeck 拥有卡片，少写万能函数。", ORANGE),
         ("四", "对象协作", "用消息图看清对象之间怎么互相请求。", PURPLE),
-        ("五", "项目交付", "导出报告、JSON、质量回执和跨章对象模型。", CYAN),
-        ("六", "运行证据", "用脚本检查本章输出是否全部存在。", RED),
+        ("五", "项目成果", "导出报告、JSON、质量记录和跨章对象模型。", CYAN),
+        ("六", "运行记录", "用脚本检查本章输出是否全部存在。", RED),
     ]
     coords = [(125, 280), (650, 280), (1175, 280), (125, 640), (650, 640), (1175, 640)]
     for (x, y), item in zip(coords, items):
@@ -411,7 +411,7 @@ def pitfall_map() -> None:
 
 def project_dashboard() -> None:
     image, draw = canvas()
-    title(draw, "科研卡片工厂的对象交付链", "对象设计最后要变成报告、JSON、图片和下一章能继续读取的数据")
+    title(draw, "科研卡片工厂的对象成果链", "对象设计最后要变成报告、JSON、图片和下一章能继续读取的数据")
     object_box(draw, (115, 300, 465, 650), "LearningCard", ["topic", "question", "answer", "preview()"], BLUE)
     object_box(draw, (535, 300, 885, 650), "CardDeck", ["cards[]", "add()", "summary()", "export()"], GREEN)
     object_box(draw, (955, 300, 1305, 650), "Trial", ["stimulus", "response", "rt", "is_fast()"], ORANGE)
@@ -425,11 +425,11 @@ def project_dashboard() -> None:
     x = 1380
     y = 250
     for folder, filename, color in outputs:
-        card(draw, (x, y, 1740, y + 150), folder, "交付物", filename, color)
+        card(draw, (x, y, 1740, y + 150), folder, "学习成果", filename, color)
         y += 190
     arrow(draw, (1305, 475), (1370, 475), width=7)
     rounded(draw, (360, 820, 1440, 910), fill="#FFF7E8", outline="#F2B84B", radius=24)
-    draw_text(draw, (400, 840, 1400, 888), "第5章的项目验收，不看“有没有写 class”，而看对象职责和输出证据是否清楚。", size=29, min_size=21, fill="#8A5A00", bold=True, align="center", valign="center")
+    draw_text(draw, (400, 840, 1400, 888), "第5章的项目自查，不看“有没有写 class”，而看对象职责和输出记录是否清楚。", size=29, min_size=21, fill="#8A5A00", bold=True, align="center", valign="center")
     save(image, "ch05_project_dashboard.png")
 
 
@@ -440,7 +440,7 @@ def object_theater_story() -> None:
         ("LearningCard", "准备内容", "preview()", BLUE),
         ("CardDeck", "管理集合", "add(card)", GREEN),
         ("Trial", "记录一次反应", "is_fast()", ORANGE),
-        ("ReportBuilder", "整理证据", "write()", PURPLE),
+        ("ReportBuilder", "整理记录", "write()", PURPLE),
     ]
     x = 135
     y = 380

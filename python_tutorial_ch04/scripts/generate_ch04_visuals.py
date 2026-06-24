@@ -259,7 +259,7 @@ def cover() -> None:
         ("输入", "Entry/Text 收集主题与要点"),
         ("回调", "Button.command 调用函数"),
         ("反馈", "messagebox 告诉用户结果"),
-        ("交付", "cards/ 与 reports/ 留下文件"),
+        ("成果", "cards/ 与 reports/ 留下学习记录"),
     ]
     x = 770
     for i, (head, body) in enumerate(steps):
@@ -268,7 +268,7 @@ def cover() -> None:
         if i < len(steps) - 1:
             arrow(draw, (1180, y + 120), (1180, y + 145), width=4)
     rounded(draw, (315, 910, 1485, 985), fill="#FFF7E8", outline="#F2B84B", radius=24)
-    draw_text(draw, (350, 925, 1450, 970), "本章验收标准：窗口能运行，用户能看懂，点击后有反馈，最后有文件证据。", size=30, min_size=22, fill="#8A5A00", bold=True, align="center", valign="center")
+    draw_text(draw, (350, 925, 1450, 970), "本章自查目标：窗口能运行，界面看得懂，点击有反馈，最后能找到保存文件。", size=30, min_size=22, fill="#8A5A00", bold=True, align="center", valign="center")
     save(image, "ch04_cover.png")
 
 
@@ -298,14 +298,14 @@ def story_scene() -> None:
 
 def roadmap() -> None:
     image, draw = canvas()
-    title(draw, "本章学习路线", "先跑窗口，再拆控件，最后用证据证明 GUI 项目真的完成")
+    title(draw, "本章学习路线", "先跑窗口，再拆控件，最后用记录证明 GUI 项目真的完成")
     items = [
         ("一", "窗口通电", "运行最小 Tkinter 窗口，确认 mainloop 留住界面。", BLUE),
         ("二", "控件布局", "认识 Label、Entry、Text、Button 与 pack/grid。", GREEN),
         ("三", "事件回调", "点击按钮后调用函数，保存后给用户反馈。", ORANGE),
         ("四", "卡片项目", "把表单输入写成 Markdown 学习卡片。", PURPLE),
         ("五", "体验检查", "检查按钮大小、间距、状态、错误恢复和文案。", CYAN),
-        ("六", "运行证据", "用报告、截图和输出文件完成验收。", RED),
+        ("六", "自查收尾", "用报告、截图和输出文件确认自己跑通。", RED),
     ]
     coords = [(125, 280), (650, 280), (1175, 280), (125, 640), (650, 640), (1175, 640)]
     for (x, y), item in zip(coords, items):
@@ -326,7 +326,7 @@ def core_metaphor() -> None:
         ((130, 610, 500, 770), "2", "控件 Widget", "显示文字、收集输入、提供按钮。", GREEN),
         ((1300, 270, 1670, 430), "3", "布局 Layout", "决定控件按什么秩序摆放。", ORANGE),
         ((1300, 610, 1670, 770), "4", "回调 Callback", "点击按钮后真正执行的函数。", PURPLE),
-        ((715, 850, 1085, 1010), "5", "反馈 Evidence", "弹窗、状态文字或写入文件。", CYAN),
+        ((715, 850, 1085, 1010), "5", "反馈记录", "弹窗、状态文字或写入文件。", CYAN),
     ]
     for xy, tag, head, body, color in nodes:
         card(draw, xy, tag, head, body, color)
@@ -421,7 +421,7 @@ def project_dashboard() -> None:
     x = 1040
     y = 290
     for folder, filename, color in outputs:
-        card(draw, (x, y, 1660, y + 130), folder, "交付物", filename, color)
+        card(draw, (x, y, 1660, y + 130), folder, "学习成果", filename, color)
         y += 180
     arrow(draw, (650, 540), (1015, 540), width=8)
     rounded(draw, (710, 475, 980, 605), fill="#EEF6FF", outline="#B8D6FF", radius=22)

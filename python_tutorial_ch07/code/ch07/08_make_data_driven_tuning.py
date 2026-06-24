@@ -95,9 +95,9 @@ def write_outputs(tuning: dict) -> None:
     REPORTS.mkdir(exist_ok=True)
     TUNING_JSON.write_text(json.dumps(tuning, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     lines = [
-        "# 第 7 章数据驱动游戏调参回执",
+        "# 第 7 章数据驱动游戏调参记录",
         "",
-        "这份回执读取 ch6 的跨章节数据分析摘要，把反应时和卡片信息转换成小游戏难度建议。",
+        "这份记录读取 ch6 的跨章节数据分析摘要，把反应时和卡片信息转换成小游戏难度建议。",
         "",
         "| 指标 | 结果 |",
         "| --- | --- |",
@@ -120,11 +120,11 @@ def draw_preview(tuning: dict) -> None:
     im = Image.new("RGB", (1500, 930), "#F7F8FB")
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((90, 70, 1410, 850), radius=28, fill="#FFFFFF", outline="#D8E0EC", width=3)
-    d.text((150, 125), "Data-Driven Game Tuning", fill="#162033", font=font(48, True))
-    d.text((152, 195), "Learning data becomes PyGame difficulty settings.", fill="#5F6673", font=font(26))
+    d.text((150, 125), "数据驱动游戏调参", fill="#162033", font=font(48, True))
+    d.text((152, 195), "学习数据会变成 PyGame 的难度设置。", fill="#5F6673", font=font(26))
 
     d.rounded_rectangle((150, 285, 610, 610), radius=24, fill="#EEF6FF", outline="#9CC8FF", width=3)
-    d.text((190, 325), "Data", fill="#28517A", font=font(30, True))
+    d.text((190, 325), "数据", fill="#28517A", font=font(30, True))
     d.text((190, 385), f"cards: {tuning['card_count']}", fill="#162033", font=font(27, True))
     d.text((190, 440), f"tags: {tuning['tag_count']}", fill="#465263", font=font(25))
     d.text((190, 495), f"rt: {tuning['reaction_time_ms']} ms", fill="#465263", font=font(25))
@@ -133,7 +133,7 @@ def draw_preview(tuning: dict) -> None:
     d.polygon([(805, 445), (775, 428), (775, 462)], fill="#98A5B8")
 
     d.rounded_rectangle((850, 285, 1350, 610), radius=24, fill="#ECFDF3", outline="#8EE3B0", width=3)
-    d.text((890, 325), "Tuning", fill="#166534", font=font(30, True))
+    d.text((890, 325), "调参", fill="#166534", font=font(30, True))
     rows = [
         ("band", tuning["difficulty_band"]),
         ("spawn", f"{tuning['spawn_interval_ms']} ms"),
@@ -150,7 +150,7 @@ def draw_preview(tuning: dict) -> None:
     d.rounded_rectangle((250, 700, 1250, 760), radius=20, fill="#FFF7E8", outline="#F2B84B", width=2)
     d.text((340, 717), "output/ch07_data_driven_tuning.json", fill="#8A5A00", font=font(25, True))
     d.rounded_rectangle((250, 790, 1250, 845), radius=20, fill="#F8FAFC", outline="#D8E0EC", width=2)
-    d.text((375, 805), "Report: reports/ch07_data_driven_tuning.md", fill="#465263", font=font(22))
+    d.text((375, 805), "记录：reports/ch07_data_driven_tuning.md", fill="#465263", font=font(22))
 
     OUTPUT.mkdir(exist_ok=True)
     im.save(PREVIEW, optimize=True, quality=95)

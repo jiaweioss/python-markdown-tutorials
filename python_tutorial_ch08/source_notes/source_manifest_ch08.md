@@ -43,13 +43,13 @@
 - `assets/ch08/web/ch08_source_quality_scorecard.png`：本机运行 `07_make_source_quality_scorecard.py` 生成的来源可信度评分卡。
 - `assets/ch08/web/ch08_public_source_bundle.png`：本机运行 `08_make_public_source_bundle.py` 生成的公开资料采集包。
 - `assets/ch08/web/ch08_source_provenance_archive.png`：本机运行 `09_make_source_provenance_archive.py` 生成的来源追踪档案。
-- `assets/ch08/web/ch08_scraper_runtime_evidence.png`：本机运行 `10_make_scraper_runtime_evidence.py` 生成的爬虫运行证据图，用于检查链接 CSV、采集报告、来源卡片、礼仪检查卡、来源质量评分、公开资料包和来源追踪档案是否齐全。
-- `reports/ch08_scraper_runtime_evidence.md`：本机运行 `10_make_scraper_runtime_evidence.py` 生成的运行证据清单。
-- `output/ch08_scraper_runtime_evidence.png`：本机运行 `10_make_scraper_runtime_evidence.py` 生成的运行证据预览图。
+- `assets/ch08/web/ch08_scraper_runtime_evidence.png`：本机运行 `10_make_scraper_runtime_evidence.py` 生成的爬虫运行记录图，用于检查链接 CSV、采集报告、来源卡片、礼仪检查卡、来源质量评分、公开资料包和来源追踪档案是否齐全。
+- `reports/ch08_scraper_runtime_evidence.md`：本机运行 `10_make_scraper_runtime_evidence.py` 生成的运行记录清单。
+- `output/ch08_scraper_runtime_evidence.png`：本机运行 `10_make_scraper_runtime_evidence.py` 生成的运行记录预览图。
 
 ## 生成素材
 
-本章包含 24 张正文正式图片、8 张互联网原图/截图/漫画、1 张本机 PowerShell 运行图和 7 张脚本生成预览/来源追踪/运行证据图。
+本章包含 24 张正文正式图片、8 张互联网原图/截图/漫画、1 张本机 PowerShell 运行图和 7 张脚本生成预览/来源追踪/运行记录图。
 
 正式图片：
 

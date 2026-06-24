@@ -28,7 +28,7 @@ def build_markdown() -> str:
     passed = average >= 60
     return dedent(
         f"""
-        # 第2章数据类型实验回执
+        # 第2章数据类型实验记录
 
         ## 学习记录
 
@@ -104,7 +104,7 @@ def write_preview_png(output_file: Path) -> bool:
         draw.rounded_rectangle((x1 + 8, y1 + 10, x2 + 8, y2 + 10), radius=radius, fill="#D8DEE9")
         rounded(xy, radius=radius)
 
-    draw.text((80, 58), "第2章数据类型实验回执", font=title_font, fill=ink)
+    draw.text((80, 58), "第2章数据类型实验记录", font=title_font, fill=ink)
     draw.text((84, 125), "同一份小数据，背后藏着 str、float、bool、list、dict 和 None。", font=body_font, fill=muted)
     draw.line((80, 178, 1520, 178), fill=line, width=3)
 
@@ -177,7 +177,7 @@ def main() -> None:
     markdown_file.write_text(build_markdown(), encoding="utf-8")
     has_preview = write_preview_png(preview_file)
 
-    print("数据类型实验回执已生成：")
+    print("数据类型实验记录已生成：")
     print("-", markdown_file)
     print("-", preview_file if has_preview else "未生成 PNG：当前环境缺少 Pillow")
 
