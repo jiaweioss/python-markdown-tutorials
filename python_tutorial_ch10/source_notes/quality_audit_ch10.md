@@ -20,11 +20,11 @@
 | 需求 | 当前证据 | 状态 |
 | --- | --- | --- |
 | 精简与 ch0 重复内容 | 正文聚焦办公自动化任务，不重复启动章工作区总论 | 已完成 |
-| 增加图文叙事 | 新增 Margaret Hamilton、Bletchley Park、Xerox Alto、VisiCalc、Ebbinghaus 遗忘曲线和结课交付档案等故事段落 | 已完成 |
+| 增加图文叙事 | 新增 Margaret Hamilton、Bletchley Park、Xerox Alto、VisiCalc、Ebbinghaus 遗忘曲线、办公自动化历史脉络图和结课交付档案等故事段落 | 已完成 |
 | 增加真实运行环境截图 | 保留 PyCharm 解释器配置图、本机 PowerShell 运行截图和最终运行证据图 | 已完成 |
-| 增加真实历史/心理学图片 | 正文新增 VisiCalc 电子表格截图，并保留 Hollerith、打字机、Margaret Hamilton、Bletchley Park、Xerox Alto、Ebbinghaus 等素材 | 已完成 |
-| 减少流程图堆叠 | 正文 23 张图中以真实照片、真实软件截图和脚本生成成果图为主 | 已完成 |
-| 图片居中且有图注 | 正文 23 张图片全部使用 `<figure>` 与 `<figcaption>` | 已完成 |
+| 增加真实历史/心理学图片 | 正文新增办公自动化历史脉络图，并保留 Hollerith、打字机、Margaret Hamilton、Bletchley Park、Xerox Alto、VisiCalc、Ebbinghaus 等素材 | 已完成 |
+| 减少流程图堆叠 | 正文 24 张图中以真实照片、真实软件截图、历史脉络合成图和脚本生成成果图为主 | 已完成 |
+| 图片居中且有图注 | 正文 24 张图片全部使用 `<figure>` 与 `<figcaption>` | 已完成 |
 | 图片内部不堆解释文字 | 故事与说明写在 Markdown 中，生成概念图不加解释性长文字 | 已完成 |
 | 办公自动化可运行 | 脚本生成 CSV、Markdown、Word、Excel、PPT、报告预览、Excel 预览、交付索引、全书课程作品集、结课展示墙、结课交付档案、交付回执、zip 交付包、交付包目录清单和最终运行证据 | 已完成 |
 | 学生视角语言 | 模板故事、交付场景、项目结构和复盘迁移已改成学生自己的报告交付任务，减少“课堂/教学”对象错位 | 已完成 |
@@ -32,12 +32,12 @@
 
 ## 当前结果
 
-- 正文字符数：20153
-- 正文图片引用数：23
-- manifest 素材数：41
+- 正文字符数：21447
+- 正文图片引用数：24
+- manifest 素材数：42
 - 本章代码文件数：12，其中 Python 脚本 11 个
 - Markdown 图片语法数量：0
-- 图注数量：23
+- 图注数量：24
 
 ## 运行结果
 
@@ -101,8 +101,8 @@ from PIL import Image
 import ast, json, re
 root = Path.cwd()
 text = (root / "chapters/ch10_office_automation.md").read_text(encoding="utf-8")
-assert len(re.findall(r"<img\b", text)) == 23
-assert len(re.findall(r"<figcaption>", text)) == 23
+assert len(re.findall(r"<img\b", text)) == 24
+assert len(re.findall(r"<figcaption>", text)) == 24
 assert not re.findall(r"!\[[^\]]*\]\(", text)
 for py in list((root / "code").rglob("*.py")) + list((root / "scripts").rglob("*.py")):
     ast.parse(py.read_text(encoding="utf-8"), filename=str(py))
@@ -112,9 +112,9 @@ for img in (root / "assets").rglob("*"):
             im.verify()
 data = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
 assert data["chapter"]["character_count"] == len(text)
-assert data["chapter"]["image_refs"] == 23
-assert data["chapter"]["asset_count"] == 41
-assert data["validation"]["figcaption_count"] == 23
+assert data["chapter"]["image_refs"] == 24
+assert data["chapter"]["asset_count"] == 42
+assert data["validation"]["figcaption_count"] == 24
 print("ch10 quality audit OK")
 '@ | python -
 ```
@@ -135,8 +135,10 @@ print("ch10 quality audit OK")
 
 当前补充验收结果：
 
-- `scripts/check_links.py`：通过，检查 23 个本地图片引用
+- `scripts/check_links.py`：通过，检查 24 个本地图片引用
 - Python 语法检查：通过，AST 覆盖 13 个 `.py` 文件，包括 11 个代码脚本和 2 个检查/生成脚本
-- 图片 PIL 打开检查：通过，41 张 PNG/JPG 图片均可打开
+- 图片 PIL 打开检查：通过，42 张 PNG/JPG 图片均可打开
 - 学生视角语言检查：通过，模板故事、交付场景、项目结构和复盘迁移已改成学生自己的报告交付任务
-- 临时总览图人工检查：通过，23 张正文图居中且无明显越界；检查后已删除临时图
+- 新增章节结构检查：通过，正文包含 `[TOC]`、本章导读、分区导航和五个大部分
+- 新增办公史脉络图检查：通过，`ch10_office_history_gallery.png` 只使用图片、编号和连接线，没有解释性长文字越界
+- 临时总览图人工检查：通过，24 张正文图居中且无明显越界；检查后已删除临时图

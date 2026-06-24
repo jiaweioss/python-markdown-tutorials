@@ -15,6 +15,7 @@
 | 摄影史 | View from the Window at Le Gras | `assets/ch09/web/niepce_window_le_gras.jpg` | `assets/ch09/ch09_niepce_photo_story.png` | Wikimedia Commons |
 | 数字图像史 | NBS first scan image restored | `assets/ch09/web/first_digital_scan_nist.jpg` | `assets/ch09/ch09_first_digital_scan_story.png` | Wikimedia Commons |
 | 颜色与视觉判断 | Edwin H. Land, founder, Polaroid (cropped) | `assets/ch09/web/edwin_land_polaroid_cropped.jpg` | `assets/ch09/ch09_edwin_land_color_story.png` | Wikimedia Commons |
+| 图像处理人文脉络 | 既有摄影史、数字扫描、颜色、视觉心理学、错觉和科学图像素材 | `assets/ch09/web/*.jpg` | `assets/ch09/ch09_human_context_gallery.png` | 由本章既有本地来源素材合成，不新增互联网来源 |
 | 真实处理素材 | Fronalpstock big | `assets/ch09/web/fronalpstock_sample.jpg` | `assets/ch09/ch09_real_photo_source.png` | Wikimedia Commons |
 | 科学图像表达 | Pillars of Creation | `assets/ch09/web/pillars_of_creation.jpg` | `assets/ch09/ch09_pillars_science_image_story.png` | Wikimedia Commons / NASA |
 | 视觉心理学 | Hermann von Helmholtz 1894 | `assets/ch09/web/hermann_von_helmholtz_1894.jpg` | `assets/ch09/ch09_helmholtz_perception_story.png` | Wikimedia Commons |
@@ -44,7 +45,7 @@
 
 ## 生成素材
 
-本章包含 24 张正文正式图片、7 张互联网原图/素材、1 张真实照片处理结果、1 张本机 PowerShell 运行图和 7 张脚本生成预览/证据图。
+本章包含 25 张正文正式图片、7 张互联网原图/素材、1 张真实照片处理结果、1 张本机 PowerShell 运行图、1 张由既有素材合成的人文脉络图和 7 张脚本生成预览/证据图。
 
 正式图片：
 
@@ -52,6 +53,7 @@
 - `ch09_niepce_photo_story.png`
 - `ch09_first_digital_scan_story.png`
 - `ch09_edwin_land_color_story.png`
+- `ch09_human_context_gallery.png`
 - `ch09_story_scene.png`
 - `ch09_roadmap.png`
 - `ch09_core_metaphor.png`
@@ -80,5 +82,6 @@
 - 正文图片统一使用居中的 `<figure>` 结构。
 - 每张图片都有 `<figcaption>`。
 - 故事图片穿插在对应知识点附近，不集中堆在开头。
+- 新增人文脉络图只使用图片、编号和连接线，不在图片内部放长段中文说明；完整解释放在正文和图注中。
 - 示例代码与项目任务围绕“科研卡片工厂”连续推进。
 - 路线表、核心概念和项目步骤使用学生视角，直接说明要打开、处理、比较、入库和复盘的动作。

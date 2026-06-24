@@ -22,6 +22,7 @@
   <https://commons.wikimedia.org/wiki/File:Visicalc.png>；作者 User:Gortu；Public domain；来源 apple2history.org
 - Ebbinghaus 遗忘曲线图：Wikimedia Commons  
   <https://commons.wikimedia.org/wiki/File:Ebbinghaus_Forgetting_Curve.jpg>
+- 办公自动化历史脉络图：由本章既有 Hollerith 制表机、打字机、Margaret Hamilton、Bletchley Park、Xerox Alto、VisiCalc 和 Ebbinghaus 本地素材合成，不新增互联网来源
 - PyCharm 解释器配置截图：JetBrains 官方 PyCharm 帮助文档  
   <https://www.jetbrains.com/help/pycharm/configuring-python-interpreter.html>
 - PowerShell 运行图：本机运行第10章完整链路后，根据当前 `reports/` 真实文件列表整理生成，用于展示 Word、Excel、PPT、预览图、交付回执和 zip 交付包
@@ -37,7 +38,7 @@
 
 ## 生成素材
 
-本章包含 23 张正文正式图片、7 张 Wikimedia 原图、1 张 JetBrains 官方截图、1 张本机 PowerShell 运行图，以及 9 张脚本生成的预览/回执/作品集/展示墙/结课交付档案/交付包目录/最终运行证据图：
+本章包含 24 张正文正式图片、7 张 Wikimedia 原图、1 张由既有素材合成的办公史脉络图、1 张 JetBrains 官方截图、1 张本机 PowerShell 运行图，以及 9 张脚本生成的预览/回执/作品集/展示墙/结课交付档案/交付包目录/最终运行证据图：
 
 - `ch10_cover.png`
 - `ch10_hollerith_tabulator_story.png`
@@ -47,6 +48,7 @@
 - `ch10_xerox_alto_office_story.png`
 - `ch10_visicalc_spreadsheet_story.png`
 - `ch10_ebbinghaus_memory_story.png`
+- `ch10_office_history_gallery.png`
 - `ch10_roadmap.png`
 - `ch10_pycharm_interpreter_real.png`
 - `ch10_powershell_office_run.png`
@@ -89,4 +91,5 @@
 - 图片本体使用 `<img ... style="zoom:50%; display:block; margin:0 auto;" />` 居中显示。
 - 每张图片下方都有 `<figcaption>` 图注。
 - 本章减少抽象流程图，增加真实历史照片、真实 PyCharm 截图、真实 PowerShell 截图、心理学素材和脚本生成成果图。
+- 新增办公史脉络图只使用图片、编号和连接线，不在图片内部放长段中文说明；完整解释放在正文和图注中。
 - 模板故事、交付场景、项目结构和复盘迁移使用学生视角，直接说明要生成、检查、打包和复核的动作。

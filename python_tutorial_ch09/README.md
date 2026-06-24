@@ -23,6 +23,7 @@
 
 - 增加 Edwin Land、Hermann von Helmholtz 等人物素材，用真实历史和视觉心理学解释颜色、感知和图像表达边界。
 - 增加 Edward H. Adelson 的棋盘阴影错觉素材，把“像素值”和“人眼感受”的差异讲得更直观。
+- 新增 `ch09_human_context_gallery.png`，把摄影史、数字扫描、颜色判断、视觉心理学、错觉研究和科学图像表达合成一张无长文字脉络图，并在正文中补充对应故事。
 - 新增 `06_make_visual_perception_lab.py`，生成 `reports/ch09_visual_perception_lab.md` 和 `output/ch09_visual_perception_lab.png`。
 - 新增 `07_make_image_quality_contact_sheet.py`，生成 `reports/ch09_image_quality_contact_sheet.md` 和 `output/ch09_image_quality_contact_sheet.png`；图片内部无解释文字，说明放在报告和正文里。
 - 新增 `08_make_ch08_image_intake.py`，扫描 ch8 公开资料图片素材，生成 `reports/ch09_ch08_image_intake.md`、`output/ch09_ch08_image_intake.json` 和 `output/ch09_ch08_image_intake.png`。
@@ -31,5 +32,6 @@
 - 更新 `09_make_visual_evidence_archive.py`，把处理故事板纳入视觉证据档案。
 - 新增 `11_make_image_runtime_evidence.py`，生成 `reports/ch09_image_runtime_evidence.md`、`output/ch09_image_runtime_evidence.png` 和 `assets/ch09/web/ch09_image_runtime_evidence.png`，把本章关键产物整理成运行证据总览。
 - 保留 PowerShell 真实运行图，并新增 PowerShell 风格运行证据图，方便学生检查每个输出是否 ready。
-- 正文 24 张图片全部使用居中的 `<figure>` 结构和清晰图注。
+- 正文 25 张图片全部使用居中的 `<figure>` 结构和清晰图注。
+- 正文新增 `[TOC]`、本章导读、分区导航和五个大部分，让网页侧栏能清楚显示章节分界。
 - 继续收紧正文口吻：路线表、核心概念、心理学/科研图片连接和项目步骤改成学生可执行、可观察的图像处理任务。

@@ -62,6 +62,39 @@ def photo_plate(output_name: str, image_name: str):
     save(im, output_name)
 
 
+def context_gallery(output_name: str, image_names: list[str]):
+    im = Image.new("RGB", (1800, 1180), BG)
+    d = ImageDraw.Draw(im)
+    shadow(d, (90, 85, 1710, 1065), radius=38)
+    rounded(d, (90, 85, 1710, 1065), fill="#FFFFFF", radius=38)
+
+    cells = []
+    for row, y in enumerate([150, 665]):
+        for col, x in enumerate([145, 535, 925, 1315]):
+            cells.append((x, y, x + 340, y + 340))
+    d.line((315, 580, 1485, 580), fill="#A8B4C7", width=6)
+    for x in [315, 705, 1095, 1485]:
+        d.line((x, 490, x, 665), fill="#A8B4C7", width=6)
+
+    resampling = getattr(Image, "Resampling", Image).LANCZOS
+    for i, (cell, image_name) in enumerate(zip(cells, image_names), start=1):
+        x1, y1, x2, y2 = cell
+        d.rounded_rectangle(cell, radius=26, fill="#F2F4F8", outline=LINE, width=2)
+        src = WEB_DIR / image_name
+        if src.exists():
+            raw = Image.open(src)
+            raw = ImageOps.exif_transpose(raw).convert("RGB")
+            shown = ImageOps.contain(raw, (x2 - x1 - 24, y2 - y1 - 24), method=resampling)
+            px = x1 + (x2 - x1 - shown.width) // 2
+            py = y1 + (y2 - y1 - shown.height) // 2
+            im.paste(shown, (px, py))
+        badge_color = COLORS[(i - 1) % len(COLORS)]
+        d.ellipse((x1 + 20, y1 + 20, x1 + 78, y1 + 78), fill=badge_color)
+        d.text((x1 + 39, y1 + 39), str(i), fill="#FFFFFF", anchor="mm")
+
+    save(im, output_name)
+
+
 def rounded(d: ImageDraw.ImageDraw, xy, fill="#FFFFFF", outline=LINE, radius=30, width=2):
     d.rounded_rectangle(xy, radius=radius, fill=fill, outline=outline, width=width)
 
@@ -196,6 +229,18 @@ def main():
     photo_plate("ch10_xerox_alto_office_story.png", "xerox_alto_computer.jpg")
     photo_plate("ch10_visicalc_spreadsheet_story.png", "visicalc_screenshot.png")
     photo_plate("ch10_ebbinghaus_memory_story.png", "ebbinghaus_forgetting_curve.jpg")
+    context_gallery(
+        "ch10_office_history_gallery.png",
+        [
+            "hollerith_tabulating_machine.jpg",
+            "secretary_typewriter_1912.jpg",
+            "margaret_hamilton_apollo_code.jpg",
+            "bletchley_park_mansion.jpg",
+            "xerox_alto_computer.jpg",
+            "visicalc_screenshot.png",
+            "ebbinghaus_forgetting_curve.jpg",
+        ],
+    )
     photo_plate("ch10_pycharm_interpreter_real.png", "pycharm_python_interpreter_widget_dark.png")
     photo_plate("ch10_powershell_office_run.png", "powershell_ch10_office_run.png")
     photo_plate("ch10_generated_report_preview.png", "final_report_preview.png")
@@ -207,7 +252,7 @@ def main():
     photo_plate("ch10_final_showcase_board.png", "final_showcase_board.png")
     photo_plate("ch10_final_runtime_evidence.png", "final_runtime_evidence.png")
     photo_plate("ch10_capstone_handoff_dossier.png", "capstone_handoff_dossier.png")
-    print(f"Generated {len(VISUALS) + 18} visuals for {ASSET_DIR.name}.")
+    print(f"Generated {len(VISUALS) + 19} visuals for {ASSET_DIR.name}.")
 
 
 if __name__ == "__main__":

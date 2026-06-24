@@ -56,6 +56,45 @@ def photo_plate(output_name: str, image_name: str):
     save(im, output_name)
 
 
+def context_gallery(output_name: str, image_names: list[str]):
+    im = Image.new("RGB", (1800, 1180), BG)
+    d = ImageDraw.Draw(im)
+    shadow(d, (90, 85, 1710, 1065), radius=38)
+    rounded(d, (90, 85, 1710, 1065), fill="#FFFFFF", radius=38)
+
+    cells = [
+        (150, 155, 610, 495),
+        (670, 155, 1130, 495),
+        (1190, 155, 1650, 495),
+        (150, 665, 610, 1005),
+        (670, 665, 1130, 1005),
+        (1190, 665, 1650, 1005),
+    ]
+    rail = [(380, 585), (900, 585), (1420, 585)]
+    d.line((rail[0][0], rail[0][1], rail[-1][0], rail[-1][1]), fill="#A8B4C7", width=6)
+    d.line((380, 585, 380, 665), fill="#A8B4C7", width=6)
+    d.line((900, 495, 900, 665), fill="#A8B4C7", width=6)
+    d.line((1420, 585, 1420, 665), fill="#A8B4C7", width=6)
+
+    resampling = getattr(Image, "Resampling", Image).LANCZOS
+    for i, (cell, image_name) in enumerate(zip(cells, image_names), start=1):
+        x1, y1, x2, y2 = cell
+        d.rounded_rectangle(cell, radius=26, fill="#F2F4F8", outline=LINE, width=2)
+        src = WEB_DIR / image_name
+        if src.exists():
+            raw = Image.open(src)
+            raw = ImageOps.exif_transpose(raw).convert("RGB")
+            shown = ImageOps.contain(raw, (x2 - x1 - 24, y2 - y1 - 24), method=resampling)
+            px = x1 + (x2 - x1 - shown.width) // 2
+            py = y1 + (y2 - y1 - shown.height) // 2
+            im.paste(shown, (px, py))
+        badge_color = COLORS[(i - 1) % len(COLORS)]
+        d.ellipse((x1 + 20, y1 + 20, x1 + 78, y1 + 78), fill=badge_color)
+        d.text((x1 + 39, y1 + 39), str(i), fill="#FFFFFF", anchor="mm")
+
+    save(im, output_name)
+
+
 def rounded(d: ImageDraw.ImageDraw, xy, fill="#FFFFFF", outline=LINE, radius=30, width=2):
     d.rounded_rectangle(xy, radius=radius, fill=fill, outline=outline, width=width)
 
@@ -186,6 +225,17 @@ def main():
     photo_plate("ch09_niepce_photo_story.png", "niepce_window_le_gras.jpg")
     photo_plate("ch09_first_digital_scan_story.png", "first_digital_scan_nist.jpg")
     photo_plate("ch09_edwin_land_color_story.png", "edwin_land_polaroid_cropped.jpg")
+    context_gallery(
+        "ch09_human_context_gallery.png",
+        [
+            "niepce_window_le_gras.jpg",
+            "first_digital_scan_nist.jpg",
+            "edwin_land_polaroid_cropped.jpg",
+            "hermann_von_helmholtz_1894.jpg",
+            "checker_shadow_illusion.jpg",
+            "pillars_of_creation.jpg",
+        ],
+    )
     photo_plate("ch09_real_photo_source.png", "fronalpstock_sample.jpg")
     photo_plate("ch09_pillars_science_image_story.png", "pillars_of_creation.jpg")
     photo_plate("ch09_helmholtz_perception_story.png", "hermann_von_helmholtz_1894.jpg")
@@ -199,7 +249,7 @@ def main():
     photo_plate("ch09_ch08_image_intake.png", "ch09_ch08_image_intake.png")
     photo_plate("ch09_visual_evidence_archive.png", "visual_evidence_archive.png")
     photo_plate("ch09_processing_storyboard.png", "ch09_processing_storyboard.png")
-    print(f"Generated {len(VISUALS) + 16} visuals for {ASSET_DIR.name}.")
+    print(f"Generated {len(VISUALS) + 17} visuals for {ASSET_DIR.name}.")
 
 
 if __name__ == "__main__":

@@ -30,6 +30,8 @@
 - 继续扩展到 21 张正文图，新增 `10_make_delivery_package_manifest.py`，打开 zip 交付包并生成 `delivery_package_manifest.md`、`delivery_package_manifest.png` 和正文图 `ch10_delivery_package_manifest.png`，让交付包内部内容可复查。
 - 此前新增 `11_make_final_runtime_evidence.py`，生成 `final_runtime_evidence.md`、`final_runtime_evidence.png` 和正文图 `ch10_final_runtime_evidence.png`，把 CSV、Word、Excel、PPT、zip、作品集和展示墙纳入最终运行验收。
 - 继续扩展到 23 张正文图，增强 `09_make_final_showcase_board.py`，新增 `capstone_handoff_dossier.md`、`capstone_handoff_dossier.png` 和正文图 `ch10_capstone_handoff_dossier.png`，把 ch0-ch10 的学习路线与最终交付包收束成一张结课档案图。
+- 本轮继续扩展到 24 张正文图，新增 `ch10_office_history_gallery.png`，把制表机、打字机、软件工程、协作现场、图形界面、电子表格和记忆曲线合成一张无长文字脉络图，并在正文中补充办公自动化的人文背景故事。
 - 保持图片居中和图注规则：图片内部不新增解释性长文字，故事与说明放在 Markdown 正文和图注中。
+- 正文新增 `[TOC]`、本章导读、分区导航和五个大部分，让网页侧栏能清楚显示章节分界。
 - 继续收紧正文口吻：模板故事、交付场景、项目结构和复盘迁移改成学生自己的报告交付任务，减少对象错位。
 - 更新来源记录、manifest 和质量验收记录，记录新增图片来源和新增脚本。

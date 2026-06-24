@@ -8,9 +8,9 @@
     "title": "Python 图像处理",
     "markdown": "chapters/ch09_image_processing.md",
     "source_ppt": "第九章_Python图像处理2025.pptx",
-    "character_count": 18817,
-    "image_refs": 24,
-    "asset_count": 40,
+    "character_count": 20182,
+    "image_refs": 25,
+    "asset_count": 41,
     "code_count": 12,
     "internet_sources": [
       {
@@ -68,6 +68,7 @@
     "assets/ch09/ch09_edwin_land_color_story.png",
     "assets/ch09/ch09_first_digital_scan_story.png",
     "assets/ch09/ch09_helmholtz_perception_story.png",
+    "assets/ch09/ch09_human_context_gallery.png",
     "assets/ch09/ch09_image_processing_report_preview.png",
     "assets/ch09/ch09_image_quality_contact_sheet.png",
     "assets/ch09/ch09_image_runtime_evidence.png",
@@ -120,14 +121,14 @@
     "scripts/check_links.py"
   ],
   "validation": {
-    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 24 local image refs after ch09 student-facing language polish",
+    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 25 local image refs after adding the human context gallery",
     "python_syntax": "ok; AST checked 13 Python files in code/ and scripts/",
     "figures_centered": true,
-    "figcaption_count": "ok; 24 <img> tags and 24 <figcaption> tags",
+    "figcaption_count": "ok; 25 <img> tags and 25 <figcaption> tags",
     "markdown_image_syntax_count": 0,
-    "formal_visuals_generated": "ok; generate_ch09_visuals.py produced 23 visuals",
+    "formal_visuals_generated": "ok; generate_ch09_visuals.py produced 25 visuals",
     "quality_audit": "source_notes/quality_audit_ch09.md",
-    "images_open_with_pil": "ok; 40 PNG/JPG/GIF assets verified with PIL",
+    "images_open_with_pil": "ok; 41 PNG/JPG/GIF assets verified with PIL",
     "powershell_screenshot": "ok",
     "real_photo_before_after": "ok",
     "image_processing_report_generated": "ok",
@@ -145,7 +146,9 @@
     "powershell_runtime_evidence": "added; 11_make_image_runtime_evidence.py generated report/output/web/formal visual and checked 16/16 artifacts",
     "full_book_consistency_scan": "ok; 11 chapter dirs, 130 python files, 108 code python scripts, 280 markdown image refs, 0 missing local images, 0 caption mismatches, 0 manifest mismatches, 0 temporary files",
     "temporary_contact_sheet_removed": true,
-    "student_facing_language_polish": "ok; route table, core concept bullets, psychology/research image connection and project steps rewritten as student-executable image processing tasks"
+    "student_facing_language_polish": "ok; route table, core concept bullets, psychology/research image connection and project steps rewritten as student-executable image processing tasks",
+    "chapter_structure": "ok; added [TOC], guide, five part dividers and section navigation matching the ch08/ch01 style",
+    "human_context_gallery": "ok; added ch09_human_context_gallery.png and story paragraphs linking photography, scanning, color, perception and science images"
   },
   "source_notes": [
     "source_notes/source_manifest_ch09.md",
