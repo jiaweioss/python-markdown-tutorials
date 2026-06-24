@@ -8,7 +8,7 @@
     "title": "网络爬虫开发实战",
     "markdown": "chapters/ch08_web_scraping.md",
     "source_ppt": "第八章_网络爬虫开发实战2025.pptx",
-    "character_count": 19068,
+    "character_count": 19941,
     "image_refs": 24,
     "asset_count": 40,
     "code_count": 11,
@@ -134,7 +134,7 @@
     "scripts/check_links.py"
   ],
   "validation": {
-    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 24 local image refs after ch08 student-facing language polish",
+    "markdown_and_html_image_links": "ok; scripts/check_links.py checked 24 local image refs after ch08 ch01-style structure polish",
     "python_syntax": "ok; AST checked 12 python files including scripts",
     "figures_centered": true,
     "figcaption_count": 24,
@@ -157,7 +157,8 @@
     "generated_scraper_runtime_evidence": "ok; 10_make_scraper_runtime_evidence.py generated report, output image and web copy",
     "script_smoke_test": "ok; 01 through 10 scripts and visual generator ran successfully",
     "temporary_contact_sheet_removed": true,
-    "student_facing_language_polish": "ok; route table, core concept bullets, psychology/research connection and script guide rewritten as student-executable scraping tasks"
+    "student_facing_language_polish": "ok; route table, core concept bullets, psychology/research connection and script guide rewritten as student-executable scraping tasks",
+    "chapter_structure_pass": "ok; added [TOC], guide, section navigation and five clear parts to match ch01/ch06 reading structure without opening the website beyond ch06"
   },
   "source_notes": [
     "source_notes/source_manifest_ch08.md",
