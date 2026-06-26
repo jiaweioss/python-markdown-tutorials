@@ -335,7 +335,9 @@ LearningCard 准备内容，CardDeck 管理集合，Trial 记录一次反应，R
 
 如果这句话说不清，代码通常也会混乱。类名不是越多越好，边界清楚才有价值。
 
-Smalltalk 之所以常被放进 OOP 历史里，不只是因为它影响了语法和环境，更因为它把“对象之间发送消息”做成了可以探索、可以观看、可以修改的学习空间。Adele Goldberg 等人推动的 Smalltalk 教育传统提醒我们：对象不是书本术语，它应该能帮助学习者观察系统如何一步步工作。
+对象之间如何协作，在 OOP 历史上有一个更核心的说法——"消息传递"（message passing）。一个对象不是直接操作另一个对象的内部数据，而是通过发送消息请求对方做某件事。这种理念让协作关系更清晰，也让每个对象的边界更容易守住。
+
+Smalltalk 之所以常被放进 OOP 历史里，不只是因为它影响了语法和环境，更因为它把"对象之间发送消息"做成了可以探索、可以观看、可以修改的学习空间。Adele Goldberg 等人推动的 Smalltalk 教育传统提醒我们：对象不是书本术语，它应该能帮助学习者观察系统如何一步步工作。
 
 <figure align="center">
   <img src="../assets/ch05/ch05_adele_goldberg_story.png" alt="Adele Goldberg 照片" style="zoom:50%; display:block; margin:0 auto;" />
