@@ -333,6 +333,36 @@ python code/ch10/01_make_report_data.py
 input/report_data.csv
 ```
 
+**代码讲解**：
+
+```python
+"""Create small report data for the office automation chapter."""
+import csv
+from pathlib import Path
+
+Path("input").mkdir(exist_ok=True)
+rows = [
+    {"chapter": "ch01", "status": "done", "artifact": "environment log", "score": "92"},
+    {"chapter": "ch02", "status": "done", "artifact": "data cards", "score": "88"},
+    {"chapter": "ch03", "status": "done", "artifact": "file archiver", "score": "90"},
+    {"chapter": "ch06", "status": "done", "artifact": "learning dashboard", "score": "95"},
+    {"chapter": "ch09", "status": "done", "artifact": "image report", "score": "91"},
+]
+with open("input/report_data.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+    writer.writeheader()
+    writer.writerows(rows)
+print("已生成 input/report_data.csv")
+```
+
+逐段说明：
+
+- `Path("input").mkdir(exist_ok=True)` — 使用 `pathlib.Path` 创建 `input/` 目录。`exist_ok=True` 表示目录已存在时不会报错，这是一种安全的目录创建写法。
+- `rows = [...]` — 定义一组字典（dict），每个字典对应一条数据记录，包含四个字段：`chapter`（章节）、`status`（状态）、`artifact`（作品）、`score`（完成分）。数据采用硬编码方式，因为它的定位是示例原料表。
+- `csv.DictWriter(f, fieldnames=rows[0].keys())` — 创建 DictWriter 写入器，字段名取自第一条记录的键。`newline=""` 是 Python 官方推荐的 CSV 写入写法，可避免空行问题。
+- `writer.writeheader()` — 写入 CSV 表头行（chapter, status, artifact, score）。
+- `writer.writerows(rows)` — 一次性写入所有数据行。
+
 这份 CSV 记录章节、状态、作品和完成分。以后你可以把它改成实验编号、被试人数、反应时均值、材料文件名，办公自动化就自然转成科研报告自动化。
 
 #### 脚本 2：`02_generate_markdown_report.py`
@@ -342,6 +372,43 @@ input/report_data.csv
 ```bash
 python code/ch10/02_generate_markdown_report.py
 ```
+
+**代码讲解**：
+
+```python
+"""Generate a Markdown report from CSV."""
+import csv
+from pathlib import Path
+
+Path("reports").mkdir(exist_ok=True)
+with open("input/report_data.csv", encoding="utf-8") as f:
+    rows = list(csv.DictReader(f))
+
+average_score = sum(int(row["score"]) for row in rows) / len(rows)
+
+lines = [
+    "# 科研卡片工厂结课报告",
+    "",
+    f"- 章节数量：{len(rows)}",
+    f"- 平均完成分：{average_score:.1f}",
+    "",
+    "| 章节 | 状态 | 作品 | 完成分 |",
+    "| --- | --- | --- | --- |",
+]
+for row in rows:
+    lines.append(f"| {row['chapter']} | {row['status']} | {row['artifact']} | {row['score']} |")
+Path("reports/final_report.md").write_text("\n".join(lines), encoding="utf-8")
+print("已生成 reports/final_report.md")
+```
+
+逐段说明：
+
+- `Path("reports").mkdir(exist_ok=True)` — 确保 `reports/` 输出目录存在。与脚本1一样采用安全创建方式。
+- `csv.DictReader(f)` — 以字典模式读取 CSV，每行数据自动以字段名作为键。用 `list()` 一次性把 reader 对象转为列表，方便后续多次使用。
+- `average_score = sum(int(row["score"]) ... )` — 用生成器表达式提取所有 score 字段，转整数后求和，再除以行数计算平均分。`:.1f` 保留一位小数。
+- `lines = [...]` — 用列表逐行构建 Markdown 内容。前 6 行是标题、空行、统计信息和表头，接着是分隔行。Markdown 表格的 `---` 是必需的分隔符。
+- `for row in rows: lines.append(...)` — 遍历每行数据，用 f-string 组装成 Markdown 表格行。
+- `Path("reports/final_report.md").write_text(...)` — 将 lines 列表用换行符连接后写入文件。`write_text` 是 pathlib 提供的便捷方法，免去了手动 `open()`/`close()`。
 
 Markdown 的好处是轻、快、可读。很多自动化项目都可以先从 Markdown 开始，因为它最容易检查，也最不容易被复杂格式拖住。
 
@@ -353,7 +420,37 @@ Markdown 的好处是轻、快、可读。很多自动化项目都可以先从 M
 python code/ch10/03_optional_docx_hint.py
 ```
 
-如果缺少 `python-docx`，脚本会提示安装命令；如果依赖已经安装，就会生成 `reports/final_report.docx`。这一点很适合新手练习“依赖缺失时先读提示，不要立刻重装整个 Python”。
+**代码讲解**：
+
+```python
+"""Optional direction for Word automation."""
+from pathlib import Path
+
+Path("reports").mkdir(exist_ok=True)
+
+try:
+    import docx  # type: ignore
+except ImportError:
+    print("如需生成 Word，可安装：python -m pip install python-docx")
+else:
+    doc = docx.Document()
+    doc.add_heading("科研卡片工厂结课报告", level=1)
+    doc.add_paragraph("这是由 Python 自动生成的 Word 文档。")
+    doc.save("reports/final_report.docx")
+    print("已生成 reports/final_report.docx")
+```
+
+逐段说明：
+
+- `try: import docx` — 尝试导入 python-docx 库。如果未安装，`ImportError` 会被捕获，打印提示信息引导用户安装。这是处理可选依赖的经典模式。
+- `except ImportError:` — 依赖缺失时的降级处理：只给提示不崩溃。优点是新手看到提示后知道该做什么，不会误以为程序坏了。
+- `else:` — try 块成功执行后才进入 else 分支。注意这里不是 `finally`，区别在于 else 只在无异常时运行。
+- `docx.Document()` — 创建一个空白 Word 文档对象。
+- `doc.add_heading(..., level=1)` — 添加一级标题。python-docx 自动处理 Word 样式，不需要手动设置字体大小。
+- `doc.add_paragraph(...)` — 添加正文段落。
+- `doc.save(...)` — 保存为 `.docx` 文件。python-docx 内部处理了 XML 打包工作。
+
+这一点很适合新手练习“依赖缺失时先读提示，不要立刻重装整个 Python”。
 
 #### 脚本 4：`04_generate_office_pack.py`
 
@@ -363,7 +460,127 @@ python code/ch10/03_optional_docx_hint.py
 python code/ch10/04_generate_office_pack.py
 ```
 
-它会生成 Excel、Word、PPT 和预览图。阅读这个脚本时，抓住三条线就够了：`read_rows()` 读取数据，`make_excel()`、`make_word()`、`make_ppt()` 负责不同出口，`make_preview()` 负责把结果画成可检查图片。
+**代码讲解**（关键函数逐一说明）：
+
+```python
+def read_rows():
+    with INPUT.open(encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+```
+
+`read_rows()` — 打开 `input/report_data.csv`，使用 `csv.DictReader` 读取为字典列表。`INPUT.open()` 是 `Path` 对象提供的便捷文件打开方法，等价于 `open(INPUT, ...)`。
+
+```python
+def make_excel(rows):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "card_factory"
+    headers = ["chapter", "status", "artifact", "score"]
+    ws.append(headers)
+    for row in rows:
+        ws.append([row["chapter"], row["status"], row["artifact"], int(row["score"])])
+
+    for cell in ws[1]:
+        cell.font = Font(bold=True, color="FFFFFF")
+        cell.fill = PatternFill("solid", fgColor="2F6BFF")
+    ws.column_dimensions["A"].width = 12
+    ...
+    wb.save("reports/final_report.xlsx")
+```
+
+`make_excel(rows)` 的要点：
+  - `Workbook()` 创建一个新工作簿，`ws.active` 获取默认工作表，重命名为 `card_factory`。
+  - `ws.append(headers)` 写入表头行。openpyxl 的 append 方法会自动定位到下一空行。
+  - 遍历数据行，将 score 转为 int 后依次追加到工作表。
+  - `ws[1]` 获取第一行（表头）所有单元格，分别设置加粗字体、白色字色和蓝色背景填充。
+  - `column_dimensions["A"].width` 设置列宽，让表格不至于挤在一起。
+
+```python
+def make_word(rows):
+    scores = [int(row["score"]) for row in rows]
+    doc = Document()
+    doc.add_heading("科研卡片工厂结课报告", level=1)
+    doc.add_paragraph(f"共汇总 {len(rows)} 个章节作品。")
+    doc.add_paragraph(f"平均完成分：{sum(scores) / len(scores):.1f}")
+
+    table = doc.add_table(rows=1, cols=4)
+    table.style = "Table Grid"
+    for i, header in enumerate(["章节", "状态", "作品", "完成分"]):
+        table.rows[0].cells[i].text = header
+    for row in rows:
+        cells = table.add_row().cells
+        cells[0].text = row["chapter"]
+        ...
+    doc.save("reports/final_report.docx")
+```
+
+`make_word(rows)` 的要点：
+  - `Document()` 创建新文档。先添加标题和统计段落。
+  - `doc.add_table(rows=1, cols=4)` 创建表格，初始为 1 行（表头）。`table.style = "Table Grid"` 应用带边框的表格样式。
+  - `table.rows[0].cells[i].text = header` 逐列设置表头文字。
+  - 遍历数据行，`table.add_row()` 追加新行，通过 `cells` 索引依次填入各字段。
+
+```python
+def make_ppt(rows):
+    prs = Presentation()
+    slide = prs.slides.add_slide(prs.slide_layouts[5])
+    title = slide.shapes.title
+    title.text = "科研卡片工厂结课报告"
+    title.text_frame.paragraphs[0].font.size = Pt(30)
+    ...
+    for i, row in enumerate(rows[:5]):
+        item = slide.shapes.add_textbox(left, Inches(2.35 + i * 0.55), width, height)
+        item.text = f"{row['chapter']} | {row['artifact']} | {row['score']}"
+    prs.save("reports/final_slides.pptx")
+```
+
+`make_ppt(rows)` 的要点：
+  - `Presentation()` 创建空演示文稿。`slide_layouts[5]` 选择空白版式（编号 5 通常是空白布局）。
+  - `slide.shapes.title` 获取幻灯片标题框，设置标题文字和字号。
+  - `slide.shapes.add_textbox(left, top, width, height)` 在指定位置添加文本框。位置参数使用 `Inches()` 单位转换。
+  - 遍历前 5 条数据，每一条生成一行文本，模拟 PPT 内容页。
+
+```python
+def make_preview(rows):
+    im = Image.new("RGB", (1500, 950), "#F7F8FB")
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle((90, 70, 1410, 880), radius=26, ...)
+    d.text((150, 125), "科研卡片工厂结课报告", ...)
+    ...
+    for r, row in enumerate(rows):
+        d.rounded_rectangle((x, y, x + width, y + 54), ...)
+        d.text((x + 20, y + 12), str(value), ...)
+    im.save("reports/final_report_preview.png")
+```
+
+`make_preview(rows)` 的要点：
+  - `Image.new("RGB", (1500, 950), "#F7F8FB")` 创建一张浅灰背景的图片。
+  - `ImageDraw.Draw(im)` 获取绘图上下文，支持画矩形、椭圆、文字等操作。
+  - 先画一个圆角白底卡片 `rounded_rectangle`，然后写标题和副标题文字。
+  - 遍历数据，为每行数据绘制一个圆角单元格，填入章节、状态、作品和完成分。这种“把表格画成图片”的思路在自动化报告中非常实用——图片可以嵌入网页、PPT 或邮件，不需要收件人安装 Excel。
+
+```python
+def main():
+    REPORTS.mkdir(exist_ok=True)
+    rows = read_rows()
+    generated = [
+        make_excel(rows),
+        make_word(rows),
+        make_ppt(rows),
+        make_preview(rows),
+    ]
+    print("已生成办公自动化成果包：")
+    for path in generated:
+        print(f"- {path}")
+```
+
+`main()` 是脚本入口：
+  - 确保输出目录存在。
+  - 调用 `read_rows()` 读取 CSV 数据。
+  - 依次调用四个生成函数，分别产出 `.xlsx`、`.docx`、`.pptx` 和 `.png`。
+  - 每个函数返回文件路径，最后统一打印。
+
+阅读这个脚本时，抓住三条线就够了：`read_rows()` 读取数据，`make_excel()`、`make_word()`、`make_ppt()` 负责不同出口，`make_preview()` 负责把结果画成可检查图片。
 
 #### 脚本 5：`05_generate_delivery_index.py`
 
@@ -380,6 +597,57 @@ reports/delivery_index.md
 reports/delivery_index_preview.png
 ```
 
+**代码讲解**：
+
+```python
+EXPECTED = [
+    ("final_report.md", "Markdown quick review"),
+    ("final_report.docx", "Word formal report"),
+    ("final_report.xlsx", "Excel data workbook"),
+    ("final_slides.pptx", "PPT presentation"),
+    ("final_report_preview.png", "visual report preview"),
+]
+```
+
+定义一个预期文件清单 `EXPECTED`，每项包含文件名和用途说明。这个清单就是“索引的标准答案”——脚本据此逐项核对。
+
+```python
+def collect_rows():
+    rows = []
+    for name, purpose in EXPECTED:
+        path = REPORTS / name
+        exists = path.exists()
+        size = path.stat().st_size if exists else 0
+        rows.append({
+            "file": name, "purpose": purpose,
+            "status": "ready" if exists else "missing",
+            "size": size,
+        })
+    return rows
+```
+
+`collect_rows()` — 遍历预期文件清单，用 `Path.exists()` 检查文件是否存在，用 `Path.stat().st_size` 获取文件大小。状态分两种：`ready`（存在）或 `missing`（缺失）。
+
+```python
+def write_markdown(rows):
+    lines = [
+        "# 第10章交付索引",
+        "",
+        "| 文件 | 用途 | 状态 | 大小 bytes |",
+        "| --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(f"| {row['file']} | {row['purpose']} | {row['status']} | {row['size']} |")
+    path = REPORTS / "delivery_index.md"
+    path.write_text("\n".join(lines), encoding="utf-8")
+```
+
+`write_markdown()` — 用列表推导式组装 Markdown 表格。每个文件一行，包含文件名、用途、状态和大小。如果你打开 `delivery_index.md` 看到某个文件状态是 "missing"，就说明前面的脚本没有成功生成对应文件。
+
+`write_preview(rows)` 的绘图逻辑与脚本 4 的 `make_preview` 类似，区别在于：
+  - 表头用四种不同颜色区分：文件（蓝）、用途（绿）、状态（橙）、大小（紫）。
+  - 状态列根据 `ready`/`missing` 动态渲染不同底色（绿色或红色），一目了然。
+
 这个脚本是本章新增的“收尾动作”。很多自动化项目输在最后一公里：文件生成了，但不知道齐不齐、哪个是最终版、能不能交给别人。交付索引把这件事明明白白写下来。
 
 #### 脚本 6：`06_make_excel_preview.py`
@@ -395,6 +663,50 @@ python code/ch10/06_make_excel_preview.py
 ```text
 reports/excel_workbook_preview.png
 ```
+
+**代码讲解**：
+
+```python
+def read_cells():
+    if not WORKBOOK.exists():
+        raise FileNotFoundError("Run 04_generate_office_pack.py first.")
+    wb = load_workbook(WORKBOOK, data_only=True)
+    ws = wb.active
+    rows = []
+    for row in ws.iter_rows(min_row=1, max_row=6, max_col=4, values_only=True):
+        rows.append(["" if value is None else str(value) for value in row])
+    return rows
+```
+
+`read_cells()` 的要点：
+  - 先检查 `final_report.xlsx` 是否存在，若不存在则抛出 `FileNotFoundError`，提示用户先运行脚本 4。这是一种前置条件检查。
+  - `load_workbook(WORKBOOK, data_only=True)` 以只读数据模式加载现有工作簿。`data_only=True` 表示读取公式的计算结果而非公式本身。
+  - `ws.iter_rows(min_row=1, max_row=6, max_col=4, values_only=True)` 迭代第 1~6 行、第 1~4 列的单元格，`values_only=True` 直接获取单元格的值而非 Cell 对象。
+  - 将每个值转为字符串（None 转空字符串），方便后续绘图。
+
+```python
+def write_preview(rows):
+    image = Image.new("RGB", (1500, 980), "#F7F8FB")
+    draw = ImageDraw.Draw(image)
+    draw.rounded_rectangle((90, 70, 1410, 900), radius=26, fill="#FFFFFF", ...)
+    draw.text((150, 125), "Excel Workbook Preview", ...)
+    ...
+    for r, row in enumerate(rows):
+        x = x0
+        for c, value in enumerate(row):
+            fill = "#2F6BFF" if r == 0 else "#F1F5F9"
+            text_fill = "#FFFFFF" if r == 0 else "#162033"
+            draw.rounded_rectangle((x, y0 + r * row_h, x + widths[c], y0 + r * row_h + 56), ...)
+            draw.text((x + 18, y0 + r * row_h + 14), value, ...)
+            x += widths[c] + 12
+    image.save(PREVIEW, ...)
+```
+
+`write_preview()` 的要点：
+  - 创建一个浅灰背景的画布，画一个白色圆角卡片作为画板。
+  - 遍历 `read_cells()` 返回的二维列表，第一行（表头）用蓝底白字渲染，数据行用浅灰底深色字渲染。
+  - 每列的宽度由 `widths` 列表控制，列之间留 12 像素间距。
+  - 最后在底部画一个提示框，标注预览图的来源文件路径。
 
 这不是额外装饰，而是检查手段。你可以不用打开 Excel，就先确认表头、章节、作品和完成分有没有明显错位。
 
@@ -414,6 +726,62 @@ reports/course_portfolio.md
 reports/course_portfolio_preview.png
 ```
 
+**代码讲解**：
+
+```python
+ROOT = Path(__file__).resolve().parents[2]
+BOOK_ROOT = ROOT.parent
+```
+
+通过 `__file__` 获取脚本自身路径，向上取 2 级父目录得到 `python_tutorial_ch10/`，再取父目录得到教程根目录。这种路径解析方式让脚本不依赖当前工作目录。
+
+```python
+def read_manifest(chapter_dir):
+    manifest = chapter_dir / "manifest.json"
+    if not manifest.exists():
+        return {}
+    return json.loads(manifest.read_text(encoding="utf-8"))
+```
+
+每章目录下有一个 `manifest.json`（清单文件），记录章节编号、标题和正文 Markdown 的相对路径。`read_manifest()` 负责读取并解析这个 JSON。
+
+```python
+def count_markdown_images(text):
+    html_count = len(re.findall(r"<img\b", text))
+    markdown_count = len(re.findall(r"!\[[^\]]*\]\([^)]+\)", text))
+    return html_count + markdown_count
+```
+
+统计 Markdown 正文中的图片数量：同时匹配 HTML 标签 `<img` 和 Markdown 图片语法 `![]()` 两种写法。
+
+```python
+def collect_rows():
+    rows = []
+    for chapter_dir in sorted(BOOK_ROOT.glob("python_tutorial_ch*"), key=chapter_number):
+        data = read_manifest(chapter_dir)
+        chapter = data.get("chapter", {})
+        md_rel = chapter.get("markdown", "")
+        md_path = chapter_dir / md_rel if md_rel else None
+        text = md_path.read_text(encoding="utf-8") if md_path and md_path.exists() else ""
+        code_dir = chapter_dir / "code"
+        py_scripts = sorted(code_dir.rglob("*.py")) if code_dir.exists() else []
+        ...
+        rows.append({
+            "chapter": ..., "title": ..., "characters": len(text),
+            "images": count_markdown_images(text),
+            "python_scripts": len(py_scripts),
+            "assets": len(assets),
+            "status": "ready" if text and count_markdown_images(text) else "check",
+        })
+    return rows
+```
+
+`collect_rows()` 的要点：
+  - `BOOK_ROOT.glob("python_tutorial_ch*")` 匹配所有 `python_tutorial_ch00`~`ch10` 目录。
+  - 按章节编号排序（通过 `chapter_number()` 从目录名提取数字）。
+  - 对每章：读取 manifest 获取标题和正文路径，统计正文字数、图片数；扫描 `code/` 目录统计 Python 脚本数；扫描 `assets/` 目录统计素材文件数。
+  - 如果正文和图片都存在，状态标记为 "ready"，否则标记为 "check"。
+
 这个脚本让第10章真正成为收官章：它不只汇总本章文件，还把整套教程的学习成果装进一张可检查、可展示的作品清单里。
 
 #### 脚本 8：`09_make_final_showcase_board.py`
@@ -430,6 +798,57 @@ python code/ch10/09_make_final_showcase_board.py
 reports/final_showcase_board.md
 reports/final_showcase_board.png
 ```
+
+**代码讲解**：
+
+```python
+ITEMS = [
+    ("报告预览", REPORTS / "final_report_preview.png"),
+    ("Excel 预览", REPORTS / "excel_workbook_preview.png"),
+    ("课程作品集", REPORTS / "course_portfolio_preview.png"),
+    ("交付索引", REPORTS / "delivery_index_preview.png"),
+    ("Word 报告", REPORTS / "final_report.docx"),
+    ("PPT 展示", REPORTS / "final_slides.pptx"),
+]
+```
+
+定义一个展示项清单 `ITEMS`，每项包含显示名称和文件路径。这六项覆盖了本章的主要交付物。
+
+```python
+def thumb(path, size, label):
+    if path.suffix.lower() in {".png", ".jpg", ".jpeg"} and path.exists():
+        raw = Image.open(path)
+        raw = ImageOps.exif_transpose(raw).convert("RGB")
+        return ImageOps.contain(raw, size, ...)
+    image = Image.new("RGB", size, "#F8FAFC")
+    draw = ImageDraw.Draw(image)
+    draw_file_icon(draw, (0, 0, size[0], size[1]), color, label)
+    return image
+```
+
+`thumb()` 的要点：
+  - 如果是图片文件且存在，则用 `Image.open()` 打开并保持宽高比缩放到指定尺寸（`ImageOps.contain`）。
+  - 如果是非图片格式（如 `.docx`、`.pptx`）或文件不存在，则绘制一个文件图标占位符。
+  - `ImageOps.exif_transpose()` 处理手机拍照等场景的 EXIF 旋转信息。
+
+```python
+def draw_showcase():
+    image = Image.new("RGB", (1700, 1180), "#F7F8FB")
+    draw = ImageDraw.Draw(image)
+    ...
+    positions = [(140, 275), (620, 275), (1100, 275), (140, 680), (620, 680), (1100, 680)]
+    for (item, (x, y), color) in zip(ITEMS, positions, colors):
+        # 画卡片背景 → 贴缩略图 → 写标签 → 标状态
+        shown = thumb(path, (352, 185), ...)
+        image.paste(shown, (x + 34 + (352 - shown.width) // 2, y + 35 + (185 - shown.height) // 2))
+        ...
+    image.save(PREVIEW, ...)
+```
+
+`draw_showcase()` 的要点：
+  - 6 个展示项按 3 列 × 2 行排列，每个位置是一个 `(x, y)` 坐标元组。
+  - 每项画一个圆角卡片，内部贴上缩略图，下方写标签名、状态（ready/missing）和文件大小。
+  - 状态用圆圈颜色区分：绿色为 ready，红色为 missing。
 
 这张展示墙很适合放在结课汇报开头：先让自己和别人看到“这门课最后到底做出了什么”，再逐个打开 Word、Excel、PPT、作品集和交付包。办公自动化不是让文件偷偷躺在文件夹里，而是让成果能被看见、被检查、被分享。
 
@@ -449,6 +868,52 @@ reports/delivery_receipt.md
 reports/delivery_receipt_preview.png
 ```
 
+**代码讲解**：
+
+```python
+FILES = [
+    "final_report.md", "final_report.docx", "final_report.xlsx",
+    "final_slides.pptx", "final_report_preview.png",
+    "excel_workbook_preview.png", "delivery_index.md",
+    "course_portfolio.csv", "course_portfolio.md", "course_portfolio_preview.png",
+    "final_showcase_board.md", "final_showcase_board.png",
+    "capstone_handoff_dossier.md", "capstone_handoff_dossier.png",
+]
+```
+
+`FILES` 定义了需要打包的文件清单——这是明确声明“我需要交付哪些文件”。
+
+```python
+def make_zip(rows):
+    ready_files = [REPORTS / str(row["file"]) for row in rows if row["status"] == "ready"]
+    with ZipFile(PACKAGE, "w", compression=ZIP_DEFLATED) as zf:
+        for path in ready_files:
+            zf.write(path, arcname=path.name)
+```
+
+`make_zip()` 的要点：
+  - 只打包状态为 "ready" 的文件。缺失的文件会被跳过，不会产生空文件条目。
+  - `ZipFile(PACKAGE, "w", compression=ZIP_DEFLATED)` 创建 zip 包，使用 DEFLATE 压缩算法。
+  - `zf.write(path, arcname=path.name)` 将文件写入压缩包，`arcname=path.name` 表示只保留文件名，不包含目录层级（这样解压后文件直接展开）。
+
+```python
+def write_receipt(rows):
+    lines = [
+        "# 第10章交付回执",
+        "",
+        f"- 交付包：`{PACKAGE.as_posix()}`",
+        f"- 包大小：{PACKAGE.stat().st_size} bytes",
+        "",
+        "| 文件 | 状态 | 大小 bytes |",
+        "| --- | --- | ---: |",
+    ]
+    for row in rows:
+        lines.append(f"| `{row['file']}` | {row['status']} | {row['size']} |")
+    RECEIPT.write_text("\n".join(lines), encoding="utf-8")
+```
+
+`write_receipt()` — 生成 Markdown 格式的交付回执，记录每个文件的打包前状态和大小。回执和 zip 包一起保存，收件人打开回执就能知道包内应该有哪些文件、状态如何。
+
 这一步很像快递出库：不是把东西随手一塞就算完成，而是检查、记录、封包。以后你做科研材料、课程作业、项目汇报，都可以沿用这种“生成文件 + 作品集 + 交付回执”的习惯。
 
 #### 脚本 10：`10_make_delivery_package_manifest.py`
@@ -466,6 +931,52 @@ reports/delivery_package_manifest.md
 reports/delivery_package_manifest.png
 ```
 
+**代码讲解**：
+
+```python
+def package_rows():
+    if not PACKAGE.exists():
+        raise FileNotFoundError("请先运行 code/ch10/07_make_delivery_package.py 生成交付包。")
+    rows = []
+    with ZipFile(PACKAGE) as zf:
+        for info in sorted(zf.infolist(), key=lambda item: item.filename.lower()):
+            rows.append({
+                "file": info.filename,
+                "size": info.file_size,
+                "type": Path(info.filename).suffix.lower().lstrip(".") or "file",
+            })
+    return rows
+```
+
+`package_rows()` 的要点：
+  - 前置检查：如果 zip 包不存在，抛出 `FileNotFoundError` 引导用户先运行脚本 9。
+  - `ZipFile(PACKAGE)` 以读取模式打开 zip 包。
+  - `zf.infolist()` 获取包内所有文件的信息对象。每个 `ZipInfo` 包含 `filename`、`file_size`、`compress_size` 等属性。
+  - 按文件名排序后，提取文件名、原始大小，并通过 `Path.suffix` 提取文件扩展名作为类型（如 `md`、`xlsx`、`png`）。
+
+```python
+def write_manifest(rows):
+    lines = [
+        "# 第10章交付包目录清单",
+        "",
+        f"- 交付包：`{PACKAGE.as_posix()}`",
+        f"- 包内文件数：{len(rows)}",
+        f"- 包大小：{PACKAGE.stat().st_size} bytes",
+        "",
+        "| 文件 | 类型 | 原始大小 bytes |",
+        "| --- | --- | ---: |",
+    ]
+    for row in rows:
+        lines.append(f"| `{row['file']}` | {row['type']} | {row['size']} |")
+    MANIFEST_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
+```
+
+`write_manifest()` — 生成 Markdown 目录清单，包含文件名、类型和原始大小（即压缩前大小）。`---:` 中的冒号表示该列右对齐。
+
+`write_preview()` 的绘图特点：
+  - 每种文件类型分配一个辨识色：`.md` 蓝色、`.docx` 深蓝、`.xlsx` 绿色、`.pptx` 橙色、`.png` 紫色、`.csv` 青色。文件类型标签上的色块让预览图更易快速扫视。
+  - 如果包内文件超过 14 个，预览图底部提示“还有 N 个文件写入 Markdown 清单”，避免预览图太长。
+
 交付回执证明“打包动作完成了”，目录清单则回答另一个更细的问题：压缩包里到底装了什么。办公自动化做到最后，最可靠的不是“我觉得应该没问题”，而是每个交付文件都能被再次打开、再次核对。
 
 #### 脚本 11：`11_make_final_runtime_evidence.py`
@@ -482,7 +993,63 @@ reports/final_runtime_evidence.png
 assets/ch10/web/final_runtime_evidence.png
 ```
 
+**代码讲解**：
+
+```python
+CHECKS = [
+    ("source csv", "input/report_data.csv"),
+    ("markdown report", "reports/final_report.md"),
+    ("word report", "reports/final_report.docx"),
+    ("excel workbook", "reports/final_report.xlsx"),
+    ("slides", "reports/final_slides.pptx"),
+    ("report preview", "reports/final_report_preview.png"),
+    ("excel preview", "reports/excel_workbook_preview.png"),
+    ("delivery index", "reports/delivery_index.md"),
+    ("delivery receipt", "reports/delivery_receipt.md"),
+    ("delivery zip", "reports/ch10_delivery_package.zip"),
+    ("zip manifest", "reports/delivery_package_manifest.md"),
+    ("course portfolio", "reports/course_portfolio.md"),
+    ("showcase board", "reports/final_showcase_board.png"),
+    ("capstone dossier", "reports/capstone_handoff_dossier.png"),
+]
+```
+
+`CHECKS` 定义了 14 个检查项，从输入数据到最终交付物全覆盖。这是整个自动化流程的“总清单”。
+
+```python
+def project_root():
+    here = Path.cwd()
+    if (here / "assets" / "ch10").exists():
+        return here
+    return Path(__file__).resolve().parents[2]
+```
+
+`project_root()` — 智能判断项目根目录：优先使用当前工作目录（方便用户直接 `cd` 到 `python_tutorial_ch10` 后运行），如果找不到 `assets/ch10` 则回退到脚本自身路径向上 2 级。
+
+```python
+def collect_rows():
+    rows = []
+    for label, rel_path in CHECKS:
+        path = ROOT / rel_path
+        rows.append({
+            "stage": label,
+            "path": rel_path,
+            "status": "ready" if path.exists() else "missing",
+            "size": str(path.stat().st_size) if path.exists() else "-",
+        })
+    return rows
+```
+
+`collect_rows()` — 逐项检查。对每个检查项，用 `Path.exists()` 判断文件是否存在，用 `stat().st_size` 获取文件大小。存在标记为 "ready"，缺失标记为 "missing"。
+
+`write_preview()` 的绘图特点：
+  - 模拟 PowerShell 终端风格的视觉效果：深蓝背景（`#0B1B3A`）、顶部的红/黄/绿圆点模拟窗口控制按钮。
+  - 顶部模拟三条命令执行记录（`PS>` 风格），让读者直观感受“这些结果是运行命令产生的”。
+  - 14 个检查项逐行列出，每行左侧用绿点（ready）或红点（missing）标识状态，右侧显示文件大小。
+  - 底部汇总通过项数，如 `ready files: 14/14`。
+
 这个脚本像结课前的最后一次点名：CSV、Markdown、Word、Excel、PPT、预览图、交付索引、交付回执、zip 包、目录清单、课程作品集和展示墙，一个个确认。办公自动化的高级感不在于“生成了好多文件”，而在于这些文件可以被检查、解释、复用和交付。
+
 
 ---
 
