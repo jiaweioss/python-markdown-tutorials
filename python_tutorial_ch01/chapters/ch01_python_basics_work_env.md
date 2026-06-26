@@ -79,6 +79,26 @@ Get-ChildItem code\ch01
   <figcaption><strong>图1-2 PowerShell 项目目录定位</strong>：先进入本章项目目录，再确认 `code/ch01/` 里的脚本确实存在；程序找不到文件时，第一嫌疑往往是当前目录。</figcaption>
 </figure>
 
+当你输入命令时，用的就是路径。路径告诉电脑去哪里找文件或目录，分为两种：
+
+- **相对路径**：从当前工作目录出发，比如 `code\ch01\01_hello_python.py` 表示"当前目录下的 `code/ch01/01_hello_python.py`"。
+- **绝对路径**：从盘符或系统根目录出发，比如 `C:\Users\你的用户名\Desktop\...\python_tutorial_ch01`。
+
+你可以在 Python 中查看当前工作目录：
+
+```python
+from pathlib import Path
+
+print(Path.cwd())
+```
+
+初学阶段建议优先使用相对路径来描述项目内部的文件，这样项目换一台电脑或搬一个位置时，代码仍然能正常工作。
+
+<figure align="center">
+  <img src="../assets/ch01/ch01_path_map.png" alt="路径地图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图1-3 路径地图</strong>：路径就是文件的地址，当前工作目录决定相对路径从哪里出发。</figcaption>
+</figure>
+
 第二步，检查解释器和 pip：
 
 ```powershell
@@ -1065,9 +1085,9 @@ open("input/demo.txt", "r", encoding="utf-8")
 1. 确认文件真的存在。
 2. 确认当前工作目录正确。
 3. 尽量使用 `Path` 组合路径。
-4. 不要只靠“我感觉它应该在那里”。
+4. 不要只靠"我感觉它应该在那里"。
 
----
+
 
 ### 1.21 三步读报错法
 

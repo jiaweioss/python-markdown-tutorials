@@ -79,7 +79,7 @@
 
 ## 正式教材图片
 
-本章当前包含 26 张正式教材配图：
+本章当前包含 25 张正式教材配图：
 
 - `ch03_cover.png`
 - `ch03_roadmap.png`
@@ -93,7 +93,6 @@
 - `ch03_rosetta_encoding_story.png`
 - `ch03_with_context_door.png`
 - `ch03_read_methods_comparison.png`
-- `ch03_path_map.png`
 - `ch03_folder_tree_operations.png`
 - `ch03_file_size_chart.png`
 - `ch03_safe_delete_warning.png`

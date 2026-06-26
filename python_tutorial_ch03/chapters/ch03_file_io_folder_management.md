@@ -1,5 +1,7 @@
 # 第 3 章：文件读写与文件夹管理
 
+[TOC]
+
 <style>
 figure {
   margin: 1.2em auto 1.8em;
@@ -144,52 +146,9 @@ output.write_text("整理完成\n", encoding="utf-8")
 
 ---
 
-## 3.3 路径：文件不是“在电脑里”，而是在某个地址里
+## 3.3 路径：管理好你的路牌
 
-<figure align="center">
-  <img src="../assets/ch03/ch03_path_map.png" alt="路径地图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-6 路径地图</strong>：路径就是文件的地址，当前工作目录决定相对路径从哪里出发。</figcaption>
-</figure>
-
-很多新手第一次遇到 `FileNotFoundError`，会以为文件丢了。
-
-但更常见的情况是：文件没丢，你站错房间了。
-
-Python 找文件时，会从“当前工作目录”出发。你可以这样查看：
-
-```python
-from pathlib import Path
-
-print(Path.cwd())
-```
-
-如果当前工作目录是：
-
-```text
-my_project/
-```
-
-那么：
-
-```python
-Path("data/raw.txt")
-```
-
-表示：
-
-```text
-my_project/data/raw.txt
-```
-
-这叫相对路径。它不是从整个硬盘根目录开始，而是从当前工作目录开始。
-
-绝对路径则从盘符或系统根目录开始，例如 Windows 上可能是：
-
-```text
-C:\Users\name\Desktop\my_project\data\raw.txt
-```
-
-建议：初学阶段不要到处写绝对路径。更好的做法是把项目目录整理好，用相对路径描述项目内部文件。
+路径命名要清晰，尽量使用相对路径，不要把绝对路径写死在代码里。
 
 <figure align="center">
   <img src="../assets/ch03/ch03_card_filing_cabinet_path_index.png" alt="文件柜抽屉照片" style="zoom:50%; display:block; margin:0 auto;" />
@@ -1076,7 +1035,6 @@ python_tutorial_ch03/
 │       ├── ch03_rosetta_encoding_story.png
 │       ├── ch03_with_context_door.png
 │       ├── ch03_read_methods_comparison.png
-│       ├── ch03_path_map.png
 │       ├── ch03_folder_tree_operations.png
 │       ├── ch03_file_size_chart.png
 │       ├── ch03_safe_delete_warning.png

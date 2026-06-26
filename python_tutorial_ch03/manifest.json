@@ -10,8 +10,8 @@
     "source_ppt": "第三章_文件读写与文件夹管理2025.pptx",
     "source_ppt_slide_count": 54,
     "character_count": 26311,
-    "image_refs": 26,
-    "asset_count": 38,
+    "image_refs": 25,
+    "asset_count": 37,
     "code_count": 14,
     "internet_sources": [
       {
@@ -73,7 +73,6 @@
     "assets/ch03/ch03_material_intake_register.png",
     "assets/ch03/ch03_mini_project_archiver.png",
     "assets/ch03/ch03_open_mode_matrix.png",
-    "assets/ch03/ch03_path_map.png",
     "assets/ch03/ch03_path_safety_receipt.png",
     "assets/ch03/ch03_powershell_file_operations_run.png",
     "assets/ch03/ch03_practice_evidence_workbench.png",
