@@ -621,27 +621,7 @@ python code/ch04/04_make_ch03_data_gui_panel.py
 
 遇到 GUI 问题时，先不要大改。先把问题缩到最小脚本里：一个窗口、一个标签、一个按钮、一个回调。最小版本能跑，再把功能加回来。
 
-### 4.15 上机路线与运行证据
-
-第一次学习本章时，建议按这个顺序运行：
-
-```bash
-python code/ch04/01_hello_window.py
-python code/ch04/02_card_form.py
-python code/ch04/03_stroop_gui_preview.py
-python code/ch04/04_make_ch03_data_gui_panel.py
-```
-
-运行证据可以按下面这张表整理：
-
-| 运行证据 | 要看到什么 |
-| --- | --- |
-| 最小窗口 | `01_hello_window.py` 能弹出窗口 |
-| 卡片表单 | `02_card_form.py` 能保存一张 Markdown 卡片 |
-| Stroop GUI展示 | `03_stroop_gui_preview.py` 能正常工作 |
-| 数据展示面板 | `04_make_ch03_data_gui_panel.py` 能展示信息 |
-
-### 4.16 练习任务
+### 4.15 练习任务
 
 1. 把 `01_hello_window.py` 的窗口标题改成你的项目名，运行并截图。
 2. 在 `02_card_form.py` 中增加一个“标签”输入框，例如“实验记录”“课程笔记”“论文摘录”。
@@ -651,7 +631,7 @@ python code/ch04/04_make_ch03_data_gui_panel.py
 6. 修改 `03_stroop_gui_preview.py`，使得字体颜色改为红色，文字内容改为`BLUE`。
 7. 修改 `04_make_ch03_data_gui_panel.py`，把文案改得更像真实科研工具。
 
-### 4.17 自测问题
+### 4.16 自测问题
 
 1. `tk.Tk()`、控件、布局、回调和 `mainloop()` 分别负责什么？
 2. 为什么 `command=save_card` 和 `command=save_card()` 结果不同？
@@ -662,7 +642,7 @@ python code/ch04/04_make_ch03_data_gui_panel.py
 
 判断自己是否真的学会，可以看你能不能把 `02_card_form.py` 讲给同学听：窗口里有什么，用户怎么操作，点击后哪个函数执行，最后文件保存到哪里。
 
-### 4.18 学习复盘模板
+### 4.17 学习复盘模板
 
 可以在 `reports/ch04_review.md` 中写下：
 
@@ -692,7 +672,7 @@ python code/ch04/04_make_ch03_data_gui_panel.py
 
 复盘不是写作文，而是给下一次调试留路标。你现在把窗口、函数、路径和输出写清楚，后面做综合项目时就不用重新猜。
 
-### 4.19 本章总结
+### 4.18 本章总结
 
 Tkinter 入门的关键不是把所有参数背下来，而是理解 GUI 程序的基本闭环：
 
