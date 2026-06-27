@@ -60,96 +60,86 @@ def build_panel_data(data: dict) -> dict:
     }
 
 
-class StroopDataPanel:
-    def __init__(self) -> None:
-        data = load_data()
-        panel = build_panel_data(data)
-        self.metrics = panel["metrics"]
-        self.trials = panel["trials"]
-
-        self.root = tk.Tk()
-        self.root.title("Stroop 数据浏览面板")
-        self.root.geometry("900x600")
-
-        source_text = (
-            SOURCE_JSON.relative_to(BOOK_ROOT).as_posix()
-            if SOURCE_JSON.exists()
-            else "fallback/sample"
-        )
-        tk.Label(
-            self.root,
-            text=f"数据来源：{source_text}",
-            anchor="w",
-            font=("Microsoft YaHei", 11),
-            fg="#666666",
-        ).pack(fill="x", padx=20, pady=(12, 4))
-
-        self._build_metrics_area()
-        self._build_trial_table()
-        self._build_action_buttons()
-
-    def _build_metrics_area(self) -> None:
-        frame = tk.Frame(self.root)
-        frame.pack(fill="x", padx=20, pady=8)
-        items = [
-            ("参与被试", self.metrics.get("participant", "—")),
-            ("试次总数", str(self.metrics.get("trial_count", 0))),
-            ("正确率", f"{round(float(self.metrics.get('accuracy', 0)) * 100, 1)}%"),
-            ("平均反应时", f"{round(float(self.metrics.get('mean_reaction_time_ms', 0)), 1)} ms"),
-            ("冲突试次", str(self.metrics.get("incongruent_count", 0))),
-        ]
-        for label, value in items:
-            card = tk.Frame(frame, relief="groove", bd=1, padx=10, pady=6)
-            card.pack(side="left", fill="x", expand=True, padx=4)
-            tk.Label(card, text=label, font=("Microsoft YaHei", 9), fg="#888888").pack()
-            tk.Label(card, text=value, font=("Microsoft YaHei", 14, "bold")).pack()
-
-    def _build_trial_table(self) -> None:
-        columns = ("id", "word", "ink", "key", "rt", "correct", "congruent")
-        tree = ttk.Treeview(self.root, columns=columns, show="headings", height=10)
-
-        headings = [
-            ("id", "ID", 40),
-            ("word", "词", 80),
-            ("ink", "墨水色", 80),
-            ("key", "按键", 60),
-            ("rt", "反应时(ms)", 100),
-            ("correct", "正确", 60),
-            ("congruent", "一致", 60),
-        ]
-        for col, heading, width in headings:
-            tree.heading(col, text=heading)
-            tree.column(col, width=width, anchor="center")
-
-        for t in self.trials:
-            tree.insert(
-                "",
-                "end",
-                values=(
-                    t.get("trial_id", ""),
-                    t.get("word", ""),
-                    t.get("ink_color", ""),
-                    t.get("response_key", ""),
-                    f"{float(t.get('reaction_time_ms', 0)):.1f}",
-                    "是" if t.get("correct") else "否",
-                    "是" if t.get("congruent") else "否",
-                ),
-            )
-
-        tree.pack(fill="both", expand=True, padx=20, pady=8)
-
-    def _build_action_buttons(self) -> None:
-        frame = tk.Frame(self.root)
-        frame.pack(pady=16)
-        for text in ("加载数据", "查看试次", "导出卡片", "生成报告"):
-            tk.Button(frame, text=text, width=12, state="disabled").pack(side="left", padx=6)
-
-    def run(self) -> None:
-        self.root.mainloop()
-
-
 def main() -> None:
-    StroopDataPanel().run()
+    data = load_data()
+    panel = build_panel_data(data)
+    metrics = panel["metrics"]
+    trials = panel["trials"]
+
+    root = tk.Tk()
+    root.title("Stroop 数据浏览面板")
+    root.geometry("900x600")
+
+    source_text = (
+        SOURCE_JSON.relative_to(BOOK_ROOT).as_posix()
+        if SOURCE_JSON.exists()
+        else "fallback/sample"
+    )
+    tk.Label(
+        root,
+        text=f"数据来源：{source_text}",
+        anchor="w",
+        font=("Microsoft YaHei", 11),
+        fg="#666666",
+    ).pack(fill="x", padx=20, pady=(12, 4))
+
+    # 指标卡片区
+    frame = tk.Frame(root)
+    frame.pack(fill="x", padx=20, pady=8)
+    items = [
+        ("参与被试", metrics.get("participant", "—")),
+        ("试次总数", str(metrics.get("trial_count", 0))),
+        ("正确率", f"{round(float(metrics.get('accuracy', 0)) * 100, 1)}%"),
+        ("平均反应时", f"{round(float(metrics.get('mean_reaction_time_ms', 0)), 1)} ms"),
+        ("冲突试次", str(metrics.get("incongruent_count", 0))),
+    ]
+    for label, value in items:
+        card = tk.Frame(frame, relief="groove", bd=1, padx=10, pady=6)
+        card.pack(side="left", fill="x", expand=True, padx=4)
+        tk.Label(card, text=label, font=("Microsoft YaHei", 9), fg="#888888").pack()
+        tk.Label(card, text=value, font=("Microsoft YaHei", 14, "bold")).pack()
+
+    # 试次表格区
+    columns = ("id", "word", "ink", "key", "rt", "correct", "congruent")
+    tree = ttk.Treeview(root, columns=columns, show="headings", height=10)
+
+    headings = [
+        ("id", "ID", 40),
+        ("word", "词", 80),
+        ("ink", "墨水色", 80),
+        ("key", "按键", 60),
+        ("rt", "反应时(ms)", 100),
+        ("correct", "正确", 60),
+        ("congruent", "一致", 60),
+    ]
+    for col, heading, width in headings:
+        tree.heading(col, text=heading)
+        tree.column(col, width=width, anchor="center")
+
+    for t in trials:
+        tree.insert(
+            "",
+            "end",
+            values=(
+                t.get("trial_id", ""),
+                t.get("word", ""),
+                t.get("ink_color", ""),
+                t.get("response_key", ""),
+                f"{float(t.get('reaction_time_ms', 0)):.1f}",
+                "是" if t.get("correct") else "否",
+                "是" if t.get("congruent") else "否",
+            ),
+        )
+
+    tree.pack(fill="both", expand=True, padx=20, pady=8)
+
+    # 占位按钮区
+    btn_frame = tk.Frame(root)
+    btn_frame.pack(pady=16)
+    for text in ("加载数据", "查看试次", "导出卡片", "生成报告"):
+        tk.Button(btn_frame, text=text, width=12, state="disabled").pack(side="left", padx=6)
+
+    root.mainloop()
 
 
 if __name__ == "__main__":
