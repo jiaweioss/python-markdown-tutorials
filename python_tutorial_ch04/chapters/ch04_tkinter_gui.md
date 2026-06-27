@@ -36,9 +36,9 @@
 | --- | --- | --- | --- |
 | 第一部分：窗口通电与心智模型 | 4.1-4.3 | GUI 是把函数包装成用户能操作的动作 | 最小窗口截图、代码与界面对照图 |
 | 第二部分：控件、布局与表单 | 4.4-4.6 | 控件负责收集输入，布局负责让它们有秩序 | 学习卡片表单窗口、保存函数 |
-| 第三部分：事件、回调与反馈 | 4.7-4.10 | 点击、按键和消息框形成交互闭环 | 键盘事件演示、可用性检查、反馈检查卡 |
-| 第四部分：项目交付与跨章连接 | 4.11-4.14 | GUI 项目最后要留下文件、报告和用户旅程证据 | 交互回执、卡片交付物、ch3 数据面板 |
-| 第五部分：排错、练习与验收 | 4.15-4.20 | 用固定路线排查 GUI 常见问题 | 常见坑地图、运行证据清单、复盘报告 |
+| 第三部分：事件、回调与反馈 | 4.7-4.11 | 点击、按键和消息框形成交互闭环 | 键盘事件演示、Stroop 预告、可用性检查、反馈检查卡 |
+| 第四部分：项目交付与跨章连接 | 4.12-4.13 | GUI 项目最后要留下文件、报告和用户旅程证据 | 交互回执、ch3 数据面板 |
+| 第五部分：排错、练习与验收 | 4.14-4.19 | 用固定路线排查 GUI 常见问题 | 常见坑地图、运行证据清单、复盘报告 |
 
 <figure align="center">
   <img src="../assets/ch04/ch04_roadmap.png" alt="第4章学习路线图" style="zoom:50%; display:block; margin:0 auto;" />
@@ -212,8 +212,8 @@ python code/ch04/02_card_form.py
 这个窗口比最小例子多了两类输入：一个单行主题输入框，一个多行要点输入区。点击“保存卡片”以后，程序会把内容写入 `cards/` 目录。
 
 <figure align="center">
-  <img src="../assets/ch04/ch04_project_dashboard.png" alt="科研卡片工厂控制面板结构图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-7 科研卡片工厂控制面板</strong>：表单负责收集输入，`save_card()` 负责把输入变成 Markdown 文件和可复查报告。</figcaption>
+  <img src="../assets/ch04/ch04_project_dashboard.png" alt="脚本功能展示图" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图4-7 脚本功能展示</strong>：表单负责收集输入，`save_card()` 负责把输入变成 Markdown 文件和可复查报告。</figcaption>
 </figure>
 
 <figure align="center">
@@ -394,19 +394,6 @@ root.mainloop()
 
 很多新手窗口能运行，但用户点完按钮以后什么都不知道。文件到底保存了吗？保存到哪里了？标题为空会怎样？失败了能不能重新输入？
 
-本章提供了一个可用性检查脚本：
-
-```bash
-python code/ch04/04_gui_usability_check.py
-```
-
-运行后会生成：
-
-```text
-reports/ch04_gui_usability_check.md
-output/ch04_gui_usability_check.png
-```
-
 <figure align="center">
   <img src="../assets/ch04/ch04_gui_usability_check.png" alt="GUI 可用性检查清单" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图4-9 GUI 可用性检查清单</strong>：一个小窗口交给别人之前，至少要检查用途、标签、主按钮、保存反馈和错误恢复。</figcaption>
@@ -421,20 +408,6 @@ output/ch04_gui_usability_check.png
 5. 用户填错或漏填时能不能恢复？
 
 ### 4.10 按钮大小、间距、状态和文案
-
-运行反馈实验脚本：
-
-```bash
-python code/ch04/05_make_gui_feedback_lab.py
-```
-
-它会生成两张图：
-
-```text
-output/ch04_target_feedback_lab.png
-output/ch04_gui_feedback_scorecard.png
-reports/ch04_gui_feedback_scorecard.md
-```
 
 <figure align="center">
   <img src="../assets/ch04/ch04_target_feedback_lab.png" alt="GUI 目标大小与反馈实验" style="zoom:50%; display:block; margin:0 auto;" />
@@ -467,113 +440,174 @@ Don Norman 写“诺曼门”的故事时，批评的不是某一扇门，而是
 | 按钮写“确定” | 按钮写“保存卡片” |
 | 标签写“内容” | 标签写“学习要点” |
 | 保存后无提示 | 弹出“已保存到 cards/xxx.md” |
-| 空标题悄悄替换 | 提示“标题为空，已使用未命名主题” |
+| 空标题悄悄替换 | 提示"标题为空，已使用未命名主题" |
+
+---
+
+### 4.11 例子 Stroop GUI：把事件、回调和反馈串成一个完整实验
+
+前几节分别讲了回调、键盘事件和反馈。现在用一个真实脚本把它们串起来：`03_stroop_gui_preview.py`。
+
+这个脚本模拟了一个极简的 Stroop 实验界面：被试点击"开始"按钮，屏幕上出现一个颜色词（例如用蓝色墨水写的"RED"），然后通过按键盘上的 F 或 J 键来判断墨水颜色。程序会记录按键是否正确以及反应时间。
+
+运行这个脚本：
+
+```bash
+python code/ch04/03_stroop_gui_preview.py
+```
+
+你会看到一个窗口，包含一段提示文字、一个刺激标签、一个结果显示标签和一个"开始"按钮。这个窗口虽然小，但已经具备了实验程序最关键的三块骨架。
+
+先看完整代码，再逐段拆解：
+
+```python
+import time
+import tkinter as tk
+
+TRIAL = {"word": "RED", "ink": "blue", "correct": "j"}
+
+def start_trial():
+    global start
+    prompt.config(text="判断墨水颜色：红色按 F，蓝色按 J")
+    stimulus.config(text=TRIAL["word"], fg=TRIAL["ink"])
+    start = time.perf_counter()
+
+def respond(key: str):
+    rt = round((time.perf_counter() - start) * 1000, 2)
+    ok = key == TRIAL["correct"]
+    result.config(text=f"反应：{key}  正确：{ok}  反应时：{rt} ms")
+
+root = tk.Tk()
+root.title("Stroop GUI 预告")
+root.geometry("520x300")
+start = time.perf_counter()
+
+prompt = tk.Label(root, text="点击开始后看刺激", font=("Microsoft YaHei", 13))
+prompt.pack(pady=16)
+stimulus = tk.Label(root, text="", font=("Arial", 36, "bold"))
+stimulus.pack(pady=18)
+result = tk.Label(root, text="")
+result.pack(pady=12)
+tk.Button(root, text="开始", command=start_trial).pack()
+root.bind("f", lambda event: respond("f"))
+root.bind("j", lambda event: respond("j"))
+root.mainloop()
+```
+
+#### 回调：按钮把"开始实验"交给用户决定
+
+脚本中的按钮是这样写的：
+
+```python
+tk.Button(root, text="开始", command=start_trial).pack()
+```
+
+`command=start_trial` 没有括号。按钮创建时 `start_trial()` 不会执行，只有用户点击"开始"按钮后，函数才会被调用。这正是 4.7 节反复强调的"有括号立刻执行，无括号等用户点"。
+
+点击后，`start_trial()` 做了三件事：
+
+1. 把提示文字改成具体操作指令："判断墨水颜色：红色按 F，蓝色按 J"
+2. 把刺激标签的文字设为 `"RED"`，颜色设为 `"blue"`——Stroop 冲突的核心就在这里：词义（RED）和墨水颜色（blue）不一致
+3. 用 `time.perf_counter()` 记录当前时间，作为反应时的起点
+
+#### 事件：键盘按键触发响应
+
+脚本用两行 `bind()` 注册了键盘事件：
+
+```python
+root.bind("f", lambda event: respond("f"))
+root.bind("j", lambda event: respond("j"))
+```
+
+用户在键盘上按下 F 或 J 时，`respond()` 函数会被自动调用。这和 4.8 节的键盘事件示例写法完全一致——按键时不需要用鼠标点击按钮，程序自动捕捉按键并做出响应。
+
+这种设计在实验程序中很常见：被试的眼睛盯着屏幕上的刺激，手放在键盘上，不需要在鼠标和键盘之间来回切换。按键延迟更短，反应时记录也更准确。
+
+#### 反馈：结果标签实时更新
+
+`respond()` 函数被调用后，会计算反应时并更新界面：
+
+```python
+def respond(key: str):
+    rt = round((time.perf_counter() - start) * 1000, 2)
+    ok = key == TRIAL["correct"]
+    result.config(text=f"反应：{key}  正确：{ok}  反应时：{rt} ms")
+```
+
+`result.config(text=...)` 把结果显示在窗口底部的标签上。用户按完键后，能立即看到自己的按键是否正确，还能看到精确到毫秒的反应时——这就是 4.9 节讨论的"用户需要知道刚才发生了什么"。
+
+#### 三块骨架如何配合
+
+| 概念 | 在 Stroop 脚本中的体现 | 背后原理 |
+| --- | --- | --- |
+| **事件** | 用户按下 F 或 J 键触发 | `root.bind("f", ...)` 注册键盘监听 |
+| **回调** | 用户点击"开始"按钮后调用 `start_trial()` | `command=start_trial` 把函数交给按钮 |
+| **反馈** | 按键后标签更新为"正确：True/False 反应时：xxx ms" | `result.config(text=...)` 实时刷新界面 |
+
+这三个概念不是独立的知识点。把它们放到一起，才能构成真正的交互闭环：
+
+> **用户点击按钮 → 程序显示刺激 → 用户按键 → 程序记录并反馈结果**
+
+这个闭环在 Stroop 任务中是"试次（trial）"的基本结构，在更广泛的 GUI 程序中则是"输入—处理—输出"的用户体验循环。
+
+#### Stroop 任务与 GUI 交互
+
+Stroop 效应是心理学最经典的实验范式之一：当词义和墨水颜色不一致时（例如蓝色墨水写的"RED"），被试的反应时显著变长，错误率也更高。这个脚本只模拟了单个试次，但它展示了 GUI 如何为实验程序服务：
+
+- 刺激呈现在窗口中央，字体大而醒目
+- 被试通过键盘按键快速反应，无需鼠标
+- 反应时被精确记录到毫秒
+- 正确性可以即时判断
+
+如果你继续往这个方向扩展，可以加入更多试次、记录完整数据到文件、计算平均反应时和正确率——这就是把第2章（数据类型）、第3章（文件保存）和第4章（GUI 交互）连起来的完整路径。
 
 ---
 
 ## 第四部分：项目交付与跨章连接
 
-### 4.11 交互回执：证明窗口不是只会弹出来
+### 4.12 交互回执：证明窗口不是只会弹出来
 
-运行交互回执脚本：
+窗口能弹出来只是第一步。一个 GUI 程序真正要回答的问题是：用户操作它之后，到底有没有留下可复查的证据？
 
-```bash
-python code/ch04/06_make_interaction_receipt.py
-```
-
-它会生成：
-
-```text
-output/ch04_interaction_receipt.png
-reports/ch04_interaction_receipt.md
-```
+**交互回执**就是把这个问题变成一张可检查的清单。它把窗口的用途、输入字段有哪些、主按钮做什么、点击后有什么反馈、以及还有哪些待改进项，集中到一个文件中。这样你不需要重新打开窗口或翻代码，只看回执就能判断这个窗口是否完成了它的任务。
 
 <figure align="center">
   <img src="../assets/ch04/ch04_interaction_receipt.png" alt="GUI 交互回执" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图4-13 GUI 交互回执</strong>：交互回执把窗口用途、输入字段、主按钮、反馈和待改进项集中到一张可复查证据里。</figcaption>
 </figure>
 
-这张回执保留一个 `FIX` 项：空标题还需要更友好的提醒。真实项目不必假装每一步都满分。能发现问题、记录问题、继续改进，本身就是工程能力。
+交互回执的意义在于：它把"这个窗口好不好用"从一个主观感受，变成一组可以逐条核对的事实。你在后续练习中每改一个窗口，都可以生成一张新回执，对比改进前后的差异。
+### 4.13 接住 ch02 和 ch03 的数据：用一个 Tkinter 窗口浏览 Stroop 数据
 
-### 4.12 卡片工厂交付物：最后要有文件留下来
-
-运行卡片交付脚本：
-
-```bash
-python code/ch04/07_make_card_factory_delivery.py
-```
-
-它会生成：
-
-```text
-cards/working_memory_load_card.md
-reports/ch04_card_factory_delivery.md
-output/ch04_card_factory_delivery.png
-```
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_card_factory_delivery.png" alt="卡片工厂交付回执" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-14 卡片工厂交付回执</strong>：GUI 项目的终点不是“窗口看起来不错”，而是输入被保存成可以继续编辑的 Markdown 学习卡片。</figcaption>
-</figure>
-
-这一步非常重要。很多 GUI 入门练习只停在窗口截图，但真实工具要留下结果。对“科研卡片工厂”来说，结果就是卡片、报告、输出图和后续可以接着处理的数据。
-
-这条线索也能接到 HyperCard。HyperCard 让很多非专业程序员第一次感到“我可以把卡片、按钮、文本和脚本连起来，做一个自己的小工具”。它和本课程的科研卡片工厂很接近：界面不是为了炫耀，而是为了让一个人把知识、材料和动作组织成可点击、可继续扩展的系统。
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_hypercard_story.png" alt="HyperCard 界面照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-S6 HyperCard</strong>：卡片式界面提醒我们，小工具也可以有清楚入口、可点击动作和可继续扩展的知识结构。</figcaption>
-</figure>
-
-### 4.13 用户旅程：打开窗口到拿到文件
-
-运行交互旅程图脚本：
-
-```bash
-python code/ch04/09_make_gui_journey_storyboard.py
-```
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_gui_journey_storyboard.png" alt="GUI 交互旅程图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-15 GUI 交互旅程图</strong>：一个可用的小窗口应该照顾完整旅程：打开、输入、点击、看到反馈、得到文件。</figcaption>
-</figure>
-
-把 GUI 当成一段旅程，就不容易只盯着控件。用户不是为了看按钮而打开窗口，用户是为了完成任务。一个按钮有没有价值，要看它是否帮用户走到结果。
-
-### 4.14 接住 ch02 和 ch03 的数据
-
-第4章不是孤岛。第2章做过 Stroop 数据结构，第3章整理过文件和 JSON；第4章可以把这些材料变成一个 GUI 面板的雏形。
+第4章不是孤岛。第2章做过 Stroop 数据结构，第3章整理过文件和 JSON；第4章可以把这些数据直接装进一个可交互的 Tkinter 窗口。
 
 运行：
 
 ```bash
-python code/ch04/08_make_ch03_data_gui_panel.py
+python code/ch04/04_make_ch03_data_gui_panel.py
 ```
 
-它会生成：
+你会看到一个名为"Stroop 数据浏览面板"的窗口，包含三个区域：
 
-```text
-output/ch04_ch03_data_gui_panel.json
-reports/ch04_ch03_data_gui_panel.md
-output/ch04_ch03_data_gui_panel.png
-```
+**指标卡片区**：顶部横向排列五个指标卡片——参与被试、试次总数、正确率、平均反应时和冲突试次数。这些数据来自 ch2 的 Stroop 实验结果，经过 ch3 整理后，在这里以可视化方式呈现。
 
-<figure align="center">
-  <img src="../assets/ch04/ch04_ch03_data_gui_panel.png" alt="ch3 数据 GUI 面板预览" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-16 ch3 数据 GUI 面板预览</strong>：ch2 的 Stroop 数据经过 ch3 文件整理后，在 ch4 被改造成一个可浏览、可导出、可继续扩展的 GUI 面板设计。</figcaption>
-</figure>
+**试次表格区**：中间是一个表格，逐行列出每个试次的 ID、词、墨水色、按键、反应时、是否正确、是否一致。你可以直观地看到每一试次的原始记录，对比一致试次和冲突试次在反应时上的差异。
 
-这张图不是完整软件，而是下一步界面规格。先把界面想清楚，再真正写 Tkinter 代码，学习会稳很多。
+**动作按钮区**：底部预留了四个按钮（加载数据、查看试次、导出卡片、生成报告），当前为占位状态。这些按钮可以作为后续扩展的入口，把"只看数据"推进到"操作数据"。
+
+这个窗口把前几章的工作串成了一条完整的动手链路：ch2 生成的数据结构，ch3 保存为 JSON 文件，ch4 读取并呈现为 GUI 表格。这条链路本身就说明了"学完 Python 基础能做什么"。
+
+提示：如果没有数据被展示出来，可能是什么原因？
 
 ---
 
 ## 第五部分：排错、练习与验收
 
-### 4.15 常见坑：先按线索排查
+### 4.14 常见坑：先按线索排查
 
 <figure align="center">
   <img src="../assets/ch04/ch04_pitfall_map.png" alt="第4章 GUI 常见坑排查图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-17 第4章常见坑排查</strong>：GUI 报错通常可以从窗口生命周期、回调函数、布局、路径和反馈五个方向排查。</figcaption>
+  <figcaption><strong>图4-14 第4章常见坑排查</strong>：GUI 报错通常可以从窗口生命周期、回调函数、布局、路径和反馈五个方向排查。</figcaption>
 </figure>
 
 | 问题 | 典型现象 | 优先检查 |
@@ -587,28 +621,7 @@ output/ch04_ch03_data_gui_panel.png
 
 遇到 GUI 问题时，先不要大改。先把问题缩到最小脚本里：一个窗口、一个标签、一个按钮、一个回调。最小版本能跑，再把功能加回来。
 
-### 4.16 运行证据：GUI 也要能交付
-
-运行证据脚本：
-
-```bash
-python code/ch04/10_make_gui_runtime_evidence.py
-```
-
-<figure align="center">
-  <img src="../assets/ch04/ch04_gui_runtime_evidence.png" alt="第4章 GUI 运行证据图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图4-18 GUI 运行证据</strong>：窗口截图、可用性报告、交互回执、卡片交付物、ch3 数据面板和用户旅程图都存在，才说明本章 GUI 项目有完整证据链。</figcaption>
-</figure>
-
-第1章强调环境要有证据，第4章也一样。GUI 项目不能只说“我看见窗口了”，还要能说清楚：
-
-1. 真实窗口截图在哪里？
-2. 用户输入如何变成文件？
-3. 保存后有什么反馈？
-4. 检查报告在哪里？
-5. 跨章节数据如何接入下一步？
-
-### 4.17 上机路线与提交证据
+### 4.15 上机路线与运行证据
 
 第一次学习本章时，建议按这个顺序运行：
 
@@ -616,41 +629,29 @@ python code/ch04/10_make_gui_runtime_evidence.py
 python code/ch04/01_hello_window.py
 python code/ch04/02_card_form.py
 python code/ch04/03_stroop_gui_preview.py
-python code/ch04/04_gui_usability_check.py
-python code/ch04/05_make_gui_feedback_lab.py
-python code/ch04/06_make_interaction_receipt.py
-python code/ch04/07_make_card_factory_delivery.py
-python code/ch04/08_make_ch03_data_gui_panel.py
-python code/ch04/09_make_gui_journey_storyboard.py
-python code/ch04/10_make_gui_runtime_evidence.py
+python code/ch04/04_make_ch03_data_gui_panel.py
 ```
 
-其中前两个脚本会打开窗口，后面的脚本主要生成报告和图片。提交证据可以按下面这张表整理：
+运行证据可以按下面这张表整理：
 
-| 提交证据 | 要看到什么 |
+| 运行证据 | 要看到什么 |
 | --- | --- |
 | 最小窗口 | `01_hello_window.py` 能弹出窗口 |
 | 卡片表单 | `02_card_form.py` 能保存一张 Markdown 卡片 |
-| 可用性检查 | `reports/ch04_gui_usability_check.md` 存在 |
-| 反馈检查卡 | `reports/ch04_gui_feedback_scorecard.md` 存在 |
-| 交互回执 | `reports/ch04_interaction_receipt.md` 存在 |
-| 卡片交付物 | `cards/working_memory_load_card.md` 存在 |
-| 运行证据 | `reports/ch04_gui_runtime_evidence.md` 存在 |
+| Stroop GUI展示 | `03_stroop_gui_preview.py` 能正常工作 |
+| 数据展示面板 | `04_make_ch03_data_gui_panel.py` 能展示信息 |
 
-### 4.18 练习任务
+### 4.16 练习任务
 
 1. 把 `01_hello_window.py` 的窗口标题改成你的项目名，运行并截图。
 2. 在 `02_card_form.py` 中增加一个“标签”输入框，例如“实验记录”“课程笔记”“论文摘录”。
 3. 修改 `save_card()`，让保存文件名包含日期。
 4. 故意把 `command=save_card` 写成 `command=save_card()`，观察发生了什么，再改回来。
 5. 参考 4.8 节的键盘事件示例，自己写一个窗口，按下不同按键时在标签上显示不同的提示文字。
-6. 运行 `04_gui_usability_check.py`，用清单逐条检查你的卡片表单。
-7. 运行 `05_make_gui_feedback_lab.py`，挑一个按钮，从 Target、Spacing、State、Error、Copy 中选一个方向改进。
-8. 运行 `06_make_interaction_receipt.py`，把 `FIX` 项改写成你的下一步计划。
-9. 运行 `08_make_ch03_data_gui_panel.py`，把按钮文案改得更像真实科研工具，例如“导出被试报告”。
-10. 临时移走一个输出文件，再运行 `10_make_gui_runtime_evidence.py`，观察证据清单如何提示缺失；检查后把文件恢复。
+6. 修改 `03_stroop_gui_preview.py`，使得字体颜色改为红色，文字内容改为`BLUE`。
+7. 修改 `04_make_ch03_data_gui_panel.py`，把文案改得更像真实科研工具。
 
-### 4.19 自测问题
+### 4.17 自测问题
 
 1. `tk.Tk()`、控件、布局、回调和 `mainloop()` 分别负责什么？
 2. 为什么 `command=save_card` 和 `command=save_card()` 结果不同？
@@ -661,7 +662,7 @@ python code/ch04/10_make_gui_runtime_evidence.py
 
 判断自己是否真的学会，可以看你能不能把 `02_card_form.py` 讲给同学听：窗口里有什么，用户怎么操作，点击后哪个函数执行，最后文件保存到哪里。
 
-### 4.20 学习复盘模板
+### 4.18 学习复盘模板
 
 可以在 `reports/ch04_review.md` 中写下：
 
@@ -691,102 +692,7 @@ python code/ch04/10_make_gui_runtime_evidence.py
 
 复盘不是写作文，而是给下一次调试留路标。你现在把窗口、函数、路径和输出写清楚，后面做综合项目时就不用重新猜。
 
-### 4.21 本章配套文件
-
-```text
-python_tutorial_ch04/
-├── README.md
-├── manifest.json
-├── chapters/
-│   └── ch04_tkinter_gui.md
-├── assets/
-│   └── ch04/
-│       ├── ch04_cover.png
-│       ├── ch04_roadmap.png
-│       ├── ch04_story_scene.png
-│       ├── ch04_engelbart_mouse_story.png
-│       ├── ch04_history_xerox_alto.png
-│       ├── ch04_macintosh_gui_story.png
-│       ├── ch04_minimal_demo.png
-│       ├── ch04_tkinter_hello_window_screenshot.png
-│       ├── ch04_core_metaphor.png
-│       ├── ch04_susan_kare_icon_story.png
-│       ├── ch04_project_dashboard.png
-│       ├── ch04_tkinter_card_form_screenshot.png
-│       ├── ch04_psychology_link.png
-│       ├── ch04_tkinter_stroop_screenshot.png
-│       ├── ch04_gui_usability_check.png
-│       ├── ch04_target_feedback_lab.png
-│       ├── ch04_gui_feedback_scorecard.png
-│       ├── ch04_norman_door_affordance.png
-│       ├── ch04_don_norman_story.png
-│       ├── ch04_interaction_receipt.png
-│       ├── ch04_card_factory_delivery.png
-│       ├── ch04_hypercard_story.png
-│       ├── ch04_gui_journey_storyboard.png
-│       ├── ch04_ch03_data_gui_panel.png
-│       ├── ch04_pitfall_map.png
-│       ├── ch04_gui_runtime_evidence.png
-│       └── web/
-│           ├── ch04_card_factory_delivery.png
-│           ├── ch04_ch03_data_gui_panel.png
-│           ├── ch04_gui_feedback_scorecard.png
-│           ├── ch04_gui_journey_storyboard.png
-│           ├── ch04_gui_runtime_evidence.png
-│           ├── ch04_gui_usability_check_output.png
-│           ├── ch04_interaction_receipt.png
-│           ├── ch04_target_feedback_lab.png
-│           ├── don_norman_cropped.jpg
-│           ├── engelbart_mouse_replica.jpg
-│           ├── hypercard.jpg
-│           ├── macintosh_128k_transparency.png
-│           ├── susan_kare_2019.jpg
-│           ├── tkinter_card_form_window.png
-│           ├── tkinter_hello_window.png
-│           ├── tkinter_stroop_window.png
-│           └── xerox_alto_1973.jpg
-├── code/
-│   └── ch04/
-│       ├── 01_hello_window.py
-│       ├── 02_card_form.py
-│       ├── 03_stroop_gui_preview.py
-│       ├── 04_gui_usability_check.py
-│       ├── 05_make_gui_feedback_lab.py
-│       ├── 06_make_interaction_receipt.py
-│       ├── 07_make_card_factory_delivery.py
-│       ├── 08_make_ch03_data_gui_panel.py
-│       ├── 09_make_gui_journey_storyboard.py
-│       ├── 10_make_gui_runtime_evidence.py
-│       └── requirements.txt
-├── cards/
-│   └── working_memory_load_card.md
-├── reports/
-│   ├── ch04_card_factory_delivery.md
-│   ├── ch04_ch03_data_gui_panel.md
-│   ├── ch04_gui_feedback_scorecard.md
-│   ├── ch04_gui_journey_storyboard.md
-│   ├── ch04_gui_runtime_evidence.md
-│   ├── ch04_gui_usability_check.md
-│   └── ch04_interaction_receipt.md
-├── output/
-│   ├── ch04_card_factory_delivery.png
-│   ├── ch04_ch03_data_gui_panel.json
-│   ├── ch04_ch03_data_gui_panel.png
-│   ├── ch04_gui_feedback_scorecard.png
-│   ├── ch04_gui_journey_storyboard.png
-│   ├── ch04_gui_runtime_evidence.png
-│   ├── ch04_gui_usability_check.png
-│   ├── ch04_interaction_receipt.png
-│   └── ch04_target_feedback_lab.png
-├── source_notes/
-│   ├── source_manifest_ch04.md
-│   └── quality_audit_ch04.md
-├── scripts/
-│   ├── check_links.py
-│   └── generate_ch04_visuals.py
-```
-
-### 4.22 本章总结
+### 4.19 本章总结
 
 Tkinter 入门的关键不是把所有参数背下来，而是理解 GUI 程序的基本闭环：
 
