@@ -183,7 +183,6 @@ Ebbinghaus 的遗忘曲线告诉我们一个略扎心的事实：人的记忆会
 | 3 | Word 文档 | `reports/final_report.docx` 作为正式文字报告 |
 | 4 | Excel 表格 | `reports/final_report.xlsx` 作为可继续统计的表格 |
 | 5 | PPT 文件 | `reports/final_slides.pptx` 作为展示材料 |
-| 6 | 交付检查 | PowerShell 列出 `reports/` 中的真实文件 |
 
 不要把这些输出看成“文件名清单”。它们对应不同使用场景：自己快速复盘看 Markdown，正式提交看 Word，继续处理看 Excel，展示分享看 PPT。
 
