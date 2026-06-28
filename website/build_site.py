@@ -21,9 +21,9 @@ CHAPTER_OUT = OUT / "chapters"
 FILES_OUT = OUT / "files"
 DOWNLOADS_OUT = OUT / "downloads"
 
-PUBLIC_CHAPTER_MAX = 5
-PUBLIC_RELEASE_NOTE = "当前正文开放到第 5 章；ch06-ch10 页面显示“敬请期待”，整章材料包已全部开放下载。"
-ASSET_VERSION = "20260624-sidebar-unified"
+PUBLIC_CHAPTER_MAX = 10
+PUBLIC_RELEASE_NOTE = "当前 ch00-ch10 全部章节正文已开放，整章材料包也已同步开放下载。"
+ASSET_VERSION = "20260628-all-chapters-open"
 MATERIAL_FOLDERS = ["chapters", "code", "reports", "output", "source_notes", "scripts"]
 MATERIAL_FILES = ["README.md", "manifest.json"]
 
@@ -351,7 +351,7 @@ def course_sidebar(chapters: list[Chapter], active: int | None, depth: str = "",
       <div class="course-sidebar-summary">
         <span>当前开放</span>
         <strong>{release_range_label()}</strong>
-        <small>ch06-ch10 正文敬请期待，整章材料包可以先下载。</small>
+        <small>ch00-ch10 全部正文已开放，整章材料包同步提供下载。</small>
       </div>
       <a class="course-sidebar-materials" href="{depth}files/">材料中心与整章下载</a>
       {chapter_nav(chapters, active, depth, same_dir)}
@@ -445,7 +445,7 @@ def build_home(chapters: list[Chapter]) -> None:
           <span>全章节材料可下载</span>
         </div>
         <h1>Python 教程</h1>
-        <p>从学习路线、运行环境、数据类型，到文件、界面、对象与后续专题。页面先保证可读、可找、可下载；未开放章节会保留清晰占位，不让目录突然断层。</p>
+        <p>从学习路线、运行环境、数据类型，到文件、界面、对象、数据分析、游戏、爬虫、图像处理与办公自动化。全部章节现在都可以直接阅读，并保留整章材料包下载入口。</p>
         <div class="hero-actions">
           <a class="button primary large" href="chapters/{html.escape(first_page)}">开始学习</a>
           <a class="button large" href="files/">进入材料中心</a>
@@ -588,13 +588,13 @@ def build_files_index(chapters: list[Chapter]) -> None:
       <div>
         <p class="article-kicker">材料中心</p>
         <h1>按章节打包下载</h1>
-        <p>正文目前开放到 {release_range_label()}，但 ch00-ch10 的整章材料包都已经放在这里。需要备课、离线学习或复查代码时，可以直接按章下载。</p>
+        <p>ch00-ch10 正文与整章材料包都已经开放。需要备课、离线学习或复查代码时，可以直接按章下载。</p>
       </div>
       <div class="stat-board compact">
         <div class="stat"><strong>{len(chapters)}</strong><span>可下载章节</span></div>
         <div class="stat"><strong>{sum(material_file_count(c) for c in chapters)}</strong><span>材料文件</span></div>
         <div class="stat"><strong>{sum(c.code_count for c in chapters)}</strong><span>代码脚本</span></div>
-        <div class="stat"><strong>{len(upcoming_chapters(chapters))}</strong><span>待开放正文</span></div>
+        <div class="stat"><strong>{len(open_chapters(chapters))}</strong><span>正文开放</span></div>
       </div>
     </section>
     <section class="workspace-bar">
