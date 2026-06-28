@@ -28,7 +28,7 @@
 - PowerShell 运行图：本机运行第10章完整链路后，根据当前 `reports/` 真实文件列表整理生成，用于展示 Word、Excel、PPT、预览图、交付回执和 zip 交付包
 - 报告预览图：本机运行 `04_generate_office_pack.py` 生成 `reports/final_report_preview.png`
 - 交付索引预览图：本机运行 `05_generate_delivery_index.py` 生成 `reports/delivery_index_preview.png`
-- Excel 工作簿预览图：本机运行 `06_make_excel_preview.py` 生成 `reports/excel_workbook_preview.png`
+- Excel 工作簿预览图：本机运行 `05_make_excel_preview.py` 生成 `reports/excel_workbook_preview.png`
 - 交付回执预览图：本机运行 `07_make_delivery_package.py` 生成 `reports/delivery_receipt_preview.png`
 - 交付包目录清单预览图：本机运行 `10_make_delivery_package_manifest.py` 打开 `reports/ch10_delivery_package.zip` 后生成 `reports/delivery_package_manifest.png`
 - 全书课程作品集预览图：本机运行 `08_make_course_portfolio.py` 生成 `reports/course_portfolio_preview.png`

@@ -23,7 +23,7 @@
 
 - 从 15 张正文图扩展到 18 张正文图，新增 VisiCalc 电子表格截图、Excel 工作簿预览图、交付回执预览图。
 - 新增 `05_generate_delivery_index.py`，自动扫描 `reports/` 目录并生成 `delivery_index.md` 与 `delivery_index_preview.png`。
-- 新增 `06_make_excel_preview.py` 和 `07_make_delivery_package.py`，把办公自动化主线从“生成文件”扩展为“生成、预览、检查、打包、交付、复盘”的完整闭环。
+- 新增 `05_make_excel_preview.py` 和 `07_make_delivery_package.py`，把办公自动化主线从“生成文件”扩展为“生成、预览、检查、打包、交付、复盘”的完整闭环。
 - 继续扩展到 19 张正文图，新增 `08_make_course_portfolio.py`，把 ch0-ch10 的正文图片、Python 脚本和素材汇总成 `course_portfolio.csv`、`course_portfolio.md` 和作品集预览图。
 - 上一轮扩展到 20 张正文图，新增 `09_make_final_showcase_board.py`，把报告预览、Excel 预览、课程作品集、交付索引、Word 报告和 PPT 展示整理成结课展示墙。
 - 修复 `07_make_delivery_package.py` 交付回执预览图的底部布局，让 12 个交付文件条目和 package 信息完整分离显示，避免正式配图中出现压行或越界。
