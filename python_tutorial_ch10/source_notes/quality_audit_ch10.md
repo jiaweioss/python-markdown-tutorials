@@ -49,7 +49,7 @@ python code/ch10/02_generate_markdown_report.py
 python code/ch10/03_optional_docx_hint.py
 python code/ch10/04_generate_office_pack.py
 python code/ch10/05_generate_delivery_index.py
-python code/ch10/06_make_excel_preview.py
+python code/ch10/05_make_excel_preview.py
 python code/ch10/08_make_course_portfolio.py
 python code/ch10/09_make_final_showcase_board.py
 python code/ch10/07_make_delivery_package.py

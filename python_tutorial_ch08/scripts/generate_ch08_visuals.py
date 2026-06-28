@@ -192,14 +192,7 @@ def main():
     photo_plate("ch08_internet_archive_story.png", "internet_archive_headquarters.jpg")
     photo_plate("ch08_xkcd_wisdom_story.png", "xkcd_wisdom_of_the_ancients.png")
     photo_plate("ch08_powershell_scraper_run.png", "powershell_ch08_scraper_run.png")
-    photo_plate("ch08_crawl_report_preview.png", "ch08_crawl_report_preview.png")
-    photo_plate("ch08_source_cards_preview.png", "ch08_source_cards_preview.png")
-    photo_plate("ch08_crawl_etiquette_card.png", "ch08_crawl_etiquette_card.png")
-    photo_plate("ch08_source_quality_scorecard.png", "ch08_source_quality_scorecard.png")
-    photo_plate("ch08_public_source_bundle.png", "ch08_public_source_bundle.png")
-    photo_plate("ch08_source_provenance_archive.png", "ch08_source_provenance_archive.png")
-    photo_plate("ch08_scraper_runtime_evidence.png", "ch08_scraper_runtime_evidence.png")
-    print(f"Generated {len(VISUALS) + 16} visuals for {ASSET_DIR.name}.")
+    print(f"Generated {len(VISUALS) + 10} visuals for {ASSET_DIR.name}.")
 
 
 if __name__ == "__main__":

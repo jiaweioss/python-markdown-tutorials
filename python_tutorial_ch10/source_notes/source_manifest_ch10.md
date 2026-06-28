@@ -25,20 +25,20 @@
 - 办公自动化历史脉络图：由本章既有 Hollerith 制表机、打字机、Margaret Hamilton、Bletchley Park、Xerox Alto、VisiCalc 和 Ebbinghaus 本地素材合成，不新增互联网来源
 - PyCharm 解释器配置截图：JetBrains 官方 PyCharm 帮助文档  
   <https://www.jetbrains.com/help/pycharm/configuring-python-interpreter.html>
-- PowerShell 运行图：本机运行第10章完整链路后，根据当前 `reports/` 真实文件列表整理生成，用于展示 Word、Excel、PPT、预览图、成果记录和 zip 成果包
+- PowerShell 运行图：本机运行第10章完整链路后，根据当前 `reports/` 真实文件列表整理生成，用于展示 Word、Excel、PPT、预览图、交付回执和 zip 交付包
 - 报告预览图：本机运行 `04_generate_office_pack.py` 生成 `reports/final_report_preview.png`
-- 成果索引预览图：本机运行 `05_generate_delivery_index.py` 生成 `reports/delivery_index_preview.png`
-- Excel 工作簿预览图：本机运行 `06_make_excel_preview.py` 生成 `reports/excel_workbook_preview.png`
-- 成果记录预览图：本机运行 `07_make_delivery_package.py` 生成 `reports/delivery_receipt_preview.png`
-- 成果包目录清单预览图：本机运行 `10_make_delivery_package_manifest.py` 打开 `reports/ch10_delivery_package.zip` 后生成 `reports/delivery_package_manifest.png`
+- 交付索引预览图：本机运行 `05_generate_delivery_index.py` 生成 `reports/delivery_index_preview.png`
+- Excel 工作簿预览图：本机运行 `05_make_excel_preview.py` 生成 `reports/excel_workbook_preview.png`
+- 交付回执预览图：本机运行 `07_make_delivery_package.py` 生成 `reports/delivery_receipt_preview.png`
+- 交付包目录清单预览图：本机运行 `10_make_delivery_package_manifest.py` 打开 `reports/ch10_delivery_package.zip` 后生成 `reports/delivery_package_manifest.png`
 - 全书课程作品集预览图：本机运行 `08_make_course_portfolio.py` 生成 `reports/course_portfolio_preview.png`
-- 结课展示墙预览图：本机运行 `09_make_final_showcase_board.py` 生成 `reports/final_showcase_board.png`，用于把本章最终成果文件摆成一张可分享总览
-- 结课成果档案图：本机运行 `09_make_final_showcase_board.py` 生成 `reports/capstone_handoff_dossier.md` 和 `reports/capstone_handoff_dossier.png`，用于把 ch0-ch10 的学习路线和最终成果包收束成一张可讲述的成果图
-- 最终运行记录图：本机运行 `11_make_final_runtime_evidence.py` 生成 `reports/final_runtime_evidence.md` 和 `reports/final_runtime_evidence.png`，用于检查 CSV、Word、Excel、PPT、zip、作品集、展示墙和结课成果档案是否齐全
+- 结课展示墙预览图：本机运行 `09_make_final_showcase_board.py` 生成 `reports/final_showcase_board.png`，用于把本章最终交付物摆成一张可分享总览
+- 结课交付档案图：本机运行 `09_make_final_showcase_board.py` 生成 `reports/capstone_handoff_dossier.md` 和 `reports/capstone_handoff_dossier.png`，用于把 ch0-ch10 的学习路线和最终交付包收束成一张可讲述的成果图
+- 最终运行证据图：本机运行 `11_make_final_runtime_evidence.py` 生成 `reports/final_runtime_evidence.md` 和 `reports/final_runtime_evidence.png`，用于检查 CSV、Word、Excel、PPT、zip、作品集、展示墙和结课交付档案是否齐全
 
 ## 生成素材
 
-本章包含 24 张正文正式图片、7 张 Wikimedia 原图、1 张由既有素材合成的办公史脉络图、1 张 JetBrains 官方截图、1 张本机 PowerShell 运行图，以及 9 张脚本生成的预览/记录/作品集/展示墙/结课成果档案/成果包目录/最终运行记录图：
+本章包含 24 张正文正式图片、7 张 Wikimedia 原图、1 张由既有素材合成的办公史脉络图、1 张 JetBrains 官方截图、1 张本机 PowerShell 运行图，以及 9 张脚本生成的预览/回执/作品集/展示墙/结课交付档案/交付包目录/最终运行证据图：
 
 - `ch10_cover.png`
 - `ch10_hollerith_tabulator_story.png`
@@ -92,4 +92,4 @@
 - 每张图片下方都有 `<figcaption>` 图注。
 - 本章减少抽象流程图，增加真实历史照片、真实 PyCharm 截图、真实 PowerShell 截图、心理学素材和脚本生成成果图。
 - 新增办公史脉络图只使用图片、编号和连接线，不在图片内部放长段中文说明；完整解释放在正文和图注中。
-- 模板故事、成果整理场景、项目结构和复盘迁移使用学生视角，直接说明要生成、检查、打包和复核的动作。
+- 模板故事、交付场景、项目结构和复盘迁移使用学生视角，直接说明要生成、检查、打包和复核的动作。
