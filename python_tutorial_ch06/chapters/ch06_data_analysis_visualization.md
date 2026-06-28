@@ -185,7 +185,7 @@ William Playfair 早期把价格、工资和时间画成曲线时，做的也是
   <figcaption><strong>图6-S3 Playfair 的时间序列图</strong>：折线图真正表达的不是“把点连起来”，而是让变化从表格里走出来。</figcaption>
 </figure>
 
-### 6.7 仪表盘：让一个比较变清楚
+### 6.7 仪表盘
 
 运行：
 
