@@ -23,7 +23,7 @@ DOWNLOADS_OUT = OUT / "downloads"
 
 PUBLIC_CHAPTER_MAX = 10
 PUBLIC_RELEASE_NOTE = "当前 ch00-ch10 全部章节正文已开放，整章材料包也已同步开放下载。"
-ASSET_VERSION = "20260628-all-chapters-open"
+ASSET_VERSION = "20260629-late-visual-refresh"
 MATERIAL_FOLDERS = ["chapters", "code", "reports", "output", "source_notes", "scripts"]
 MATERIAL_FILES = ["README.md", "manifest.json"]
 
@@ -99,6 +99,18 @@ def find_cover(md: str, number: int) -> str:
     if inline:
         return inline.group(1).replace("../", "")
     return f"assets/ch{number:02d}/ch{number:02d}_cover.png"
+
+
+def version_asset_src(src: str) -> str:
+    if src.startswith(("http://", "https://", "data:")):
+        return src
+    if "?v=" in src or "&v=" in src:
+        return src
+    normalized = src[3:] if src.startswith("../") else src
+    if normalized.startswith("assets/"):
+        joiner = "&" if "?" in src else "?"
+        return f"{src}{joiner}v={ASSET_VERSION}"
+    return src
 
 
 def discover_chapters() -> list[Chapter]:
@@ -191,6 +203,16 @@ def render_markdown(md: str, prefix: str) -> tuple[str, list[dict[str, str | int
     )
     body = renderer.convert(processed)
     body = body.replace("zoom:50%;", "").replace("zoom: 50%;", "")
+    body = re.sub(
+        r'(<img\b[^>]*\bsrc=)(["\'])([^"\']+)\2',
+        lambda match: (
+            f"{match.group(1)}{match.group(2)}"
+            f"{html.escape(version_asset_src(html.unescape(match.group(3))))}"
+            f"{match.group(2)}"
+        ),
+        body,
+        flags=re.I,
+    )
     return body, headings
 
 
@@ -389,7 +411,7 @@ def layout_page(title: str, body: str, depth: str = "") -> str:
 def hero_gallery(chapters: list[Chapter]) -> str:
     covers = chapters[:3]
     return "".join(
-        f'<img src="{html.escape(chapter.cover)}" alt="{html.escape(short_title(chapter.title))} 封面" loading="lazy" />'
+        f'<img src="{html.escape(version_asset_src(chapter.cover))}" alt="{html.escape(short_title(chapter.title))} 封面" loading="lazy" />'
         for chapter in covers
     )
 
@@ -405,7 +427,7 @@ def chapter_card(chapter: Chapter) -> str:
     return f"""
 <article class="chapter-card {status_class(chapter)}" data-search-card>
   <a class="chapter-cover" href="chapters/{html.escape(chapter.page_name)}">
-    <img src="{html.escape(chapter.cover)}" alt="{html.escape(chapter.title)} 封面" loading="lazy" />
+    <img src="{html.escape(version_asset_src(chapter.cover))}" alt="{html.escape(chapter.title)} 封面" loading="lazy" />
   </a>
   <div class="chapter-card-body">
     <div class="meta-row">
