@@ -53,6 +53,19 @@
 
 先不要急着打开漂亮的 IDE。很多环境问题并不是“Python 没装好”，而是你进错了目录、选错了解释器，或者 pip 把包送到了另一个 Python 里。PowerShell 的作用很朴素：先证明这台电脑现在能找到 Python、能找到 pip、能运行本章脚本。
 
+先补一个最容易被教程跳过的动作：**控制台到底怎么打开**。
+
+在 Windows 上，本章默认使用 PowerShell，也可以使用 Windows Terminal 里的 PowerShell 标签页。你可以任选下面一种方式打开：
+
+1. 按键盘上的 `Win` 键，输入 `PowerShell`，看到“Windows PowerShell”后按回车。
+2. 如果你已经在资源管理器里打开了课程文件夹，可以在文件夹空白处右键，选择“在终端中打开”或“Open in Terminal”。这样打开时，当前目录通常已经是这个文件夹。
+3. 也可以在资源管理器顶部地址栏直接输入 `powershell`，然后按回车。这个方法也会把 PowerShell 打开在当前文件夹里。
+4. 如果你正在用 PyCharm，底部工具栏里有 `Terminal`。它是 PyCharm 内置终端，也能输入本章的大部分命令；但第一次排查环境时，建议先用系统 PowerShell，把问题范围缩小。
+
+打开后，如果你看到类似 `PS C:\Users\你的用户名>` 的提示符，说明控制台已经准备好了。这个提示符只是告诉你“当前在哪个文件夹”，**不要把 `PS C:\...>` 一起复制进命令里**。真正要输入的，是教程代码块里的命令本身，例如 `Get-Location`、`python --version`、`python code\ch01\01_hello_python.py`。
+
+如果你的电脑打开的是“命令提示符 cmd”，也不用紧张。`python --version` 这类命令通常也能运行；只是虚拟环境激活命令会不一样。本章为了减少分岔，统一以 PowerShell 为准。
+
 这一节按 4 个动作走：
 
 | 步骤 | 你要做什么 | 通过标准 |
