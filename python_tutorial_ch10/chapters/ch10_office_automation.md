@@ -2,27 +2,6 @@
 
 [TOC]
 
-<style>
-figure {
-  margin: 1.2em auto 1.8em;
-  text-align: center;
-}
-figure img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-}
-figcaption {
-  margin-top: 0.45em;
-  color: #5f6673;
-  font-size: 0.92em;
-  line-height: 1.55;
-}
-figcaption strong {
-  color: #2d3748;
-}
-</style>
-
 <figure align="center">
   <img src="../assets/ch10/ch10_cover.png" alt="第10章封面" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图10-1 本章封面</strong>：办公自动化不是让电脑替你思考，而是把重复、容易出错、需要固定格式交付的工作交给程序。</figcaption>

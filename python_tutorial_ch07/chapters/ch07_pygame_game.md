@@ -2,28 +2,6 @@
 
 [TOC]
 
-<style>
-figure {
-  margin: 1.2em auto 1.8em;
-  text-align: center;
-}
-figure img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-}
-figcaption {
-  margin-top: 0.45em;
-  color: #5f6673;
-  font-size: 0.92em;
-  line-height: 1.55;
-}
-figcaption strong {
-  color: #2d3748;
-}
-</style>
-
-
 <figure align="center">
   <img src="../assets/ch07/ch07_cover.png" alt="第7章封面" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图7-1 本章封面</strong>：在心理学和教学领域，游戏可以成为实验任务、反馈系统和练习场。</figcaption>

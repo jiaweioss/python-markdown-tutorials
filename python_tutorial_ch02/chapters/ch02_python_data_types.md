@@ -2,27 +2,6 @@
 
 [TOC]
 
-<style>
-figure {
-  margin: 1.2em auto 1.8em;
-  text-align: center;
-}
-figure img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-}
-figcaption {
-  margin-top: 0.45em;
-  color: #5f6673;
-  font-size: 0.92em;
-  line-height: 1.55;
-}
-figcaption strong {
-  color: #2d3748;
-}
-</style>
-
 如果说第1章是在搭工作台，那么第2章就是开始认识材料。
 
 木匠做桌子，要知道木板、螺丝、胶水、砂纸分别适合做什么。Python 也一样：程序里流动的东西不是一团模糊的“数据”，而是有性格、有用途、有边界的数据类型。

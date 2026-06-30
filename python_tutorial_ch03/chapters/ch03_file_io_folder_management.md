@@ -2,27 +2,6 @@
 
 [TOC]
 
-<style>
-figure {
-  margin: 1.2em auto 1.8em;
-  text-align: center;
-}
-figure img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-}
-figcaption {
-  margin-top: 0.45em;
-  color: #5f6673;
-  font-size: 0.92em;
-  line-height: 1.55;
-}
-figcaption strong {
-  color: #2d3748;
-}
-</style>
-
 <figure align="center">
   <img src="../assets/ch03/ch03_cover.png" alt="第3章封面" style="zoom:50%; display:block; margin:0 auto;" />
   <figcaption><strong>图3-1 第3章封面</strong>：本章让 Python 走进真实文件夹，开始处理电脑里的资料。</figcaption>
