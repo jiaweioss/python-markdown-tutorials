@@ -389,13 +389,15 @@ print(total)
 
 Python 的生态也丰富。需要数据分析，可以找 pandas；需要图像处理，可以找 Pillow；需要网页请求，可以找 requests。所以 `pip` 很关键，你以后会经常看到：
 
-```bash
+```powershell
 python -m pip install requests
 python -m pip install pandas
 python -m pip install pygame
 ```
 
 这就是为什么本章反复核对 `python -m pip`：包不是“装在电脑里”就完事，而是要装进正在运行的那个 Python 环境里。
+
+还要注意一个非常容易踩的名字坑：安装的是 `requests`，导入时也要写 `import requests`，最后有一个 `s`。`import request` 少了一个 `s`，Python 会把它当成另一个名字去找，于是仍然可能报 `ModuleNotFoundError`。
 
 ---
 
@@ -612,9 +614,23 @@ python_card_factory/
 
 pip 是 Python 常用的包安装工具。比如你需要 requests：
 
-```bash
+```powershell
 python -m pip install requests
 ```
+
+安装完成后，正确的导入写法是：
+
+```python
+import requests
+```
+
+不要写成：
+
+```python
+import request
+```
+
+`requests` 是第三方包名，也是导入名；`request` 少了一个 `s`，不是这个包。Python 不会自动猜“你是不是少打了一个字母”，它会很认真地去找一个叫 `request` 的模块，然后告诉你找不到。
 
 为什么推荐写成 `python -m pip install`，而不是直接 `pip install`？因为有些电脑里可能有多个 Python。直接写 `pip` 有时会把包装到另一个 Python 环境里。你以为工具进了你的卡片工厂，实际上它被快递小哥送到隔壁楼了。你运行代码时就会出现：
 
@@ -623,6 +639,15 @@ ModuleNotFoundError: No module named 'requests'
 ```
 
 写成 `python -m pip` 可以更明确地告诉系统：请用当前这个 Python 对应的 pip 来安装。
+
+如果你在 PowerShell 里安装成功，但 PyCharm 或 VS Code 里 `import requests` 仍然报错，优先怀疑“编辑器用的不是同一个 Python”。可以分别运行：
+
+```powershell
+python -c "import sys; print(sys.executable)"
+python -m pip show requests
+```
+
+再到 PyCharm 的 Python Interpreter 里核对解释器路径。路径对不上，就不是代码错了，而是包被装到了另一个 Python 环境里。
 
 #### 1.8.2 环境为什么会变成迷宫？
 
@@ -674,17 +699,23 @@ python path/to/your_script.py
 
 ### 1.10 第一个 Python 程序：Hello, Python!
 
-在 `code/ch01/` 文件夹中新建一个文件：
+本教程的材料包里已经提供了这个文件：
 
 ```text
-01_hello_python.py
+code/ch01/01_hello_python.py
 ```
 
-写入：
+所以第一遍不要再新建同名文件，也不要把它当作“作业题”重新抄一遍。更稳的做法是：先在编辑器里打开它，看清楚里面只有两行：
 
 ```python
 print("Hello, Python!")
 print("欢迎来到 Python 新手村！")
+```
+
+然后直接运行：
+
+```powershell
+python code\ch01\01_hello_python.py
 ```
 
 运行以后，应该看到：
@@ -701,6 +732,8 @@ Hello, Python!
 3. 你的编辑器能保存代码。
 4. 你的终端或 IDE 能显示输出。
 5. 你已经完成从“安装软件”到“运行程序”的跨越。
+
+如果你想练习“自己创建文件”，可以另外新建一个不同名字的文件，例如 `my_first_print.py`，把两行 `print()` 抄进去再运行。这样既能练手，也不会覆盖教程已经准备好的示例脚本。
 
 第一段代码不要追求酷。第一段代码要追求确定。就像第一次下厨，别上来挑战分子料理，先把泡面煮熟，别把调料包连袋煮进去，就很成功。
 
@@ -1080,18 +1113,19 @@ print(stuent_name)
 示例：
 
 ```python
-import pandas
+import requests
 ```
 
-如果没安装 pandas，就会报错。
+如果没安装 requests，或者装到了另一个 Python 环境里，就会报错。
 
 解决：
 
-```bash
-python -m pip install pandas
+```powershell
+python -m pip install requests
+python -c "import requests; print(requests.__version__)"
 ```
 
-同时检查是否用的是同一个 Python 环境。
+还有一个特别常见的拼写问题：安装命令是 `python -m pip install requests`，导入语句也应该是 `import requests`。如果写成 `import request`，少了最后的 `s`，照样会报错。确认拼写没错以后，再检查是否用的是同一个 Python 环境。
 
 #### 1.20.4 IndentationError：缩进错误
 
