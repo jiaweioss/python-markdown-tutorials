@@ -632,6 +632,17 @@ import request
 
 `requests` 是第三方包名，也是导入名；`request` 少了一个 `s`，不是这个包。Python 不会自动猜“你是不是少打了一个字母”，它会很认真地去找一个叫 `request` 的模块，然后告诉你找不到。
 
+> **常见错误提示：终端装好了，PyCharm 还是找不到。**
+> 如果报错第一行显示 PyCharm 正在用 `...\python_tutorial_ch01\.venv\Scripts\python.exe`，说明它跑的是项目自己的虚拟环境。此时不要只在普通 PowerShell 里安装，要把包装进这个 `.venv`：
+>
+> ```powershell
+> cd C:\Users\你的用户名\Downloads\python_tutorial_ch01
+> .\.venv\Scripts\python.exe -m pip install requests
+> .\.venv\Scripts\python.exe -c "import requests; print(requests.__version__)"
+> ```
+>
+> 看到版本号以后，再回到 PyCharm 运行脚本。记住：`Successfully installed` 只说明“某个 Python 装好了”，不一定说明“PyCharm 正在用的那个 Python 装好了”。
+
 为什么推荐写成 `python -m pip install`，而不是直接 `pip install`？因为有些电脑里可能有多个 Python。直接写 `pip` 有时会把包装到另一个 Python 环境里。你以为工具进了你的卡片工厂，实际上它被快递小哥送到隔壁楼了。你运行代码时就会出现：
 
 ```text
