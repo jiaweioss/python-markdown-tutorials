@@ -64,7 +64,7 @@
 
 <figure align="center">
   <img src="../assets/ch03/ch03_information_trail_vannevar_bush.png" alt="Vannevar Bush肖像" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-4 Vannevar Bush肖像</strong>：文件管理不只是“放整齐”，更重要的是让资料之间能形成线索，未来可以沿着线索找回来。</figcaption>
+  <figcaption><strong>图3-4 Vannevar Bush</strong>：文件管理不只是“放整齐”，更重要的是让资料之间能形成线索，未来可以沿着线索找回来。</figcaption>
 </figure>
 
 1945 年，工程师 Vannevar Bush 写下《As We May Think》，想象一种叫 Memex 的机器：人可以把书籍、照片、笔记和索引连接起来，像沿着一串脚印一样重新找到想法。后来超文本、信息检索和知识管理的发展，都能看到这条思想线索的影子。
@@ -761,10 +761,6 @@ workspace_ch03/output/ch03_archive_receipt.md
 | `shutil` | 高级文件操作 | 搬家公司 |
 | 哈希摘要 | 文件内容的简短指纹 | 档案编号 |
 
-<figure align="center">
-  <img src="../assets/ch03/ch03_review_checkpoint.png" alt="文件读写复盘检查点" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图3-24 文件读写复盘检查点</strong>：学完这一章，脑子里最好留下的不是一串 API 名字，而是一条能复现的路线：从文件夹出发，找到资料，读入程序，生成输出，再用清单和回执把结果检查一遍。</figcaption>
-</figure>
 
 如果把这一章想成一次档案馆夜间巡检，表格里的概念就是手电筒、钥匙、登记册和搬运车。每个工具单独看都不复杂，真正重要的是顺序：先确认位置，再读写文件，再整理输出，最后留下证据。这个顺序一旦稳定，后面做 GUI、爬虫、数据分析时，程序就不会把材料丢在路上。
 
