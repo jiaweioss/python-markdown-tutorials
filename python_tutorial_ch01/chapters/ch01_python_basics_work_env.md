@@ -934,35 +934,43 @@ python -m pip install pandas
 
 ---
 
-### 1.17 `import this`：用一行代码打开 Python 之禅
+### 1.17 `import this`：Python 藏的一个小彩蛋
 
-新建脚本：
+Python 里有一个很可爱的彩蛋：只要运行一行代码，就会打印出一首短短的“Python 之禅”。它不是考试内容，也不是必须背的规则，更像 Python 社区留给新手的一张小纸条：代码最好写得清楚、直接、让人能读懂。
 
-```text
-03_import_this.py
-```
-
-写入：
+你可以直接在 Python 交互窗口里输入：
 
 ```python
 import this
 ```
 
-运行以后，你会看到 Python 的设计哲学。
+也可以把它保存成一个脚本。材料包里已经放好了：
 
-这段输出不要求背诵，但建议你记住几条：
+```text
+code/ch01/03_import_this.py
+```
+
+运行：
+
+```powershell
+python code\ch01\03_import_this.py
+```
+
+它会输出一段英文短句。你不用逐句翻译，更不用背。先抓住这个彩蛋想表达的几个味道就够了：
+
+- 代码可以漂亮一点，但漂亮不是花哨，而是清楚。
+- 直接一点通常比绕来绕去更好。
+- 简单不是幼稚，简单是减少自己和别人以后读代码时的负担。
+
+其中有几句很有名：
 
 - Beautiful is better than ugly.
-- Explicit is better than implicit.
 - Simple is better than complex.
 - Readability counts.
-- There should be one obvious way to do it.
 
-对初学者来说，最重要的是：
+对第一章来说，最重要的是最后这句：**代码要让人读得懂。**
 
-**可读性很重要。**
-
-不要把代码写成只有你和上帝知道的样子，而且两周后上帝可能也不记得了。
+比如变量名不要写成 `x1`、`aaa`、`temp2_final_final` 这种谜语。现在你可能知道它是什么意思，过两周再打开，自己也会愣住。`import this` 好玩的地方就在这里：它不是教你一个新语法，而是在提醒你，写程序也有一点审美。
 
 <figure align="center">
   <img src="../assets/ch01/ch01_core_metaphor_workshop.png" alt="BBC Broadcasting House 照片" style="zoom:50%; display:block; margin:0 auto;" />
