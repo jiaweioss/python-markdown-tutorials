@@ -11,7 +11,6 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 SOURCE = Path("assets/ch09/web/fronalpstock_sample.jpg")
 OUTPUT = Path("output")
 REPORTS = Path("reports")
-WEB_COPY = Path("assets/ch09/web/ch09_processing_storyboard.png")
 STORYBOARD = OUTPUT / "ch09_processing_storyboard.png"
 REPORT = REPORTS / "ch09_processing_storyboard.md"
 
@@ -126,19 +125,12 @@ def write_report(source: Image.Image) -> None:
     REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def copy_asset() -> None:
-    WEB_COPY.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(STORYBOARD, WEB_COPY)
-
-
 def main() -> None:
     source = load_source()
     write_storyboard(source)
     write_report(source)
-    copy_asset()
     print(f"已生成 {STORYBOARD}")
     print(f"已生成 {REPORT}")
-    print(f"已复制 {WEB_COPY}")
 
 
 if __name__ == "__main__":

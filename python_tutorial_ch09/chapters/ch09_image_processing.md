@@ -4,12 +4,12 @@
 
 <figure align="center">
   <img src="../assets/ch09/ch09_cover.png" alt="第9章封面" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图9-1 本章封面</strong>：图片不是一整块魔法布，它是像素组成的矩阵。理解像素，图像处理就从玄学变成手工活。</figcaption>
+  <figcaption><strong>图9-1 本章封面</strong>：图片不是一整块魔法布，它是像素组成的矩阵。理解像素，图像处理就从玄学变成手艺活。</figcaption>
 </figure>
 
-> 本章一句话：图片不是一整块魔法布，它是像素组成的矩阵。理解像素，图像处理就从玄学变成手工活。
+> 本章一句话：图片不是一整块魔法布，它是像素组成的矩阵。理解像素，图像处理就从玄学变成手艺活。
 
-第9章继续推进“科研卡片工厂”的视觉能力。前面几章让 Python 能整理文字、表格和报告；这一章开始处理图片。对教程、心理学实验和科研展示来说，图片不是装饰边角料，而是信息本身：刺激材料要统一尺寸，报告配图要清楚，结果图要能复查。
+前面几章让 Python 能整理文字、表格和报告；这一章开始处理图片。对教程、心理学实验和科研展示来说，图片不是装饰边角料，而是信息本身。
 
 这一章的目标也很朴素：让你知道一张图片在程序眼里是什么，怎么安全地改它，怎么把处理结果留下来。
 
@@ -21,21 +21,20 @@
 
 学完本章，你应该能够：
 
-1. 用“像素、坐标、颜色通道、处理动作、证据链”解释图像处理的最小工作链路。
-2. 运行本章配套脚本，生成真实照片处理结果、视觉感知实验、图像质量总览和处理故事板。
-3. 说清楚 Niépce、Russell Kirsch、Edwin Land、Helmholtz、Adelson 和 NASA 科学图像为什么适合放在图像处理章。
-4. 识别覆盖原图、比例失真、过度增强、丢失上下文这几类新手错误。
-5. 能运行本章配套脚本，让图像处理路径成为一条可复查的工序。
+1. 用“像素、坐标、颜色通道、处理动作”解释图像处理的最小工作链路。
+2. 运行本章配套脚本，理解脚本内容。
+3. 识别覆盖原图、比例失真、过度增强、丢失上下文这几类新手错误。
+4. 能运行本章配套脚本，让图像处理路径成为整体工序。
 
 ### 本章分区导航
 
-| 分区 | 对应小节 | 你要抓住的主线 | 产出证据 |
-| --- | --- | --- | --- |
-| 第一部分：图像的记录、数字化和视觉判断 | 9.1-9.2 | 图像处理不是凭空出现，它接着摄影、扫描、颜色研究和科学图像表达往前走 | 摄影史图、数字扫描图、颜色故事、人文脉络图、路线表 |
-| 第二部分：像素、素材和最小示例 | 9.3-9.4 | 把图片看成坐标和颜色通道，再用最小脚本跑通处理动作 | 核心比喻、真实照片素材、处理前后图、运行证据 |
-| 第三部分：感知、科研图片和概念表 | 9.5-9.6 | 程序改的是像素，人理解的是场景；处理要服务于理解和证据 | 心理学连接、Helmholtz、棋盘阴影错觉、概念表 |
-| 第四部分：脚本、排错和项目交付 | 9.7-9.8 | 每个脚本都要留下输入、处理、输出和可复盘结果 | 脚本清单、坑地图、故事板、视觉证据档案 |
-| 第五部分：练习、复盘与后续连接 | 9.10-9.14 | 把图像处理迁移到学习卡片、实验材料、科研报告和后续自动化 | 练习记录、自测答案、复盘模板 |
+| 分区 | 对应小节 | 你要抓住的主线 | 
+| --- | --- | --- | 
+| 第一部分：图像的记录、数字化和视觉判断 | 9.1-9.2 | 图像处理不是凭空出现，它是摄影、扫描、颜色研究和科学图像表达的后继者 | 
+| 第二部分：像素、素材和最小示例 | 9.3-9.4 | 把图片看成坐标和颜色通道，再用最小脚本跑通处理动作 | 
+| 第三部分：感知、科研图片和概念表 | 9.5-9.6 | 程序改的是像素，人理解的是场景；处理要服务于理解和证据 | 
+| 第四部分：脚本与排错 | 9.7-9.8 | 每个脚本都要明确输入、处理、输出结果，注意规避常见误区 | 
+| 第五部分：练习、复盘与后续连接 | 9.10-9.14 | 把图像处理迁移到学习卡片、实验材料、科研报告和后续自动化 | 
 
 ---
 
@@ -43,7 +42,7 @@
 
 ### 9.1 开场故事：先有画面，再有术语
 
-图片不是一整块魔法布，它是像素组成的矩阵。理解像素，图像处理就从玄学变成手工活。我们先从画面进入，再慢慢把画面翻译成代码。
+图片不是一整块魔法布，它是像素组成的矩阵。理解像素，图像处理就从玄学变成手艺活。我们先从画面进入，再慢慢把画面翻译成代码。
 
 <figure align="center">
   <img src="../assets/ch09/ch09_niepce_photo_story.png" alt="Niépce 早期摄影作品" style="zoom:50%; display:block; margin:0 auto;" />
@@ -137,24 +136,17 @@ NASA 的“创生之柱”常被用来说明科学图像的表达力量。很多
 
 ### 9.4 最小可运行示例
 
-本章第一件事不是背参数，而是运行一个最小例子。打开终端，进入本章目录后运行：
+打开终端，进入本章目录后运行：
 
 ```bash
 python code/ch09/01_create_demo_image.py
 ```
 
-如果你能看到输出，说明这一章已经跑通了。后面所有复杂功能，都是在这个基础上慢慢加能力。
+如果你能看到输出，说明图片生成已经跑通了。后面所有复杂功能，都是在这个基础上慢慢加能力。
 
 <figure align="center">
-  <img src="../assets/ch09/ch09_before_after_result.png" alt="真实照片处理前后对比" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图9-9 真实照片处理结果</strong>：`04_real_photo_before_after.py` 会生成无文字四宫格，对比原图、缩放、灰度和裁剪效果。</figcaption>
-</figure>
-
-这张图的重点不是“滤镜好看”，而是让处理动作可检查：缩放改变尺寸，灰度改变颜色通道，裁剪改变视野，锐化会让局部边缘更清楚。图像处理的学习一定要看结果，否则代码只是空转。
-
-<figure align="center">
-  <img src="../assets/ch09/ch09_powershell_image_run.png" alt="PowerShell 运行 ch9 图像处理脚本截图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图9-10 PowerShell 真实运行结果</strong>：本章脚本会在 `output/` 和 `reports/` 里留下 demo 图、灰度图、真实照片对比图和图像处理报告。</figcaption>
+  <img src="../assets/ch09/ch09_demo_card_image.png" alt="运行结果" style="zoom:50%; display:block; margin:0 auto;" />
+  <figcaption><strong>图9-9 运行结果</strong>：`01_create_demo_image.py`。</figcaption>
 </figure>
 
 ---
@@ -173,14 +165,14 @@ python code/ch09/01_create_demo_image.py
 
 <figure align="center">
   <img src="../assets/ch09/ch09_helmholtz_perception_story.png" alt="Hermann von Helmholtz照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图9-11 Hermann von Helmholtz照片</strong>：视觉不是摄像头式复制，人眼会根据经验、背景和对比做判断；图像处理要尊重这种感知特点。</figcaption>
+  <figcaption><strong>图9-10 Hermann von Helmholtz照片</strong>：视觉不是摄像头式复制，人眼会根据经验、背景和对比做判断；图像处理要尊重这种感知特点。</figcaption>
 </figure>
 
 Helmholtz 的视觉研究可以帮你理解一件事：图片处理不仅发生在电脑里，也发生在观看者的脑子里。两块同样的灰色，放在不同背景上可能看起来完全不同；一张图片被裁掉边缘后，观看者的注意力也会被重新引导。做科研配图时，这不是小事。
 
 <figure align="center">
   <img src="../assets/ch09/ch09_checker_shadow_illusion_story.png" alt="Adelson 棋盘阴影错觉图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图9-12 Adelson 棋盘阴影错觉</strong>：图片里的 A 和 B 看起来一深一浅，但经典错觉的妙处就在于：眼睛会把阴影、背景和经验一起算进去。</figcaption>
+  <figcaption><strong>图9-11 Adelson 棋盘阴影错觉</strong>：图片里的 A 和 B 看起来一深一浅，但经典错觉的妙处就在于：眼睛会把阴影、背景和经验一起算进去。</figcaption>
 </figure>
 
 这张图像是在给图像处理“泼一杯清醒水”。Python 看到的是像素值，人看到的是场景。你把亮度调高一点，程序觉得只是数值变化；观看者可能会觉得“证据更强了”。你裁掉一个边角，程序觉得只是坐标变了；别人可能会失去判断上下文。图像处理越强大，越要诚实。
@@ -198,8 +190,6 @@ Helmholtz 的视觉研究可以帮你理解一件事：图片处理不仅发生�
 | 滤镜和灰度 | 灰度是去掉颜色信息，滤镜是批量改像素 | `convert("L")` 生成灰度图，`ImageFilter.SHARPEN` 强化局部边缘 |
 | 批量处理 | 一张张手改会累，程序适合批量处理 | `03_batch_image_report.py` 读取文件夹中的多张 PNG |
 | 处理故事板 | 把原图、灰度、裁剪、增强和卡片成品连成一条可复盘路径 | `06_make_processing_storyboard.py` 生成图像处理流水线故事板 |
-
-这张表的作用，是把“我好像懂了”变成“我知道它在哪用”。学习编程时，最危险的状态不是完全不会，而是听解释时点头，自己动手时发呆。每学一个概念，都要强迫自己问一句：它在配套脚本里负责哪一段工作？
 
 ---
 
@@ -575,7 +565,7 @@ python code/ch09/06_make_processing_storyboard.py
 
 <figure align="center">
   <img src="../assets/ch09/ch09_pitfall_map.png" alt="常见坑地图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图9-13 常见坑地图</strong>：错误不是判决，而是提醒你该检查路径、输入、状态或依赖。</figcaption>
+  <figcaption><strong>图9-12 常见坑地图</strong>：错误不是判决，而是提醒你该检查路径、输入、状态或依赖。</figcaption>
 </figure>
 
 本章常见坑及应对方式：
@@ -653,8 +643,6 @@ python code/ch09/06_make_processing_storyboard.py
 - 学习分享：
 - 科研资料整理：
 ```
-
-复盘不是写作文，而是给未来的自己留路标。你现在记录清楚，后面做综合项目时就不用重新从记忆里翻箱倒柜。
 
 ---
 
