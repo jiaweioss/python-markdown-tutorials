@@ -161,14 +161,14 @@ python code/ch08/01_local_html_parser.py
 
 <figure align="center">
   <img src="../assets/ch08/ch08_internet_archive_story.png" alt="Internet Archive 总部照片" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图8-11 Internet Archive 总部</strong>：公开资料采集不只是“拿到链接”，更重要的是保留来源、时间和可复查线索。</figcaption>
+  <figcaption><strong>图8-9 Internet Archive 总部</strong>：公开资料采集不只是“拿到链接”，更重要的是保留来源、时间和可复查线索。</figcaption>
 </figure>
 
 科研资料最怕“我好像在哪里见过”。链接、标题、访问时间、来源说明，都是未来复查的路标。整理心理学或课程素材时，爬虫脚本不该只把内容吸走，还得把来源写清楚。不然今天看起来很聪明，明天写报告时就会变成考古现场。
 
 <figure align="center">
   <img src="../assets/ch08/ch08_xkcd_wisdom_story.png" alt="xkcd Wisdom of the Ancients漫画" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图8-12 xkcd Wisdom of the Ancients漫画</strong>：互联网上最痛的瞬间之一，是终于找到答案，却发现页面、图片或上下文已经消失了。</figcaption>
+  <figcaption><strong>图8-10 xkcd Wisdom of the Ancients漫画</strong>：互联网上最痛的瞬间之一，是终于找到答案，却发现页面、图片或上下文已经消失了。</figcaption>
 </figure>
 
 这张梗图正好提醒本章最重要的习惯：抓取结果必须带着来源一起保存。只保存“答案”很危险，答案离开上下文后，很快会变成一句来路不明的传言。保存标题、URL、访问时间、采集边界和使用提醒，才像真正的科研材料。
@@ -373,7 +373,7 @@ python code/ch08/05_make_source_cards.py
 
 <figure align="center">
   <img src="../assets/ch08/ch08_pitfall_map.png" alt="常见坑地图" style="zoom:50%; display:block; margin:0 auto;" />
-  <figcaption><strong>图8-13 常见坑地图</strong>：错误不是判决，而是提醒你该检查路径、输入、状态或依赖。</figcaption>
+  <figcaption><strong>图8-11 常见坑地图</strong>：错误不是判决，而是提醒你该检查路径、输入、状态或依赖。</figcaption>
 </figure>
 
 初学者写爬虫时最容易踩的坑，往往不是语法不会，而是忽略了爬虫工作的真实环境：网络会断、网页会改、编码会乱、规则会变。下面列出本章最常见的六个坑，每个都附带原因分析、典型表现和解决方案。
