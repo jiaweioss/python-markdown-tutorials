@@ -10,6 +10,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 from urllib.request import Request, urlopen
 import urllib.error
+import ssl
 
 
 # ===== 第一部分：HTML 解析器 =====
@@ -37,8 +38,12 @@ def fetch_page(url, timeout=10):
     }
     request = Request(url, headers=headers)
 
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+
     try:
-        response = urlopen(request, timeout=timeout)
+        response = urlopen(request, timeout=timeout, context=ssl_context)
         html_bytes = response.read()
         # 尝试用 UTF-8 解码，如果失败就用 replace 替换无法解码的字符
         html_str = html_bytes.decode("utf-8", errors="replace")
