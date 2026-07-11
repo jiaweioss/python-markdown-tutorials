@@ -68,7 +68,7 @@
   <figcaption><strong>图6-3 从记录表到可解释图表</strong>：输入数据、统计摘要和图表行动要连成一条证据链。缺少任意一环，结论都会变轻。</figcaption>
 </figure>
 
-数据可视化最动人的地方，是它经常把“看不见的问题”变成公共讨论里的证据。Florence Nightingale 把克里米亚战争中的死亡原因画出来，目的是为了让卫生条件造成的死亡不再躲在表格后面。John Snow 把霍乱死亡地点放到地图上，也是在用空间位置逼近问题中心。第6章虽然只处理学习记录，但道理是一样的：图表要让证据站出来。
+数据可视化最有用的地方，是它经常把“看不见的问题”变成能讨论、能复查的证据。Florence Nightingale 把克里米亚战争中的死亡原因画出来，是为了让卫生条件造成的死亡不再躲在表格后面。John Snow 把霍乱死亡地点放到地图上，也是在用空间位置逼近问题中心。第6章虽然处理的是学习记录，道理相同：图表的任务不是装饰，而是让证据站出来。
 
 <figure align="center">
   <img src="../assets/ch06/ch06_nightingale_mortality_story.png" alt="Florence Nightingale 死亡原因图" style="zoom:50%; display:block; margin:0 auto;" />
