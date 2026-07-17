@@ -26,7 +26,7 @@ FUNCTIONS_OUT = OUT / "functions"
 
 PUBLIC_CHAPTER_MAX = 10
 PUBLIC_RELEASE_NOTE = "当前 ch00-ch10 全部章节正文已开放，整章材料包也已同步开放下载。"
-ASSET_VERSION = "20260718-functions-v2"
+ASSET_VERSION = "20260718-functions-v3"
 MATERIAL_FOLDERS = ["chapters", "code", "reports", "output", "source_notes", "scripts"]
 MATERIAL_FILES = ["README.md", "manifest.json"]
 
