@@ -7,7 +7,7 @@ ROOT = Path("workspace_ch03")
 REPORT = ROOT / "output" / "file_inventory.md"
 
 
-def iter_files(root: Path) -> list[Path]:
+def iter_files(root):
     result = []
     for path in sorted(root.rglob("*")):
         if path.is_file():

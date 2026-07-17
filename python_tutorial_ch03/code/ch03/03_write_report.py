@@ -8,7 +8,7 @@ DATA_FILE = ROOT / "data" / "scores.csv"
 REPORT_FILE = ROOT / "output" / "score_report.txt"
 
 
-def load_scores(path: Path) -> list[tuple[str, int]]:
+def load_scores(path):
     lines = path.read_text(encoding="utf-8").splitlines()
     records: list[tuple[str, int]] = []
     for line in lines[1:]:

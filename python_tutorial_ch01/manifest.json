@@ -9,7 +9,7 @@
     "markdown": "chapters/ch01_python_basics_work_env.md",
     "source_ppt": "第一章_Python基础知识和工作环境Map2024.pptx",
     "source_ppt_slide_count": 108,
-    "character_count": 29709,
+    "character_count": 39137,
     "image_refs": 34,
     "asset_count": 63,
     "code_count": 7,
@@ -166,7 +166,8 @@
     "powershell_submission_evidence_screenshot": "added; generated from current machine 01/02/04/05 script outputs and used as figure 1-34",
     "powershell_pathlib_demo_screenshot": "added; generated from current machine pathlib output and used as figure 1-33",
     "first_script_feedback_loop": "updated; rebuilt with natural Chinese step labels and bounded text boxes between script naming and project directory",
-    "pip_pipeline_and_error_map": "updated; rebuilt with natural Chinese labels, ordered troubleshooting steps and overflow-checked text layout"
+    "pip_pipeline_and_error_map": "updated; rebuilt with natural Chinese labels, ordered troubleshooting steps and overflow-checked text layout",
+    "novice_function_calls": "added; function names, parentheses, arguments, return values, methods, module functions, Path calls and Stroop timing/input calls are explained before or at first use"
   },
   "source_notes": [
     "source_notes/source_manifest_ch01.md",

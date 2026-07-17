@@ -121,6 +121,16 @@ output = Path("output/report.txt")
 output.write_text("整理完成\n", encoding="utf-8")
 ```
 
+先把这几次调用拆开，后面会分别练习：
+
+| 调用 | 参数 | 返回值或作用 |
+| --- | --- | --- |
+| `Path("data/raw_notes.txt")` | 路径文字 | 返回一个路径对象，不会自动创建或打开文件 |
+| `path.read_text(encoding="utf-8")` | 文本编码 | 读取整个文件，返回字符串 |
+| `output.write_text(text, encoding="utf-8")` | 要写的文字和编码 | 把文字写入文件；同名文件存在时会覆盖原内容 |
+
+`from pathlib import Path` 的意思是从标准库 `pathlib` 中导入 `Path` 这个工具。`encoding="utf-8"` 是关键字参数，明确告诉读写方法用 UTF-8 解释中文。文件不存在时，`read_text()` 会出现 `FileNotFoundError`；父文件夹不存在时，`write_text()` 也不会替你自动创建文件夹。
+
 请注意：我们通常不直接覆盖原始数据。原始数据像实验记录，最好保持不动；处理结果写进 `output/`，这样更安全，也更容易复现。
 
 ---
@@ -230,12 +240,14 @@ workspace_ch03/
 file = open("data/raw_notes.txt", "r", encoding="utf-8")
 ```
 
+`open()` 接收文件路径、打开模式和编码，返回一个“文件对象”。变量 `file` 保存的不是文件里的文字，而是程序和磁盘文件之间的一条连接；接下来才能对它调用 `read()`、`write()` 或 `close()`。
+
 其中：
 
 | 参数 | 含义 |
 | --- | --- |
-| `name` | 文件路径 |
-| `mode` | 打开模式 |
+| 第 1 个参数 | 文件路径 |
+| 第 2 个参数 | 打开模式 |
 | `encoding` | 文本编码，中文环境下建议明确写 `utf-8` |
 
 `buffering` 是缓冲设置，初学阶段很少需要手动写。
@@ -257,7 +269,7 @@ with open("data/raw_notes.txt", "r", encoding="utf-8") as file:
     text = file.read()
 ```
 
-两种都可以。`pathlib` 更简洁，`with open()` 更接近底层文件读写流程。
+`with ... as file` 会把 `open()` 返回的文件对象暂时交给变量 `file`。缩进块结束时，Python 会自动关闭它。两种读法都可以：`pathlib` 更简洁，`with open()` 更适合逐行读取或连续写入。
 
 ### 3.5.1 close()：用完记得关门
 
@@ -392,13 +404,15 @@ print(lines)
 
 更推荐的通用写法：
 
+这一段默认你已经在第2章见过 `for`、缩进和 `if`。这里不再把循环当新语法背一遍，而是把同一条规则迁移到文件上：文件每次交出一行，`for` 就处理一行。还没跑过第2章的循环示例时，先回去完成 `2.23 循环与函数`，再回来会轻松很多。
+
 ```python
 with open("workspace_ch03/data/raw_notes.txt", "r", encoding="utf-8") as file:
     for line in file:
         print(line.strip())
 ```
 
-它适合大文件，也适合边读边处理。
+每一行通常以换行符 `\n` 结尾。`line.strip()` 返回去掉首尾空白字符的新字符串，包括行末换行；它不会删除句子中间的空格，也不会修改原来的 `line`。逐行循环适合大文件，也适合边读边处理。
 
 配套脚本：
 
@@ -456,6 +470,21 @@ python code/ch03/03_write_report.py
 ## 3.8 文件复制与移动：shutil 像搬家公司
 
 复制和移动文件时，先认识 `shutil.copyfile()` 和 `shutil.move()`。
+
+这两个模块函数都把“来源路径”放在第一个参数，把“目标路径”放在第二个参数：
+
+| 函数 | 做什么 | 原文件还在吗 | 需要提前注意什么 |
+| --- | --- | --- | --- |
+| `shutil.copyfile(source, destination)` | 复制文件内容 | 在 | 目标文件夹必须已经存在 |
+| `shutil.move(source, destination)` | 移动或改名 | 不在原位置 | 目标文件夹必须已经存在 |
+
+参数顺序不要靠猜。第一次运行前先把来源和目标分别放进名字清楚的变量，比直接塞两段长路径更容易检查：
+
+```python
+source = "workspace_ch03/data/raw_notes.txt"
+destination = "workspace_ch03/output/raw_notes_copy.txt"
+shutil.copyfile(source, destination)
+```
 
 复制文件：
 
@@ -532,6 +561,8 @@ Path("workspace_ch03/output").mkdir(parents=True, exist_ok=True)
 
 遍历目录，就是让 Python 走进一个文件夹，把里面的文件逐个看一遍。
 
+下面的代码把第2章的“逐项处理 + 条件筛选”换了一种材料：循环变量 `path` 每次是一条路径，`if path.is_file()` 只保留真正的文件。核心语法没有变，变化的是处理对象。
+
 用 `pathlib`：
 
 ```python
@@ -544,7 +575,11 @@ for path in root.rglob("*"):
         print(path, path.stat().st_size)
 ```
 
-`path.stat().st_size` 可以得到文件大小，单位是字节。
+逐个拆开：
+
+- `root.rglob("*")` 从 `root` 开始递归查找；`"*"` 表示匹配所有名称。
+- `path.is_file()` 不需要参数，返回布尔值，告诉 `if` 当前路径是否为文件。
+- `path.stat()` 返回文件状态信息，后面的 `.st_size` 是其中保存的文件大小数据，单位是字节。`.st_size` 没有括号，所以它是属性，不是方法调用。
 
 配套脚本：
 

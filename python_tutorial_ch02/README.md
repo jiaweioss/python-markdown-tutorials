@@ -1,6 +1,6 @@
-# Python Markdown 教程书：第2章优化版
+# Python Markdown 教程书：第2章 Python 基础语法版
 
-本包是第2章《Python 编程基础：数据类型》的优化后 Markdown 教材交付。
+本包是第2章《Python 编程基础：数据、流程与函数》的 Markdown 教材交付。
 
 ## 内容
 
@@ -22,8 +22,12 @@
 - 把布尔逻辑图移动到 `and/or/not` 小节，把 IBM 打孔卡分拣机图移动到列表操作和字典之间，增强图文一一对应关系。
 - 删除或改写“课件里”“参考 MATLAB 教材”等来源视角表达，让正文保持正式教程口吻。
 - 新增 `type()` 检查示例，帮助初学者区分 `"86"` 和 `86`。
+- 新增零基础常用函数工具箱，集中解释 `print()`、`input()`、`type()`、`len()`、`sum()`、`min()`、`max()`、`round()` 的参数和返回值。
+- 区分内置函数、对象方法和模块函数，并补充 `find()`、`replace()`、`split()`、`append()`、`get()`、`range()`、`enumerate()` 的首次调用说明。
 - 补充 `float()` 转换、`replace()` 返回新字符串、`round(2.5)` 与 `round(3.5)` 的舍入差异、列表 `append()` 原地修改等新手易错点。
 - 优化嵌套列表示例，把 `list1/list2/my_list` 改成更清楚的 `number_list/word_list/nested_list`，并避免把数字写成字符串造成误解。
+- 补上初学者必须先学会的条件语句、四种基础容器创建、`for`/`while` 循环和函数；ch03 的文件遍历不再成为第一次遇到 `for` 的地方。
+- 将学习记录小项目改为实际使用 `for`、`if`、`append()` 和函数，新增四个可独立运行的基础语法脚本。
 - 给练习 2-4 增加参考代码，方便自学者完成后自查。
 - 更新配套文件树，使图片清单与正文图号顺序一致。
 
@@ -35,8 +39,13 @@
 python code/ch02/01_constants_keywords.py
 python code/ch02/02_variables_labels.py
 python code/ch02/03_bool_numbers.py
+python code/ch02/17_builtin_functions_basics.py
+python code/ch02/13_control_flow_basics.py
 python code/ch02/04_string_playground.py
+python code/ch02/14_container_creation.py
 python code/ch02/05_list_dict_workshop.py
+python code/ch02/15_loop_basics.py
+python code/ch02/16_function_basics.py
 python code/ch02/06_learning_record_project.py
 python code/ch02/07_make_type_decision_cards.py
 python code/ch02/08_make_type_compass.py
@@ -57,7 +66,7 @@ python scripts/check_links.py
 python code/ch02/12_make_data_type_runtime_evidence.py
 ```
 
-当前优化版已检查通过：正文 27 张图片链接有效，图号连续，示例脚本可运行，运行证据脚本显示 `14/14 ready`。
+当前版本已检查通过：正文 27 张图片链接有效，图号连续；更新后的学习记录项目与新增 `13` 至 `17` 号基础语法脚本均已实际运行成功。
 
 ## 图片来源补充
 
