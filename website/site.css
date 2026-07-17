@@ -1205,6 +1205,25 @@ img {
   margin: 0 auto;
 }
 
+.chapter-content a {
+  overflow-wrap: anywhere;
+}
+
+.chapter-content .toc,
+.chapter-content .toc ul,
+.chapter-content .toc li {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.chapter-content .toc ul {
+  padding-left: 24px;
+}
+
+.chapter-content .toc a {
+  word-break: break-word;
+}
+
 .chapter-content h1 {
   display: none;
 }
@@ -1245,6 +1264,7 @@ img {
 .chapter-content table {
   display: block;
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   margin: 18px 0 24px;
   border-collapse: collapse;
@@ -1722,6 +1742,10 @@ img {
   .function-entry-head,
   .chapter-function-guide-head {
     display: grid;
+  }
+
+  .chapter-content .toc ul {
+    padding-left: 18px;
   }
 
   .function-chapter-links {
