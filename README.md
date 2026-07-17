@@ -24,10 +24,7 @@
 
 ## 网页站点
 
-站点生成器位于 [website/build_site.py](website/build_site.py)。它会把 ch00-ch10 都放入网页目录：
-
-- ch00-ch05：正文开放阅读，材料包可下载。
-- ch06-ch10：章节页面显示“敬请期待”，材料包和材料清单仍然可下载。
+站点生成器位于 [website/build_site.py](website/build_site.py)。当前 ch00-ch10 全部正文开放阅读，每章材料包和材料清单也同步提供下载。
 
 当前网页体验包含：
 
@@ -38,6 +35,8 @@
 - 代码块一键复制。
 - 章节图片点击放大预览。
 - 明暗主题切换。
+- 全书函数输入输出库，可按名称、章节和调用类型筛选。
+- 每章正文页的函数速查入口。
 - 每章独立 `.zip` 材料包和分组材料清单。
 
 本地构建：
@@ -45,8 +44,12 @@
 ```bash
 python -m pip install -r website/requirements.txt
 python website/build_site.py
+python website/audit_function_reference.py
+python website/validate_site.py
 python -m http.server 8124 --directory public
 ```
+
+`audit_function_reference.py` 会扫描教程代码块和学员脚本，检查新出现的函数是否已经进入函数库；`validate_site.py` 会检查章节开放状态、函数条目、站内链接和整章下载包。
 
 `public/` 是生成产物，默认不纳入 Git 管理。
 

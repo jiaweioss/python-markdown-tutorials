@@ -125,7 +125,7 @@
     return copied;
   };
 
-  document.querySelectorAll(".chapter-content pre").forEach((pre) => {
+  document.querySelectorAll(".chapter-content pre, .function-entry pre").forEach((pre) => {
     if (pre.parentElement && pre.parentElement.classList.contains("code-wrap")) return;
 
     const wrap = document.createElement("div");
@@ -220,5 +220,71 @@
       { rootMargin: "-15% 0px -70% 0px", threshold: [0, 1] }
     );
     headings.forEach((heading) => observer.observe(heading));
+  }
+
+  const functionEntries = Array.from(document.querySelectorAll("[data-function-entry]"));
+  const functionSearch = document.querySelector("[data-function-search]");
+  const functionChapter = document.querySelector("[data-function-chapter]");
+  const functionKind = document.querySelector("[data-function-kind]");
+  const functionReset = document.querySelector("[data-function-reset]");
+  const functionCount = document.querySelector("[data-function-count]");
+  const functionEmpty = document.querySelector("[data-function-empty]");
+
+  if (functionEntries.length && functionSearch && functionChapter && functionKind) {
+    const params = new URLSearchParams(window.location.search);
+    const initialChapter = params.get("chapter") || "";
+    const initialKind = params.get("kind") || "";
+    const initialQuery = params.get("q") || "";
+
+    if (Array.from(functionChapter.options).some((option) => option.value === initialChapter)) {
+      functionChapter.value = initialChapter;
+    }
+    if (Array.from(functionKind.options).some((option) => option.value === initialKind)) {
+      functionKind.value = initialKind;
+    }
+    functionSearch.value = initialQuery;
+
+    const normalize = (value) => value.normalize("NFKC").toLowerCase().trim();
+    const updateFunctionList = () => {
+      const query = normalize(functionSearch.value);
+      const chapter = functionChapter.value;
+      const kind = functionKind.value;
+      let visible = 0;
+
+      for (const entry of functionEntries) {
+        const matchesQuery = !query || normalize(entry.textContent || "").includes(query);
+        const chapters = entry.dataset.functionChapters || "";
+        const matchesChapter = !chapter || chapters.includes(`,${chapter},`);
+        const matchesKind = !kind || entry.dataset.functionKind === kind;
+        entry.hidden = !(matchesQuery && matchesChapter && matchesKind);
+        if (!entry.hidden) visible += 1;
+      }
+
+      if (functionCount) functionCount.textContent = `${visible} / ${functionEntries.length}`;
+      if (functionEmpty) functionEmpty.hidden = visible !== 0;
+
+      const next = new URLSearchParams();
+      if (query) next.set("q", functionSearch.value.trim());
+      if (chapter) next.set("chapter", chapter);
+      if (kind) next.set("kind", kind);
+      const queryString = next.toString();
+      const nextUrl = `${window.location.pathname}${queryString ? `?${queryString}` : ""}${window.location.hash}`;
+      window.history.replaceState(null, "", nextUrl);
+    };
+
+    functionSearch.addEventListener("input", updateFunctionList);
+    functionChapter.addEventListener("change", updateFunctionList);
+    functionKind.addEventListener("change", updateFunctionList);
+    if (functionReset) {
+      functionReset.addEventListener("click", () => {
+        functionSearch.value = "";
+        functionChapter.value = "";
+        functionKind.value = "";
+        updateFunctionList();
+        functionSearch.focus();
+      });
+    }
+
+    updateFunctionList();
   }
 })();

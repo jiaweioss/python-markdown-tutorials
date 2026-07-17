@@ -12,6 +12,8 @@ from typing import Iterable
 import markdown
 from pygments.formatters import HtmlFormatter
 
+from function_reference import FUNCTION_REFERENCES, FunctionReference, references_for_chapter
+
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public"
@@ -20,10 +22,11 @@ ASSET_OUT = OUT / "assets"
 CHAPTER_OUT = OUT / "chapters"
 FILES_OUT = OUT / "files"
 DOWNLOADS_OUT = OUT / "downloads"
+FUNCTIONS_OUT = OUT / "functions"
 
 PUBLIC_CHAPTER_MAX = 10
 PUBLIC_RELEASE_NOTE = "当前 ch00-ch10 全部章节正文已开放，整章材料包也已同步开放下载。"
-ASSET_VERSION = "20260630-copy-fallback"
+ASSET_VERSION = "20260718-functions-v1"
 MATERIAL_FOLDERS = ["chapters", "code", "reports", "output", "source_notes", "scripts"]
 MATERIAL_FILES = ["README.md", "manifest.json"]
 
@@ -324,6 +327,7 @@ def topbar(depth: str = "") -> str:
     <span class="brand-text">Python 教程</span>
   </a>
   <div class="top-actions">
+    <a class="button ghost" href="{depth}functions/">函数库</a>
     <a class="button ghost" href="{depth}files/">材料下载</a>
     <button class="icon-button" data-theme-toggle title="切换明暗主题" aria-label="切换明暗主题">Aa</button>
   </div>
@@ -375,7 +379,10 @@ def course_sidebar(chapters: list[Chapter], active: int | None, depth: str = "",
         <strong>{release_range_label()}</strong>
         <small>ch00-ch10 全部正文已开放，整章材料包同步提供下载。</small>
       </div>
-      <a class="course-sidebar-materials" href="{depth}files/">材料中心与整章下载</a>
+      <div class="course-sidebar-tools">
+        <a class="course-sidebar-materials" href="{depth}functions/">函数输入输出库</a>
+        <a class="course-sidebar-materials secondary" href="{depth}files/">材料中心与整章下载</a>
+      </div>
       {chapter_nav(chapters, active, depth, same_dir)}
     </div>
   </aside>
@@ -414,6 +421,163 @@ def hero_gallery(chapters: list[Chapter]) -> str:
         f'<img src="{html.escape(version_asset_src(chapter.cover))}" alt="{html.escape(short_title(chapter.title))} 封面" loading="lazy" />'
         for chapter in covers
     )
+
+
+def chapter_page_for_index(chapters: list[Chapter], index: int) -> str:
+    chapter = next((item for item in chapters if item.index == index), None)
+    return chapter.page_name if chapter else ""
+
+
+def reference_chapter_links(reference: FunctionReference, chapters: list[Chapter], depth: str) -> str:
+    links = []
+    for index in reference.chapters:
+        page = chapter_page_for_index(chapters, index)
+        if page:
+            links.append(
+                f'<a href="{depth}chapters/{html.escape(page)}">CH{index:02d}</a>'
+            )
+    return "".join(links)
+
+
+def function_entry(reference: FunctionReference, chapters: list[Chapter]) -> str:
+    chapter_value = "," + ",".join(str(index) for index in reference.chapters) + ","
+    pitfall = (
+        f'<p class="function-pitfall"><strong>易错点</strong>{html.escape(reference.pitfall)}</p>'
+        if reference.pitfall
+        else ""
+    )
+    return f"""
+<article class="function-entry" id="{html.escape(reference.slug)}" data-function-entry
+  data-function-chapters="{html.escape(chapter_value)}" data-function-kind="{html.escape(reference.kind)}">
+  <header class="function-entry-head">
+    <div>
+      <code>{html.escape(reference.name)}</code>
+      <span class="meta-pill">{html.escape(reference.kind)}</span>
+    </div>
+    <nav class="function-chapter-links" aria-label="出现章节">
+      {reference_chapter_links(reference, chapters, "../")}
+    </nav>
+  </header>
+  <p class="function-purpose">{html.escape(reference.purpose)}</p>
+  <dl class="function-io-grid">
+    <div><dt>输入</dt><dd>{html.escape(reference.inputs)}</dd></div>
+    <div><dt>输出</dt><dd>{html.escape(reference.output)}</dd></div>
+    <div><dt>对象变化</dt><dd>{html.escape(reference.changes)}</dd></div>
+  </dl>
+  <pre class="function-example"><code>{html.escape(reference.example)}</code></pre>
+  {pitfall}
+</article>
+"""
+
+
+def chapter_function_guide(chapter: Chapter) -> str:
+    references = references_for_chapter(chapter.index)
+    if not references:
+        return ""
+    preview = references[:14]
+    chips = "".join(
+        f'<a href="../functions/#{html.escape(item.slug)}"><code>{html.escape(item.name)}</code></a>'
+        for item in preview
+    )
+    remaining = len(references) - len(preview)
+    more = f"，另有 {remaining} 条可在函数库中查询" if remaining > 0 else ""
+    return f"""
+<section class="chapter-function-guide" aria-label="本章函数速查">
+  <div class="chapter-function-guide-head">
+    <div>
+      <p class="article-kicker">本章函数速查</p>
+      <h2>先看输入，再看输出</h2>
+      <p>本章关联 {len(references)} 条函数与方法说明{more}。点击名称可直接查看返回值、对象变化和易错点。</p>
+    </div>
+    <a class="button" href="../functions/?chapter={chapter.index}">打开本章函数库</a>
+  </div>
+  <div class="function-chip-row">{chips}</div>
+</section>
+"""
+
+
+def build_function_reference(chapters: list[Chapter]) -> None:
+    FUNCTIONS_OUT.mkdir(parents=True, exist_ok=True)
+    kinds = sorted({item.kind for item in FUNCTION_REFERENCES})
+    chapter_options = "".join(
+        f'<option value="{chapter.index}">{chapter.key.upper()} · {html.escape(short_title(chapter.title))}</option>'
+        for chapter in chapters
+    )
+    kind_options = "".join(
+        f'<option value="{html.escape(kind)}">{html.escape(kind)}</option>' for kind in kinds
+    )
+    entries = "".join(function_entry(item, chapters) for item in FUNCTION_REFERENCES)
+    body = f"""
+{topbar("../")}
+<div class="site-shell">
+  {course_sidebar(chapters, None, "../")}
+  <main class="home-main function-library-main">
+    <section class="function-library-hero">
+      <div>
+        <p class="article-kicker">CH00-CH10 函数讲解库</p>
+        <h1>先弄清输入和输出，再调用函数</h1>
+        <p>这里收录教程真正用到的内置函数、对象方法、标准库和第三方工具。每一条都说明参数、返回值、是否修改原对象，以及初学者最容易误解的地方。</p>
+      </div>
+      <div class="stat-board compact">
+        <div class="stat"><strong>{len(FUNCTION_REFERENCES)}</strong><span>函数与方法</span></div>
+        <div class="stat"><strong>{len(chapters)}</strong><span>覆盖章节</span></div>
+        <div class="stat"><strong>{len(kinds)}</strong><span>调用类型</span></div>
+        <div class="stat"><strong>4</strong><span>阅读问题</span></div>
+      </div>
+    </section>
+    <section class="function-toolbar" aria-label="函数筛选">
+      <label>
+        <span>搜索</span>
+        <input class="search" data-function-search type="search" placeholder="输入函数名、用途、参数或错误关键词" />
+      </label>
+      <label>
+        <span>章节</span>
+        <select data-function-chapter>
+          <option value="">全部章节</option>
+          {chapter_options}
+        </select>
+      </label>
+      <label>
+        <span>类型</span>
+        <select data-function-kind>
+          <option value="">全部类型</option>
+          {kind_options}
+        </select>
+      </label>
+      <button class="button" type="button" data-function-reset>清除筛选</button>
+      <output class="meta-pill strong" data-function-count aria-live="polite"></output>
+    </section>
+    <section class="function-reading-guide" aria-label="函数阅读方法">
+      <div><strong>1. 它叫什么</strong><span>确认是内置函数、对象方法还是模块函数。</span></div>
+      <div><strong>2. 输入什么</strong><span>检查参数数量、类型和关键字参数。</span></div>
+      <div><strong>3. 输出什么</strong><span>分清返回值、屏幕输出和文件输出。</span></div>
+      <div><strong>4. 会改什么</strong><span>确认原对象、窗口、文件或网络状态是否改变。</span></div>
+    </section>
+    <section class="function-list" data-function-list aria-label="函数条目">
+      {entries}
+      <p class="function-empty" data-function-empty hidden>没有匹配的函数。可以缩短关键词，或切换到“全部章节”。</p>
+    </section>
+    <p class="footer">函数库由教程使用清单生成，并随章节一起构建。</p>
+  </main>
+</div>
+"""
+    write_text(FUNCTIONS_OUT / "index.html", layout_page("函数讲解库", body, "../"))
+    payload = [
+        {
+            "id": item.slug,
+            "name": item.name,
+            "chapters": [f"ch{index:02d}" for index in item.chapters],
+            "kind": item.kind,
+            "purpose": item.purpose,
+            "inputs": item.inputs,
+            "output": item.output,
+            "changes": item.changes,
+            "example": item.example,
+            "pitfall": item.pitfall,
+        }
+        for item in FUNCTION_REFERENCES
+    ]
+    write_text(FUNCTIONS_OUT / "functions.json", json.dumps(payload, ensure_ascii=False, indent=2))
 
 
 def chapter_card(chapter: Chapter) -> str:
@@ -470,6 +634,7 @@ def build_home(chapters: list[Chapter]) -> None:
         <p>从学习路线、运行环境、数据类型，到文件、界面、对象、数据分析、游戏、爬虫、图像处理与办公自动化。全部章节现在都可以直接阅读，并保留整章材料包下载入口。</p>
         <div class="hero-actions">
           <a class="button primary large" href="chapters/{html.escape(first_page)}">开始学习</a>
+          <a class="button large" href="functions/">查函数输入输出</a>
           <a class="button large" href="files/">进入材料中心</a>
         </div>
       </div>
@@ -745,6 +910,7 @@ def build_chapter_pages(chapters: list[Chapter]) -> None:
         <a class="button" href="../index.html">返回目录</a>
       </div>
     </header>
+    {chapter_function_guide(chapter)}
     <article class="chapter-content">
       {chapter.html_body}
     </article>
@@ -774,6 +940,12 @@ def build_manifest(chapters: list[Chapter]) -> None:
         "public_range": release_range_label(),
         "release_note": PUBLIC_RELEASE_NOTE,
         "downloads_available_for_all_chapters": True,
+        "function_reference": {
+            "page": "functions/",
+            "json": "functions/functions.json",
+            "entry_count": len(FUNCTION_REFERENCES),
+            "covers_all_chapters": True,
+        },
         "chapters": [
             {
                 "key": c.key,
@@ -806,6 +978,7 @@ def main() -> None:
     build_chapter_pages(chapters)
     build_home(chapters)
     build_files_index(chapters)
+    build_function_reference(chapters)
     build_manifest(chapters)
     print(f"Built {len(chapters)} chapters into {OUT}")
 
